@@ -1,0 +1,101 @@
+benchmarks for different thingys:
+
+10 seconds of blasting with no frame delay or timing:
+
+27480 frames (10000 pixels, no update, batch)
+247   frames (10000 pixels, no update, no batch, same color)
+
+6446  frames  (100 pixels, attract update, batch, same color)
+41053 frames  (100 pixels, no update, batch, same color)
+
+40259 frames  (100 pixels, THREADED attract update, batch, same color)
+
+
+3432 frames   (1000 sprites, no physics, no batch)
+3509 frames   (1000 sprites, no physics, alpha 25)
+
+9254  frames   (100 sprites, physics, no batch)
+16075 frames   (100 sprites, no physics, no batch)
+
+
+201  frames     (100 circles random rad (30 + 10). no update, no batch)
+1567 frames     (100 circles random rad (30 + 10). no update, medium batch)
+
+
+Dell laptop
+i5-2520M CPU @ 2.50 GHz
+4 GB RAM
+Win 10 Pro 64 bit
+
+
+*********************************************************************
+
+10 seconds of blasting with no frame delay or timing:
+
+(demo 6)
+
+vs2015 with sdl 2.0.5 (32bit)
+
+18244 frames (1000 sprites 64x64, no update, no batch, different color and alpha, same blendmode(never called SDL_SetTextureBlendMode))
+10234 frames (1000 sprites 64x64, no update, no batch, different color, half of sprites have blendmode_blend, other _add (no sprite sorting))
+17662 frames (1000 sprites 64x64, no update, no batch, different color, half of sprites have blendmode_blend, other _add (sprite sorting by blendmode))
+
+Sorting sprites by blendmode is really good as you can see. Switching between blendmodes before rendercopy is slow if done to often.
+But maybe you'll want to sort sprites by layer too? think about this.
+Maybe this won't be a big problem, just don't put a different blendmode on every other sprite?
+
+
+vs2019 with sdl 2.0.12 (32bit)
+
+17888 frames (1000 sprites 64x64, no update, no batch, different color, same blendmode (never called SDL_SetTextureBlendMode))
+9085 frames (1000 sprites 64x64, no update, no batch, different color, half of sprites have blenmode_blend, other _add)
+16708 frames (1000 sprites 64x64, no update, no batch, different color, half of sprites have blenmode_blend, other _add (sprite sorting by blendmode))
+
+21000 frames (1000 filled rects 64x64, no update, no batch, different color, same blendmode)
+
+--Demo 6 fbl_test.c
+
+1702 frames (1000 sprites 64x64, update, no batch, different color, half of sprites have blenmode_blend, other _add (sprite sorting by blendmode)
+		the update is moving the sprites around using fbl_set_sprite_xy and fbl_get_x and _y)
+
+7000 frames (1000 sprites 64x64, update, no batch, different color, half of sprites have blenmode_blend, other _add (sprite sorting by blendmode)
+		the update is moving the sprites around using fbl_set_sprite_xy and direct coordinate references (stored in stack array))
+Same result as above with filled rects.
+
+16800 frames (1000 sprites 64x64, update, no batch, different color, half of sprites have blenmode_blend, other _add (sprite sorting by blendmode)
+		the update is moving the sprites around using fbl_set_sprite_xy and direct coordinate references (stored in stack array), and new direct ref system
+		in sprite.c (it really works!))
+
+14000 frames (1000 sprites 64x64, update, no batch, different color, half of sprites have blenmode_blend, other _add (sprite sorting by blendmode)
+		the update is moving the FIRST 200 sprites around using fbl_set_sprite_xy and direct coordinate references (stored in stack array))
+
+11800 frames (1000 sprites 64x64, update, no batch, different color, half of sprites have blenmode_blend, other _add (sprite sorting by blendmode)
+		the update is moving the LAST 200 sprites around using fbl_set_sprite_xy and direct coordinate references (stored in stack array))
+
+--
+
+--
+
+vs2019 with sdl 2.0.12 (64bit)
+
+19328 frames (1000 sprites 64x64, no update, no batch, different color, half of sprites have blenmode_blend, other _add (sprite sorting by blendmode))
+
+
+Dell desktop
+i5-3470 CPU @ 3.20 GHz
+16gb RAM
+gtx 1050ti
+Win 10 Pro 64 bit
+
+
+-----
+
+(fun fact, the above result (Dell desktop) is almost exactly twice as many fps
+as my:
+
+Acer aspire laptop
+i3-6006u CPU @ 2.00 GHz
+8Gb ram
+intel(r) HD Graphics 520
+
+)

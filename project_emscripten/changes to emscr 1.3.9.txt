@@ -1,0 +1,34 @@
+tanka senaste emscr o installera
+tanka python 3.8 eller senare fr windows shopen
+kompilera med build-masta.bat (obs ny) från rot/upstream/emscripten/
+
+måste kompilera om lua o chipmunk-libsen med senaste emscr = lätt. (ligger i dependencies)
+
+in engine.h
+
+#ifdef __EMSCRIPTEN__
+#include "../dependencies/emscripten/chipmunk-6.2.1/include/chipmunk/chipmunk.h"
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h> !!
+#include <SDL2/SDL_mixer.h> !!
+
+write_owl funkar :)
+
+kolla senaste assets-foldern så att paths stämmer
+funkar med gamla assets + börja på demo 0.
+
+allt funkar o e asfett bara litt pill.
+
+kommer att använda sdl_mixer från sd2 ist för sdl
+
+så måste fixa vissa funktioner i sound.c (klar)
+
+fullscreen verkar funka sådär i senaste
+
+
+ver 2.0:
+
+kompilera *.bc libs med -r -o !!
+
+

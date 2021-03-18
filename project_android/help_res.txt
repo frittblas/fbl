@@ -1,0 +1,10 @@
+https://github.com/stephen47/android-sdl2-gradle-template
+http://georgik.rocks/sdl2-application-for-android-built-by-gradle-4/
+http://georgik.rocks/difference-between-libraries-and-main-android-application-based-on-sdl2-built-by-gradle-4/
+
+install gradle 4.0.1
+
+gradle assembledebug
+gradle installdebug
+
+or release
