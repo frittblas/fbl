@@ -12,7 +12,7 @@
 
 #include "engine.h"
 
-#include <math.h>
+//#include <math.h> // only for M_Pi?
 
 /* check sprite version for info */
 

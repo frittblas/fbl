@@ -12,6 +12,12 @@
 
 #include "engine.h"
 
+
+/* so we can use strcpy() in msvc */
+#ifdef _MSC_VER
+#pragma warning(disable : 4996)
+#endif
+
 /* functions only used by sound.c */
 
 int destroy_sound_sample(int tag, void *sound, void *dummy);
@@ -43,7 +49,7 @@ int fbl_load_sound(const char *sample_file)
 	strcat(new_path, sample_file);
 	strcat(new_path, "\0");
 #else
-	strcpy_s(new_path, 384, sample_file);
+	strcpy(new_path, sample_file);
 #endif
 
 	fbl_sound = malloc(sizeof(FBL_SOUND));
@@ -214,7 +220,7 @@ int fbl_load_music(const char *song_file)
 	strcat(new_path, song_file);
 	strcat(new_path, "\0");
 #else
-	strcpy_s(new_path, 384, song_file);
+	strcpy(new_path, song_file);
 #endif
 
 	fbl_music = Mix_LoadMUS(new_path);

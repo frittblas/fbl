@@ -33,6 +33,9 @@
 
 #include "fbl.h"
 
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
 
 /* set if include Lua or physics in compile */
 
@@ -49,6 +52,7 @@
 #define FBL_VERSION "0.9.6"
 
 /* engine struct */
+
 
 typedef struct
 {
