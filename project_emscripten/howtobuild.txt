@@ -1,0 +1,17 @@
+Build Chipmunk 7.03
+Copy the folder to D:\dev\emsdk-master\upstream\emscripten or something.
+Rename Chipmunk-7.0.3 dir to cm
+Create new dir called lib in cm dir
+copy the chipmunk dir from include to the src dir
+got to the new chipmunk dir in src and paste another copy of the same dir(!).
+Then go into that dir and paste yet another copy :>
+Run build-chipmunk73.bat
+
+Build Lua 5.4.1
+Copy the folder to D:\dev\emsdk-master\upstream\emscripten or something.
+Rename lua-5.4.1 dir to lua
+Create new dir called lib in lua dir
+run build-lua541.bat
+
+will update to lua543 soon.
+

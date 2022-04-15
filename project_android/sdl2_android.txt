@@ -1,0 +1,344 @@
+by Jesper / xirBX AB
+
+This is the updated tutorial to set up and build an app with SDL2.0.10 in Android Studio 3.4.2 in Windows 10
+
+This time I checked to make sure that the text formatting was correct efter I formattesd the quoted text. In the previous tutorial there were some missing characters. If you find some errors please point it out to make it easier for others. :slight_smile:
+
+For this instructions we wish to create a app named DemolitionCrew. Change accordingly to your situation.
+Since all the examples is from a real game I have just released on iOS, Android and Switch I will use its name.
+
+We need to utilize not only the SDL2 main lib but also SDL2_Image, SDL2_net etc
+I will compile and run this on a Samsung Galaxy S8+
+
+1. Create this folder structure
+
+Folder Structure
+
+d:\Development\android
+d:\Development\android\SDL2
+d:\Development\android\SDL2_image
+d:\Development\android\SDL2_mixer
+d:\Development\android\SDL2_net
+d:\Development\android\SDL2_ttf
+
+2. Download these zip archives with source:
+https://www.libsdl.org/download-2.0.php 77
+https://www.libsdl.org/projects/SDL_image/ 69
+https://www.libsdl.org/projects/SDL_mixer/ 55
+https://www.libsdl.org/projects/SDL_net/ 58
+https://www.libsdl.org/projects/SDL_ttf 54
+
+3. unpack every zip to individual folders
+
+4. Copy the content to correct folders
+From the SDL2.0.10 folder you copy the folder “android-project” to “d:\Development\android”
+From the SDL2.0.10 folder you copy “include”,“src” and “Android.mk” to d:\Development\android\SDL2
+From the “SDL2_image-2.0.5” folder you copy all files ending with .c and .h and the folder “external” and the file Android.mk to d:\Development\android\SDL2_image
+From the “SDL2_ttf-2.0.15” folder you copy all files ending with .c and .h and the folder “external” and the file Android.mk to d:\Development\android\SDL2_ttf
+From the “SDL2_net-2.0.1” folder you copy all files ending with .c and .h and the file Android.mk to d:\Development\android\SDL2_net
+From the “SDL2_mixer-2.0.4” folder you copy all files ending with .c and .h and the folders “external”,“native_midi”,“timidity” and the file Androis.mk to d:\Development\android\SDL2_mixer
+
+5a. Disable WebP in SDL_image
+If you doesn’t have to have support for WebP you can edit the “Android.mk” file
+so that line 16 says “SUPPORT_WEBP ?= false”
+This time I just left it to true. It worked fine.
+
+5b. Disable mp3 in SDL_Mixer
+If you doesn’t have to support mp3 and can stick to OGG instead do disable this.
+
+I tried around a bit until I got tired of the mpg123 issue. So this was my solution. (Brutal)
+I guess this can all be solved by finding a correct library, but since I don’t use mp3 I just removed itsall together.
+
+remove these lines in d:\Development\android\SDL2_mixer\Android.mk
+
+SUPPORT_MP3_MPG123 ?= true
+MPG123_LIBRARY_PATH := external/mpg123-1.25.6
+and further down in the same file:
+
+ifeq ($(SUPPORT_MP3_MPG123),true)
+    LOCAL_C_INCLUDES += $(LOCAL_PATH)/$(MPG123_LIBRARY_PATH)
+    LOCAL_CFLAGS += -DMUSIC_MP3_MPG123
+    LOCAL_SHARED_LIBRARIES += mpg123
+endif
+In the SDL_Mixer folder i removed these files:
+
+d:\Development\android\SDL2_mixer\music_mpg123.h
+d:\Development\android\SDL2_mixer\music_mpg123.c
+The entire folder d:\Development\android\SDL2_mixer\external\mpg123-1.25.6
+
+In the file d:\Development\android\SDL2_mixer\music.c I commented out line 40
+
+//#include “music_mpg123.h”
+
+If you discover this later on, a rebuild might not do it. In that case you just have to
+remove the “debug” and “release” folder in
+
+D:\Development\android\DemolitionCrew\app.externalNativeBuild\ndkBuild
+
+This could ofcourse be handled better but I didn’t have time for it. :slight_smile:
+
+6. Create the Project.
+In the folder “d:\Development\android”
+Rename the folder “android-project” to what you want your project to be called.
+In this case we name it “DemolitionCrew”
+
+7. Start the command promt (WINKEY+R, Write “cmd” Enter)
+
+Create these links so they will appear as linked folders in the project. It is important that
+you have named your project folder in beforehand. Otherwise they diappear.
+
+mklink /J d:\Development\android\DemolitionCrew\app\jni\SDL d:\Development\android\SDL2
+mklink /J d:\Development\android\DemolitionCrew\app\jni\SDL_image d:\Development\android\SDL2_image
+mklink /J d:\Development\android\DemolitionCrew\app\jni\SDL_mixer d:\Development\android\SDL2_mixer
+mklink /J d:\Development\android\DemolitionCrew\app\jni\SDL_net d:\Development\android\SDL2_net
+mklink /J d:\Development\android\DemolitionCrew\app\jni\SDL_ttf d:\Development\android\SDL2_ttf
+
+8. Download and start Start Android Studio 3.4.2
+https://developer.android.com/studio 11
+
+I choosed to install it in “d:\Android Studio”
+Start Android Studio
+“Do not import settings” (I choosed this becuase I have a new installation)
+“Android Studio Setup Wizard” will start
+Choose “Standard”
+Choose your prefered theme and then finish.
+Android Studio will now download all the components.
+
+Click on “Open an existing Android Studio Project”
+Navigate to “d:\Development\android” and select your project. In this case “DemolitionCrew”.
+Click “Open”
+
+If this is the first time you run Android Studio it will need you to accept the Licence agreement.
+In the right bottom window you will find a link that says “Install missing SDK packages”
+Clicking on that will bring up a window where you can accept the licens agreement.
+Click “agree” and the next.
+Android studio will install all the components.
+After that is done click “Finish”.
+In the bottom right window it might say “Error: NDK not configured” Click on the link “Install NDK”
+
+When done it will try to compile and fail.
+
+9. Change view
+In the almost top left corner you can alter the view between “Android” and “Project”
+Change to “Project” if it is not already choosen.
+
+Expand the tree view DemolitionCrew->app->src->main
+
+Double Click on AndroidManifest.xml
+
+Change the package=“org.libsdl.app” on line 6 to "package=“com.xirbx.games” (Or what your company and app name is)
+
+The android:versionCode=“1” Not sure if this needs to be increased for each release on the google play store, but increase it anyways.
+Change this to required true if you want touch screen to work on all smart phones.
+
+ <uses-feature
+     android:name="android.hardware.touchscreen"
+     android:required="true" />
+Add these lines under the other permission lines if you wish SDL_net to access your local net and the internet
+
+ <uses-permission android:name="android.permission.INTERNET" />
+ <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+Save the file (CTRL+S)
+
+10. Expand the tre view to this:
+DemolitionCrew->app->jni
+Double click on “Application.mk”
+Uncomment line 5 so that it says “APP_STL := c++_shared”
+
+Make sure line 10 says: “APP_PLATFORM=android-16”
+Add a line underneath that says “APP_CPPFLAGS += -fexceptions”
+
+Expand the tree to DemolitionCrew->app
+Double click on build.gradle
+Make sure line 16 says :
+
+minSdkVersion 16
+
+Make sure line 22 says:
+
+arguments “APP_PLATFORM=android-16”
+
+Change the ApplicationId on line 14 to this:
+
+applicationId “com.xirbx.games.demolitioncrew”
+
+NOTE! On line 18 you need to increase the versionCode for each build you
+upload to Google Play
+
+11. Expand the tre view to this:
+DemolitionCrew->app->jni->src
+Double click on “Android.mk”
+
+Change line 14 from
+
+LOCAL_SHARED_LIBRARIES := SDL2
+
+to:
+
+LOCAL_SHARED_LIBRARIES := SDL2 \
+SDL2_image \
+SDL2_mixer \
+SDL2_ttf \
+SDL2_net
+Change line 12 from:
+
+LOCAL_SRC_FILES := YourSourceHere.c
+
+to
+
+LOCAL_SRC_FILES := \
+			AssetManager.cpp \
+			Components.cpp \
+			ECS.cpp \
+			Game.cpp \
+			GameClient.cpp \
+			GameMap.cpp \
+			main.cpp \
+			TextureManager.cpp \
+			tinyxml2.cpp \
+			UrlReader.cpp \
+			Vector2D.cpp \
+			xmltest.cpp \
+			ResourcePath.cpp \
+			tmxparser/base64/base64.cpp \
+			tmxparser/miniz.c \
+			tmxparser/TmxColor.cpp \
+			tmxparser/TmxEllipse.cpp \
+			tmxparser/TmxGroupLayer.cpp \
+			tmxparser/TmxImage.cpp \
+			tmxparser/TmxImageLayer.cpp \
+			tmxparser/TmxLayer.cpp \
+			tmxparser/TmxMap.cpp \
+			tmxparser/TmxObject.cpp \
+			tmxparser/TmxObjectGroup.cpp \
+			tmxparser/TmxPolygon.cpp \
+			tmxparser/TmxPolyline.cpp \
+			tmxparser/TmxProperty.cpp \
+			tmxparser/TmxPropertySet.cpp \
+			tmxparser/TmxTerrain.cpp \
+			tmxparser/TmxTerrainArray.cpp \
+			tmxparser/TmxText.cpp \
+			tmxparser/TmxTile.cpp \
+			tmxparser/TmxTileLayer.cpp \
+			tmxparser/TmxTileOffset.cpp \
+			tmxparser/TmxTileset.cpp \
+  			tmxparser/TmxUtil.cpp 
+NOTE! You only have to list your .cpp and .c files. It will get the header-files
+automatically.
+
+Save the file (CTRL + S)
+
+12. Expand DemolitionCrew->app->src->main
+Here you will see “java”, “res” and “AndroidManifest.xml”
+NOTE! It is easy to accidentally choose the wrong src-folder.
+
+Right click on “DemolitionCrew->app->src->main”
+Select New->Folder->Assets Folder. (NOT Directory. the folder option is the one with a android figure on)
+A window pops up. Click “Finish”
+A new folder is created called “assets”
+
+13. It is OK to breath now! :slight_smile:
+Now you can minimize the Android studio window and in windows
+open up our project folder:
+In this folder i place all my assets:
+D:\Development\android\DemolitionCrew\app\src\main\assets
+Assets are stuff like all your game graphics, sound, music and levels.
+
+In this folder i place all my C++ and C code
+D:\Development\android\DemolitionCrew\app\jni\src
+Also place all the header files for SDL including SDL_mixer.h, SDL_image.h, SDL_ttf.h and SDL_net.h
+I guess there is a better way to do this but I was desperate. :slight_smile:
+
+14. Go back to Android Studio
+Navigate to DemolitionCrew->app->jni->src in the tree view
+If you have a a main.cpp file, it can look something like this.
+
+#include "main.h"
+extern "C"
+{
+    using namespace std;
+    Game *game=nullptr;
+   
+    int SDL_main(int argc, char* argv[])
+    {
+	game = new Game();
+	game->gameState=gs_LOADING_GAME;
+	game->init("Game"); // Setting up SDL stuff and open screens
+
+	while(game->running())
+        {
+		game->update();
+		game->render();
+	  
+	}
+        game->clean();
+        
+	return 0;
+
+    }
+}
+The important stuff here is the extern “C” after the #includes but before everything else
+and that you should use SDL_main() instead of plain main()
+
+15. It is time to make a java-class for our game.
+Navigate to DemolitionCrew->app->src->main->java
+Right click “java” and select “New->Package”. Name it “com.xirbx.games”
+Right click “com.xirbx.games” and select “New->File”. Name it “DemolitionCrew.java” (Or your game name)
+
+Double click on DemolitionCrew.java
+and paste this text:
+
+ package com.xirbx.games;
+ 
+ import org.libsdl.app.SDLActivity;
+ 
+ /**
+  * A sample wrapper class that just calls SDLActivity
+  */
+ 
+ public class DemolitionCrew extends SDLActivity { }
+16. Expand the tree view DemolitionCrew->app->src->main
+
+Double Click on AndroidManifest.xml
+
+On line 58 , change from:
+
+<activity android:name="SDLActivity"
+
+To:
+
+<activity android:name="DemolitionCrew"
+
+Save file (CTRL + S)
+
+17. Naming the Game Icon
+
+Expand the tree to this:
+DemolitionCrew->app->src->main->res->values
+Double click on the “strings.xml”
+Change:
+
+<string name="app_name">Game</string>
+To:
+
+<string name="app_name">Demolition Crew</string>
+
+This string is where the AndroidManifest.xml gets its game name value from.
+I guess you can localize this for different languages.
+
+18. Changing the Icon picture
+Expand the tree to this:
+DemolitionCrew->app->src->main->res
+In each folder that begins with “mipmap” there is a png image called “ic_launcher.png”
+Replace those with your own images.
+Make sure they are the correct sizes.
+
+I think it is easier to change those from windows and not in Android studio.
+
+19. When all this is done you should be able to build the entire project. (CTRL +F9)
+
+20. Connect a Android device (That is set to developer mode I guess) and press Run (SHIFT +F10)
+
+I hope this tutorial saved you some time. Please check out my games on App store, Google Play
+and Nintendo eShop!
+Jesper / xirBX AB

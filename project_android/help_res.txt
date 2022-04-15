@@ -1,0 +1,31 @@
+Install Android Studio with Android SDK (Platform 26)
+Install Gradle (will happen automatically)
+Install Android Nkd. I use version r21d.
+You should have Java JDK installed aswell (no later version than 15.02)
+
+Download:
+https://frittblas.se/fbl/fbl_android_studio_and_cmdline_working.rar
+Unrar somewhere.
+
+cd to fbl_android_studio\fbl_project
+
+Edit local.properties to suit your system (paths to Sdk and Ndk).
+
+type:
+
+gradlew AssembleDebug
+
+Will create .apk in:
+
+fbl_android_studio\fbl_project\app\build\outputs\apk
+
+gradle installdebug (on device)
+
+or release
+
+
+NOTE:
+
+Everything is working now including Lua!
+The next step will be to make everything look better (on Android that is)
+and support different things like "tabbing" out of app and back etc.

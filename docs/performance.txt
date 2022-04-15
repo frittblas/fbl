@@ -1,0 +1,60 @@
+Since fbl only lets you have one spritesheet, everything is fast,
+SDL will batch in the background, and generally have one drawcall per frame
+which is really good.
+
+I stress tested by rendering 100 000 sprites on the screen on my
+(2012) i5-3470 and gtx 1050ti. Processor was 30% and gpu was 38 %
+I could probably render 200 000 sprites, which is insane.
+On my laptop ($400 acer, i3, built in graphics) i rendered 80 000 sprites,
+cpu was 30% gpu 90%.
+
+The multithreading functionality speeds up things alot.
+By calling fbl_create_threadpool() you create 4 threads that
+handle internal functions such as animation and particles.
+You can also use the fbl_submit_task_tp() to execute any function
+you want in your game on a separate thread, freeing up the main thread.
+Check out demo 1, where it creates 1000 sprites at a time (press space) on
+a new thread, while the rest of the program is perfectly responsive.
+
+Now, primitives and UI-elements have their separate
+draw calls as well, and my implementation of the primitives is not very fast..
+Especially the filled circle is really slow.
+
+fbl_update_text() is also slow don't call every frame (maybe every 5th frame?)
+
+The following is slightly outdated due to direct_ref (see section after this){
+	Tips:
+	If you have a tilemap for example (lots of sprites that aren't moving)
+	create them last (using fbl_create_sprite()), before that, add the player
+	and moving sprites. So if you
+	want to set the x and y of the player, fbl doesn't have to loop through the whole list
+	to set the values for you. 
+
+	Avoid using fbl_get_sprite_x() and *_y() on many sprites every frame,
+	it gets very slow fast. Just create your own gameobject with x and y variables
+	and keep track yourself. Same goes for the other fbl_get_*-functions. Use them sparingly.
+}
+
+I just added a direct reference system to insanely speed up the  get and set of all the sprite values.
+Top of sprite.c:
+
+NUM_DIRECT_REF_SPRITES 2000
+
+Means the first 2000 sprites you create will be stored internally in an array of pointers to the
+linked list counterpart, speeding up the get* and set* function massively.
+The above still holds true. Create all your moving and changing sprites first, then create the
+static, non moving (or changing in any way) ones.
+
+Note if you sort the sprite list, by layer for example, the ones that are at the end of the
+list will still be slow to access the get* and set*. But only if you have more than 2000 sprites.
+More on this later.
+
+fbl_destroy_all_sprites() is the only function that resets the sprite counter, sa call
+this (and not multiple delete_sprite() before loading a new level for example)
+
+Also added this direct_ref thing on primitives.
+
+In retrospect, linked lists was not the best choice here (some kind of dynamic array would
+have been better), but I learned something :)
+
+More to come..

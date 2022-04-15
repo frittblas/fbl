@@ -1,0 +1,33 @@
+git clone <url>
+cd repo
+git status
+
+git add filename
+
+git commit -m "message"
+
+git push (upload commits)
+
+git pull
+
+git add . (or git add -A) - add all files
+
+
+loop this:
+
+git pull
+change stuff
+git add -A
+git commit -m "message"
+git push
+
+esc :wq (commit without -m)
+
+
+
+
+git branch something
+git checkout something
+
+git checkout master
+git merge hotfix

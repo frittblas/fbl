@@ -1,0 +1,208 @@
+FBL ENGINE
+
+Sprites - Done
+Text - Done
+Start, loop, end - Done
+Fps + timers - Done
+
+Multiplatform - win, mac, web, rpi, android on the way
+Debug stuff - Done
+Keyboard - Done
+Mouse - Done
+Camera - Done
+Animation - Done
+Basic Sprite collission - Done
+Fix Sprite/text to screen - Done
+Sprite sorting/layers - Done
+UI - Buttons and checkbox - Done
+
+Primitives + vector graphics - working! In more progress..
+Physics - working! in more progress..
+Lua - working! In more progress (just map all functions to Lua).. DONE!!
+Alpha and color blending - Done!
+Particles - Working! in more progress..
+Multiplayer - in progress w peerjs.. will finish for ver. 1.0. (maybe sdl_net is better or libdatachannel)
+Audio - samples and music working. Can't get ogg to work in emscripten yet (try inline asm!!).
+!! Found temporary solution: Rename the *.ogg music files you want to use to *.wav.
+Pathfinding - Done. UPDATE: no need to rename anymore. sdl_mixer work like a charm in emscripten now.
+
+2D lights (using blendmode, lightmaps?) - 
+Scene editor - (start by making a simle tilemap editor?)
+
+OpenGL es2 (ver 2.0)
+Shaders (ver 2.0)
+
+Fix this:
+
+In RPI build. Don't use strcpy_s()!!! (sound.c and maybe more) fix this (Fixed!). M_PI is undefined (FIXED!).
+Add a make-file for linux? (yes why not.)
+Fix deactivate physics object (sprite or prim) then activate again with all params intact.
+Fix click events working w touch on html5 mobile. DONE!!!
+Fix polygon shape on tris - done but no physics yet.
+Fix main.lua not constantly looping - (mabe no? Just don't call fbl_init lua() then)
+Fix change phys hitbox when change size on prims (that means add fbl_change_prim_size())
+Fix Xcode proj lua (won't compile if lua lib is included silly error should work)
+
+Demo 1 and 2 can't cycle between each other! Why? FIXED!!! physics wasn't freed correctly!!
+
+Add VS2019 template - Done.
+Make project "compilable" with latest emscripten version (with SDL2 mixer) (instead of SDL1). - 99% done check "changes to emscr 1.3.9.txt"
+in emscripten folder. DONE!! 
+
+update to SDL2 2.0.12 - in progress.. - DONE! (will compare batch speed later)
+update to latest SDL project libs (sdl_image etc) - in progress... Done!
+
+remember in VS2015/2019 properties Linker->system->subsystem->console or not! - Done!
+
+Vs2015 template is using sdl 2.05 (so you can compare the batch system etc (se benchmarks.txt))
+
+fbl is now up to date with, emscripten 2.07, sdl 2.012, lua 5.4.1 chipmunk 7.0.3!!
+
+--
+
+For future:
+
+Adhd JS buttons interacting With canvas
+add fbl_batch_layer to combine all sprites in a layer (maybe, or wait until 2.09 is released with emscripten (looking into it))
+to one texture for optimisation.
+
+--
+
+Also an idea for omtimisation: Add a sprite function, fbl_sprite_direct_ref(). After all the wanted sprites has been created,
+allocate memory for a dynamic array that holds pointers to all entries in the linked list. So when you call get_sprite_item_at_id(int id)
+in sprite.c, it returns the pointer by having a direct reference like an array instead of having too loop the linked list every time you need
+a value. This should speed things up insanely when you have lots of moving sprites for example.
+
+void *ptr;
+ptr = malloc(num * sizeof(ptr));
+maybe?
+then ptr[id] is a direct memory location.
+
+This could also be done for prims.
+
+DONE!! Very big improvement, if you call the set and get functions every frame.
+
+--
+
+Make the demos nice (add big tilemap for example)! - in progress..
+
+--
+
+Make the 64bit version build. - almost done, need 64 bit version of lua. compile 64 bit version like this:
+
+Try starting 64 bit msvc command prompt, then:
+
+cl /MD /O2 /c /DLUA_BUILD_AS_DLL *.c
+ren lua.obj lua.o
+ren luac.obj luac.o
+link /DLL /IMPLIB:lua5.4.1.lib /OUT:lua5.4.1.dll *.obj
+link /OUT:lua.exe lua.o lua5.4.1.lib
+lib /OUT:lua5.4.1-static.lib *.obj
+link /OUT:luac.exe luac.o lua5.4.1-static.lib
+
+x64 bit version DONE!! (will benchmark later, UPDATE: 64-bit version seems to be slightly faster, 5% more frames? (check benchmark.txt))
+
+--
+
+fbl_set_window_title() is not in lua! fix it :} -- DONE!!
+
+--
+
+
+work on primitives.c! (optimise, culling, add blendmodes, on particles also :))
+
+
+Add culling system. DONE!! for sprites, it was a gr8 success went from 330fps to 2700fps (10000 on screen sprites vs off screen). Using SDL2's
+built in culling, it went from 330 to 960fps, so big improvement. Also add same system to prims! DONE!!
+
+make sure the update thread for particles is ended when switching demos!
+
+check if you can pass true/false to fbl functions from lua. (otherwise just use 1 and 0)
+
+benchmark rectfills vs sprites (for the particle system) Done, check benchmark.txt (similar speed)
+
+fix: tried to number of active particles :) Done.
+
+Maintain everything, write more todos. Add ui buttons to the demos (same function as f1-f2). Comments. Then start robotgame.
+
+1. culling for prims (3300 fps wo cull 10000 rects. same with camera off! applying culling system.. Gr8 success! 24000 frames! off screen)
+1.5: Add direct ref to prims. (1400 frames before (2000 moving rects) 12000 frames after) gr8 success.
+2. Add setviewscale and viewport and set logical size. Done! 145 fbl_funcs now.
+3. fbl_sort_sprites blend or layer. Done!
+4. add ui buttons on demo. Done!
+5. add fix to screen particles. Done! (only emitters not particles :s (maybe fix))
+6. culling for particles. Done!
+
+Gr8 job (maybe search for NOTE: in the code and fix those things :))
+
+fix vs2019 linker incompatibility. fixed! added /d2:-AllowCompatibleILVersions to linker options.
+
+the direct ref system messes up sprite sorting! for obvoius reasons. fix it. also fix delete sprite/prim:) DONE!!!
+(was this necessary? they point at the same thing? NO! it was necessary, the ref array pointed att the containers
+but the content had been switched around)
+fullscreen works in escripten with F9, F10, F11.
+black sprite in robot game are transparent in emscripten version. (This seems to have fixed itself in later emscripten versions :)
+
+Threadpool is now working great!
+todos:
+make it work under emscripten.
+
+fix the input key_up redundant thing.
+
+Start OpenGL renderer! - on the way.
+
+Add networking with SDL_net (or libdatachannel maybe)
+LuaJit?
+
+make it compile w cpp. DONE!
+create file fbl.hpp that contains:
+    extern "C" {
+    #include "fbl.h"
+    }
+
+for 0.9.8 release {
+Add Cpp-support - DONE!
+Add working android port with Lua - works! Just clean up and make look good :) DONE! (will make look better)
+Make more streamlined cross compilation between win, web and android. DONE!
+When loading assets, fix android path. (no assets/) Use #ifdef __ANDROID__  DONE!
+const char* in platform_string thing, and .h-file DONE!
+fix NAME _OF asset folder thing, bug prone :} DONE!
+
+Add raycasting - 2 days left :) DONE!
+Make android version concat the required .lua-files then run the lua load_string(). Next release!
+Make a somewhat playable version of the robot game (also on android). On da way!
+
+Make work on RPI and Ubuntu for fun. (Would be nice to get a hold of a mac someday again).
+Change TP_TASK to FBL_TP_TASK.
+Add RELEASE.md - done!
+
+
+}
+
+
+for 0.9.9 release {
+
+Gamepad/joysticks, polish input system.
+Add command input system?
+Update dependencies.
+Use SDL_Log instead of fprintf().
+Doxygen?
+Unittests?
+New fbl-funcion that just prints all the versions of the
+dependencies. Look below.
+
+}
+
+
+add this somewhere:
+
+SDL_version compiled;
+SDL_version linked;
+
+SDL_VERSION(&compiled);
+SDL_GetVersion(&linked);
+SDL_Log("We compiled against SDL version %u.%u.%u ...\n",
+       compiled.major, compiled.minor, compiled.patch);
+SDL_Log("But we are linking against SDL version %u.%u.%u.\n",
+       linked.major, linked.minor, linked.patch);
+
