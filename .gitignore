@@ -1,0 +1,12 @@
+project_vs2019/.vs/
+project_vs2019/fbl_project/Debug
+project_vs2019/fbl_project/Release
+project_vs2019/fbl_project/x64
+project_vs2019/Debug/
+project_vs2019/x64/
+project_vs2019/Release/*.exe
+project_vs2019/Release/*.lib
+project_vs2019/Release/*.pdb
+project_vs2019/Release/*.exp
+
+project_emscripten/output/
