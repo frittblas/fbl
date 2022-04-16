@@ -169,11 +169,9 @@ const char* in platform_string thing, and .h-file DONE!
 fix NAME _OF asset folder thing, bug prone :} DONE!
 
 Add raycasting - 2 days left :) DONE!
-Make android version concat the required .lua-files then run the lua load_string(). Next release!
 Make a somewhat playable version of the robot game (also on android). On da way!
+Refactor stuff - done!
 
-Make work on RPI and Ubuntu for fun. (Would be nice to get a hold of a mac someday again).
-Change TP_TASK to FBL_TP_TASK.
 Add RELEASE.md - done!
 
 
@@ -182,6 +180,12 @@ Add RELEASE.md - done!
 
 for 0.9.9 release {
 
+Make android version concat the required .lua-files then run the lua load_string().
+Scale Android and fullscreen pc to fill the screen
+Raycast collission
+Remove the redundant emscripten chipmunk include dir
+Fix the delete last item i dll-crash already!
+Fix one particle to screen.
 Gamepad/joysticks, polish input system.
 Add command input system?
 Update dependencies.
@@ -190,6 +194,8 @@ Doxygen?
 Unittests?
 New fbl-funcion that just prints all the versions of the
 dependencies. Look below.
+Make work on RPI and Ubuntu for fun. (Would be nice to get a hold of a mac someday again).
+Change TP_TASK to FBL_TP_TASK.
 
 }
 
