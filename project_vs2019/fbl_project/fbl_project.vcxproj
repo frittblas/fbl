@@ -78,7 +78,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(SolutionDir)..\dependencies\vc2019\SDL\SDL2-2.0.12\include;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_ttf-2.0.15\include;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_mixer-2.0.4\include;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_image-2.0.5\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\monsterpulvret\Google Drive\fbl\dependencies\vc2019\lua\lua-5.4.1\x64;$(SolutionDir)..\dependencies\vc2019\chipmunk\chipmunk-7.0.3\Release\x64;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2-2.0.12\lib\x64;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_ttf-2.0.15\lib\x64;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_mixer-2.0.4\lib\x64;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_image-2.0.5\lib\x64;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)..\dependencies\vc2019\lua\lua-5.4.1\x64;$(SolutionDir)..\dependencies\vc2019\chipmunk\chipmunk-7.0.3\Release\x64;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2-2.0.12\lib\x64;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_ttf-2.0.15\lib\x64;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_mixer-2.0.4\lib\x64;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_image-2.0.5\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -130,6 +130,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;lua5.4.1.lib;chipmunk.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
+      <AdditionalOptions>/d2:-AllowCompatibleILVersions %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
