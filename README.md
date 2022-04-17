@@ -23,12 +23,12 @@ Features (current ver. 0.9.8):
 - Animation
 - Timers, input, camera, debug stuff.
 - Pathfinding
-- Lua integration
+- Lua scripting
 - Multithreading
 - Raycasting
 
 - Program in C/C++ or Lua or a mix.
-- fast, lightweight engine and simple API.
+- Fast, lightweight engine and simple API.
 
 
 upcoming features (ver 1.0)
@@ -36,7 +36,7 @@ upcoming features (ver 1.0)
 - 2d lights
 - Networking
 - Scene editor
-- OpengGL renderer
+- Custom OpengGL renderer
 - 3D
 
 /Hans
