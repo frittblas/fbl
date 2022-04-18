@@ -186,6 +186,8 @@ Raycast collission
 Remove the redundant emscripten chipmunk include dir
 Fix the delete last item i dll-crash already!
 Fix one particle to screen.
+Fix activate/deactivate sprite/primitive with physics.
+
 Gamepad/joysticks, polish input system.
 Add command input system?
 Update dependencies.
