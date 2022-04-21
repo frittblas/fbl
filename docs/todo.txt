@@ -197,6 +197,7 @@ Unittests?
 New fbl-funcion that just prints all the versions of the
 dependencies. Look below.
 Make work on RPI and Ubuntu for fun. (Would be nice to get a hold of a mac someday again).
+Keep the same naming conventions (uint_32 etc) throughout the project.
 Change TP_TASK to FBL_TP_TASK.
 
 }
