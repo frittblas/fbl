@@ -3,7 +3,7 @@ Copy the folder to D:\dev\emsdk-master\upstream\emscripten or something.
 Rename Chipmunk-7.0.3 dir to cm
 Create new dir called lib in cm dir
 copy the chipmunk dir from include to the src dir
-got to the new chipmunk dir in src and paste another copy of the same dir(!).
+go to the new chipmunk dir in src and paste another copy of the same dir(!).
 Then go into that dir and paste yet another copy :>
 Run build-chipmunk73.bat
 
@@ -14,4 +14,3 @@ Create new dir called lib in lua dir
 run build-lua541.bat
 
 will update to lua543 soon.
-

@@ -1,6 +1,47 @@
 put all *.c-files in the same directory (fbl, fbl_test, dllink and a_star).
+Chipmunk can easily be built as a part of your project without making a library.
 
-gcc -std=c99 *.c -o fbl_test `sdl2-config --cflags --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lchipmunk -llua5.2 -lm
+gcc -std=c99 *.c -o fbl_test `sdl2-config --cflags --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lchipmunk -llua5.3 -lm
+(if you have chipmink 7.03 dev lib installed)
 
-something like that... try -02 also
+something like that... try -02 also (wihout chipmunk as lib (but as source)):
 
+Notes:
+
+The guide is slightly outdated (http://www.frittblas.se/misc/rpi-SDL2.html) but can still be used
+if you modify it like this:
+
+libtiff5-dev didn't work last time i tried to install is (not a problem as fbl only uses png)
+New list:
+sudo apt-get install build-essential libfreeimage-dev libopenal-dev libpango1.0-dev libsndfile-dev libudev-dev libasound2-dev libjpeg8-dev libwebp-dev automake
+
+No need to configure sdl in weird ways (force opengles, force fullscreen etc.)
+just do
+../configure
+from the build-dir
+
+sdl_image works perfect as shown in the guide.
+
+sdl_ttf didn't work when cloned from the latest github version. Had to use slightly older version:
+https://frittblas.se/upload/uploads/SDL2-2.0.14.zip
+
+just follow above steps and install it.
+
+The smpeg2 is no longer used by sdl_mixer (libmpg123 instead (just sudo apt_get install the dev package))
+apt-cache search libmpg and you will find it.
+Then build sdl_mixer, should go fine.
+
+liblua-dev 5.3 can easily be installed.
+
+As for chipmunk:
+
+Rename hastyspace.c to *.c_ (pthread error, don't need it)
+
+temporary solution:
+copy the chipmunk dir from include to the src dir
+go to the new chipmunk dir in src and paste another copy of the same dir(!).
+Then go into that dir and paste yet another copy :>
+
+Just copy all the cm *.c files to fbl src dir and write:
+
+gcc -std=c99 *.c -O2 -DNDEBUG -o fbl_test `sdl2-config --cflags --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -llua5.3 -lm
