@@ -1,13 +1,12 @@
 ﻿fbl - fritt blas library AKA Hans Advance
 
-It's a cross platform 2d game engine written in C!
+It's a cross platform 2d game engine written in C.
 
 It's built on top of SDL2 and makes use of the image, ttf and mixer addons.
-Physics are done with Chipmunk,
-and scripting is done with Lua.
+Physics are done with Chipmunk, and scripting with Lua.
 
 Platforms supported: Windows, HTML5 (emscripten), Android(finally done!), Raspberry pi, Ubuntu.
-Planned platforms: MacOSX (used to work but dont' have a mac anymore), IOS (probably not).
+Planned platforms: MacOSX (used to work but don't have a mac anymore), IOS (probably not).
 
 Started March 6th 2017.
 
@@ -90,12 +89,17 @@ any special shape or weight etc. The body needs to be removed entirely.
 
 Use .png and .ogg and .ttf files for media.
 
-Includes dependencies and projects for the supported platforms.
+Includes dependencies and projects for Windows (Msvc), webassembly version (Emscripten) and Android (Android Studio, Gradle (see project_android)).
 
 The visual studio 2019 version works out of the box (vs2019 has x86 (release and debug) and x64-bit(release) versions),
 the Xcode version has been removed. Don't have a mac atm.
 RPI version works but you need to build all dependencies, which is not too hard. Start here:
 http://www.frittblas.se/misc/rpi-SDL2.html
+Then check project_rpi for detailed insctuctions on how to build fbl for rpi.
+
+Ubuntu is easier (All dependencies can be apt-get installed (no need to build libs yourself))
+
+I will streamline the Linux build-process someday.
 
 For the emscripten build, install the latest emscripten version. Place the fbl folder in emsdk-master\upstream\emscripten\
 then copy build-masta.bat in fbl\project_emscripten\ to emsdk-master\upstream\emscripten\
