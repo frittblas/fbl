@@ -45,7 +45,6 @@ int main(int argc, char **argv)
 {
 
 	fbl_start();
-	//engine_lua_start(); // this is called inside fbl_lua_init() now.
 	engine_start();
 	fbl_end();
 	engine_lua_end();
@@ -97,15 +96,6 @@ int fbl_engine_init(int w, int h, int fps)
 		// return 1;
 	}
 
-
-	/* anti aliasing? */
-
-	//SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
-
-	//SDL_SetHint(SDL_HINT_RENDER_BATCHING, "SDL_RENDER_BATCHING");
-
-	//SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-	//SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 2);
 
 	SDL_CreateWindowAndRenderer(w, h, 0, &fbl_engine.window, &fbl_engine.renderer);
 

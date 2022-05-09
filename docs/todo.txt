@@ -180,13 +180,18 @@ Add RELEASE.md - done!
 
 for 0.9.9 release {
 
-Make work on RPI and Ubuntu for fun. DONE!!
-Fix the delete last item i dll-crash already! (hmm.. leave it forever it's charming :))
+Make work on RPI and Ubuntu for fun. DONE!! (fbl now works perfectly on both platforms without changes to the source,
+makefile? yes)
+Fix the delete last item in dll-crash already! (hmm.. no, leave it forever it's charming :))
 Unittests? no, nice try though.
 Doxygen? no, also nice try.
 Add command input system? no, better for the specific game.
 
-Fix activate/deactivate sprite/primitive with physics.
+Fix activate/deactivate sprite/primitive with physics. DONE!!! finally (physics get destroyed when the sprite/prim
+is deactivated (have to set_sprite_phys() again))
+
+2d lights (light map and and nice pngs with gradients, circles and stuff, give sprite new variable: is_light) in da way..
+
 Fix one particle to screen. (threads will help with performance w alot of particles)
 
 Make android version concat the required .lua-files then run the lua load_string().
@@ -196,7 +201,7 @@ Remove the redundant emscripten chipmunk include dir
 
 Gamepad/joysticks, polish input system.
 
-Update dependencies.
+Update dependencies. (not urgent)
 Use SDL_Log instead of fprintf().
 
 New fbl-funcion that just prints all the versions of the
@@ -205,12 +210,13 @@ dependencies. Look below.
 Keep the same naming conventions (uint_32 etc) throughout the project.
 Change TP_TASK to FBL_TP_TASK.
 
+Delete demo 1. Make something else :) demo 1 is horrible.
+
 }
 
 for 1.0 {
 
 SDL_net
-OpenGL 3D renderer
 
 }
 

@@ -512,11 +512,14 @@ void fbl_set_prim_active(int id, bool active)
 
 		/* turn on and off physics, maybe fix this in the future so you don't have to
 		 * set the physics params again after reactivate (i.e mass, friction etc).
-		 * Same on sprite.
+		 * Same on sprite. It's fine for now. Physics get destroyed with deactivation of the prim/sprite.
+		 * You have to fbl_set_prim_phys() again
 		 */
 
-        //fbl_set_prim_phys(id, active, FBL_PHYS_DYNAMIC, true); // NOTE: set params with correct values (or not is probably better)
-        //engine_phys_remove_shape(prim->phys_shape);   // NOTE: could this be something?
+		if (prim->physics_on && active == false) {
+			destroy_prim_phys(0, prim, NULL);
+			prim->physics_on = false;
+		}
 
 	}
 #ifdef FBL_DEBUG

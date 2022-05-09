@@ -813,11 +813,10 @@ void fbl_set_sprite_active(int id, bool active)
 
 		/* turn on and off physics, Note: physics gets turned off by deactivating sprite. */
 
-        if(sprite->physics_on){
-            fbl_set_sprite_phys(id, active, 3, FBL_PHYS_DYNAMIC, true); // NOTE: fix correct params
+        if(sprite->physics_on && active == false){
+			destroy_sprite_phys(0, sprite, NULL);
             sprite->physics_on = false;
         }
-		//engine_phys_remove_shape(sprite->phys_shape);
 
 	}
 #ifdef FBL_DEBUG
