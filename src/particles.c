@@ -173,7 +173,7 @@ void fbl_delete_emitter(int id)
 
 		/* security so that the first element can't be deleted, will crash! */
 
-		if (item != DLGetFirst(fbl_emitter_list))	//  before: if(id > 0)
+		if (item != DLGetFirst(fbl_emitter_list))	//  this could be: if(id > 0) because the emitters can't be sorted
 		{
 
 			/* free particles first */

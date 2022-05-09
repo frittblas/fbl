@@ -163,7 +163,6 @@ int fbl_create_sprite(int x, int y, int w, int h, int r)
 
 		fbl_sprite_list = DLCreate(current_sprite, fbl_sprite, sizeof(FBL_SPRITE));
 
-
 	}
 	else
 	{

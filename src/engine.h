@@ -37,10 +37,9 @@
 #define M_PI 3.14159265358979323846f
 #endif
 
-/* set if include Lua or physics in compile */
+/* set if include Lua in compile */
 
 #define FBL_INCLUDE_LUA
-#define FBL_INCLUDE_PHYSICS
 
 /* set where error messages will go */
 

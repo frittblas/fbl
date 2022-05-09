@@ -28,7 +28,7 @@
 
 
  /* if defined you get lots of useful feedback from fbl like trying to access stuff
-  * in lists that does not exist etc. Comment out for release version.
+  * in lists that does not exist etc. Comment this out for the release version.
   */
 #define FBL_DEBUG
 

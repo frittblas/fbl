@@ -958,7 +958,7 @@ void setup_demo_8()
 
 		int lol = fbl_create_sprite(96, 320, 32, 32, 0);
 		fbl_set_sprite_xy(lol, rand() % 900 + 20, rand() % 500);
-		fbl_set_sprite_phys(lol, true, FBL_RECT, FBL_PHYS_KINEMATIC, true);
+		//fbl_set_sprite_phys(lol, true, FBL_RECT, FBL_PHYS_KINEMATIC, true);
 		
 	}
 
@@ -1007,6 +1007,18 @@ void run_demo_8()
 		angle = tmp;
 
 		//if (rand() % 10 == 1) printf("%d", fbl_get_num_prims());
+
+	}
+
+	if (fbl_get_mouse_click(FBLMB_RIGHT)) {
+
+		fbl_delete_sprite(0);
+
+	}
+
+	if (fbl_get_key_up(FBLK_SPACE)) {
+
+		fbl_set_sprite_active(0, true);
 
 	}
 

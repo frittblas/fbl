@@ -184,7 +184,7 @@ Make android version concat the required .lua-files then run the lua load_string
 Scale Android and fullscreen pc to fill the screen
 Raycast collission
 Remove the redundant emscripten chipmunk include dir
-Fix the delete last item i dll-crash already!
+Fix the delete last item i dll-crash already! (hmm.. leave it forever it's charming :))
 Fix one particle to screen.
 Fix activate/deactivate sprite/primitive with physics.
 
@@ -202,6 +202,12 @@ Change TP_TASK to FBL_TP_TASK.
 
 }
 
+for 1.0 {
+
+SDL_net
+OpenGL 3D renderer
+
+}
 
 add this somewhere:
 
