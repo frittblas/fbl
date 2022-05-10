@@ -639,7 +639,7 @@ void setup_demo_4()
 
 	// create small light around the player
 	light1 = fbl_create_sprite(384, 0, 128, 128, FBL_LIGHT);
-	//fbl_set_sprite_scale(light1, 1.5);
+
 
 	// create the big light
 	light2 = fbl_create_sprite(384, 0, 128, 128, FBL_LIGHT);
@@ -663,8 +663,7 @@ void run_demo_4()
 	fbl_set_sprite_xy(light1, loc_x[0] - 48, loc_y[0] - 48);
 	
 
-	//fbl_set_sprite_scale(id, fbl_get_sprite_scale(id) + 0.1);
-
+	/* let the big light follow the mouse */
 	fbl_set_sprite_xy(light2, fbl_get_mouse_x() - (128/2)*3, fbl_get_mouse_y() - (128/2)*3);
 
 

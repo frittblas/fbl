@@ -39,6 +39,8 @@ DLLIST *fbl_sprite_list = NULL;
 
 SDL_Texture* fbl_lightmap = NULL;
 
+FBL_LIGHTING_TINT fbl_lighting_tint = { true, 100, 100, 100 };
+
 DLLIST* direct_sprite_ref[NUM_DIRECT_REF_SPRITES] = {NULL};
 
 unsigned int current_sprite = 0;
@@ -1175,22 +1177,25 @@ int render_sprite(int tag, void *sprite, void *dummy)
 			if (spr->is_light)
 			{
 
-				if (SDL_GetRenderTarget(fbl_engine.renderer) == NULL) {
-					SDL_SetRenderTarget(fbl_engine.renderer, fbl_lightmap);
-					//printf("drawing to lightmap!\n");
+				if (fbl_lighting_tint.on) {
+
+					if (SDL_GetRenderTarget(fbl_engine.renderer) == NULL) {
+						SDL_SetRenderTarget(fbl_engine.renderer, fbl_lightmap);
+						//printf("drawing to lightmap!\n");
+					}
+
+
+					/* set blend modes and colors and alpha (benchmark this! update: switching blendmodes is kinda slow the rest very fast */
+
+					SDL_SetTextureBlendMode(fbl_texture, spr->blendmode);
+					SDL_SetTextureAlphaMod(fbl_texture, spr->color.a);
+					SDL_SetTextureColorMod(fbl_texture, spr->color.r, spr->color.g, spr->color.b);
+
+
+					SDL_RenderCopyEx(fbl_engine.renderer, fbl_texture, &spr->source_rect,
+						&temp_rect, spr->angle, NULL, spr->flip);
+
 				}
-
-
-				/* set blend modes and colors and alpha (benchmark this! update: switching blendmodes is kinda slow the rest very fast */
-
-				SDL_SetTextureBlendMode(fbl_texture, spr->blendmode);
-				SDL_SetTextureAlphaMod(fbl_texture, spr->color.a);
-				SDL_SetTextureColorMod(fbl_texture, spr->color.r, spr->color.g, spr->color.b);
-
-
-				SDL_RenderCopyEx(fbl_engine.renderer, fbl_texture, &spr->source_rect,
-					&temp_rect, spr->angle, NULL, spr->flip);
-
 
 			}
 			else {
@@ -1200,7 +1205,8 @@ int render_sprite(int tag, void *sprite, void *dummy)
 					//printf("drawing to default!\n");
 				}
 
-				/* set blend modes and colors and alpha (benchmark this! update: switching blendmodes is kinda slow the rest very fast */
+				/*	set blend modes and colors and alpha (benchmark this! update: switching blendmodes often is kinda slow
+					(you can sort by blendmode to help this) the rest very fast */
 
 				SDL_SetTextureBlendMode(fbl_texture, spr->blendmode);
 				SDL_SetTextureAlphaMod(fbl_texture, spr->color.a);
@@ -1232,12 +1238,12 @@ void engine_render_all_sprites()
 	Uint8 fbl_day_light = 40;
 
 
-	if (fbl_day_light > 0) {
+	if (fbl_lighting_tint.on) {
 
 		SDL_SetRenderTarget(fbl_engine.renderer, fbl_lightmap);
 
 		/* clear the lightmap to fbl_day_light */
-		SDL_SetRenderDrawColor(fbl_engine.renderer, fbl_day_light, fbl_day_light, fbl_day_light, 255);
+		SDL_SetRenderDrawColor(fbl_engine.renderer, fbl_lighting_tint.r, fbl_lighting_tint.g, fbl_lighting_tint.b, 255);
 		SDL_RenderFillRect(fbl_engine.renderer, &temp_rect);
 
 	}
@@ -1246,12 +1252,12 @@ void engine_render_all_sprites()
 	DLWalk(fbl_sprite_list, render_sprite, NULL);
 
 
-	if (fbl_day_light > 0) {
+	if (fbl_lighting_tint.on) {
 
 		/* set render target back to default */
 		SDL_SetRenderTarget(fbl_engine.renderer, NULL);
 
-		/* then render the lightmap to the buffer with the correct blendmode(MOD) */
+		/* then render the lightmap to the buffer with the correct blendmode (MOD) */
 		SDL_RenderCopy(fbl_engine.renderer, fbl_lightmap, &temp_rect, &temp_rect);
 
 	}

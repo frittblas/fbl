@@ -133,6 +133,17 @@ typedef struct
 }FBL_SPRITE;
 
 
+/* Used to set "time of day" or various effects */
+
+typedef struct
+{
+
+	bool on;
+	Uint8 r, g, b;
+
+}FBL_LIGHTING_TINT;
+
+
 /* point and shape structs for the poly primitives */
 
 typedef struct
