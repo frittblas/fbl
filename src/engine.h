@@ -99,9 +99,10 @@ typedef struct
 	double angle;
 	float scale;
 
+	bool is_light;
 	Uint8 blendmode;
-
 	SDL_Color color;
+
 	SDL_RendererFlip flip;
 
 	/* for sorting sprites in layers */

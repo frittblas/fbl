@@ -47,6 +47,12 @@
 #define FBL_WINDOW_FULLSCREEN 0x00000001
 #define FBL_WINDOW_FULLSCREEN_DESKTOP ( FBL_WINDOW_FULLSCREEN | 0x00001000 )
 
+
+/* if this is passed as the r - param in create_sprite, the sprite becomes a light */
+
+#define FBL_LIGHT -999
+
+
 /* blend modes: 0, 1, 2, 4 */
 
 enum FBL_BLENDMODES

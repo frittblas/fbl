@@ -57,7 +57,7 @@ int  pressed_button(int x, int y);	// callback function for ui-click
 void(*demo_setup[NUM_DEMOS])();
 void(*demo_run[NUM_DEMOS])();
 
-int cur_demo = 7;
+int cur_demo = 3;
 
 void fbl_start()
 {
@@ -536,6 +536,8 @@ void run_demo_3()
 
 int loc_x[4]; int loc_y[4]; int speed[4];
 int id = 0;
+int pathfinder = 0;
+int light1, light2;
 
 void setup_demo_4()
 {
@@ -624,9 +626,9 @@ void setup_demo_4()
 
 	/* put sprite (pathfinder) there */
 
-	id = fbl_create_sprite(192, 224, 32, 32, 0);
-	fbl_set_sprite_animation(id, true, 192, 224, 32, 32, 2, 10, true);
-	fbl_set_sprite_xy(id, 0 * fbl_pathf_get_tile_size(), 0 * fbl_pathf_get_tile_size());
+	pathfinder = fbl_create_sprite(192, 224, 32, 32, 0);
+	fbl_set_sprite_animation(pathfinder, true, 192, 224, 32, 32, 2, 10, true);
+	fbl_set_sprite_xy(pathfinder, 0 * fbl_pathf_get_tile_size(), 0 * fbl_pathf_get_tile_size());
 
 
 	printf("found path!\n");
@@ -634,6 +636,14 @@ void setup_demo_4()
 
 
 	speed[0] = 1;
+
+	// create small light around the player
+	light1 = fbl_create_sprite(384, 0, 128, 128, FBL_LIGHT);
+	//fbl_set_sprite_scale(light1, 1.5);
+
+	// create the big light
+	light2 = fbl_create_sprite(384, 0, 128, 128, FBL_LIGHT);
+	fbl_set_sprite_scale(light2, 3.0);
 
 }
 
@@ -647,11 +657,15 @@ void run_demo_4()
 	if (loc_y[0] > fbl_pathf_get_y_path(0)) loc_y[0] = loc_y[0] - speed[0];
 	if (loc_y[0] < fbl_pathf_get_y_path(0)) loc_y[0] = loc_y[0] + speed[0];
 
-	/* id is the last sprite created */
+	/* pathfinder */
 
-	fbl_set_sprite_xy(id, loc_x[0], loc_y[0]);
+	fbl_set_sprite_xy(pathfinder, loc_x[0], loc_y[0]);
+	fbl_set_sprite_xy(light1, loc_x[0] - 48, loc_y[0] - 48);
 	
+
 	//fbl_set_sprite_scale(id, fbl_get_sprite_scale(id) + 0.1);
+
+	fbl_set_sprite_xy(light2, fbl_get_mouse_x() - (128/2)*3, fbl_get_mouse_y() - (128/2)*3);
 
 
 }

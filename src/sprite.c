@@ -37,6 +37,8 @@ extern FBL_CAMERA fbl_camera;
 SDL_Texture *fbl_texture = NULL;
 DLLIST *fbl_sprite_list = NULL;
 
+SDL_Texture* fbl_lightmap = NULL;
+
 DLLIST* direct_sprite_ref[NUM_DIRECT_REF_SPRITES] = {NULL};
 
 unsigned int current_sprite = 0;
@@ -65,7 +67,18 @@ int fbl_load_texture(const char *img_file)
 
 	if (!fbl_texture)
 	{
-		fprintf(FBL_ERROR_OUT, "Texture could not be created: %s\n", SDL_GetError());
+		fprintf(FBL_ERROR_OUT, "Sprite texture could not be created: %s\n", SDL_GetError());
+		return -1;
+	}
+
+
+	// the lightmap for 2d lights (render the white->black gradient sprites to this)
+
+	fbl_lightmap = SDL_CreateTexture(fbl_engine.renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, fbl_get_screen_w(), fbl_get_screen_h());
+
+	if (!fbl_lightmap)
+	{
+		fprintf(FBL_ERROR_OUT, "Lightmap texture could not be created: %s\n", SDL_GetError());
 		return -1;
 	}
 
@@ -73,6 +86,10 @@ int fbl_load_texture(const char *img_file)
 	// testing purposes. turns out theyre SUUPER CHEAP can use every frame np (on direct3d atl)
 
 	//SDL_SetTextureBlendMode(fbl_texture, SDL_BLENDMODE_NONE);
+
+
+	// set correct blendmode for the lightmap (MOD)
+	SDL_SetTextureBlendMode(fbl_lightmap, FBL_BLENDMODE_MOD);
 
 
 	SDL_FreeSurface(surface);
@@ -84,9 +101,14 @@ int fbl_load_texture(const char *img_file)
 void fbl_destroy_texture()
 {
 
-	if (!fbl_texture) {
+	if (fbl_texture != NULL) {
 		SDL_DestroyTexture(fbl_texture);
 		fbl_texture = NULL;
+	}
+
+	if (fbl_lightmap != NULL) {
+		SDL_DestroyTexture(fbl_lightmap);
+		fbl_lightmap = NULL;
 	}
 
 }
@@ -132,7 +154,11 @@ int fbl_create_sprite(int x, int y, int w, int h, int r)
 	fbl_sprite->angle = 0.0;
 	fbl_sprite->scale = 1.0;
 
+	fbl_sprite->is_light = false;	/* if is_light == true, the sprite is rendered to the lightmap */
+	if(r == FBL_LIGHT) fbl_sprite->is_light = true;	/* if you pass in 999 as radius, the sprite gets treated like a light */
+
 	fbl_sprite->blendmode = FBL_BLENDMODE_BLEND;	/* blend, so transparent pngs work */
+	if(fbl_sprite->is_light) fbl_sprite->blendmode = FBL_BLENDMODE_ADD;		/* add, so lights interact smoothly with another */
 	fbl_sprite->color.a = 255;	/* start as fully opaque */
 	fbl_sprite->color.r = 255;
 	fbl_sprite->color.g = 255;
@@ -1116,7 +1142,7 @@ int render_sprite(int tag, void *sprite, void *dummy)
 		}
 
 
-		/* adjust so sprite gets drawn from the correct point */
+		/* adjust so the sprite gets drawn from the correct point */
 
 		switch (sprite_alignment)
 		{
@@ -1146,7 +1172,16 @@ int render_sprite(int tag, void *sprite, void *dummy)
 		{
 
 
-			/* set blend modes and colors and alpha (benchmark this! update: switching blendmodes is kinda slow the rest very fast */
+			if (spr->is_light)
+			{
+
+				if (SDL_GetRenderTarget(fbl_engine.renderer) == NULL) {
+					SDL_SetRenderTarget(fbl_engine.renderer, fbl_lightmap);
+					//printf("drawing to lightmap!\n");
+				}
+
+
+				/* set blend modes and colors and alpha (benchmark this! update: switching blendmodes is kinda slow the rest very fast */
 
 				SDL_SetTextureBlendMode(fbl_texture, spr->blendmode);
 				SDL_SetTextureAlphaMod(fbl_texture, spr->color.a);
@@ -1157,7 +1192,29 @@ int render_sprite(int tag, void *sprite, void *dummy)
 					&temp_rect, spr->angle, NULL, spr->flip);
 
 
+			}
+			else {
+
+				if (SDL_GetRenderTarget(fbl_engine.renderer) != NULL) {
+					SDL_SetRenderTarget(fbl_engine.renderer, NULL);
+					//printf("drawing to default!\n");
+				}
+
+				/* set blend modes and colors and alpha (benchmark this! update: switching blendmodes is kinda slow the rest very fast */
+
+				SDL_SetTextureBlendMode(fbl_texture, spr->blendmode);
+				SDL_SetTextureAlphaMod(fbl_texture, spr->color.a);
+				SDL_SetTextureColorMod(fbl_texture, spr->color.r, spr->color.g, spr->color.b);
+
+
+				SDL_RenderCopyEx(fbl_engine.renderer, fbl_texture, &spr->source_rect,
+					&temp_rect, spr->angle, NULL, spr->flip);
+			}
+
 		}
+
+
+	
 	}
 
 
@@ -1171,7 +1228,34 @@ int render_sprite(int tag, void *sprite, void *dummy)
 void engine_render_all_sprites()
 {
 
+	SDL_Rect temp_rect = { 0, 0, fbl_get_screen_w(), fbl_get_screen_h() };
+	Uint8 fbl_day_light = 40;
+
+
+	if (fbl_day_light > 0) {
+
+		SDL_SetRenderTarget(fbl_engine.renderer, fbl_lightmap);
+
+		/* clear the lightmap to fbl_day_light */
+		SDL_SetRenderDrawColor(fbl_engine.renderer, fbl_day_light, fbl_day_light, fbl_day_light, 255);
+		SDL_RenderFillRect(fbl_engine.renderer, &temp_rect);
+
+	}
+
+	/* render all sprites to buffer and lightmap (depending on is_light) */
 	DLWalk(fbl_sprite_list, render_sprite, NULL);
+
+
+	if (fbl_day_light > 0) {
+
+		/* set render target back to default */
+		SDL_SetRenderTarget(fbl_engine.renderer, NULL);
+
+		/* then render the lightmap to the buffer with the correct blendmode(MOD) */
+		SDL_RenderCopy(fbl_engine.renderer, fbl_lightmap, &temp_rect, &temp_rect);
+
+	}
+
 
 }
 
