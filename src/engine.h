@@ -14,15 +14,14 @@
 #ifndef ENGINE_H__
 #define ENGINE_H__
 
-#ifdef __EMSCRIPTEN__
-//#include "../dependencies/emscripten/chipmunk-7.0.3/include/chipmunk/chipmunk.h"
 #include "../dependencies/common/chipmunk-7.0.3/include/chipmunk/chipmunk.h"
+
+#ifdef __EMSCRIPTEN__
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_mixer.h>
 #else
-#include "../dependencies/common/chipmunk-7.0.3/include/chipmunk/chipmunk.h"
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>

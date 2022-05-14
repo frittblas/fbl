@@ -191,34 +191,23 @@ is deactivated (have to set_sprite_phys() again))
 
 Change TP_TASK to FBL_TP_TASK. DONE!! :)
 2d lights (light map and and nice pngs with gradients, circles and stuff, give sprite new variable: is_light) DONE!! Went really well.
-Scale Android and fullscreen pc to fill the screen! experimenting, scale works great but mouse i off. Logical doesn't work (am I using it right?)
-Remove the redundant emscripten chipmunk include dir.
+Remove the redundant emscripten chipmunk include dir. DONE!! nice..
+Scale Android and fullscreen pc to fill the screen! experimenting, scale works great but mouse is off. Logical doesn't work (am I using it right?)
 
-Fix one particle to screen. (threads will help with performance w alot of particles)
+Fix one particle to screen. (don't worry, threads will help with performance w. alot of particles :)
 Make android version concat the required .lua-files then run the lua load_string().
 Raycast collission
 
+
+}
+
+
 Gamepad/joysticks, polish input system. (not urgent)
 Update dependencies. (not urgent)
-Use SDL_Log instead of fprintf().
+Use SDL_Log instead of fprintf(). (not urgent)
 
 New fbl-funcion that just prints all the versions of the
-dependencies. Look below.
-
-Keep the same naming conventions (uint_32 etc) throughout the project. (not urgent)
-
-Delete demo 1. Make something else :) demo 1 is horrible.
-
-}
-
-for 1.0 {
-
-SDL_net
-Doxygen
-
-}
-
-add this somewhere:
+dependencies. Look below. (not urgent)
 
 SDL_version compiled;
 SDL_version linked;
@@ -230,3 +219,15 @@ SDL_Log("We compiled against SDL version %u.%u.%u ...\n",
 SDL_Log("But we are linking against SDL version %u.%u.%u.\n",
        linked.major, linked.minor, linked.patch);
 
+
+Keep the same naming conventions (uint_32 etc) throughout the project. (not urgent)
+
+
+
+for 1.0 {
+
+SDL_net
+Delete demo 1. Make something else :) demo 1 is horrible.
+Doxygen
+
+}
