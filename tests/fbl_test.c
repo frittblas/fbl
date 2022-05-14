@@ -123,9 +123,10 @@ void fbl_game_loop()
 	if (fbl_get_key_down(FBLK_F11)) {
 
 		fbl_set_window_mode(FBL_WINDOW_FULLSCREEN_DESKTOP);
-		fbl_set_render_scale(2.0, 2.0);
+		
 		//fbl_set_viewport(0, 0, fbl_get_screen_w(), fbl_get_screen_w());
-		//fbl_set_render_logical_size(fbl_get_screen_w()/2, fbl_get_screen_w()/2);
+		//fbl_set_render_logical_size(fbl_get_screen_w(), fbl_get_screen_w());
+		fbl_set_render_scale(2.0, 2.0);
 	}
 
 	cycle_demos();
