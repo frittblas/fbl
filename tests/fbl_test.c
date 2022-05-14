@@ -29,13 +29,13 @@ double angle = 0.0;
 int left_button = 0;
 int right_button = 0;
 
-void setup_demo_1(void); // fonts, sprites, camera, movement, input
+void setup_demo_1(void); // fonts, sprites, camera, movement, input (redo this demo!)
 void run_demo_1(void);
 void setup_demo_2(void); // ui, prims, physics, sounds, music
 void run_demo_2(void);
 void setup_demo_3(void); // static lines w. collision and lots of dynamic bodies, mouse position.
 void run_demo_3(void);
-void setup_demo_4(void); // pathfinding
+void setup_demo_4(void); // pathfinding, 2d lights
 void run_demo_4(void);
 void setup_demo_5(void); // lua, edit main.lua and reload with f5
 void run_demo_5(void);
@@ -64,7 +64,8 @@ void fbl_start()
 
 	// make sure that NAME_OF_ASSETS_FOLDER in fbl.h is set to what you want (default = "assets/")
 
-	fbl_engine_init(960*2, 540*2, 60);
+
+	fbl_engine_init(960, 540, 60);
 	fbl_set_clear_color(168, 230, 255, 255);
 	//fbl_set_clear_color(0, 0, 0, 255);
 	printf("FBL version: %s, running on %s, and %s\n", fbl_get_version(), fbl_get_platform(), fbl_get_renderer());
@@ -113,16 +114,18 @@ void fbl_game_loop()
 	if (fbl_get_key_down(FBLK_ESCAPE))
 		fbl_engine_quit();
 
-	if (fbl_get_key_down(FBLK_F9))
+	if (fbl_get_key_down(FBLK_F9)) {
 		fbl_set_window_mode(0);
+	}
 	if (fbl_get_key_down(FBLK_F10)) {
 		fbl_set_window_mode(FBL_WINDOW_FULLSCREEN);
-		fbl_set_render_logical_size(1920, 1080);
 	}
 	if (fbl_get_key_down(FBLK_F11)) {
+
 		fbl_set_window_mode(FBL_WINDOW_FULLSCREEN_DESKTOP);
-		//fbl_set_render_scale(2.0, 2.0);
-		fbl_set_render_logical_size(1920, 1080);
+		fbl_set_render_scale(2.0, 2.0);
+		//fbl_set_viewport(0, 0, fbl_get_screen_w(), fbl_get_screen_w());
+		//fbl_set_render_logical_size(fbl_get_screen_w()/2, fbl_get_screen_w()/2);
 	}
 
 	cycle_demos();

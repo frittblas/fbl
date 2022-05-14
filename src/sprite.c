@@ -91,7 +91,7 @@ int fbl_load_texture(const char *img_file)
 
 
 	// set correct blendmode for the lightmap (MOD)
-	SDL_SetTextureBlendMode(fbl_lightmap, FBL_BLENDMODE_MOD);
+	SDL_SetTextureBlendMode(fbl_lightmap, SDL_BLENDMODE_MOD);
 
 
 	SDL_FreeSurface(surface);
