@@ -385,7 +385,7 @@ float fbl_get_text_scale(int id)
 /*
  * Set text alignment.
  */
-void fbl_set_text_align(int id, unsigned char align)
+void fbl_set_text_align(int id, uint8_t align)
 {
 
 	FBL_TEXT_OBJECT *text_obj = NULL;

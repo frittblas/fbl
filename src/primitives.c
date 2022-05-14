@@ -43,7 +43,7 @@ unsigned int current_prim = 0;
 /*
  * Create primitive of specified type.
  */
-int fbl_create_prim(unsigned char type, int x, int y, int w, int h, int r, bool thick, bool fill)
+int fbl_create_prim(uint8_t type, int x, int y, int w, int h, int r, bool thick, bool fill)
 {
 
 	FBL_PRIM *fbl_prim = NULL;

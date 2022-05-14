@@ -17,7 +17,7 @@
 
 SDL_Thread* fbl_thread[THREAD_NUM];
 
-TP_TASK fbl_task_queue[QUEUE_SIZE];
+FBL_TP_TASK fbl_task_queue[QUEUE_SIZE];
 
 int task_count = 0;
 
@@ -27,14 +27,14 @@ SDL_cond *cond_queue;
 bool fbl_multithreaded = false;
 
 
-void execute_task(TP_TASK* task) {
+void execute_task(FBL_TP_TASK* task) {
 
     //task->task_func(task->arg1, task->arg2);
     task->task_func();
 
 }
 
-void submit_task(TP_TASK task) {
+void submit_task(FBL_TP_TASK task) {
 
     if (task_count < QUEUE_SIZE) {
 
@@ -56,7 +56,7 @@ static int start_thread(void* args) {
 
     while (1) {
     
-        TP_TASK task;
+        FBL_TP_TASK task;
 
         SDL_LockMutex(mutex_queue);
         
@@ -130,7 +130,7 @@ void fbl_submit_task_tp(void (*func)())
 
     if (fbl_multithreaded) {
 
-        TP_TASK t;
+        FBL_TP_TASK t;
 
         t.task_func = func;  // assign function
 
