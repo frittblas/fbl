@@ -60,13 +60,16 @@ int lua_load_texture(lua_State *lua_env);
 int lua_destroy_texture(lua_State *lua_env);
 int lua_create_sprite(lua_State *lua_env);
 int lua_delete_sprite(lua_State *lua_env);
+int lua_set_sprite_align(lua_State* lua_env);
+int lua_set_lighting_tint(lua_State* lua_env);
+int lua_set_sprite_is_light(lua_State* lua_env);
 int lua_set_sprite_blendmode(lua_State *lua_env);
 int lua_get_sprite_blendmode(lua_State *lua_env);
 int lua_set_sprite_alpha(lua_State *lua_env);
 int lua_get_sprite_alpha(lua_State *lua_env);
 int lua_set_sprite_color(lua_State *lua_env);
 int lua_get_sprite_color(lua_State *lua_env);
-int lua_set_sprite_align(lua_State *lua_env);
+
 int lua_set_sprite_layer(lua_State *lua_env);
 int lua_get_sprite_layer(lua_State *lua_env);
 int	lua_set_sprite_xy(lua_State *lua_env);
@@ -387,13 +390,15 @@ void register_fbl_functions_to_lua()
 	lua_register(fbl_lua_env, "fbl_destroy_texture", lua_destroy_texture);
 	lua_register(fbl_lua_env, "fbl_create_sprite", lua_create_sprite);
 	lua_register(fbl_lua_env, "fbl_delete_sprite", lua_delete_sprite);
+	lua_register(fbl_lua_env, "fbl_set_sprite_align", lua_set_sprite_align);
+	lua_register(fbl_lua_env, "fbl_set_lighting_tint", lua_set_lighting_tint);
+	lua_register(fbl_lua_env, "fbl_set_sprite_is_light", lua_set_sprite_is_light);
 	lua_register(fbl_lua_env, "fbl_set_sprite_blendmode", lua_set_sprite_blendmode);
 	lua_register(fbl_lua_env, "fbl_get_sprite_blendmode", lua_get_sprite_blendmode);
 	lua_register(fbl_lua_env, "fbl_set_sprite_alpha", lua_set_sprite_alpha);
 	lua_register(fbl_lua_env, "fbl_get_sprite_alpha", lua_get_sprite_alpha);
 	lua_register(fbl_lua_env, "fbl_set_sprite_color", lua_set_sprite_color);
 	lua_register(fbl_lua_env, "fbl_get_sprite_color", lua_get_sprite_color);
-	lua_register(fbl_lua_env, "fbl_set_sprite_align", lua_set_sprite_align);
 	lua_register(fbl_lua_env, "fbl_set_sprite_layer", lua_set_sprite_layer);
 	lua_register(fbl_lua_env, "fbl_get_sprite_layer", lua_get_sprite_layer);
 	lua_register(fbl_lua_env, "fbl_set_sprite_xy", lua_set_sprite_xy);
@@ -915,6 +920,45 @@ int lua_delete_sprite(lua_State *lua_env)
 
 }
 
+int lua_set_sprite_align(lua_State* lua_env)
+{
+
+	int id = (int)lua_tonumber(lua_env, 1);
+	int mode = (int)lua_tonumber(lua_env, 2);
+
+	fbl_set_sprite_align(mode);
+
+	return 1;
+
+}
+
+
+int lua_set_lighting_tint(lua_State* lua_env)
+{
+
+	int on_off = (int)lua_tonumber(lua_env, 1);
+	int r = (int)lua_tonumber(lua_env, 2);
+	int g = (int)lua_tonumber(lua_env, 3);
+	int b = (int)lua_tonumber(lua_env, 4);
+
+	fbl_set_lighting_tint(on_off, r, g, b);
+
+	return 1;
+
+}
+
+int lua_set_sprite_is_light(lua_State* lua_env)
+{
+
+	int id = (int)lua_tonumber(lua_env, 1);
+	int light = (int)lua_tonumber(lua_env, 2);
+
+	fbl_set_sprite_is_light(id, light);
+
+	return 1;
+
+}
+
 int lua_set_sprite_blendmode(lua_State *lua_env)
 {
 
@@ -989,18 +1033,6 @@ int lua_get_sprite_color(lua_State *lua_env)
 	lua_pushnumber(lua_env, (lua_Number)b);
 
 	return 3;
-}
-
-int lua_set_sprite_align(lua_State *lua_env)
-{
-
-	int id = (int)lua_tonumber(lua_env, 1);
-	int mode = (int)lua_tonumber(lua_env, 2);
-
-	fbl_set_sprite_align(mode);
-
-	return 1;
-
 }
 
 int lua_set_sprite_layer(lua_State *lua_env)

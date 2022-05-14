@@ -39,7 +39,7 @@ DLLIST *fbl_sprite_list = NULL;
 
 SDL_Texture* fbl_lightmap = NULL;
 
-FBL_LIGHTING_TINT fbl_lighting_tint = { true, 100, 100, 100 };
+FBL_LIGHTING_TINT fbl_lighting_tint = { false, 0, 0, 0 };
 
 DLLIST* direct_sprite_ref[NUM_DIRECT_REF_SPRITES] = {NULL};
 
@@ -157,10 +157,9 @@ int fbl_create_sprite(int x, int y, int w, int h, int r)
 	fbl_sprite->scale = 1.0;
 
 	fbl_sprite->is_light = false;	/* if is_light == true, the sprite is rendered to the lightmap */
-	if(r == FBL_LIGHT) fbl_sprite->is_light = true;	/* if you pass in 999 as radius, the sprite gets treated like a light */
 
 	fbl_sprite->blendmode = FBL_BLENDMODE_BLEND;	/* blend, so transparent pngs work */
-	if(fbl_sprite->is_light) fbl_sprite->blendmode = FBL_BLENDMODE_ADD;		/* add, so lights interact smoothly with another */
+
 	fbl_sprite->color.a = 255;	/* start as fully opaque */
 	fbl_sprite->color.r = 255;
 	fbl_sprite->color.g = 255;
@@ -249,13 +248,68 @@ void fbl_delete_sprite(int id)
 
 			DLDelete(item);
 		}
-		else
+		else {
 			fbl_set_sprite_active(id, false);  // a kinda hacky way to avoid crash when deleting head node...
-			//fprintf(FBL_ERROR_OUT, "Will not delete the first sprite in list! (id: %d) Use destroy_all..\n", id);
+			fprintf(FBL_ERROR_OUT, "Will not delete the first sprite in list! (id: %d) It's just deactivated!\nUse destroy_all to get rid of it..\n", id);
+		}
 
 	}
 #ifdef FBL_DEBUG
 	else fprintf(FBL_ERROR_OUT, "Tried to delete sprite %d, that does not exist!\n", id);
+#endif
+
+}
+
+
+/*
+ * Set which point all sprites are drawn from
+ */
+void fbl_set_sprite_align(int mode)
+{
+
+	sprite_alignment = mode;
+
+}
+
+/*
+ * Set the fullscreen, global tint to on or off, and set the color.
+ * This is usefult for setting time of day, like night/evening.
+ * This is also needed to be on if you want to see any 2d lights created
+ * by fbl_set_sprite_is_light()
+ * 
+ */
+void fbl_set_lighting_tint(bool on_off, uint8_t r, uint8_t g, uint8_t b)
+{
+
+	fbl_lighting_tint.on = on_off;
+
+	fbl_lighting_tint.r = r;
+	fbl_lighting_tint.g = g;
+	fbl_lighting_tint.b = b;
+
+}
+
+/*
+ * Set if the sprite should be a "light", (and drawn to the light map).
+ * Lights should be sprites (check the demo assets) that are drawn with a gradient
+ * from white to black. Check engine_render_all_sprites() and render_sprite() to see
+ * how that's done.
+ * 
+ */
+void fbl_set_sprite_is_light(int id, bool light)
+{
+
+	FBL_SPRITE* sprite = NULL;
+	DLLIST* item = get_sprite_item_at_id(id);
+
+	if (item != NULL)
+	{
+		sprite = ((FBL_SPRITE*)item->Object);
+		sprite->is_light = light;
+		sprite->blendmode = FBL_BLENDMODE_ADD;	/* add, so lights interact smoothly with another */
+	}
+#ifdef FBL_DEBUG
+	else fprintf(FBL_ERROR_OUT, "Tried to set is_light for sprite %d, that does not exist!\n", id);
 #endif
 
 }
@@ -302,7 +356,7 @@ int fbl_get_sprite_blendmode(int id)
 
 }
 
-void fbl_set_sprite_alpha(int id, unsigned char alpha)
+void fbl_set_sprite_alpha(int id, uint8_t alpha)
 {
 
 	FBL_SPRITE *sprite = NULL;
@@ -338,7 +392,7 @@ int fbl_get_sprite_alpha(int id)
 
 }
 
-void fbl_set_sprite_color(int id, unsigned char r, unsigned char g, unsigned char b)
+void fbl_set_sprite_color(int id, uint8_t r, uint8_t g, uint8_t b)
 {
 
 	FBL_SPRITE *sprite = NULL;
@@ -360,7 +414,7 @@ void fbl_set_sprite_color(int id, unsigned char r, unsigned char g, unsigned cha
 
 }
 
-void fbl_get_sprite_color(int id, unsigned char *r, unsigned char *g, unsigned char *b)
+void fbl_get_sprite_color(int id, uint8_t *r, uint8_t *g, uint8_t *b)
 {
 
 	FBL_SPRITE *sprite = NULL;
@@ -380,16 +434,6 @@ void fbl_get_sprite_color(int id, unsigned char *r, unsigned char *g, unsigned c
 	else fprintf(FBL_ERROR_OUT, "Tried to set color for sprite %d, that does not exist!\n", id);
 #endif
 
-
-}
-
-/*
- * Set which point all sprites are drawn from
- */
-void fbl_set_sprite_align(int mode)
-{
-
-	sprite_alignment = mode;
 
 }
 
@@ -1205,8 +1249,8 @@ int render_sprite(int tag, void *sprite, void *dummy)
 					//printf("drawing to default!\n");
 				}
 
-				/*	set blend modes and colors and alpha (benchmark this! update: switching blendmodes often is kinda slow
-					(you can sort by blendmode to help this) the rest very fast */
+				/*	set blend modes and colors and alpha (benchmark this! Done! update: switching blendmodes often, is slow
+					(you can sort sprites by blendmode to help this) the rest is very fast */
 
 				SDL_SetTextureBlendMode(fbl_texture, spr->blendmode);
 				SDL_SetTextureAlphaMod(fbl_texture, spr->color.a);
@@ -1234,9 +1278,7 @@ int render_sprite(int tag, void *sprite, void *dummy)
 void engine_render_all_sprites()
 {
 
-	SDL_Rect temp_rect = { 0, 0, fbl_get_screen_w(), fbl_get_screen_h() };
-	Uint8 fbl_day_light = 40;
-
+	SDL_Rect temp_rect = { 0, 0, fbl_engine.w, fbl_engine.h };
 
 	if (fbl_lighting_tint.on) {
 

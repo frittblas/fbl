@@ -263,7 +263,7 @@ void fbl_set_emitter_vel_xy(int id, float vel_x, float vel_y, bool start)
 
 }
 
-void fbl_set_emitter_color(int id, unsigned char r, unsigned char g, unsigned char b, unsigned char a, bool start)
+void fbl_set_emitter_color(int id, uint8_t r, uint8_t g, uint8_t b, uint8_t a, bool start)
 {
 
 	FBL_PARTICLE_EMITTER* emitter = NULL;

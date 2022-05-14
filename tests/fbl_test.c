@@ -64,7 +64,7 @@ void fbl_start()
 
 	// make sure that NAME_OF_ASSETS_FOLDER in fbl.h is set to what you want (default = "assets/")
 
-	fbl_engine_init(960, 540, 60);
+	fbl_engine_init(960*2, 540*2, 60);
 	fbl_set_clear_color(168, 230, 255, 255);
 	//fbl_set_clear_color(0, 0, 0, 255);
 	printf("FBL version: %s, running on %s, and %s\n", fbl_get_version(), fbl_get_platform(), fbl_get_renderer());
@@ -115,10 +115,15 @@ void fbl_game_loop()
 
 	if (fbl_get_key_down(FBLK_F9))
 		fbl_set_window_mode(0);
-	if (fbl_get_key_down(FBLK_F10))
+	if (fbl_get_key_down(FBLK_F10)) {
 		fbl_set_window_mode(FBL_WINDOW_FULLSCREEN);
-	if (fbl_get_key_down(FBLK_F11))
+		fbl_set_render_logical_size(1920, 1080);
+	}
+	if (fbl_get_key_down(FBLK_F11)) {
 		fbl_set_window_mode(FBL_WINDOW_FULLSCREEN_DESKTOP);
+		//fbl_set_render_scale(2.0, 2.0);
+		fbl_set_render_logical_size(1920, 1080);
+	}
 
 	cycle_demos();
 
@@ -638,12 +643,16 @@ void setup_demo_4()
 	speed[0] = 1;
 
 	// create small light around the player
-	light1 = fbl_create_sprite(384, 0, 128, 128, FBL_LIGHT);
-
+	light1 = fbl_create_sprite(384, 0, 128, 128, 0);
+	fbl_set_sprite_is_light(light1, true);
 
 	// create the big light
-	light2 = fbl_create_sprite(384, 0, 128, 128, FBL_LIGHT);
+	light2 = fbl_create_sprite(384, 0, 128, 128, 0);
+	fbl_set_sprite_is_light(light2, true);
 	fbl_set_sprite_scale(light2, 3.0);
+
+	// the lights aren't visible undtil you set the fullscreen lighting tint. (create evening or night-vibe)
+	fbl_set_lighting_tint(true, 50, 50, 50);
 
 }
 
@@ -1084,7 +1093,7 @@ void unload_all()
 	fbl_destroy_all_prims();
 	fbl_destroy_all_text_objects();
 	fbl_destroy_ttf_font();
-	//fbl_destroy_ui_texture();
+	//fbl_destroy_ui_texture();	// we want to keep the buttons (down left/right) to switch demos
 	fbl_destroy_all_ui_elems();
 	fbl_destroy_all_emitters();
 	fbl_destroy_all_sounds();
@@ -1116,6 +1125,9 @@ void unload_all()
 
 	fbl_set_ui_elem_xy(left_button, 64, fbl_get_screen_h() - 64);
 	fbl_set_ui_elem_xy(right_button, fbl_get_screen_w() -64, fbl_get_screen_h() - 64);
+
+	// set time of day to normal (day)
+	fbl_set_lighting_tint(false, 0, 0, 0);
 
 }
 

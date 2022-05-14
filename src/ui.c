@@ -76,7 +76,7 @@ void fbl_destroy_ui_texture()
  * which is a position on the screen. Also takes a function pointer
  * for the funcion to be called when the element is used.
  */
-int fbl_create_ui_elem(unsigned char type, int x, int y, int w, int h, int(*func)(int, int))
+int fbl_create_ui_elem(uint8_t type, int x, int y, int w, int h, int(*func)(int, int))
 {
 
 	FBL_UI_ELEM *fbl_ui_elem = NULL;
