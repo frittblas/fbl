@@ -1,166 +1,515 @@
-#include <typeinfo>
-
-#include "ecs.h"
-
-/*
-
-    Ecs.cpp
-
-    Ecs for SpaceWip2
-
-    2021
-
-*/
-
-namespace Ecs {
-
-
-    // Scene-class implementation
-
-    Scene::Scene() {
-
-        // do something here maybe
-
-    }
-
-    int Scene::createEntity(int x, int y)
-    {
-        int id = numEntities++; // total number of entities
-
-        // all entities must have a position
-        //component.position[id].entityId = id;
-        //component.position[id].x = x;
-        //component.position[id].y = y;
-
-        Position tmpPos;
-
-        tmpPos.entityId = id;
-        tmpPos.x = x;
-        tmpPos.y = y;
-
-        auto tmpPair = std::pair<int32_t, Position>{id, tmpPos};
-
-        component.position.insert(tmpPair);
-
-        //std::cout << component.position[id].x <<std::endl;
-        
-        return id;
-
-    }
-
-    void Scene::removeEntity(uint32_t entityId) {
-
-        // remove all components that refer to the entityId
-        component.position.erase(entityId);
-        component.health.erase(entityId);
-
-    }
-
-    template <typename T>
-    void Scene::addComponent(uint32_t entityId) {
-
-        if(typeid(T) == typeid(Position)) component.position[entityId].entityId = entityId;
-        else if(typeid(T) == typeid(Health)) component.health[entityId].entityId = entityId;
-
-        //std::unordered_map<uint32_t, T> tempMap;
-
-        //component_.mapList.push_back(tempMap);
-     
-    }
-
-    void Scene::removeComponent(ComponentType type, uint32_t entityId) {
-
-        switch(type) {
-
-            case posType :
-                component.position.erase(entityId);
-            break;
-            case transType :
-            break;
-            case healthType :
-                component.health.erase(entityId);
-            break;
-
-        }
-
-
-    }
-
-    bool Scene::hasComponent(ComponentType type, uint32_t entityId) {
-
-        // find the fastest way to check if the entity has the component, try std::bitset
-        // 
-
-        return true;
-    }
-
-    void Scene::updatePosition(Position *p)
-    {
-        if(p->x > 0)
-        { 
-
-            Position* newP = &component.position[p->entityId];
-            newP->x++;
-
-        }
-    }
-
-    void Scene::updateHealth(Health *h)
-    {
-
-        h->curHealth++;
-
-        if(h->curHealth <= 0)
-        {
-            std::cout<<"Entity is dead!"<<std::endl;
-            removeEntity(h->entityId);
-        }
-    }
-
- 
-
-}
-
-int main() {
-
-    std::cout<<"Testing fblecs.."<<std::endl;
-
-    Ecs::Scene scene;
-
-    uint32_t ship1 = scene.createEntity(10, 10);
-    //int ship2 = scene1.create_entity();
-
-
-    scene.addComponent<Health>(ship1);
-
-    //Position *shipPos = &scene.component.position[ship1];
-
-    int counter = 0;
-
-    while(counter < 20)
-    {
-        // update all systems
-
-        //std::unordered_map<uint32_t, Ecs::Position>:: iterator itr;
-    
-        for (auto itr = scene.component.position.begin(); itr != scene.component.position.end(); itr++) {
-
-            scene.updatePosition(&scene.component.position[itr->first]);
-
-        }
-
-        for (auto itr = scene.component.health.begin(); itr != scene.component.health.end(); itr++) {
-
-            scene.updateHealth(&scene.component.health[itr->first]);
-
-        }
-
-        std::cout<<"ship1.x = "<< scene.component.position[ship1].x<<std::endl;
-
-        counter++;
-
-    }
-
-    return 0;
-
+// I got this from https://austinmorlan.com/posts/entity_component_system/
+// This was taken from the website
+// Great article!
+// Thanks you Austin Morlan!
+//
+
+
+#include <iostream>
+#include <cassert>
+#include <array>
+#include <unordered_map>
+#include <queue>
+#include <set>
+#include <memory>
+#include <bitset>
+
+
+// A simple type alias
+using ComponentType = std::uint8_t;
+
+// Used to define the size of arrays later on
+const ComponentType MAX_COMPONENTS = 32;
+
+// A simple type alias
+using Signature = std::bitset<MAX_COMPONENTS>;
+
+using Entity = std::uint32_t;
+const Entity MAX_ENTITIES = 5000;
+
+
+class EntityManager
+{
+public:
+	EntityManager()
+	{
+		// Initialize the queue with all possible entity IDs
+		for (Entity entity = 0; entity < MAX_ENTITIES; ++entity)
+		{
+			mAvailableEntities.push(entity);
+		}
+	}
+
+	Entity CreateEntity()
+	{
+		assert(mLivingEntityCount < MAX_ENTITIES && "Too many entities in existence.");
+
+		// Take an ID from the front of the queue
+		Entity id = mAvailableEntities.front();
+		mAvailableEntities.pop();
+		++mLivingEntityCount;
+
+		return id;
+	}
+
+	void DestroyEntity(Entity entity)
+	{
+		assert(entity < MAX_ENTITIES && "Entity out of range.");
+
+		// Invalidate the destroyed entity's signature
+		mSignatures[entity].reset();
+
+		// Put the destroyed ID at the back of the queue
+		mAvailableEntities.push(entity);
+		--mLivingEntityCount;
+	}
+
+	void SetSignature(Entity entity, Signature signature)
+	{
+		assert(entity < MAX_ENTITIES && "Entity out of range.");
+
+		// Put this entity's signature into the array
+		mSignatures[entity] = signature;
+	}
+
+	Signature GetSignature(Entity entity)
+	{
+		assert(entity < MAX_ENTITIES && "Entity out of range.");
+
+		// Get this entity's signature from the array
+		return mSignatures[entity];
+	}
+
+private:
+	// Queue of unused entity IDs
+	std::queue<Entity> mAvailableEntities{};
+
+	// Array of signatures where the index corresponds to the entity ID
+	std::array<Signature, MAX_ENTITIES> mSignatures{};
+
+	// Total living entities - used to keep limits on how many exist
+	uint32_t mLivingEntityCount{};
+};
+
+
+
+// The one instance of virtual inheritance in the entire implementation.
+// An interface is needed so that the ComponentManager (seen later)
+// can tell a generic ComponentArray that an entity has been destroyed
+// and that it needs to update its array mappings.
+class IComponentArray
+{
+public:
+	virtual ~IComponentArray() = default;
+	virtual void EntityDestroyed(Entity entity) = 0;
+};
+
+
+template<typename T>
+class ComponentArray : public IComponentArray
+{
+public:
+	void InsertData(Entity entity, T component)
+	{
+		assert(mEntityToIndexMap.find(entity) == mEntityToIndexMap.end() && "Component added to same entity more than once.");
+
+		// Put new entry at end and update the maps
+		size_t newIndex = mSize;
+		mEntityToIndexMap[entity] = newIndex;
+		mIndexToEntityMap[newIndex] = entity;
+		mComponentArray[newIndex] = component;
+		++mSize;
+	}
+
+	void RemoveData(Entity entity)
+	{
+		assert(mEntityToIndexMap.find(entity) != mEntityToIndexMap.end() && "Removing non-existent component.");
+
+		// Copy element at end into deleted element's place to maintain density
+		size_t indexOfRemovedEntity = mEntityToIndexMap[entity];
+		size_t indexOfLastElement = mSize - 1;
+		mComponentArray[indexOfRemovedEntity] = mComponentArray[indexOfLastElement];
+
+		// Update map to point to moved spot
+		Entity entityOfLastElement = mIndexToEntityMap[indexOfLastElement];
+		mEntityToIndexMap[entityOfLastElement] = indexOfRemovedEntity;
+		mIndexToEntityMap[indexOfRemovedEntity] = entityOfLastElement;
+
+		mEntityToIndexMap.erase(entity);
+		mIndexToEntityMap.erase(indexOfLastElement);
+
+		--mSize;
+	}
+
+	T& GetData(Entity entity)
+	{
+		assert(mEntityToIndexMap.find(entity) != mEntityToIndexMap.end() && "Retrieving non-existent component.");
+
+		// Return a reference to the entity's component
+		return mComponentArray[mEntityToIndexMap[entity]];
+	}
+
+	void EntityDestroyed(Entity entity) override
+	{
+		if (mEntityToIndexMap.find(entity) != mEntityToIndexMap.end())
+		{
+			// Remove the entity's component if it existed
+			RemoveData(entity);
+		}
+	}
+
+private:
+	// The packed array of components (of generic type T),
+	// set to a specified maximum amount, matching the maximum number
+	// of entities allowed to exist simultaneously, so that each entity
+	// has a unique spot.
+	std::array<T, MAX_ENTITIES> mComponentArray;
+
+	// Map from an entity ID to an array index.
+	std::unordered_map<Entity, size_t> mEntityToIndexMap;
+
+	// Map from an array index to an entity ID.
+	std::unordered_map<size_t, Entity> mIndexToEntityMap;
+
+	// Total size of valid entries in the array.
+	size_t mSize;
+};
+
+
+
+class ComponentManager
+{
+public:
+	template<typename T>
+	void RegisterComponent()
+	{
+		const char* typeName = typeid(T).name();
+
+		assert(mComponentTypes.find(typeName) == mComponentTypes.end() && "Registering component type more than once.");
+
+		// Add this component type to the component type map
+		mComponentTypes.insert({typeName, mNextComponentType});
+
+		// Create a ComponentArray pointer and add it to the component arrays map
+		mComponentArrays.insert({typeName, std::make_shared<ComponentArray<T>>()});
+
+		// Increment the value so that the next component registered will be different
+		++mNextComponentType;
+	}
+
+	template<typename T>
+	ComponentType GetComponentType()
+	{
+		const char* typeName = typeid(T).name();
+
+		assert(mComponentTypes.find(typeName) != mComponentTypes.end() && "Component not registered before use.");
+
+		// Return this component's type - used for creating signatures
+		return mComponentTypes[typeName];
+	}
+
+	template<typename T>
+	void AddComponent(Entity entity, T component)
+	{
+		// Add a component to the array for an entity
+		GetComponentArray<T>()->InsertData(entity, component);
+	}
+
+	template<typename T>
+	void RemoveComponent(Entity entity)
+	{
+		// Remove a component from the array for an entity
+		GetComponentArray<T>()->RemoveData(entity);
+	}
+
+	template<typename T>
+	T& GetComponent(Entity entity)
+	{
+		// Get a reference to a component from the array for an entity
+		return GetComponentArray<T>()->GetData(entity);
+	}
+
+	void EntityDestroyed(Entity entity)
+	{
+		// Notify each component array that an entity has been destroyed
+		// If it has a component for that entity, it will remove it
+		for (auto const& pair : mComponentArrays)
+		{
+			auto const& component = pair.second;
+
+			component->EntityDestroyed(entity);
+		}
+	}
+
+private:
+	// Map from type string pointer to a component type
+	std::unordered_map<const char*, ComponentType> mComponentTypes{};
+
+	// Map from type string pointer to a component array
+	std::unordered_map<const char*, std::shared_ptr<IComponentArray>> mComponentArrays{};
+
+	// The component type to be assigned to the next registered component - starting at 0
+	ComponentType mNextComponentType{};
+
+	// Convenience function to get the statically casted pointer to the ComponentArray of type T.
+	template<typename T>
+	std::shared_ptr<ComponentArray<T>> GetComponentArray()
+	{
+		const char* typeName = typeid(T).name();
+
+		assert(mComponentTypes.find(typeName) != mComponentTypes.end() && "Component not registered before use.");
+
+		return std::static_pointer_cast<ComponentArray<T>>(mComponentArrays[typeName]);
+	}
+};
+
+
+
+class System
+{
+public:
+	std::set<Entity> mEntities;
+};
+
+
+
+class SystemManager
+{
+public:
+	template<typename T>
+	std::shared_ptr<T> RegisterSystem()
+	{
+		const char* typeName = typeid(T).name();
+
+		assert(mSystems.find(typeName) == mSystems.end() && "Registering system more than once.");
+
+		// Create a pointer to the system and return it so it can be used externally
+		auto system = std::make_shared<T>();
+		mSystems.insert({typeName, system});
+		return system;
+	}
+
+	template<typename T>
+	void SetSignature(Signature signature)
+	{
+		const char* typeName = typeid(T).name();
+
+		assert(mSystems.find(typeName) != mSystems.end() && "System used before registered.");
+
+		// Set the signature for this system
+		mSignatures.insert({typeName, signature});
+	}
+
+	void EntityDestroyed(Entity entity)
+	{
+		// Erase a destroyed entity from all system lists
+		// mEntities is a set so no check needed
+		for (auto const& pair : mSystems)
+		{
+			auto const& system = pair.second;
+
+			system->mEntities.erase(entity);
+		}
+	}
+
+	void EntitySignatureChanged(Entity entity, Signature entitySignature)
+	{
+		// Notify each system that an entity's signature changed
+		for (auto const& pair : mSystems)
+		{
+			auto const& type = pair.first;
+			auto const& system = pair.second;
+			auto const& systemSignature = mSignatures[type];
+
+			// Entity signature matches system signature - insert into set
+			if ((entitySignature & systemSignature) == systemSignature)
+			{
+				system->mEntities.insert(entity);
+			}
+			// Entity signature does not match system signature - erase from set
+			else
+			{
+				system->mEntities.erase(entity);
+			}
+		}
+	}
+
+private:
+	// Map from system type string pointer to a signature
+	std::unordered_map<const char*, Signature> mSignatures{};
+
+	// Map from system type string pointer to a system pointer
+	std::unordered_map<const char*, std::shared_ptr<System>> mSystems{};
+};
+
+
+
+class Coordinator
+{
+public:
+	void Init()
+	{
+		// Create pointers to each manager
+		mComponentManager = std::make_unique<ComponentManager>();
+		mEntityManager = std::make_unique<EntityManager>();
+		mSystemManager = std::make_unique<SystemManager>();
+	}
+
+
+	// Entity methods
+	Entity CreateEntity()
+	{
+		return mEntityManager->CreateEntity();
+	}
+
+	void DestroyEntity(Entity entity)
+	{
+		mEntityManager->DestroyEntity(entity);
+
+		mComponentManager->EntityDestroyed(entity);
+
+		mSystemManager->EntityDestroyed(entity);
+	}
+
+
+	// Component methods
+	template<typename T>
+	void RegisterComponent()
+	{
+		mComponentManager->RegisterComponent<T>();
+	}
+
+	template<typename T>
+	void AddComponent(Entity entity, T component)
+	{
+		mComponentManager->AddComponent<T>(entity, component);
+
+		auto signature = mEntityManager->GetSignature(entity);
+		signature.set(mComponentManager->GetComponentType<T>(), true);
+		mEntityManager->SetSignature(entity, signature);
+
+		mSystemManager->EntitySignatureChanged(entity, signature);
+	}
+
+	template<typename T>
+	void RemoveComponent(Entity entity)
+	{
+		mComponentManager->RemoveComponent<T>(entity);
+
+		auto signature = mEntityManager->GetSignature(entity);
+		signature.set(mComponentManager->GetComponentType<T>(), false);
+		mEntityManager->SetSignature(entity, signature);
+
+		mSystemManager->EntitySignatureChanged(entity, signature);
+	}
+
+	template<typename T>
+	T& GetComponent(Entity entity)
+	{
+		return mComponentManager->GetComponent<T>(entity);
+	}
+
+	template<typename T>
+	ComponentType GetComponentType()
+	{
+		return mComponentManager->GetComponentType<T>();
+	}
+
+
+	// System methods
+	template<typename T>
+	std::shared_ptr<T> RegisterSystem()
+	{
+		return mSystemManager->RegisterSystem<T>();
+	}
+
+	template<typename T>
+	void SetSystemSignature(Signature signature)
+	{
+		mSystemManager->SetSignature<T>(signature);
+	}
+
+private:
+	std::unique_ptr<ComponentManager> mComponentManager;
+	std::unique_ptr<EntityManager> mEntityManager;
+	std::unique_ptr<SystemManager> mSystemManager;
+};
+
+
+
+//  Components and Systems goes here
+
+struct Position
+{
+	 int x, y;
+};
+
+
+Coordinator gCoordinator;
+
+class PhysicsSystem : public System
+{
+	
+public:
+	void Init() {
+	}
+
+	void Update() {
+		for (auto const& entity : mEntities)
+		{
+			auto& pos = gCoordinator.GetComponent<Position>(entity);
+			//auto& transform = gCoordinator.GetComponent<Transform>(entity);
+
+			pos.x++;
+
+		}
+	}
+	
+};
+
+
+
+
+int main()
+{
+
+	
+	gCoordinator.Init();
+
+	gCoordinator.RegisterComponent<Position>();
+
+	auto physicsSystem = gCoordinator.RegisterSystem<PhysicsSystem>();
+
+	Signature signature;
+	signature.set(gCoordinator.GetComponentType<Position>());
+	gCoordinator.SetSystemSignature<PhysicsSystem>(signature);
+
+	std::vector<Entity> entities(MAX_ENTITIES - 4900);
+
+
+	for (auto& entity : entities)
+	{
+		entity = gCoordinator.CreateEntity();
+
+		gCoordinator.AddComponent(
+			entity,
+			Position {0, 0}
+		);
+
+	}
+
+	int quit = 100;
+
+	while (quit > 0)
+	{
+
+		physicsSystem->Update();
+		
+		quit--;
+	}
+	
+	auto& pos = gCoordinator.GetComponent<Position>(1);
+	
+	std::cout << pos.x << std::endl;
+	
 }
