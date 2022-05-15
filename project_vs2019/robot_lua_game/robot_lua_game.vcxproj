@@ -108,6 +108,9 @@
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
       <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <UseStandardPreprocessor>
+      </UseStandardPreprocessor>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -148,7 +151,7 @@
     <ClCompile Include="..\..\src\text.c" />
     <ClCompile Include="..\..\src\thread.c" />
     <ClCompile Include="..\..\src\ui.c" />
-    <ClCompile Include="..\..\tests\fbl_test.c" />
+    <ClCompile Include="..\..\tests\robotgame_shell.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\engine.h" />
