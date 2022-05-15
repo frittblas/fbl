@@ -193,6 +193,7 @@ Change TP_TASK to FBL_TP_TASK. DONE!! :)
 2d lights (light map and and nice pngs with gradients, circles and stuff, give sprite new variable: is_light) DONE!! Went really well.
 Remove the redundant emscripten chipmunk include dir. DONE!! nice..
 Scale Android and fullscreen pc to fill the screen! experimenting, scale works great but mouse is off. Logical doesn't work (am I using it right?)
+Make "NAME_OF_ASSET_FOLDER" or whatever a fbl-command. So you can change it in code. So the robot game works :)
 
 Fix one particle to screen. (don't worry, threads will help with performance w. alot of particles :)
 Make android version concat the required .lua-files then run the lua load_string().
