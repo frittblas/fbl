@@ -198,6 +198,7 @@ void fbl_end(void);
 
 int  fbl_engine_init(int w, int h, int fps);
 int  fbl_set_window_mode(unsigned int mode);
+void fbl_set_assets_folder_name(const char *name);		(normally you son't need to use this from Lua)
 void fbl_set_clear_color(int r, int g, int b, int a);
 void fbl_set_screen_wh(int w, int h);
 int  fbl_get_screen_w(void);
@@ -229,13 +230,15 @@ int    fbl_load_texture(const char *img_file);
 void   fbl_destroy_texture(void);
 int    fbl_create_sprite(int x, int y, int w, int h, int r);
 void   fbl_delete_sprite(int id);
+void   fbl_set_sprite_align(int mode);
+void   fbl_set_lighting_tint(bool on_off, uint8_t r, uint8_t g, uint8_t b);
+void   fbl_set_sprite_is_light(int id, bool light);
 void   fbl_set_sprite_blendmode(int id, int mode);
 int    fbl_get_sprite_blendmode(int id);
-void   fbl_set_sprite_alpha(int id, unsigned char alpha);
+void   fbl_set_sprite_alpha(int id, uint8_t alpha);
 int    fbl_get_sprite_alpha(int id);
-void   fbl_set_sprite_color(int id, unsigned char r, unsigned char g, unsigned char b);
-void   fbl_get_sprite_color(int id, unsigned char *r, unsigned char *g, unsigned char *b);
-void   fbl_set_sprite_align(int mode);
+void   fbl_set_sprite_color(int id, uint8_t r, uint8_t g, uint8_t b);
+void   fbl_get_sprite_color(int id, uint8_t*r, uint8_t*g, uint8_t*b);
 void   fbl_set_sprite_layer(int id, int layer);
 int    fbl_get_sprite_layer(int id);
 void   fbl_set_sprite_xy(int id, int x, int y);
@@ -260,7 +263,7 @@ void   fbl_destroy_all_sprites(void);
 
 /* primitives.c */
 
-int    fbl_create_prim(unsigned char type, int x, int y, int w, int h, int r, bool thick, bool fill);
+int    fbl_create_prim(uint8_t type, int x, int y, int w, int h, int r, bool thick, bool fill);
 void   fbl_delete_prim(int id);
 void   fbl_set_prim_color(int id, int r, int g, int b, int a);
 void   fbl_set_prim_size(int id, int w, int h, int r);
@@ -290,7 +293,7 @@ int    fbl_get_text_x(int id);
 int    fbl_get_text_y(int id);
 void   fbl_set_text_scale(int id, float scale);
 float  fbl_get_text_scale(int id);
-void   fbl_set_text_align(int id, unsigned char align);
+void   fbl_set_text_align(int id, uint8_t align);
 void   fbl_fix_text_to_screen(int id, bool fix);
 void   fbl_set_text_active(int id, bool active);
 bool   fbl_get_text_active(int id);
@@ -302,7 +305,7 @@ void   fbl_destroy_all_text_objects(void);
 
 int    fbl_load_ui_texture(const char *img_file);
 void   fbl_destroy_ui_texture(void);
-int    fbl_create_ui_elem(unsigned char type, int x, int y, int w, int h, int(*func)(int, int));
+int    fbl_create_ui_elem(uint8_t type, int x, int y, int w, int h, int(*func)(int, int));
 void   fbl_delete_ui_elem(int id);
 void   fbl_set_ui_elem_xy(int id, int x, int y);
 int    fbl_get_ui_elem_x(int id);
@@ -383,11 +386,12 @@ void fbl_delete_emitter(int id);
 void fbl_set_emitter_active(int id, bool active);
 void fbl_set_emitter_xy(int id, int x, int y);
 void fbl_set_emitter_vel_xy(int id, float vel_x, float vel_y, bool start);
-void fbl_set_emitter_color(int id, unsigned char r, unsigned char g, unsigned char b, unsigned char a, bool start);
+void fbl_set_emitter_color(int id, uint8_t r, uint8_t g, uint8_t b, uint8_t a, bool start);
 void fbl_fix_emitter_to_screen(int id, bool fix);
-int  fbl_get_num_active_particles(int id);
+int  fbl_get_num_active_particles(int emitter_id);
 int  fbl_get_num_emitters(void);
 void fbl_destroy_all_emitters(void);
+
 
 /* thread pool */
 

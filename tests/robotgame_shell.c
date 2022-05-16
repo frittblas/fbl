@@ -33,7 +33,9 @@ unsigned int start_time;
 void fbl_start()
 {
 
-	// make sure that NAME_OF_ASSETS_FOLDER in fbl.h is set to what you want (default = "assets/")
+	// make sure that the name of the asset folder is set to what you want (default = "assets/")
+
+	fbl_set_assets_folder_name("robot_assets/");
 
 	fbl_engine_init(800, 864, 60);
 	fbl_set_clear_color(168, 230, 255, 255);
