@@ -14,12 +14,6 @@
 #include "engine.h"
 
 
- /* so we can use strcpy() in msvc (only used in engine_get_platform_asset_path()) */
-#ifdef _MSC_VER
-#pragma warning(disable : 4996)
-#endif
-
-
 /* functions only used by fbl.c */
 
 void emscripten_loop_handler();
@@ -36,6 +30,8 @@ FBL_CAMERA fbl_camera;
 SDL_Color fbl_clear_color;
 
 bool fbl_quit = false;
+
+char name_of_assets_folder[64] = "assets/";
 
 extern int last_touch_x;
 extern int last_touch_y;
@@ -162,16 +158,19 @@ void engine_start()
 char *engine_get_platform_asset_path(const char *file)
 {
 
-	static char new_path[512];
+	static char new_path[256];
 
 #ifdef __EMSCRIPTEN__
 	strcpy(new_path, PATH_TO_EMSCRIPTEN_ASSETS);
-	strcat(new_path, NAME_OF_ASSETS_FOLDER);
+	strcat(new_path, name_of_assets_folder);
 	strcat(new_path, file);
 #elif __ANDROID__
 	strcpy(new_path, file);
+#elif _MSC_VER
+	strcpy_s(new_path, 64, name_of_assets_folder);
+	strcat_s(new_path, 256, file);
 #else
-	strcpy(new_path, NAME_OF_ASSETS_FOLDER);
+	strcpy(new_path, name_of_assets_folder);
 	strcat(new_path, file);
 #endif
 
@@ -384,6 +383,20 @@ void normal_loop_handler()
 
 }
 
+
+/*
+ * Set the name of the folder from which you want to load assets (default is "assets").
+ */
+void fbl_set_assets_folder_name(const char *name)
+{
+
+#ifdef _MSC_VER
+	strcpy_s(name_of_assets_folder, 64, name);
+#else
+	strcpy(name_of_assets_folder, name);
+#endif
+
+}
 
 /*
  * Set the clear color for backbuffer.

@@ -60,7 +60,7 @@ flux = require "robot_assets/addons/flux/flux"	-- this could go first to avoid s
 function fbl_lua_start()
 
 	print("Lua start!\n")
-
+	
 	make_strict()
 	
 	fbl_set_clear_color(1, 68, 33, 255)
