@@ -641,7 +641,7 @@ int lua_set_assets_folder_name(lua_State* lua_env)
 
 	char* name = (char*)lua_tostring(lua_env, 1);
 
-	lua_set_assets_folder_name(name);
+	fbl_set_assets_folder_name(name);
 
 	return 1;
 
