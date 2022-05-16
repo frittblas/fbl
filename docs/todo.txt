@@ -181,9 +181,9 @@ Add RELEASE.md - done!
 for 0.9.9 release {
 
 Make work on RPI and Ubuntu for fun. DONE!! (fbl now works perfectly on both platforms without changes to the source,
-makefile? yes)
-Fix the delete last item in dll-crash already! (hmm.. no, leave it forever it's charming :), maybe print something when it happens?)
-Unittests? no, nice try though.
+makefile? yes later)
+Fix the delete last item in dll-crash already! (hmm.. no, leave it forever it's charming :), maybe print something when it happens? (done))
+Unittests? no, nice try though. (the demos and games are the best tests)
 Add command input system? no, better for the specific game.
 
 Fix activate/deactivate sprite/primitive with physics. DONE!!! finally (physics get destroyed when the sprite/prim
@@ -192,13 +192,26 @@ is deactivated (have to set_sprite_phys() again))
 Change TP_TASK to FBL_TP_TASK. DONE!! :)
 2d lights (light map and and nice pngs with gradients, circles and stuff, give sprite new variable: is_light) DONE!! Went really well.
 Remove the redundant emscripten chipmunk include dir. DONE!! nice..
+Make "NAME_OF_ASSET_FOLDER" or whatever a fbl-command. So you can change it in code. So the robot game works :) DONE!!
+
 Scale Android and fullscreen pc to fill the screen! experimenting, scale works great but mouse is off. Logical doesn't work (am I using it right?)
-Make "NAME_OF_ASSET_FOLDER" or whatever a fbl-command. So you can change it in code. So the robot game works :)
 
 Fix one particle to screen. (don't worry, threads will help with performance w. alot of particles :)
-Make android version concat the required .lua-files then run the lua load_string().
-Raycast collission
 
+Make android version concat the required .lua-files then run the lua load_string().
+Raycast collission (shape gets returned (i think), but who's hape is it? :)
+Delete demo 1. Make something else :) demo 1 is horrible.
+
+start SceneEdit
+start Lotro
+
+
+}
+
+
+for 1.0 {
+
+SDL_net
 
 }
 
@@ -222,13 +235,3 @@ SDL_Log("But we are linking against SDL version %u.%u.%u.\n",
 
 
 Keep the same naming conventions (uint_32 etc) throughout the project. (not urgent)
-
-
-
-for 1.0 {
-
-SDL_net
-Delete demo 1. Make something else :) demo 1 is horrible.
-Doxygen
-
-}
