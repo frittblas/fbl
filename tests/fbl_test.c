@@ -491,7 +491,7 @@ void setup_demo_3()
 		lol = fbl_create_sprite(0, 0, 20, 20, 0);
 		fbl_set_sprite_xy(lol, rand() % 600 + 20, rand() % 300);
 		if(lol > 70)
-			fbl_set_sprite_phys(lol, true, FBL_RECT, FBL_PHYS_KINEMATIC, true);
+			fbl_set_sprite_phys(lol, true, FBL_RECT, FBL_PHYS_KINEMATIC, true); 
 		else
 			fbl_set_sprite_phys(lol, true, FBL_RECT, FBL_PHYS_DYNAMIC, true);
 	}

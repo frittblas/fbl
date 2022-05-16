@@ -250,7 +250,9 @@ void fbl_delete_sprite(int id)
 		}
 		else {
 			fbl_set_sprite_active(id, false);  // a kinda hacky way to avoid crash when deleting head node...
+#ifdef FBL_DEBUG
 			fprintf(FBL_ERROR_OUT, "Will not delete the first sprite in list! (id: %d) It's just deactivated!\nUse destroy_all to get rid of it..\n", id);
+#endif
 		}
 
 	}

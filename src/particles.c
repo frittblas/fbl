@@ -182,9 +182,12 @@ void fbl_delete_emitter(int id)
 
 			DLDelete(item);
 		}
-		else
+		else {
 			fbl_set_emitter_active(id, false);  // a kinda hacky way to avoid crash when deleting head node...
-			//fprintf(FBL_ERROR_OUT, "Will not delete the first sprite in list! (id: %d) Use destroy_all..\n", id);
+#ifdef FBL_DEBUG
+			fprintf(FBL_ERROR_OUT, "Will not delete the first emitter in list! (id: %d) It's just deactivated!\nUse destroy_all to get rid of it..\n", id);
+#endif
+		}
 
 	}
 #ifdef FBL_DEBUG

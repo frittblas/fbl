@@ -254,13 +254,16 @@ void fbl_delete_text(int id)
 			SDL_DestroyTexture(text_obj->text_image);
 			DLDelete(item);
 		}
-		else
+		else {
 			fbl_set_text_active(id, false);  // a kinda hacky way to avoid crash when deleting head node...
-			//fprintf(FBL_ERROR_OUT, "Will not delete the first text object in list! Use destroy_all..\n");
+#ifdef FBL_DEBUG
+			fprintf(FBL_ERROR_OUT, "Will not delete the first text object in list! (id: %d) It's just deactivated!\nUse destroy_all to get rid of it..\n", id);
+#endif
+		}
 
 	}
 #ifdef FBL_DEBUG
-	else fprintf(FBL_ERROR_OUT, "Tried to delete text %d, object that does not exist!\n", id);
+	else fprintf(FBL_ERROR_OUT, "Tried to delete text object %d, that does not exist!\n", id);
 #endif
 
 }

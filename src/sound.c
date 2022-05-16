@@ -105,9 +105,11 @@ void fbl_delete_sound(int id)
 			Mix_FreeChunk(sound->sample);
 			DLDelete(item);
 		}
-		else
-			//fbl_set_sound_active(id, false);  // a kinda hacky way to avoid crash when deleting head node...
-		fprintf(FBL_ERROR_OUT, "Will not delete the first sound in list! Use destroy_all..\n");
+		else {
+#ifdef FBL_DEBUG
+			fprintf(FBL_ERROR_OUT, "Will not delete the first sound in list! (id: %d)\nUse destroy_all to get rid of it..\n", id);
+#endif
+		}
 
 	}
 #ifdef FBL_DEBUG

@@ -90,23 +90,28 @@ void engine_phys_step(int fps)
 cpBody *engine_phys_add_body(int type, float m, int w, int h, int r, int body_type, bool can_rotate)
 {
 
-	cpBody *body = NULL;
+	cpBody* body = NULL;
 
 
 	switch (type)
 	{
 		case FBL_LINE :
-			body = cpSpaceGetStaticBody(fbl_phys_space);	// unnecessary I think..
+			//body = cpSpaceGetStaticBody(fbl_phys_space);	// unnecessary I think..
 		break;
 		case FBL_RECT :
 			if (body_type == FBL_PHYS_DYNAMIC)
 				body = cpSpaceAddBody(fbl_phys_space, cpBodyNew(m, can_rotate ? cpMomentForBox(m, (float)w, (float)h) : INFINITY));
 			else if (body_type == FBL_PHYS_KINEMATIC)
 				body = cpSpaceAddBody(fbl_phys_space, cpBodyNewKinematic());
-			//else if (body_type == FBL_PHYS_STATIC)
-				//body = cpSpaceAddBody(fbl_phys_space, cpBodyNewStatic());
+			else if (body_type == FBL_PHYS_STATIC) {
+
+				//body = cpSpaceAddBody(fbl_phys_space, cpBodyNewKinematic());
 				//cpBodySetType(body, CP_BODY_TYPE_STATIC);
-				// NOTE: add static bodies at some point! :)
+				//printf("body-type(cm): %d, body-type(fbl: %d)\n", cpBodyGetType(body), body_type);
+				// find a way to add static bodies :)
+				// 
+
+			}
 		break;
 		case FBL_CIRCLE :
 			body = cpSpaceAddBody(fbl_phys_space, cpBodyNew(m, can_rotate ? cpMomentForCircle(m, (float)r, (float)r, cpvzero) : INFINITY));

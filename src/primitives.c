@@ -178,9 +178,12 @@ void fbl_delete_prim(int id)
 				direct_prim_ref[id] = NULL;
 
 		}
-		else
+		else {
 			fbl_set_prim_active(id, false);  // a kinda hacky way to avoid crash when deleting head node...
-			//fprintf(FBL_ERROR_OUT, "Will not delete the first primitive in list! Use destroy_all..\n");
+#ifdef FBL_DEBUG
+			fprintf(FBL_ERROR_OUT, "Will not delete the first prim in list! (id: %d) It's just deactivated!\nUse destroy_all to get rid of it..\n", id);
+#endif
+		}
 
 	}
 #ifdef FBL_DEBUG
@@ -581,10 +584,12 @@ int destroy_prim_phys(int tag, void *prim, void *dummy)
 
 	if(((FBL_PRIM *)prim)->physics_on)
 	{
+		// lines have static body (no need to free), could have used cpBodyGetType(body) also, check for static body.
+
 		engine_phys_remove_shape(((FBL_PRIM *)prim)->phys_shape);
         if(((FBL_PRIM *)prim)->type != FBL_LINE) engine_phys_remove_body(((FBL_PRIM *)prim)->phys_body);
 		cpShapeFree(((FBL_PRIM *)prim)->phys_shape);	/* free shape first!! */
-		if(((FBL_PRIM *)prim)->type != FBL_LINE) cpBodyFree(((FBL_PRIM *)prim)->phys_body); // lines have static body (no need to free)
+		if(((FBL_PRIM *)prim)->type != FBL_LINE) cpBodyFree(((FBL_PRIM *)prim)->phys_body);
 	}
 
 	return 0;
