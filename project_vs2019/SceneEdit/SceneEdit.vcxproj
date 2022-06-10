@@ -155,7 +155,7 @@
     <ClInclude Include="..\..\src\engine.h" />
     <ClInclude Include="..\..\src\fbl.h" />
     <ClInclude Include="..\..\src\fbl.hpp" />
-    <ClInclude Include="..\..\tools\ScenEdit\ScenEdit.h" />
+    <ClInclude Include="..\..\tools\ScenEdit\ScenEdit.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

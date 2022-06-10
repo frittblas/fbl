@@ -1,0 +1,10 @@
+soon..
+
+This is supposed to be a super simple map editor that outputs Lua-code.
+
+Use the fbl UI-functions and create a simple interface for drawing sprites after
+loading a sprite-sheet. Allow ability to set layers, sort by layer, turn on
+physics (static(not impl. yet (do it!))/kinetic).
+
+Then just output a Lua file that creates all the sprites and sets the correct
+properties, that can be loaded in a game.
