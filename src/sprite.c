@@ -264,6 +264,36 @@ void fbl_delete_sprite(int id)
 
 
 /*
+ * This lets you change the sprite-image
+ */
+void fbl_set_sprite_image(int id, int x, int y, int w, int h, int r)
+{
+
+	FBL_SPRITE* sprite = NULL;
+	DLLIST* item = get_sprite_item_at_id(id);
+
+	if (item != NULL)
+	{
+		sprite = ((FBL_SPRITE*)item->Object);
+
+		sprite->source_rect.x = x;
+		sprite->source_rect.y = y;
+		sprite->source_rect.w = w;
+		sprite->source_rect.h = h;
+
+		sprite->dest_rect.w = w;
+		sprite->dest_rect.h = h;
+
+		sprite->radius = r;
+
+	}
+#ifdef FBL_DEBUG
+	else fprintf(FBL_ERROR_OUT, "Tried to set image for sprite %d, that does not exist!\n", id);
+#endif
+
+}
+
+/*
  * Set which point all sprites are drawn from
  */
 void fbl_set_sprite_align(int mode)

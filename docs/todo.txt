@@ -202,6 +202,8 @@ Make android version concat the required .lua-files then run the lua load_string
 Raycast collission (shape gets returned (i think), but who's hape is it? :)
 Delete demo 1. Make something else :) demo 1 is horrible.
 
+Add set_sprite_image to lua
+
 start SceneEdit
 start Lotro
 
