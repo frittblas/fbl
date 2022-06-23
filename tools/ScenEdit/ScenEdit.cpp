@@ -80,10 +80,11 @@ ScenEdit::ScenEdit() {
 
 	// first UI
 
-	// dark grey, filled rect with alpha as bg
-	bgRectId = fbl_create_prim(FBL_RECT, fbl_get_screen_w() - 160, 0, 160, fbl_get_screen_h(), 0, 0, true);
+	// dark grey, filled rect with alpha as bg, draw from middle 2X size
+	bgRectId = fbl_create_prim(FBL_RECT, fbl_get_screen_w() - 160, fbl_get_screen_h() / 2, 160, fbl_get_screen_h() / 2, 0, 0, true);
 	fbl_set_prim_color(bgRectId, 40, 40, 40, 90);
 	fbl_fix_prim_to_screen(bgRectId, true);
+
 
 	// gui buttons for selecting current tile to draw
 	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, select_sprite_left));
@@ -104,12 +105,16 @@ ScenEdit::ScenEdit() {
 	fbl_fix_sprite_to_screen(drawTileId, true);
 
 	// create the map marker rect
-	mapMarkerId = fbl_create_prim(FBL_RECT, 0, 0, tileSize, tileSize, 0, 0, false);
-	fbl_set_prim_color(mapMarkerId, 255, 255, 255, 255);
-	fbl_fix_prim_to_screen(mapMarkerId, false);
+	mapMarkerX = 32 + tileSize / 2;
+	mapMarkerY = 32 + tileSize / 2;
+	mapMarkerId = fbl_create_prim(FBL_RECT, mapMarkerX, mapMarkerY, tileSize / 2, tileSize / 2, 0, 0, false);
+	// rects are 2X size in fbl :) pls fix (it's because of the trasnlate shape stuff just scale that down 2x)
+	//fbl_set_prim_color(mapMarkerId, 255, 255, 255, 50);
+	//fbl_fix_prim_to_screen(mapMarkerId, false);
 
 
-	std::cout << "Constructor called!" << std::endl;
+	std::cout << "Prims: " << fbl_get_num_prims() << std::endl;
+	std::cout << "UI's: " << fbl_get_num_ui_elems() << std::endl;
 
 }
 
@@ -129,7 +134,7 @@ ScenEdit::~ScenEdit() {
 	fbl_lua_shutdown();
 	fbl_phys_shutdown();
 
-	std::cout << "Destructor called!" << std::endl;
+	std::cout << "Bye!" << std::endl;
 
 }
 
@@ -146,14 +151,14 @@ void ScenEdit::getInput() {
 	if (fbl_get_key_down(FBLK_TAB) && keyAccess == 0) {
 
 		std::cout << "Toggle GUI!" << std::endl;
-		showGUI = !showGUI;
+		
 		toggleGUI();
-		keyAccess = 10;
+		keyAccess = spdMed;
 
 	}
 
 	// move camera
-	if (fbl_get_key_down(FBLK_A) && keyAccess == 0) {
+	if (fbl_get_key_down(FBLK_A) && fbl_get_camera_x() > 0 && keyAccess == 0) {
 		fbl_set_camera_xy(fbl_get_camera_x() - tileSize, fbl_get_camera_y());
 		keyAccess = spdFast;
 	}
@@ -161,7 +166,7 @@ void ScenEdit::getInput() {
 		fbl_set_camera_xy(fbl_get_camera_x() + tileSize, fbl_get_camera_y());
 		keyAccess = spdFast;
 	}
-	if (fbl_get_key_down(FBLK_W) && keyAccess == 0) {
+	if (fbl_get_key_down(FBLK_W) && fbl_get_camera_y() > 0 && keyAccess == 0) {
 		fbl_set_camera_xy(fbl_get_camera_x(), fbl_get_camera_y() - tileSize);
 		keyAccess = spdFast;
 	}
@@ -172,14 +177,28 @@ void ScenEdit::getInput() {
 
 	// move marker
 	if (fbl_get_key_down(FBLK_RIGHT) && keyAccess == 0) {
-
+		mapMarkerX += tileSize;
+		fbl_set_prim_xy(mapMarkerId, mapMarkerX, mapMarkerY);
+		keyAccess = spdFast;
+	}
+	if (fbl_get_key_down(FBLK_LEFT) && mapMarkerX > 0 && keyAccess == 0) {
 		mapMarkerX -= tileSize;
-		fbl_set_prim_xy(mapMarkerId, mapMarkerX, mapMarkerY );
+		fbl_set_prim_xy(mapMarkerId, mapMarkerX, mapMarkerY);
+		keyAccess = spdFast;
+	}
+	if (fbl_get_key_down(FBLK_UP) && mapMarkerY > 0 && keyAccess == 0) {
+		mapMarkerY -= tileSize;
+		fbl_set_prim_xy(mapMarkerId, mapMarkerX, mapMarkerY);
+		keyAccess = spdFast;
+	}
+	if (fbl_get_key_down(FBLK_DOWN) && keyAccess == 0) {
+		mapMarkerY += tileSize;
+		fbl_set_prim_xy(mapMarkerId, mapMarkerX, mapMarkerY);
 		keyAccess = spdFast;
 	}
 
 	// mouse clicks
-	if (fbl_get_mouse_click(FBLMB_LEFT) && (fbl_get_mouse_x() < (fbl_get_screen_w() - 160)) && keyAccess == 0) {
+	if (fbl_get_mouse_click(FBLMB_LEFT) && (fbl_get_mouse_x() < (fbl_get_screen_w() - 300)) && keyAccess == 0) {
 
 		mapMarkerX = fbl_get_mouse_x();
 		mapMarkerY = fbl_get_mouse_y();
@@ -189,7 +208,11 @@ void ScenEdit::getInput() {
 		int tmp = fbl_create_sprite(drawTileX, drawTileY, tileSize, tileSize, 0);
 		fbl_set_sprite_xy(tmp, mapMarkerX + fbl_get_camera_x(), mapMarkerY + fbl_get_camera_y());
 
+		// set the map marker xy where you clicked, conpensate for drawing from the center and camera
 		fbl_set_prim_xy(mapMarkerId, mapMarkerX + fbl_get_camera_x(), mapMarkerY + fbl_get_camera_y());
+
+		std::cout << "click x: " << fbl_get_mouse_x() << std::endl;
+
 
 		keyAccess = spdMed;
 
@@ -212,19 +235,13 @@ void ScenEdit::snapToGrid(int &x, int &y)
 
 void ScenEdit::toggleGUI() {
 
-	if (showGUI) {
-		fbl_set_prim_active(bgRectId, true);
-		fbl_set_sprite_active(drawTileId, true);
+	showGUI = !showGUI;
 
-		for (int i : guiId)
-			fbl_set_ui_elem_active(i, true);
-	} else {
-		fbl_set_prim_active(bgRectId, false);
-		fbl_set_sprite_active(drawTileId, false);
+	fbl_set_prim_active(bgRectId, showGUI);
+	fbl_set_sprite_active(drawTileId, showGUI);
 
-		for (int i : guiId)
-			fbl_set_ui_elem_active(i, false);
-	}
+	for (int i : guiId)
+		fbl_set_ui_elem_active(i, showGUI);
 
 }
 

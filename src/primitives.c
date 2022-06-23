@@ -727,10 +727,10 @@ int render_prim(int tag, void *prim, void *dummy)
         temp_rect.w = p->dest_rect.w;
         temp_rect.h = p->dest_rect.h;
 
-		if (temp_rect.x > -temp_rect.w && temp_rect.x < (int)fbl_engine.w &&
-			temp_rect.y > -temp_rect.h && temp_rect.y < (int)fbl_engine.h)
+		//if (temp_rect.x > -temp_rect.w && temp_rect.x < (int)fbl_engine.w &&
+			//temp_rect.y > -temp_rect.h && temp_rect.y < (int)fbl_engine.h)
 
-		{
+		//{
 
 			SDL_SetRenderDrawColor(fbl_engine.renderer, p->color.r, p->color.g, p->color.b, p->color.a);
 			SDL_SetRenderDrawBlendMode(fbl_engine.renderer, SDL_BLENDMODE_BLEND);
@@ -795,7 +795,7 @@ int render_prim(int tag, void *prim, void *dummy)
 
 			}
 
-		}
+		//} // culling
         
 	}
 

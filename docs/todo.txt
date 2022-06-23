@@ -199,10 +199,13 @@ Scale Android and fullscreen pc to fill the screen! experimenting, scale works g
 Fix one particle to screen. (don't worry, threads will help with performance w. alot of particles :)
 
 Make android version concat the required .lua-files then run the lua load_string().
-Raycast collission (shape gets returned (i think), but who's hape is it? :)
+Raycast collission (shape gets returned, but who's shape is it? :)
 Delete demo 1. Make something else :) demo 1 is horrible.
 
 Add set_sprite_image to lua
+something buggy about ui elements/prim/rect fix it :)
+ok narrowed it down to rect (not circle) is twice as fat as it should! Find other instances of rect pls :)
+ok fbl rect is not great, it always gets draw twice the size, and the culling is not good either.
 
 start SceneEdit
 start Lotro

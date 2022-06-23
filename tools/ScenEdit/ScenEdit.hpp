@@ -17,7 +17,6 @@
 #include "../../src/fbl.hpp"
 
 
-
 class ScenEdit {
 
     private:
