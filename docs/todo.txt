@@ -206,6 +206,7 @@ Add set_sprite_image to lua
 something buggy about ui elements/prim/rect fix it :)
 ok narrowed it down to rect (not circle) is twice as fat as it should! Find other instances of rect pls :)
 ok fbl rect is not great, it always gets draw twice the size, and the culling is not good either.
+just add a up left aligned rect with normal size to list of prims for now.
 
 start SceneEdit
 start Lotro
