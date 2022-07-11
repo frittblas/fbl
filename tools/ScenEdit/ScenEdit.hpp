@@ -34,7 +34,7 @@ class ScenEdit {
         bool showGUI = true;
         int keyAccess = 10;
         std::vector<int> guiId; // all the id's for the Gui elements.
-        std::vector<TileData> tile;
+        std::vector<TileData*> tile;
 
 
     public:

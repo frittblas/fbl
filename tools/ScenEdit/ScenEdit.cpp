@@ -71,7 +71,7 @@ int incMapX(int x, int y) {
 
 	editor->mapWidth++;
 
-	fbl_update_text(editor->mapSizeXTextId, 255, 255, 255, 255, "Map size x: %d", editor->mapWidth);
+	fbl_update_text(editor->mapSizeXTextId, 255, 255, 255, 255, "Map width: %d", editor->mapWidth);
 
 	return 0;
 
@@ -83,7 +83,7 @@ int incMapY(int x, int y) {
 
 	editor->mapHeight++;
 
-	fbl_update_text(editor->mapSizeYTextId, 255, 255, 255, 255, "Map size y: %d", editor->mapHeight);
+	fbl_update_text(editor->mapSizeYTextId, 255, 255, 255, 255, "Map height: %d", editor->mapHeight);
 
 	return 0;
 
@@ -104,6 +104,12 @@ ScenEdit::ScenEdit() {
 	// allocate memory for the Tile-list
 	tile.reserve(mapWidth * mapHeight);
 
+	// set all elements to nullptr
+	for (int i = 0; i < mapWidth * mapHeight; i++)
+		tile.push_back(nullptr);
+
+	std::cout << "tile vector size" << tile.size() << std::endl;
+
 	// load textures
 	fbl_load_ui_texture("ui.png");	// load ui texture
 	fbl_load_texture("spritesheet_.png");	// load sprite texture
@@ -119,7 +125,7 @@ ScenEdit::ScenEdit() {
 	fbl_fix_prim_to_screen(bgRectId, true);
 
 	// plain text ids start at 0
-	fbl_create_text(0, 0, 0, 255, "Select tile:");
+	fbl_create_text(255, 255, 255, 255, "Select tile:");
 	fbl_set_text_xy(0, fbl_get_screen_w() - 300, 64);
 
 	// gui buttons for selecting current tile to draw
@@ -141,8 +147,8 @@ ScenEdit::ScenEdit() {
 	fbl_fix_sprite_to_screen(drawTileId, true);
 
 	// text showing map size
-	mapSizeXTextId = fbl_create_text(0, 0, 0, 255, "Map size x: %d (+)", mapWidth);
-	mapSizeYTextId = fbl_create_text(0, 0, 0, 255, "Map size y: %d (+)", mapHeight);
+	mapSizeXTextId = fbl_create_text(0, 0, 0, 255, "Map width: %d (+)", mapWidth);
+	mapSizeYTextId = fbl_create_text(0, 0, 0, 255, "Map height: %d (+)", mapHeight);
 	fbl_set_text_xy(mapSizeXTextId, fbl_get_screen_w() - 300, 160);
 	fbl_set_text_xy(mapSizeYTextId, fbl_get_screen_w() - 300, 200);
 
@@ -223,7 +229,7 @@ void ScenEdit::getInput() {
 	}
 
 	// move marker
-	if (fbl_get_key_down(FBLK_RIGHT) && mapMarkerX < (mapWidth * tileSize) && keyAccess == 0) {
+	if (fbl_get_key_down(FBLK_RIGHT) && mapMarkerX < ((mapWidth - 1) * tileSize) && keyAccess == 0) {
 		mapMarkerX += tileSize;
 		fbl_set_prim_xy(mapMarkerId, mapMarkerX, mapMarkerY);
 		keyAccess = spdFast;
@@ -238,7 +244,7 @@ void ScenEdit::getInput() {
 		fbl_set_prim_xy(mapMarkerId, mapMarkerX, mapMarkerY);
 		keyAccess = spdFast;
 	}
-	if (fbl_get_key_down(FBLK_DOWN) && mapMarkerY < (mapHeight * tileSize) && keyAccess == 0) {
+	if (fbl_get_key_down(FBLK_DOWN) && mapMarkerY < ((mapHeight - 1) * tileSize) && keyAccess == 0) {
 		mapMarkerY += tileSize;
 		fbl_set_prim_xy(mapMarkerId, mapMarkerX, mapMarkerY);
 		keyAccess = spdFast;
@@ -247,16 +253,22 @@ void ScenEdit::getInput() {
 	// space bar plots a tile
 	if (fbl_get_key_down(FBLK_SPACE) && keyAccess == 0) {
 		
-		if (tile.at(mapMarkerX + mapWidth * mapMarkerY).id > 0) {
+		//if (tile[mapMarkerX + mapWidth * mapMarkerY] == nullptr) {	// only add a sprite if the vector-element is empty
+
+			if (tile.at(mapMarkerX + mapWidth * mapMarkerY) == nullptr) {	// only add a sprite if the vector-element is empty
 
 			printf("mapMarkerX %d, Y: %d\n", mapMarkerX / tileSize, mapMarkerY / tileSize);
 
 			int tmp = fbl_create_sprite(drawTileX, drawTileY, tileSize, tileSize, 0);
 			fbl_set_sprite_xy(tmp, mapMarkerX + fbl_get_camera_x(), mapMarkerY + fbl_get_camera_y());
 
+			// add a new element to the vector
+			TileData* tmpTile = new TileData();
+			tile[mapMarkerX + mapWidth * mapMarkerY] = tmpTile;
+
 		}
 
-			keyAccess = spdMed;
+		keyAccess = spdMed;
 	}
 
 
@@ -273,6 +285,7 @@ void ScenEdit::getInput() {
 
 		// set the map marker xy where you clicked
 		fbl_set_prim_xy(mapMarkerId, mapMarkerX + fbl_get_camera_x(), mapMarkerY + fbl_get_camera_y());
+
 
 		std::cout << "click x: " << fbl_get_mouse_x() << std::endl;
 
