@@ -149,12 +149,14 @@
     <ClCompile Include="..\..\src\text.c" />
     <ClCompile Include="..\..\src\thread.c" />
     <ClCompile Include="..\..\src\ui.c" />
+    <ClCompile Include="..\..\tools\ScenEdit\Disk.cpp" />
     <ClCompile Include="..\..\tools\ScenEdit\ScenEdit.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\engine.h" />
     <ClInclude Include="..\..\src\fbl.h" />
     <ClInclude Include="..\..\src\fbl.hpp" />
+    <ClInclude Include="..\..\tools\ScenEdit\Disk.hpp" />
     <ClInclude Include="..\..\tools\ScenEdit\ScenEdit.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

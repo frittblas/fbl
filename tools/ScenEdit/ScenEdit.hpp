@@ -38,17 +38,14 @@ class ScenEdit {
 
 
     public:
-        uint32_t mapWidth = 30;
-        uint32_t mapHeight = 16;
-        uint32_t bgRectId;
-        uint32_t drawTileId;
+        uint32_t mapWidth = 45; // 30
+        uint32_t mapHeight = 25; // 17
         uint32_t drawTileX = 0;
         uint32_t drawTileY = 0;
-        uint32_t mapSizeXTextId;
-        uint32_t mapSizeYTextId;
-        uint32_t mapMarkerId;
-        int mapMarkerX = 0;
-        int mapMarkerY = 0;
+        uint32_t mapWtextId, mapHtextId;
+        uint32_t bgRectId, drawTileId, mapMarkerId;
+        uint32_t mapMarkerX = 0;
+        uint32_t mapMarkerY = 0;
 
         const int tileSize = 32;
         const int spdFast = 5;
@@ -60,7 +57,9 @@ class ScenEdit {
 
         void tick();
         void getInput();
-        void snapToGrid(int &x, int &y);
+        void addTile();
+        void removeTile();
+        void snapToGrid(uint32_t &x, uint32_t &y);
         void toggleGUI();
 
 };
