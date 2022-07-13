@@ -230,6 +230,12 @@ void ScenEdit::getInput() {
 		keyAccess = spdSlow;
 	}
 
+	// reset map with r
+	if (fbl_get_key_down(FBLK_R) && keyAccess == 0) {
+		resetMap();
+		keyAccess = spdSlow;
+	}
+
 	// move marker
 	if (fbl_get_key_down(FBLK_RIGHT) && mapMarkerX < ((mapWidth - 1) * tileSize) && keyAccess == 0) {
 		mapMarkerX += tileSize;
@@ -347,26 +353,49 @@ void ScenEdit::removeTile() {
 
 void ScenEdit::resetMap() {
 
-	// remove all sprites, delete all the tile elements
+	// remove all sprites, resetting the fbl sprite id counter.
+	fbl_destroy_all_sprites();
+
+	// delete all the tile elements
 	for (TileData* curTile : tile) {
 
 		if (curTile != nullptr) {
-			fbl_delete_sprite(curTile->id);
 			delete curTile;
 		}
 
 	}
 
+	// recreate the current tile to draw, as id 0
+	drawTileX = 96;
+	drawTileY = 416;
+	drawTileId = fbl_create_sprite(drawTileX, drawTileY, tileSize, tileSize, 0);
+	fbl_set_sprite_xy(drawTileId, fbl_get_screen_w() - 96 - 16, 64 - 16); // compensate for ui center-drawing
+	fbl_fix_sprite_to_screen(drawTileId, true);
+
 	// reset the map size to fit the screen (960x540)
 	mapWidth = 30;
 	mapHeight = 17;
 
+	fbl_update_text(editor->mapWtextId, 255, 255, 255, 255, "Map width: %d (+)", editor->mapWidth);
+	fbl_update_text(editor->mapHtextId, 255, 255, 255, 255, "Map height: %d (+)", editor->mapHeight);
+
 	// resize memory for the tile-list
 	tile.resize(mapWidth * mapHeight);
+
+	// clear the vector
+	tile.clear();
 
 	// set all elements to nullptr
 	for (uint32_t i = 0; i < (mapWidth * mapHeight); i++)
 		tile.push_back(nullptr);
+
+	// set the map marker xy to 0
+	mapMarkerX = 0;
+	mapMarkerY = 0;
+	fbl_set_prim_xy(mapMarkerId, mapMarkerX, mapMarkerY);
+
+	// reset the camera
+	fbl_set_camera_xy(0, 0);
 
 	std::cout << "Reset map! Tile vector size: " << tile.size() << std::endl;
 
