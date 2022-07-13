@@ -21,8 +21,8 @@ struct TileData {
     uint32_t id;
     uint32_t x, y;
     uint32_t texture_x, texture_y;
-    uint32_t solid;
-    uint32_t animated;
+    bool kinematic, animated;
+    uint32_t animFrames;
 
 };
 
@@ -43,6 +43,7 @@ class ScenEdit {
         uint32_t drawTileX = 0;
         uint32_t drawTileY = 0;
         uint32_t mapWtextId, mapHtextId;
+        uint32_t animFramesTextId;
         uint32_t bgRectId, drawTileId, mapMarkerId;
         uint32_t mapMarkerX = 0;
         uint32_t mapMarkerY = 0;

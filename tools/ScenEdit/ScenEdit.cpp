@@ -124,6 +124,15 @@ ScenEdit::ScenEdit() {
 	fbl_create_text(255, 255, 255, 255, "Select tile:");
 	fbl_set_text_xy(0, fbl_get_screen_w() - lMargin, 64);
 
+	fbl_create_text(255, 255, 255, 255, "Kinematic: ");
+	fbl_set_text_xy(1, fbl_get_screen_w() - lMargin, 240);
+
+	fbl_create_text(255, 255, 255, 255, "Animated: ");
+	fbl_set_text_xy(2, fbl_get_screen_w() - lMargin, 280);
+
+	fbl_create_text(255, 255, 255, 255, "Save/Load: ");
+	fbl_set_text_xy(3, fbl_get_screen_w() - lMargin, 360);
+
 	// gui buttons for selecting current tile to draw
 	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, selectSpriteLeft));
 	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 128, 64);
@@ -155,6 +164,10 @@ ScenEdit::ScenEdit() {
 	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 96, 160);
 	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, incMapY));
 	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 96, 200);
+
+	// text for animation
+	animFramesTextId = fbl_create_text(255, 255, 255, 255, "Anim frames: %d (-)(+)", 1);
+	fbl_set_text_xy(animFramesTextId, fbl_get_screen_w() - lMargin, 320);
 
 	// create the map marker rect
 	mapMarkerX = 0;
@@ -417,12 +430,15 @@ void ScenEdit::toggleGUI() {
 	fbl_set_prim_active(bgRectId, showGUI);
 
 	// the plain text id's start at 0
-	fbl_set_text_active(0, showGUI);
+	for(int i = 0; i < 4; i++)
+		fbl_set_text_active(i, showGUI);
 
 	fbl_set_sprite_active(drawTileId, showGUI);
 
 	fbl_set_text_active(mapWtextId, showGUI);
 	fbl_set_text_active(mapHtextId, showGUI);
+
+	fbl_set_text_active(animFramesTextId, showGUI);
 
 	for (int i : guiId)
 		fbl_set_ui_elem_active(i, showGUI);
