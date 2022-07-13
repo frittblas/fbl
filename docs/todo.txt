@@ -26,8 +26,8 @@ Audio - samples and music working. Can't get ogg to work in emscripten yet (try 
 !! Found temporary solution: Rename the *.ogg music files you want to use to *.wav.
 Pathfinding - Done. UPDATE: no need to rename anymore. sdl_mixer work like a charm in emscripten now.
 
-2D lights (using blendmode, lightmaps?) - 
-Scene editor - (start by making a simle tilemap editor?)
+2D lights (using blendmode, lightmaps?) - Done!
+Scene editor - (start by making a simle tilemap editor?) - Almost done!
 
 OpenGL es2 (ver 2.0)
 Shaders (ver 2.0)
@@ -192,24 +192,26 @@ is deactivated (have to set_sprite_phys() again))
 Change TP_TASK to FBL_TP_TASK. DONE!! :)
 2d lights (light map and and nice pngs with gradients, circles and stuff, give sprite new variable: is_light) DONE!! Went really well.
 Remove the redundant emscripten chipmunk include dir. DONE!! nice..
-Make "NAME_OF_ASSET_FOLDER" or whatever a fbl-command. So you can change it in code. So the robot game works :) DONE!!
+Make "NAME_OF_ASSET_FOLDER" or whatever an fbl-command. So you can change it in code. So the robot game works :) DONE!!
 
 Scale Android and fullscreen pc to fill the screen! experimenting, scale works great but mouse is off. Logical doesn't work (am I using it right?)
 
-Fix one particle to screen. (don't worry, threads will help with performance w. alot of particles :)
+Fix one particle to screen. (don't worry, threads will help with performance w. alot of particles :) - will fix this when making lotr!
 
 Make android version concat the required .lua-files then run the lua load_string().
 Raycast collission (shape gets returned, but who's shape is it? :)
 Delete demo 1. Make something else :) demo 1 is horrible.
 
 Add set_sprite_image to lua
-something buggy about ui elements/prim/rect fix it :)
+something buggy about ui elements/prim/rect fix it :) (kinda solved: unfilled prim rect is drawn 2x the size, just deal with it)
 ok narrowed it down to rect (not circle) is twice as fat as it should! Find other instances of rect pls :)
 ok fbl rect is not great, it always gets draw twice the size, and the culling is not good either.
-just add a up left aligned rect with normal size to list of prims for now.
+just add a up left aligned rect with normal size to list of prims for now. done.
 
-start SceneEdit
-start Lotro
+Figure out how to compile C++ projects with emscripten (mixed with C), maybe compile fbl as lib? fbl.bc, then em++ scenEdit.cpp.
+
+start SceneEdit - coming along nicely
+start Lotro - after scenEdit
 
 
 }
