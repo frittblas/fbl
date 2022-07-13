@@ -32,7 +32,7 @@ int selectSpriteLeft(int x, int y) {
 
 int selectSpriteRight(int x, int y) {
 
-	if (editor->drawTileX < 500) // change this to sprite_texture_w - tileSize
+	if (editor->drawTileX < 512) // change this to sprite_texture_w - tileSize
 		editor->drawTileX += editor->tileSize;
 
 	fbl_set_sprite_image(editor->drawTileId, editor->drawTileX, editor->drawTileY, editor->tileSize, editor->tileSize, 0);
@@ -54,7 +54,7 @@ int selectSpriteUp(int x, int y) {
 
 int selectSpriteDown(int x, int y) {
 
-	if (editor->drawTileY < 500)	// change this to sprite_texture_h - tileSize
+	if (editor->drawTileY < 512)	// change this to sprite_texture_h - tileSize
 		editor->drawTileY += editor->tileSize;
 
 	fbl_set_sprite_image(editor->drawTileId, editor->drawTileX, editor->drawTileY, editor->tileSize, editor->tileSize, 0);
@@ -68,9 +68,7 @@ int selectSpriteDown(int x, int y) {
 int incMapX(int x, int y) {
 
 	std::cout << "inc map width" << std::endl;
-
 	editor->mapWidth++;
-
 	fbl_update_text(editor->mapWtextId, 255, 255, 255, 255, "Map width: %d (+)", editor->mapWidth);
 
 	return 0;
@@ -80,9 +78,7 @@ int incMapX(int x, int y) {
 int incMapY(int x, int y) {
 
 	std::cout << "inc map height" << std::endl;
-
 	editor->mapHeight++;
-
 	fbl_update_text(editor->mapHtextId, 255, 255, 255, 255, "Map height: %d (+)", editor->mapHeight);
 
 	return 0;
@@ -93,22 +89,22 @@ int incMapY(int x, int y) {
 
 ScenEdit::ScenEdit() {
 
-    // set up the ui and map based on initializer list
+	int lMargin = 300; // Gui text gets drawn this far from the right
 
-	drawTileX = 96;
-	drawTileY = 416;
+    // set up the editor
 
 	// draw everything from top left
 	fbl_set_sprite_align(FBL_SPRITE_ALIGN_UP_LEFT);
 
-	// allocate memory for the Tile-list
+	// allocate memory for the tile-list
 	tile.reserve(mapWidth * mapHeight);
 
 	// set all elements to nullptr
 	for (uint32_t i = 0; i < (mapWidth * mapHeight); i++)
 		tile.push_back(nullptr);
 
-	std::cout << "tile vector size" << tile.size() << std::endl;
+	std::cout << "Welcome to ScenEdit!" << std::endl;
+	std::cout << "Tile vector size: " << tile.size() << std::endl;
 
 	// load textures
 	fbl_load_ui_texture("ui.png");	// load ui texture
@@ -126,7 +122,7 @@ ScenEdit::ScenEdit() {
 
 	// plain text ids start at 0
 	fbl_create_text(255, 255, 255, 255, "Select tile:");
-	fbl_set_text_xy(0, fbl_get_screen_w() - 300, 64);
+	fbl_set_text_xy(0, fbl_get_screen_w() - lMargin, 64);
 
 	// gui buttons for selecting current tile to draw
 	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, selectSpriteLeft));
@@ -142,6 +138,8 @@ ScenEdit::ScenEdit() {
 	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 96, 96);
 
 	// the current tile to draw
+	drawTileX = 96;
+	drawTileY = 416;
 	drawTileId = fbl_create_sprite(drawTileX, drawTileY, tileSize, tileSize, 0);
 	fbl_set_sprite_xy(drawTileId, fbl_get_screen_w() - 96 - 16, 64 - 16); // compensate for ui center-drawing
 	fbl_fix_sprite_to_screen(drawTileId, true);
@@ -149,8 +147,8 @@ ScenEdit::ScenEdit() {
 	// text showing map size
 	mapWtextId = fbl_create_text(255, 255, 255, 255, "Map width: %d (+)", mapWidth);
 	mapHtextId = fbl_create_text(255, 255, 255, 255, "Map height: %d (+)", mapHeight);
-	fbl_set_text_xy(mapWtextId, fbl_get_screen_w() - 300, 160);
-	fbl_set_text_xy(mapHtextId, fbl_get_screen_w() - 300, 200);
+	fbl_set_text_xy(mapWtextId, fbl_get_screen_w() - lMargin, 160);
+	fbl_set_text_xy(mapHtextId, fbl_get_screen_w() - lMargin, 200);
 
 	// gui buttons for expanding the map size
 	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, incMapX));
@@ -162,8 +160,8 @@ ScenEdit::ScenEdit() {
 	mapMarkerX = 0;
 	mapMarkerY = 0;
 	mapMarkerId = fbl_create_prim(FBL_RAY + 1, mapMarkerX, mapMarkerY, tileSize, tileSize, 0, 0, false);
-	// rects are 2X size in fbl :) pls fix (it's because of the translate shape stuff just scale that down 2x)
-	// temporarily fixed this by adding a new shape to draw (after FBL_RAY, in primitives.c)
+	// rects are 2X size in fbl :)(it's because of the translate shape stuff. Just scale down 2x to make fit)
+	// temporarily fixed this by adding a new shape to draw (1 after FBL_RAY, in primitives.c)
 	fbl_set_prim_color(mapMarkerId, 255, 255, 255, 100);
 
 	
@@ -181,10 +179,10 @@ ScenEdit::~ScenEdit() {
 	fbl_destroy_ttf_font();
 	fbl_destroy_ui_texture();
 	fbl_destroy_all_ui_elems();
-	fbl_destroy_all_emitters();
-	fbl_destroy_all_sounds();
-	fbl_destroy_music();
-	fbl_pathf_shutdown();
+	//fbl_destroy_all_emitters();
+	//fbl_destroy_all_sounds();
+	//fbl_destroy_music();
+	//fbl_pathf_shutdown();
 	fbl_lua_shutdown();
 	fbl_phys_shutdown();
 
@@ -203,7 +201,6 @@ void ScenEdit::getInput() {
 	if (fbl_get_key_down(FBLK_TAB) && keyAccess == 0) {
 
 		std::cout << "Toggle GUI!" << std::endl;
-		
 		toggleGUI();
 		keyAccess = spdMed;
 
@@ -227,13 +224,11 @@ void ScenEdit::getInput() {
 		keyAccess = spdFast;
 	}
 
-
 	// center camera with c
 	if (fbl_get_key_down(FBLK_C) && keyAccess == 0) {
 		fbl_set_camera_xy(0, 0);
 		keyAccess = spdSlow;
 	}
-
 
 	// move marker
 	if (fbl_get_key_down(FBLK_RIGHT) && mapMarkerX < ((mapWidth - 1) * tileSize) && keyAccess == 0) {
@@ -259,77 +254,51 @@ void ScenEdit::getInput() {
 
 	// space bar plots a tile
 	if (fbl_get_key_down(FBLK_SPACE) && keyAccess == 0) {
-		
 		addTile(); // add tile at the marker
-
 		keyAccess = spdMed;
 	}
 
 	// delete removes a tile
 	if (fbl_get_key_down(FBLK_DELETE) && keyAccess == 0) {
-
 		removeTile(); // remove tile at the marker
-
 		keyAccess = spdMed;
 	}
 
-
-	// mouse clicks
-	if (fbl_get_mouse_click(FBLMB_LEFT) && (fbl_get_mouse_x() < (fbl_get_screen_w() - 320)) && keyAccess == 0) {
-
-		uint32_t tmpX = fbl_get_mouse_x() + fbl_get_camera_x();
-		uint32_t tmpY = fbl_get_mouse_y() + fbl_get_camera_y();
-
-		snapToGrid(tmpX, tmpY);
-
-		std::cout << "Camera x, y" << fbl_get_camera_x() << ", " << fbl_get_camera_y() << std::endl;
-
-		// check if click is in bounds
-		if ((tmpX < mapWidth * tileSize) && (tmpY < mapHeight * tileSize)) {
-
-			mapMarkerX = tmpX;
-			mapMarkerY = tmpY;
-
-			// set the map marker xy where you clicked
-			fbl_set_prim_xy(mapMarkerId, mapMarkerX, mapMarkerY);
-
-			addTile();
-
-		}
-
-		keyAccess = spdMed;
-	}
-
-	if (fbl_get_mouse_click(FBLMB_RIGHT) && (fbl_get_mouse_x() < (fbl_get_screen_w() - 320)) && keyAccess == 0) {
-
-		uint32_t tmpX = fbl_get_mouse_x() + fbl_get_camera_x();
-		uint32_t tmpY = fbl_get_mouse_y() + fbl_get_camera_y();
-
-		snapToGrid(tmpX, tmpY);
-
-		std::cout << "Camera x, y" << fbl_get_camera_x() << ", " << fbl_get_camera_y() << std::endl;
-
-		// check if click is in bounds
-		if ((tmpX < mapWidth * tileSize) && (tmpY < mapHeight * tileSize)) {
-
-			mapMarkerX = tmpX;
-			mapMarkerY = tmpY;
-
-			// set the map marker xy where you clicked
-			fbl_set_prim_xy(mapMarkerId, mapMarkerX, mapMarkerY);
-
-			removeTile();
-
-		}
-
-		keyAccess = spdMed;
-	}
-
-
+	processMouse(FBLMB_LEFT);
+	processMouse(FBLMB_RIGHT);
 
 	keyAccess--;
 	if (keyAccess < 0)
 		keyAccess = 0;
+
+}
+
+void ScenEdit::processMouse(int button) {
+
+	if (fbl_get_mouse_click(button) && (fbl_get_mouse_x() < (fbl_get_screen_w() - 320)) && keyAccess == 0) {
+
+		uint32_t tmpX = fbl_get_mouse_x() + fbl_get_camera_x();
+		uint32_t tmpY = fbl_get_mouse_y() + fbl_get_camera_y();
+
+		snapToGrid(tmpX, tmpY);
+
+		// check if click is in bounds
+		if ((tmpX < mapWidth * tileSize) && (tmpY < mapHeight * tileSize)) {
+
+			// if so, set the marker coords to the new values
+			mapMarkerX = tmpX;
+			mapMarkerY = tmpY;
+
+			// set the map marker xy where you clicked
+			fbl_set_prim_xy(mapMarkerId, mapMarkerX, mapMarkerY);
+
+			// add or remove tile based on mouse button
+			button == FBLMB_LEFT ? addTile() : removeTile();
+
+		}
+
+		keyAccess = spdMed;
+	}
 
 }
 
@@ -350,6 +319,7 @@ void ScenEdit::addTile() {
 
 		// set all values on the tile
 		tile[index]->id = tmpId;
+		// add more stuff here
 
 		std::cout << "Added sprite at X: " << mapMarkerX / tileSize << ", Y: " << mapMarkerY / tileSize << std::endl;
 
@@ -372,6 +342,33 @@ void ScenEdit::removeTile() {
 		std::cout << "Removed sprite at X: " << mapMarkerX / tileSize << ", Y: " << mapMarkerY / tileSize << std::endl;
 
 	}
+
+}
+
+void ScenEdit::resetMap() {
+
+	// remove all sprites, delete all the tile elements
+	for (TileData* curTile : tile) {
+
+		if (curTile != nullptr) {
+			fbl_delete_sprite(curTile->id);
+			delete curTile;
+		}
+
+	}
+
+	// reset the map size to fit the screen (960x540)
+	mapWidth = 30;
+	mapHeight = 17;
+
+	// resize memory for the tile-list
+	tile.resize(mapWidth * mapHeight);
+
+	// set all elements to nullptr
+	for (uint32_t i = 0; i < (mapWidth * mapHeight); i++)
+		tile.push_back(nullptr);
+
+	std::cout << "Reset map! Tile vector size: " << tile.size() << std::endl;
 
 }
 

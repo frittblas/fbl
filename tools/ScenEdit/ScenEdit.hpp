@@ -57,8 +57,10 @@ class ScenEdit {
 
         void tick();
         void getInput();
+        void processMouse(int button);
         void addTile();
         void removeTile();
+        void resetMap();
         void snapToGrid(uint32_t &x, uint32_t &y);
         void toggleGUI();
 
