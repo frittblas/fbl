@@ -51,7 +51,7 @@ class ScenEdit {
         const int tileSize = 32;
         const int spdFast = 5;
         const int spdMed = 10;
-        const int spdSlow = 20;
+        const int spdSlow = 25;
 
         ScenEdit();     // constructor, set everything up
         ~ScenEdit();    // destructor, clean everything up

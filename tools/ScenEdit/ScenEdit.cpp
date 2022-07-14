@@ -302,7 +302,7 @@ void ScenEdit::processMouse(int button) {
 		snapToGrid(tmpX, tmpY);
 
 		// check if click is in bounds
-		if ((tmpX < mapWidth * tileSize) && (tmpY < mapHeight * tileSize)) {
+		if ((tmpX < (mapWidth * tileSize)) && (tmpY < (mapHeight * tileSize))) {
 
 			// if so, set the marker coords to the new values
 			mapMarkerX = tmpX;
@@ -316,7 +316,7 @@ void ScenEdit::processMouse(int button) {
 
 		}
 
-		keyAccess = spdMed;
+		keyAccess = spdFast;
 	}
 
 }
@@ -487,6 +487,7 @@ void fbl_game_loop()
 void fbl_end()
 {
 
+	editor->resetMap();
 	delete editor;
 
 	std::cout<<"Bye!"<<std::endl;

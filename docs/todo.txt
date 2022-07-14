@@ -202,7 +202,10 @@ Make android version concat the required .lua-files then run the lua load_string
 Raycast collission (shape gets returned, but who's shape is it? :)
 Delete demo 1. Make something else :) demo 1 is horrible.
 
-Add set_sprite_image to lua
+Add set_sprite_image to lua!
+
+Add get_texture_wh to fbl and lua?
+
 something buggy about ui elements/prim/rect fix it :) (kinda solved: unfilled prim rect is drawn 2x the size, just deal with it)
 ok narrowed it down to rect (not circle) is twice as fat as it should! Find other instances of rect pls :)
 ok fbl rect is not great, it always gets draw twice the size, and the culling is not good either.
