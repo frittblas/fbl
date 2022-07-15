@@ -69,7 +69,7 @@ int incMapX(int x, int y) {
 
 	std::cout << "inc map width" << std::endl;
 	editor->mapWidth++;
-	fbl_update_text(editor->mapWtextId, 255, 255, 255, 255, "Map width: %d (+)", editor->mapWidth);
+	fbl_update_text(editor->mapWtextId, 255, 255, 255, 255, (char*)"Map width: %d (+)", editor->mapWidth);
 
 	return 0;
 
@@ -79,7 +79,7 @@ int incMapY(int x, int y) {
 
 	std::cout << "inc map height" << std::endl;
 	editor->mapHeight++;
-	fbl_update_text(editor->mapHtextId, 255, 255, 255, 255, "Map height: %d (+)", editor->mapHeight);
+	fbl_update_text(editor->mapHtextId, 255, 255, 255, 255, (char*)"Map height: %d (+)", editor->mapHeight);
 
 	return 0;
 
@@ -107,8 +107,8 @@ ScenEdit::ScenEdit() {
 	std::cout << "Tile vector size: " << tile.size() << std::endl;
 
 	// load textures
-	fbl_load_ui_texture("ui.png");	// load ui texture
-	fbl_load_texture("spritesheet_.png");	// load sprite texture
+	fbl_load_ui_texture((char*)"ui.png");	// load ui texture
+	fbl_load_texture((char*)"spritesheet_.png");	// load sprite texture
 
 	// load font
 	fbl_load_ttf_font("edosz.ttf", 18);
@@ -121,16 +121,16 @@ ScenEdit::ScenEdit() {
 	fbl_fix_prim_to_screen(bgRectId, true);
 
 	// plain text ids start at 0
-	fbl_create_text(255, 255, 255, 255, "Select tile:");
+	fbl_create_text(255, 255, 255, 255, (char*)"Select tile:");
 	fbl_set_text_xy(0, fbl_get_screen_w() - lMargin, 64);
 
-	fbl_create_text(255, 255, 255, 255, "Kinematic: ");
+	fbl_create_text(255, 255, 255, 255, (char*)"Kinematic: ");
 	fbl_set_text_xy(1, fbl_get_screen_w() - lMargin, 240);
 
-	fbl_create_text(255, 255, 255, 255, "Animated: ");
+	fbl_create_text(255, 255, 255, 255, (char*)"Animated: ");
 	fbl_set_text_xy(2, fbl_get_screen_w() - lMargin, 280);
 
-	fbl_create_text(255, 255, 255, 255, "Save/Load: ");
+	fbl_create_text(255, 255, 255, 255, (char*)"Save/Load: ");
 	fbl_set_text_xy(3, fbl_get_screen_w() - lMargin, 360);
 
 	// gui buttons for selecting current tile to draw
@@ -154,8 +154,8 @@ ScenEdit::ScenEdit() {
 	fbl_fix_sprite_to_screen(drawTileId, true);
 
 	// text showing map size
-	mapWtextId = fbl_create_text(255, 255, 255, 255, "Map width: %d (+)", mapWidth);
-	mapHtextId = fbl_create_text(255, 255, 255, 255, "Map height: %d (+)", mapHeight);
+	mapWtextId = fbl_create_text(255, 255, 255, 255, (char*)"Map width: %d (+)", mapWidth);
+	mapHtextId = fbl_create_text(255, 255, 255, 255, (char*)"Map height: %d (+)", mapHeight);
 	fbl_set_text_xy(mapWtextId, fbl_get_screen_w() - lMargin, 160);
 	fbl_set_text_xy(mapHtextId, fbl_get_screen_w() - lMargin, 200);
 
@@ -166,7 +166,7 @@ ScenEdit::ScenEdit() {
 	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 96, 200);
 
 	// text for animation
-	animFramesTextId = fbl_create_text(255, 255, 255, 255, "Anim frames: %d (-)(+)", 1);
+	animFramesTextId = fbl_create_text(255, 255, 255, 255, (char*)"Anim frames: %d (-)(+)", 1);
 	fbl_set_text_xy(animFramesTextId, fbl_get_screen_w() - lMargin, 320);
 
 	// create the map marker rect
@@ -389,8 +389,8 @@ void ScenEdit::resetMap() {
 	mapWidth = 30;
 	mapHeight = 17;
 
-	fbl_update_text(editor->mapWtextId, 255, 255, 255, 255, "Map width: %d (+)", editor->mapWidth);
-	fbl_update_text(editor->mapHtextId, 255, 255, 255, 255, "Map height: %d (+)", editor->mapHeight);
+	fbl_update_text(editor->mapWtextId, 255, 255, 255, 255, (char*)"Map width: %d (+)", editor->mapWidth);
+	fbl_update_text(editor->mapHtextId, 255, 255, 255, 255, (char*)"Map height: %d (+)", editor->mapHeight);
 
 	// resize memory for the tile-list
 	tile.resize(mapWidth * mapHeight);
@@ -460,7 +460,7 @@ void fbl_start()
 	fbl_engine_init(960, 540, 60);
 	fbl_set_clear_color(50, 50, 150, 255);
 
-	fbl_set_window_title("ScenEdit 1.0");
+	fbl_set_window_title((char*)"ScenEdit 1.0");
 
 	editor = new ScenEdit();
 
