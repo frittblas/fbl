@@ -63,7 +63,7 @@ int lua_get_texture_h(lua_State* lua_env);
 int lua_destroy_texture(lua_State *lua_env);
 int lua_create_sprite(lua_State *lua_env);
 int lua_delete_sprite(lua_State *lua_env);
-int fbl_set_sprite_image(lua_State* lua_env);
+int lua_set_sprite_image(lua_State* lua_env);
 int lua_set_sprite_align(lua_State* lua_env);
 int lua_set_lighting_tint(lua_State* lua_env);
 int lua_set_sprite_is_light(lua_State* lua_env);
