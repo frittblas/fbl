@@ -460,7 +460,7 @@ void fbl_start()
 	fbl_engine_init(960, 540, 60);
 	fbl_set_clear_color(50, 50, 150, 255);
 
-	fbl_set_window_title((char*)"ScenEdit 1.0");
+	fbl_set_window_title((char*) "ScenEdit 1.0");
 
 	editor = new ScenEdit();
 

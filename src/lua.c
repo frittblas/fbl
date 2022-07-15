@@ -58,9 +58,12 @@ int lua_engine_quit(lua_State *lua_env);
 /* sprite.c */
 
 int lua_load_texture(lua_State *lua_env);
+int lua_get_texture_w(lua_State* lua_env);
+int lua_get_texture_h(lua_State* lua_env);
 int lua_destroy_texture(lua_State *lua_env);
 int lua_create_sprite(lua_State *lua_env);
 int lua_delete_sprite(lua_State *lua_env);
+int fbl_set_sprite_image(lua_State* lua_env);
 int lua_set_sprite_align(lua_State* lua_env);
 int lua_set_lighting_tint(lua_State* lua_env);
 int lua_set_sprite_is_light(lua_State* lua_env);
@@ -389,9 +392,12 @@ void register_fbl_functions_to_lua()
 	/* sprite.c */
 
 	lua_register(fbl_lua_env, "fbl_load_texture", lua_load_texture);
+	lua_register(fbl_lua_env, "fbl_get_texture_w", lua_get_texture_w);
+	lua_register(fbl_lua_env, "fbl_get_texture_h", lua_get_texture_h);
 	lua_register(fbl_lua_env, "fbl_destroy_texture", lua_destroy_texture);
 	lua_register(fbl_lua_env, "fbl_create_sprite", lua_create_sprite);
 	lua_register(fbl_lua_env, "fbl_delete_sprite", lua_delete_sprite);
+	lua_register(fbl_lua_env, "fbl_set_sprite_image", lua_set_sprite_image);
 	lua_register(fbl_lua_env, "fbl_set_sprite_align", lua_set_sprite_align);
 	lua_register(fbl_lua_env, "fbl_set_lighting_tint", lua_set_lighting_tint);
 	lua_register(fbl_lua_env, "fbl_set_sprite_is_light", lua_set_sprite_is_light);
@@ -898,6 +904,24 @@ int lua_load_texture(lua_State *lua_env)
 
 }
 
+int lua_get_texture_w(lua_State* lua_env)
+{
+
+	lua_pushnumber(lua_env, (lua_Number)fbl_get_texture_w());
+
+	return 1;
+
+}
+
+int lua_get_texture_h(lua_State* lua_env)
+{
+
+	lua_pushnumber(lua_env, (lua_Number)fbl_get_texture_h());
+
+	return 1;
+
+}
+
 int lua_destroy_texture(lua_State *lua_env)
 { 
 
@@ -928,6 +952,22 @@ int lua_delete_sprite(lua_State *lua_env)
 	int id = (int)lua_tonumber(lua_env, 1);
 
 	fbl_delete_sprite(id);
+
+	return 1;
+
+}
+
+int lua_set_sprite_image(lua_State* lua_env)
+{
+
+	int id = (int)lua_tonumber(lua_env, 1);
+	int x = (int)lua_tonumber(lua_env, 2);
+	int y = (int)lua_tonumber(lua_env, 3);
+	int w = (int)lua_tonumber(lua_env, 4);
+	int h = (int)lua_tonumber(lua_env, 5);
+	int r = (int)lua_tonumber(lua_env, 6);
+
+	fbl_set_sprite_image(id, x, y, w, h, r);
 
 	return 1;
 

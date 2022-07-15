@@ -227,9 +227,12 @@ void fbl_engine_quit(void);
 /* sprite.c */
 
 int    fbl_load_texture(const char *img_file);
+int    fbl_get_texture_w(void);
+int    fbl_get_texture_h(void);
 void   fbl_destroy_texture(void);
 int    fbl_create_sprite(int x, int y, int w, int h, int r);
 void   fbl_delete_sprite(int id);
+void   fbl_set_sprite_image(int id, int x, int y, int w, int h, int r);
 void   fbl_set_sprite_align(int mode);
 void   fbl_set_lighting_tint(bool on_off, uint8_t r, uint8_t g, uint8_t b);
 void   fbl_set_sprite_is_light(int id, bool light);

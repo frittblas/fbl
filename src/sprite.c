@@ -100,6 +100,24 @@ int fbl_load_texture(const char *img_file)
 
 }
 
+/*
+ * Return the width and height of the atlas texture
+ */
+
+int fbl_get_texture_w()
+{
+	int w, h;
+	SDL_QueryTexture(fbl_texture, NULL, NULL, &w, &h);
+	return w;
+}
+
+int fbl_get_texture_h()
+{
+	int w, h;
+	SDL_QueryTexture(fbl_texture, NULL, NULL, &w, &h);
+	return h;
+}
+
 void fbl_destroy_texture()
 {
 

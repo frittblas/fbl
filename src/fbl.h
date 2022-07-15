@@ -273,6 +273,8 @@ void fbl_engine_quit(void);
 /* sprite.c */
 
 int    fbl_load_texture(const char *img_file);
+int    fbl_get_texture_w(void);
+int    fbl_get_texture_h(void);
 void   fbl_destroy_texture(void);
 int    fbl_create_sprite(int x, int y, int w, int h, int r);
 void   fbl_delete_sprite(int id);

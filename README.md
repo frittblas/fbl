@@ -41,7 +41,7 @@ upcoming features (ver 1.0)
 /Hans
 
 
-~150 (146) functions you can call (from C, C++ or Lua) to make 2d game programming
+~150 (149) functions you can call (from C, C++ or Lua) to make 2d game programming
 easy and insanely fun :|
 
 Sprites, primitives, text objects, particle emitters
