@@ -202,9 +202,9 @@ Make android version concat the required .lua-files then run the lua load_string
 Raycast collission (shape gets returned, but who's shape is it? :)
 Delete demo 1. Make something else :) demo 1 is horrible.
 
-Add set_sprite_image to lua!
+Add set_sprite_image to lua! Done!
 
-Add get_texture_wh to fbl and lua?
+Add get_texture_wh to fbl and lua? Done!
 
 something buggy about ui elements/prim/rect fix it :) (kinda solved: unfilled prim rect is drawn 2x the size, just deal with it)
 ok narrowed it down to rect (not circle) is twice as fat as it should! Find other instances of rect pls :)
@@ -214,7 +214,9 @@ just add a up left aligned rect with normal size to list of prims for now. done.
 Figure out how to compile C++ projects with emscripten (mixed with C), maybe compile fbl as lib? fbl.bc, then em++ scenEdit.cpp?
 DONE!! yes, build fbl as a .bc lib, then comment out emscripten.h and html5.h from fbl.h and build the .cpp files linked with fbl.bc.
 Works great! the problem was compiling emscripten.h with em++. Happy times :)
-MAde bat files: build-fbl-lib.bat and build-scenedit-fbl-lib.bat
+Made bat files: build-fbl-lib.bat and build-scenedit-fbl-lib.bat
+
+Add set_ui_elem_val to lua!
 
 start SceneEdit - coming along nicely
 start Lotro - after scenEdit

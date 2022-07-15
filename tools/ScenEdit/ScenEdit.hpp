@@ -21,8 +21,9 @@ struct TileData {
     uint32_t id;
     uint32_t x, y;
     uint32_t texture_x, texture_y;
+    uint32_t layer;
     bool kinematic, animated;
-    uint32_t animFrames;
+    uint32_t animFrames, animSpeed;
 
 };
 
@@ -34,7 +35,6 @@ class ScenEdit {
         bool showGUI = true;
         int keyAccess = 10;
         std::vector<int> guiId; // all the id's for the Gui elements.
-        std::vector<TileData*> tile;
 
 
     public:
@@ -43,10 +43,12 @@ class ScenEdit {
         uint32_t drawTileX = 0;
         uint32_t drawTileY = 0;
         uint32_t mapWtextId, mapHtextId;
-        uint32_t animFramesTextId;
+        uint32_t layerTextId, animFramesTextId;
         uint32_t bgRectId, drawTileId, mapMarkerId;
         uint32_t mapMarkerX = 0;
         uint32_t mapMarkerY = 0;
+
+        std::vector<TileData*> tile;
 
         const int tileSize = 32;
 

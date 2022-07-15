@@ -360,6 +360,7 @@ void   fbl_set_ui_elem_xy(int id, int x, int y);
 int    fbl_get_ui_elem_x(int id);
 int    fbl_get_ui_elem_y(int id);
 int    fbl_get_ui_elem_val(int id);
+void   fbl_set_ui_elem_val(int id, int value);
 void   fbl_set_ui_elem_active(int id, bool active);
 bool   fbl_get_ui_elem_active(int id);
 int    fbl_get_num_ui_elems(void);

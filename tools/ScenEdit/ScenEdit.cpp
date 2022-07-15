@@ -15,6 +15,14 @@
 
 ScenEdit *editor;
 
+
+// return the index for the tile vector based on the cursor coordinates.
+int getIndexAtCursor() {
+
+	return (editor->mapMarkerX / editor->tileSize) + editor->mapWidth * (editor->mapMarkerY / editor->tileSize);
+
+}
+
 //
 // Below are the functions that are called by the Gui buttons
 //
@@ -32,7 +40,7 @@ int selectSpriteLeft(int x, int y) {
 
 int selectSpriteRight(int x, int y) {
 
-	if (editor->drawTileX < 512) // change this to sprite_texture_w - tileSize
+	if (editor->drawTileX < (fbl_get_texture_w() - editor->tileSize))
 		editor->drawTileX += editor->tileSize;
 
 	fbl_set_sprite_image(editor->drawTileId, editor->drawTileX, editor->drawTileY, editor->tileSize, editor->tileSize, 0);
@@ -54,7 +62,7 @@ int selectSpriteUp(int x, int y) {
 
 int selectSpriteDown(int x, int y) {
 
-	if (editor->drawTileY < 512)	// change this to sprite_texture_h - tileSize
+	if (editor->drawTileY < (fbl_get_texture_h() - editor->tileSize))
 		editor->drawTileY += editor->tileSize;
 
 	fbl_set_sprite_image(editor->drawTileId, editor->drawTileX, editor->drawTileY, editor->tileSize, editor->tileSize, 0);
@@ -80,6 +88,115 @@ int incMapY(int x, int y) {
 	std::cout << "inc map height" << std::endl;
 	editor->mapHeight++;
 	fbl_update_text(editor->mapHtextId, 255, 255, 255, 255, (char*)"Map height: %d (+)", editor->mapHeight);
+
+	return 0;
+
+}
+
+// the following functions manipulate individual tiles via gui-buttons
+
+int incLayer(int x, int y) {
+
+
+	int index = getIndexAtCursor();
+
+	if (editor->tile[index] != nullptr) {
+		editor->tile[index]->layer++;
+		fbl_update_text(editor->layerTextId, 255, 255, 255, 255, (char*)"Layer: %d (-+)", editor->tile[index]->layer);
+	}
+
+	return 0;
+
+}
+
+int decLayer(int x, int y) {
+
+	int index = getIndexAtCursor();
+
+	if (editor->tile[index] != nullptr) {
+		if (editor->tile[index]->layer > 0) {
+			editor->tile[index]->layer--;
+			fbl_update_text(editor->layerTextId, 255, 255, 255, 255, (char*)"Layer: %d (-+)", editor->tile[index]->layer);
+		}
+	}
+
+	return 0;
+
+}
+
+int toggleKinematic(int x, int y) {
+
+	int index = getIndexAtCursor();
+
+	if (editor->tile[index] != nullptr) {
+		if (!editor->tile[index]->kinematic)
+			editor->tile[index]->kinematic = true;
+		else if (editor->tile[index]->kinematic)
+			editor->tile[index]->kinematic = false;
+
+		std::cout << "Tile is kinematic: " << editor->tile[index]->kinematic << std::endl;
+
+	}
+
+	return 0;
+
+}
+
+int toggleAnimation(int x, int y) {
+
+
+	int index = getIndexAtCursor();
+
+	if (editor->tile[index] != nullptr) {
+		if (!editor->tile[index]->animated) {
+			editor->tile[index]->animated = true;
+			fbl_set_sprite_animation(editor->tile[index]->id, true, editor->tile[index]->texture_x, editor->tile[index]->texture_y,
+				editor->tileSize, editor->tileSize, editor->tile[index]->animFrames, editor->tile[index]->animSpeed, true);
+		}
+		else if (editor->tile[index]->animated) {
+			editor->tile[index]->animated = false;
+			fbl_set_sprite_animation(editor->tile[index]->id, false, editor->tile[index]->texture_x, editor->tile[index]->texture_y,
+				editor->tileSize, editor->tileSize, editor->tile[index]->animFrames, editor->tile[index]->animSpeed, true);
+		}
+
+		std::cout << "Tile is animated: " << editor->tile[index]->animated << std::endl;
+
+	}
+
+	return 0;
+
+}
+
+int incAnimFrames(int x, int y) {
+
+
+	return 0;
+
+}
+
+int decAnimFrames(int x, int y) {
+
+
+	return 0;
+
+}
+
+int saveMap(int x, int y) {
+
+
+	return 0;
+
+}
+
+int loadMap(int x, int y) {
+
+
+	return 0;
+
+}
+
+int exportLua(int x, int y) {
+
 
 	return 0;
 
@@ -124,14 +241,14 @@ ScenEdit::ScenEdit() {
 	fbl_create_text(255, 255, 255, 255, (char*)"Select tile:");
 	fbl_set_text_xy(0, fbl_get_screen_w() - lMargin, 64);
 
-	fbl_create_text(255, 255, 255, 255, (char*)"Kinematic: ");
-	fbl_set_text_xy(1, fbl_get_screen_w() - lMargin, 240);
+	fbl_create_text(255, 255, 255, 255, (char*)"Kinematic:");
+	fbl_set_text_xy(1, fbl_get_screen_w() - lMargin, 310);
 
-	fbl_create_text(255, 255, 255, 255, (char*)"Animated: ");
-	fbl_set_text_xy(2, fbl_get_screen_w() - lMargin, 280);
+	fbl_create_text(255, 255, 255, 255, (char*)"Animated:");
+	fbl_set_text_xy(2, fbl_get_screen_w() - lMargin, 350);
 
-	fbl_create_text(255, 255, 255, 255, (char*)"Save/Load: ");
-	fbl_set_text_xy(3, fbl_get_screen_w() - lMargin, 360);
+	fbl_create_text(255, 255, 255, 255, (char*)"Save/Load/LuaExp:");
+	fbl_set_text_xy(3, fbl_get_screen_w() - lMargin, 510);
 
 	// gui buttons for selecting current tile to draw
 	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, selectSpriteLeft));
@@ -165,9 +282,41 @@ ScenEdit::ScenEdit() {
 	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, incMapY));
 	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 96, 200);
 
+	// text for layer
+	layerTextId = fbl_create_text(255, 255, 255, 255, (char*)"Layer: %d (-+)", 0);
+	fbl_set_text_xy(layerTextId, fbl_get_screen_w() - lMargin, 270);
+
+	// gui buttons for layer
+	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, decLayer));
+	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 96, 270);
+	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, incLayer));
+	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 48, 270);
+
+	// gui checkbox for kinematic
+	guiId.push_back(fbl_create_ui_elem(FBL_UI_CHECKBOX, 0, 32, 32, 32, toggleKinematic));
+	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 96, 310);
+
+	// gui checkbox for animation
+	guiId.push_back(fbl_create_ui_elem(FBL_UI_CHECKBOX, 0, 32, 32, 32, toggleAnimation));
+	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 96, 350);
+
 	// text for animation
-	animFramesTextId = fbl_create_text(255, 255, 255, 255, (char*)"Anim frames: %d (-)(+)", 1);
-	fbl_set_text_xy(animFramesTextId, fbl_get_screen_w() - lMargin, 320);
+	animFramesTextId = fbl_create_text(255, 255, 255, 255, (char*)"Anim frames: %d (-+)", 1);
+	fbl_set_text_xy(animFramesTextId, fbl_get_screen_w() - lMargin, 390);
+
+	// gui buttons for anim frames
+	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, incAnimFrames));
+	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 96, 390);
+	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, decAnimFrames));
+	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 48, 390);
+
+	// gui buttons for save/load/luaexp
+	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, saveMap));
+	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 96, 510);
+	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, loadMap));
+	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 64, 510);
+	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, exportLua));
+	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 32, 510);
 
 	// create the map marker rect
 	mapMarkerX = 0;
@@ -338,7 +487,15 @@ void ScenEdit::addTile() {
 
 		// set all values on the tile
 		tile[index]->id = tmpId;
-		// add more stuff here
+		tile[index]->x = mapMarkerX;
+		tile[index]->y = mapMarkerY;
+		tile[index]->texture_x = drawTileX;
+		tile[index]->texture_y = drawTileY;
+		tile[index]->layer = 0;
+		tile[index]->kinematic = false;
+		tile[index]->animated = false;
+		tile[index]->animFrames = 1;
+		tile[index]->animSpeed = 10;
 
 		std::cout << "Added sprite at X: " << mapMarkerX / tileSize << ", Y: " << mapMarkerY / tileSize << std::endl;
 
@@ -438,6 +595,7 @@ void ScenEdit::toggleGUI() {
 	fbl_set_text_active(mapWtextId, showGUI);
 	fbl_set_text_active(mapHtextId, showGUI);
 
+	fbl_set_text_active(layerTextId, showGUI);
 	fbl_set_text_active(animFramesTextId, showGUI);
 
 	for (int i : guiId)

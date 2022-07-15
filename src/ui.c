@@ -96,7 +96,7 @@ int fbl_create_ui_elem(uint8_t type, int x, int y, int w, int h, int(*func)(int,
 	}
 
 
-    	fbl_ui_elem->type = type;
+    fbl_ui_elem->type = type;
     
 	fbl_ui_elem->source_rect.x = x;
 	fbl_ui_elem->source_rect.y = y;
@@ -108,10 +108,10 @@ int fbl_create_ui_elem(uint8_t type, int x, int y, int w, int h, int(*func)(int,
 	fbl_ui_elem->dest_rect.w = w;
 	fbl_ui_elem->dest_rect.h = h;
 
-    	fbl_ui_elem->orig_x = x;
-    	fbl_ui_elem->value = 0;
+    fbl_ui_elem->orig_x = x;
+    fbl_ui_elem->value = 0;
 	fbl_ui_elem->active = true;
-    	fbl_ui_elem->pressed = false;
+    fbl_ui_elem->pressed = false;
 
 
 	/* set function */
@@ -253,6 +253,38 @@ int fbl_get_ui_elem_val(int id)
     else fprintf(FBL_ERROR_OUT, "Tried to get value for ui element %d, that does not exist!\n", id);
 #endif
     
+    return 0;
+
+}
+
+/*
+ * Set the value from code. Simulating a click kinda.
+ * Set values 1 or 0.
+ */
+void fbl_set_ui_elem_val(int id, int value)
+{
+
+    FBL_UI_ELEM* ui_elem = NULL;
+    DLLIST* item = get_ui_item_at_id(id);
+
+    if (item != NULL)
+    {
+        ui_elem = ((FBL_UI_ELEM*)item->Object);
+        
+        if (value == 0) {
+            ui_elem->source_rect.x = ui_elem->orig_x;
+            ui_elem->value = value;
+        }
+        else if (value == 1) {
+            ui_elem->source_rect.x = ui_elem->orig_x + ui_elem->source_rect.w * 2;
+            ui_elem->value = value;
+        }
+
+    }
+#ifdef FBL_DEBUG
+    else fprintf(FBL_ERROR_OUT, "Tried to set value for ui element %d, that does not exist!\n", id);
+#endif
+
     return 0;
 
 }
