@@ -211,7 +211,10 @@ ok narrowed it down to rect (not circle) is twice as fat as it should! Find othe
 ok fbl rect is not great, it always gets draw twice the size, and the culling is not good either.
 just add a up left aligned rect with normal size to list of prims for now. done.
 
-Figure out how to compile C++ projects with emscripten (mixed with C), maybe compile fbl as lib? fbl.bc, then em++ scenEdit.cpp.
+Figure out how to compile C++ projects with emscripten (mixed with C), maybe compile fbl as lib? fbl.bc, then em++ scenEdit.cpp?
+DONE!! yes, build fbl as a .bc lib, then comment out emscripten.h and html5.h from fbl.h and build the .cpp files linked with fbl.bc.
+Works great! the problem was compiling emscripten.h with em++. Happy times :)
+MAde bat files: build-fbl-lib.bat and build-scenedit-fbl-lib.bat
 
 start SceneEdit - coming along nicely
 start Lotro - after scenEdit

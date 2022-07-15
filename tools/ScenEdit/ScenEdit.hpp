@@ -49,6 +49,7 @@ class ScenEdit {
         uint32_t mapMarkerY = 0;
 
         const int tileSize = 32;
+
         const int spdFast = 5;
         const int spdMed = 10;
         const int spdSlow = 25;
