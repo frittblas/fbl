@@ -181,6 +181,20 @@ int decAnimFrames(int x, int y) {
 
 }
 
+int incAnimSpeed(int x, int y) {
+
+
+	return 0;
+
+}
+
+int decAnimSpeed(int x, int y) {
+
+
+	return 0;
+
+}
+
 int saveMap(int x, int y) {
 
 
@@ -224,7 +238,7 @@ ScenEdit::ScenEdit() {
 	std::cout << "Tile vector size: " << tile.size() << std::endl;
 
 	// load textures
-	fbl_load_ui_texture((char*)"ui.png");	// load ui texture
+	fbl_load_ui_texture((char*)"ui_.png");	// load ui texture
 	fbl_load_texture((char*)"spritesheet_.png");	// load sprite texture
 
 	// load font
@@ -300,7 +314,7 @@ ScenEdit::ScenEdit() {
 	guiId.push_back(fbl_create_ui_elem(FBL_UI_CHECKBOX, 0, 32, 32, 32, toggleAnimation));
 	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 96, 350);
 
-	// text for animation
+	// text for animation frames
 	animFramesTextId = fbl_create_text(255, 255, 255, 255, (char*)"Anim frames: %d (-+)", 1);
 	fbl_set_text_xy(animFramesTextId, fbl_get_screen_w() - lMargin, 390);
 
@@ -309,6 +323,16 @@ ScenEdit::ScenEdit() {
 	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 96, 390);
 	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, decAnimFrames));
 	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 48, 390);
+
+	// text for animation speed
+	animSpeedTextId = fbl_create_text(255, 255, 255, 255, (char*)"Anim Speed: %d (-+)", 10);
+	fbl_set_text_xy(animSpeedTextId, fbl_get_screen_w() - lMargin, 430);
+
+	// gui buttons for anim speed
+	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, incAnimSpeed));
+	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 96, 430);
+	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, decAnimSpeed));
+	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 48, 430);
 
 	// gui buttons for save/load/luaexp
 	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, saveMap));
@@ -597,6 +621,7 @@ void ScenEdit::toggleGUI() {
 
 	fbl_set_text_active(layerTextId, showGUI);
 	fbl_set_text_active(animFramesTextId, showGUI);
+	fbl_set_text_active(animSpeedTextId, showGUI);
 
 	for (int i : guiId)
 		fbl_set_ui_elem_active(i, showGUI);

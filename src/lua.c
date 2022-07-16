@@ -143,6 +143,7 @@ int lua_set_ui_elem_xy(lua_State *lua_env);
 int lua_get_ui_elem_x(lua_State *lua_env);
 int lua_get_ui_elem_y(lua_State *lua_env);
 int lua_get_ui_elem_val(lua_State *lua_env);
+int lua_set_ui_elem_val(lua_State* lua_env);
 int lua_set_ui_elem_active(lua_State *lua_env);
 int lua_get_ui_elem_active(lua_State *lua_env);
 int lua_get_num_ui_elems(lua_State *lua_env);
@@ -479,6 +480,7 @@ void register_fbl_functions_to_lua()
 	lua_register(fbl_lua_env, "fbl_get_ui_elem_x", lua_get_ui_elem_x);
 	lua_register(fbl_lua_env, "fbl_get_ui_elem_y", lua_get_ui_elem_y);
 	lua_register(fbl_lua_env, "fbl_get_ui_elem_val", lua_get_ui_elem_val);
+	lua_register(fbl_lua_env, "fbl_set_ui_elem_val", lua_set_ui_elem_val);
 	lua_register(fbl_lua_env, "fbl_set_ui_elem_active", lua_set_ui_elem_active);
 	lua_register(fbl_lua_env, "fbl_get_ui_elem_active", lua_get_ui_elem_active);
 	lua_register(fbl_lua_env, "fbl_get_num_ui_elems", lua_get_num_ui_elems);
@@ -1798,6 +1800,18 @@ int lua_get_ui_elem_val(lua_State *lua_env)
 	int id = (int)lua_tonumber(lua_env, 1);
 
 	lua_pushnumber(lua_env, (lua_Number)fbl_get_ui_elem_val(id));
+
+	return 1;
+
+}
+
+int lua_set_ui_elem_val(lua_State* lua_env)
+{
+
+	int id = (int)lua_tonumber(lua_env, 1);
+	int value = (int)lua_tonumber(lua_env, 2);
+
+	fbl_set_ui_elem_val(id, value);
 
 	return 1;
 

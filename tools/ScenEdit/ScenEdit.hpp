@@ -43,7 +43,7 @@ class ScenEdit {
         uint32_t drawTileX = 0;
         uint32_t drawTileY = 0;
         uint32_t mapWtextId, mapHtextId;
-        uint32_t layerTextId, animFramesTextId;
+        uint32_t layerTextId, animFramesTextId, animSpeedTextId;
         uint32_t bgRectId, drawTileId, mapMarkerId;
         uint32_t mapMarkerX = 0;
         uint32_t mapMarkerY = 0;
