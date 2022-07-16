@@ -44,6 +44,9 @@ class ScenEdit {
 
         const int tileSize = 32;
 
+        const int sceenWidthInTiles = 30;
+        const int sceenHeightInTiles = 17;
+
         const int spdFast = 5;
         const int spdMed = 10;
         const int spdSlow = 25;
@@ -56,6 +59,7 @@ class ScenEdit {
         void processMouse(int button);
         void addTile();
         void removeTile();
+        void showTileInfo();
         void resetMap();
         void snapToGrid(uint32_t &x, uint32_t &y);
         void toggleGUI();

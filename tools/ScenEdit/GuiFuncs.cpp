@@ -16,7 +16,7 @@
 extern ScenEdit *editor;
 
 // return the index for the tile vector based on the cursor coordinates.
-static int getIndexAtCursor() {
+int getIndexAtCursor() {
 
 	return (editor->mapMarkerX / editor->tileSize) + editor->mapWidth * (editor->mapMarkerY / editor->tileSize);
 

@@ -11,6 +11,8 @@
 *
 */
 
+int getIndexAtCursor();
+
 int selectSpriteLeft(int x, int y);
 int selectSpriteRight(int x, int y);
 int selectSpriteUp(int x, int y);

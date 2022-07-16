@@ -36,6 +36,13 @@ ScenEdit::ScenEdit() {
 		tile.push_back(nullptr);
 
 	std::cout << "Welcome to ScenEdit!" << std::endl;
+	std::cout << "Control the camera with WASD." << std::endl;
+	std::cout << "Control the marker with arrows or mouse." << std::endl;
+	std::cout << "Draw a tile with space or left mouse button." << std::endl;
+	std::cout << "Delete tile with del or right mouse button." << std::endl;
+	std::cout << "Center the map with C and reset map with R." << std::endl;
+	std::cout << "Will load spritesheet_.png and ui_.png at the start." << std::endl;
+	std::cout << "Will save and load map.scn and export map.lua." << std::endl;
 	std::cout << "Tile vector size: " << tile.size() << std::endl;
 
 	// load textures
@@ -203,12 +210,12 @@ void ScenEdit::getInput() {
 
 	}
 
-	// move camera
+	// move camera and restrict movement to map borders
 	if (fbl_get_key_down(FBLK_A) && fbl_get_camera_x() > 0 && keyAccess == 0) {
 		fbl_set_camera_xy(fbl_get_camera_x() - tileSize, fbl_get_camera_y());
 		keyAccess = spdFast;
 	}
-	if (fbl_get_key_down(FBLK_D) && keyAccess == 0) {
+	if (fbl_get_key_down(FBLK_D) && (fbl_get_camera_x() / tileSize) < (mapWidth - sceenWidthInTiles) && keyAccess == 0) {
 		fbl_set_camera_xy(fbl_get_camera_x() + tileSize, fbl_get_camera_y());
 		keyAccess = spdFast;
 	}
@@ -216,7 +223,7 @@ void ScenEdit::getInput() {
 		fbl_set_camera_xy(fbl_get_camera_x(), fbl_get_camera_y() - tileSize);
 		keyAccess = spdFast;
 	}
-	if (fbl_get_key_down(FBLK_S) && keyAccess == 0) {
+	if (fbl_get_key_down(FBLK_S) && (fbl_get_camera_y() / tileSize) < (mapHeight - sceenHeightInTiles) && keyAccess == 0) {
 		fbl_set_camera_xy(fbl_get_camera_x(), fbl_get_camera_y() + tileSize);
 		keyAccess = spdFast;
 	}
@@ -237,21 +244,25 @@ void ScenEdit::getInput() {
 	if (fbl_get_key_down(FBLK_RIGHT) && mapMarkerX < ((mapWidth - 1) * tileSize) && keyAccess == 0) {
 		mapMarkerX += tileSize;
 		fbl_set_prim_xy(mapMarkerId, mapMarkerX, mapMarkerY);
+		showTileInfo();
 		keyAccess = spdFast;
 	}
 	if (fbl_get_key_down(FBLK_LEFT) && mapMarkerX > 0 && keyAccess == 0) {
 		mapMarkerX -= tileSize;
 		fbl_set_prim_xy(mapMarkerId, mapMarkerX, mapMarkerY);
+		showTileInfo();
 		keyAccess = spdFast;
 	}
 	if (fbl_get_key_down(FBLK_UP) && mapMarkerY > 0 && keyAccess == 0) {
 		mapMarkerY -= tileSize;
 		fbl_set_prim_xy(mapMarkerId, mapMarkerX, mapMarkerY);
+		showTileInfo();
 		keyAccess = spdFast;
 	}
 	if (fbl_get_key_down(FBLK_DOWN) && mapMarkerY < ((mapHeight - 1) * tileSize) && keyAccess == 0) {
 		mapMarkerY += tileSize;
 		fbl_set_prim_xy(mapMarkerId, mapMarkerX, mapMarkerY);
+		showTileInfo();
 		keyAccess = spdFast;
 	}
 
@@ -288,7 +299,7 @@ void ScenEdit::processMouse(int button) {
 		// check if click is in bounds
 		if ((tmpX < (mapWidth * tileSize)) && (tmpY < (mapHeight * tileSize))) {
 
-			// if so, set the marker coords to the new values
+			// set the marker coords to the new values
 			mapMarkerX = tmpX;
 			mapMarkerY = tmpY;
 
@@ -297,6 +308,8 @@ void ScenEdit::processMouse(int button) {
 
 			// add or remove tile based on mouse button
 			button == FBLMB_LEFT ? addTile() : removeTile();
+
+			showTileInfo();
 
 		}
 
@@ -333,6 +346,7 @@ void ScenEdit::addTile() {
 		tile[index]->animSpeed = 10;
 
 		std::cout << "Added sprite at X: " << mapMarkerX / tileSize << ", Y: " << mapMarkerY / tileSize << std::endl;
+		std::cout << "Number of tiles: " << fbl_get_num_sprites() - 1 << std::endl; // -1 because of the select sprite
 
 	}
 
@@ -351,6 +365,30 @@ void ScenEdit::removeTile() {
 		tile[index] = nullptr;
 
 		std::cout << "Removed sprite at X: " << mapMarkerX / tileSize << ", Y: " << mapMarkerY / tileSize << std::endl;
+
+	}
+
+}
+
+void ScenEdit::showTileInfo() {
+
+	int index = getIndexAtCursor();
+
+	if (tile[index] == nullptr) {
+
+		std::cout << "Tile info: Empty slot." << std::endl;
+
+	}
+	else {
+
+		std::cout << std::endl;
+		std::cout << "Tile info:" << std::endl;
+		std::cout << "Layer: " << tile[index]->layer << std::endl;
+		std::cout << "Kinematic: " << tile[index]->kinematic << std::endl;
+		std::cout << "Animated: " << tile[index]->animated << std::endl;
+		std::cout << "Anim frames: " << tile[index]->animFrames << std::endl;
+		std::cout << "Anim speed: " << tile[index]->animSpeed << std::endl;
+		std::cout << std::endl;
 
 	}
 
