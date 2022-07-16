@@ -16,22 +16,14 @@
 
 #include "../../src/fbl.hpp"
 
-struct TileData {
-
-    uint32_t id;
-    uint32_t x, y;
-    uint32_t texture_x, texture_y;
-    uint32_t layer;
-    bool kinematic, animated;
-    uint32_t animFrames, animSpeed;
-
-};
+#include "TileData.hpp"
 
 class ScenEdit {
 
     private:
         uint32_t numTiles = 0;
         uint8_t bgColorR, bgColorG, bgColorB;
+        uint8_t tintColorR, tintColorG, tintColorB, tintColorA;
         bool showGUI = true;
         int keyAccess = 10;
         std::vector<int> guiId; // all the id's for the Gui elements.

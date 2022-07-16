@@ -150,6 +150,7 @@
     <ClCompile Include="..\..\src\thread.c" />
     <ClCompile Include="..\..\src\ui.c" />
     <ClCompile Include="..\..\tools\ScenEdit\Disk.cpp" />
+    <ClCompile Include="..\..\tools\ScenEdit\GuiFuncs.cpp" />
     <ClCompile Include="..\..\tools\ScenEdit\ScenEdit.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -157,7 +158,9 @@
     <ClInclude Include="..\..\src\fbl.h" />
     <ClInclude Include="..\..\src\fbl.hpp" />
     <ClInclude Include="..\..\tools\ScenEdit\Disk.hpp" />
+    <ClInclude Include="..\..\tools\ScenEdit\GuiFuncs.hpp" />
     <ClInclude Include="..\..\tools\ScenEdit\ScenEdit.hpp" />
+    <ClInclude Include="..\..\tools\ScenEdit\TileData.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

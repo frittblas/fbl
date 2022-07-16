@@ -216,7 +216,7 @@ DONE!! yes, build fbl as a .bc lib, then comment out emscripten.h and html5.h fr
 Works great! the problem was compiling emscripten.h with em++. Happy times :)
 Made bat files: build-fbl-lib.bat and build-scenedit-fbl-lib.bat
 
-Add set_ui_elem_val to lua!
+Add set_ui_elem_val to lua! Done!
 
 start SceneEdit - coming along nicely
 start Lotro - after scenEdit
