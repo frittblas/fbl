@@ -12,24 +12,31 @@
 
 #include "Disk.hpp"
 
+Disk Disk::instance;
+
 // Disk-class implementation
 
-Disk::Disk() {
+Disk::Disk() {}
+Disk::~Disk() {}
+
+Disk &Disk::getInstance() {
+
+    return instance;
 
 }
 
-Disk::~Disk() {
+bool Disk::saveMap() {
 
+
+    return true;
 }
 
-void Disk::saveMap() {
+bool Disk::loadMap() {
 
+    return true;
 }
 
-void Disk::loadMap() {
+bool Disk::exportMapLua() {
 
-}
-
-void Disk::exportMapLua() {
-
+    return true;
 }

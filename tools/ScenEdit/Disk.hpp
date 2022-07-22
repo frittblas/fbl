@@ -17,17 +17,17 @@
 class Disk {
 
     private:
+        static Disk instance;
 
+        Disk();     // private constructor, so we can't instantiate
 
     public:
+        ~Disk();
 
+        static Disk &getInstance();
 
-        Disk();     // constructor, set everything up
-        ~Disk();    // destructor, clean everything up
-
-        void saveMap();
-        void loadMap();
-        void exportMapLua();
-
+        static bool saveMap();
+        static bool loadMap();
+        static bool exportMapLua();
 
 };

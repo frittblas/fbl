@@ -28,6 +28,9 @@ ScenEdit::ScenEdit() {
 	// draw everything from top left
 	fbl_set_sprite_align(FBL_SPRITE_ALIGN_UP_LEFT);
 
+	mapWidth = 45;	// screenWidthInTiles;
+	mapHeight = 25; // screenHeightInTiles;
+
 	// allocate memory for the tile-list
 	tile.reserve(mapWidth * mapHeight);
 
@@ -223,7 +226,7 @@ void ScenEdit::getInput() {
 		fbl_set_camera_xy(fbl_get_camera_x() - tileSize, fbl_get_camera_y());
 		keyAccess = spdFast;
 	}
-	if (fbl_get_key_down(FBLK_D) && (fbl_get_camera_x() / tileSize) < (mapWidth - sceenWidthInTiles) && keyAccess == 0) {
+	if (fbl_get_key_down(FBLK_D) && (fbl_get_camera_x() / tileSize) < (mapWidth - screenWidthInTiles) && keyAccess == 0) {
 		fbl_set_camera_xy(fbl_get_camera_x() + tileSize, fbl_get_camera_y());
 		keyAccess = spdFast;
 	}
@@ -231,7 +234,7 @@ void ScenEdit::getInput() {
 		fbl_set_camera_xy(fbl_get_camera_x(), fbl_get_camera_y() - tileSize);
 		keyAccess = spdFast;
 	}
-	if (fbl_get_key_down(FBLK_S) && (fbl_get_camera_y() / tileSize) < (mapHeight - sceenHeightInTiles) && keyAccess == 0) {
+	if (fbl_get_key_down(FBLK_S) && (fbl_get_camera_y() / tileSize) < (mapHeight - screenHeightInTiles) && keyAccess == 0) {
 		fbl_set_camera_xy(fbl_get_camera_x(), fbl_get_camera_y() + tileSize);
 		keyAccess = spdFast;
 	}
@@ -359,6 +362,7 @@ void ScenEdit::addTile() {
 		tile[index]->animFrames = tileSettings.animFrames;
 		tile[index]->animSpeed = tileSettings.animSpeed;
 
+		// turn on the animation if animated == true, otherwise do nothing
 		fbl_set_sprite_animation(editor->tile[index]->id, tile[index]->animated, editor->tile[index]->textureX, editor->tile[index]->textureY,
 			editor->tileSize, editor->tileSize, editor->tile[index]->animFrames, editor->tile[index]->animSpeed, true);
 

@@ -12,6 +12,7 @@
 */
 
 #include "ScenEdit.hpp"
+#include "Disk.hpp"
 
 extern ScenEdit *editor;
 
@@ -251,6 +252,11 @@ int decAnimSpeed(int x, int y) {
 
 int saveMap(int x, int y) {
 
+	bool success = Disk::getInstance().saveMap();
+
+	if (success) {
+
+	}
 
 	return 0;
 
@@ -258,6 +264,11 @@ int saveMap(int x, int y) {
 
 int loadMap(int x, int y) {
 
+	bool success = Disk::getInstance().loadMap();
+
+	if (success) {
+
+	}
 
 	return 0;
 
@@ -265,6 +276,11 @@ int loadMap(int x, int y) {
 
 int exportLua(int x, int y) {
 
+	bool success = Disk::getInstance().exportMapLua();
+
+	if (success) {
+
+	}
 
 	return 0;
 

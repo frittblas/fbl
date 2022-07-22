@@ -32,19 +32,20 @@ class ScenEdit {
     public:
         const int tileSize = 32;
 
-        const int sceenWidthInTiles = 30;
-        const int sceenHeightInTiles = 17;
+        // these will fill a screen (960x540)
+        const int screenWidthInTiles = 30;
+        const int screenHeightInTiles = 17;
 
+        // control when we can press button again
         const int spdFast = 5;
         const int spdMed = 10;
         const int spdSlow = 25;
 
-        uint32_t mapWidth = 45; // sceenWidthInTiles
-        uint32_t mapHeight = 25; // sceenHeightInTiles
+        uint32_t mapWidth, mapHeight;   // map wh
         uint32_t mapWtextId, mapHtextId;    // id's for text objects
         uint32_t layerTextId, animFramesTextId, animSpeedTextId;
-        uint32_t kinematicBoxId, animatedBoxId;
-        uint32_t bgRectId, mapMarkerId;
+        uint32_t kinematicBoxId, animatedBoxId; // checkbox id's
+        uint32_t bgRectId, mapMarkerId; // gray alpha-filled rect, and the cursor
 
         std::vector<TileData*> tile;    // vector that holds all the tiles
         TileData tileSettings;    // holds the parameters for the current tile to be drawn
