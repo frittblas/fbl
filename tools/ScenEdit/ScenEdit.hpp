@@ -56,6 +56,7 @@ class ScenEdit {
         void getInput();
         void processMouse(int button);
         void addTile();
+        void copyTile();
         void removeTile();
         void showTileInfo();
         void resetMap();

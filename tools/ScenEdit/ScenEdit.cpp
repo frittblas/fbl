@@ -147,9 +147,9 @@ ScenEdit::ScenEdit() {
 	fbl_set_text_xy(animFramesTextId, fbl_get_screen_w() - lMargin, 390);
 
 	// gui buttons for anim frames
-	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, incAnimFrames));
-	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 96, 390);
 	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, decAnimFrames));
+	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 96, 390);
+	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, incAnimFrames));
 	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 48, 390);
 
 	// text for animation speed
@@ -157,9 +157,9 @@ ScenEdit::ScenEdit() {
 	fbl_set_text_xy(animSpeedTextId, fbl_get_screen_w() - lMargin, 430);
 
 	// gui buttons for anim speed
-	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, incAnimSpeed));
-	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 96, 430);
 	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, decAnimSpeed));
+	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 96, 430);
+	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, incAnimSpeed));
 	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 48, 430);
 
 	// gui buttons for save/load/luaexp
@@ -234,6 +234,12 @@ void ScenEdit::getInput() {
 	if (fbl_get_key_down(FBLK_S) && (fbl_get_camera_y() / tileSize) < (mapHeight - sceenHeightInTiles) && keyAccess == 0) {
 		fbl_set_camera_xy(fbl_get_camera_x(), fbl_get_camera_y() + tileSize);
 		keyAccess = spdFast;
+	}
+
+	// copy tile with x
+	if (fbl_get_key_down(FBLK_X) && keyAccess == 0) {
+		copyTile();
+		keyAccess = spdSlow;
 	}
 
 	// center camera with c
@@ -360,6 +366,24 @@ void ScenEdit::addTile() {
 
 }
 
+void ScenEdit::copyTile() {
+
+	// find the correct index
+	int index = getIndexAtCursor();
+
+	// copy the values from the current tile to tile settings (not the id or xy)
+	tileSettings.textureX = tile[index]->textureX;
+	tileSettings.textureY = tile[index]->textureY;
+	tileSettings.layer = tile[index]->layer;
+	tileSettings.kinematic = tile[index]->kinematic;
+	tileSettings.animated = tile[index]->animated;
+	tileSettings.animFrames = tile[index]->animFrames;
+	tileSettings.animSpeed = tile[index]->animSpeed;
+
+	std::cout << "Copied current tile settings!" << std::endl;
+
+}
+
 void ScenEdit::removeTile() {
 
 	int index = getIndexAtCursor();
@@ -373,6 +397,8 @@ void ScenEdit::removeTile() {
 		tile[index] = nullptr;
 
 		std::cout << "Removed sprite at X: " << tileSettings.x / tileSize << ", Y: " << tileSettings.y / tileSize << std::endl;
+
+		showTileInfo();
 
 	}
 
@@ -392,7 +418,7 @@ void ScenEdit::showTileInfo() {
 		// set kinematic
 		tileSettings.kinematic ? fbl_set_ui_elem_val(kinematicBoxId, true) : fbl_set_ui_elem_val(kinematicBoxId, false);
 		// set animated
-		tileSettings.animated ? fbl_set_ui_elem_val(animatedBoxId, true) : fbl_set_ui_elem_val(kinematicBoxId, false);
+		tileSettings.animated ? fbl_set_ui_elem_val(animatedBoxId, true) : fbl_set_ui_elem_val(animatedBoxId, false);
 		// set the animation frames
 		fbl_update_text(animFramesTextId, 255, 255, 255, 255, (char*)"Anim frames: %d (-+)", tileSettings.animFrames);
 		// set the anim speed
@@ -410,7 +436,7 @@ void ScenEdit::showTileInfo() {
 		// set kinematic
 		tile[index]->kinematic ? fbl_set_ui_elem_val(kinematicBoxId, true) : fbl_set_ui_elem_val(kinematicBoxId, false);
 		// set animated
-		tile[index]->animated ? fbl_set_ui_elem_val(animatedBoxId, true) : fbl_set_ui_elem_val(kinematicBoxId, false);
+		tile[index]->animated ? fbl_set_ui_elem_val(animatedBoxId, true) : fbl_set_ui_elem_val(animatedBoxId, false);
 		// set the animation frames
 		fbl_update_text(animFramesTextId, 255, 255, 255, 255, (char*)"Anim frames: %d (-+)", tile[index]->animFrames);
 		// set the anim speed

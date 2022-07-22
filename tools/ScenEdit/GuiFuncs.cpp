@@ -84,6 +84,8 @@ int incMapX(int x, int y) {
 
 int incMapY(int x, int y) {
 
+	// NOTE: actually change the size of the vector also :)
+
 	std::cout << "inc map height" << std::endl;
 	editor->mapHeight++;
 	fbl_update_text(editor->mapHtextId, 255, 255, 255, 255, (char*)"Map height: %d (+)", editor->mapHeight);
@@ -138,16 +140,11 @@ int toggleKinematic(int x, int y) {
 	int index = getIndexAtCursor();
 
 	if (editor->tile[index] != nullptr) {
-		/*
-		if (!editor->tile[index]->kinematic)
-			editor->tile[index]->kinematic = true;
-		else if (editor->tile[index]->kinematic)
-			editor->tile[index]->kinematic = false;
-			*/
 		editor->tile[index]->kinematic = !editor->tile[index]->kinematic;
-
 		std::cout << "Tile is kinematic: " << editor->tile[index]->kinematic << std::endl;
-
+	}
+	else {
+		editor->tileSettings.kinematic = !editor->tileSettings.kinematic;
 	}
 
 	return 0;
@@ -174,6 +171,9 @@ int toggleAnimation(int x, int y) {
 		std::cout << "Tile is animated: " << editor->tile[index]->animated << std::endl;
 
 	}
+	else {
+		editor->tileSettings.animated = !editor->tileSettings.animated;
+	}
 
 	return 0;
 
@@ -181,6 +181,16 @@ int toggleAnimation(int x, int y) {
 
 int incAnimFrames(int x, int y) {
 
+	int index = getIndexAtCursor();
+
+	if (editor->tile[index] != nullptr) {
+		editor->tile[index]->animFrames++;
+		fbl_update_text(editor->animFramesTextId, 255, 255, 255, 255, (char*)"Anim frames: %d (-+)", editor->tile[index]->animFrames);
+	}
+	else {
+		editor->tileSettings.animFrames++;
+		fbl_update_text(editor->animFramesTextId, 255, 255, 255, 255, (char*)"Anim frames: %d (-+)", editor->tileSettings.animFrames);
+	}
 
 	return 0;
 
@@ -188,6 +198,20 @@ int incAnimFrames(int x, int y) {
 
 int decAnimFrames(int x, int y) {
 
+	int index = getIndexAtCursor();
+
+	if (editor->tile[index] != nullptr) {
+		if (editor->tile[index]->animFrames > 1) {
+			editor->tile[index]->animFrames--;
+			fbl_update_text(editor->animFramesTextId, 255, 255, 255, 255, (char*)"Anim frames: %d (-+)", editor->tile[index]->animFrames);
+		}
+	}
+	else {
+		if (editor->tileSettings.animFrames > 1) {
+			editor->tileSettings.animFrames--;
+			fbl_update_text(editor->animFramesTextId, 255, 255, 255, 255, (char*)"Anim frames: %d (-+)", editor->tileSettings.animFrames);
+		}
+	}
 
 	return 0;
 
@@ -195,6 +219,16 @@ int decAnimFrames(int x, int y) {
 
 int incAnimSpeed(int x, int y) {
 
+	int index = getIndexAtCursor();
+
+	if (editor->tile[index] != nullptr) {
+		editor->tile[index]->animSpeed++;
+		fbl_update_text(editor->animSpeedTextId, 255, 255, 255, 255, (char*)"Anim speed: %d (-+)", editor->tile[index]->animSpeed);
+	}
+	else {
+		editor->tileSettings.animSpeed++;
+		fbl_update_text(editor->animSpeedTextId, 255, 255, 255, 255, (char*)"Anim speed: %d (-+)", editor->tileSettings.animSpeed);
+	}
 
 	return 0;
 
@@ -202,6 +236,20 @@ int incAnimSpeed(int x, int y) {
 
 int decAnimSpeed(int x, int y) {
 
+	int index = getIndexAtCursor();
+
+	if (editor->tile[index] != nullptr) {
+		if (editor->tile[index]->animSpeed > 1) {
+			editor->tile[index]->animSpeed--;
+			fbl_update_text(editor->animSpeedTextId, 255, 255, 255, 255, (char*)"Anim speed: %d (-+)", editor->tile[index]->animSpeed);
+		}
+	}
+	else {
+		if (editor->tileSettings.animSpeed > 1) {
+			editor->tileSettings.animSpeed--;
+			fbl_update_text(editor->animSpeedTextId, 255, 255, 255, 255, (char*)"Anim speed: %d (-+)", editor->tileSettings.animSpeed);
+		}
+	}
 
 	return 0;
 
