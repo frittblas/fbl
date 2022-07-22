@@ -157,16 +157,10 @@ int toggleAnimation(int x, int y) {
 	int index = getIndexAtCursor();
 
 	if (editor->tile[index] != nullptr) {
-		if (!editor->tile[index]->animated) {
-			editor->tile[index]->animated = true;
-			fbl_set_sprite_animation(editor->tile[index]->id, true, editor->tile[index]->textureX, editor->tile[index]->textureY,
-				editor->tileSize, editor->tileSize, editor->tile[index]->animFrames, editor->tile[index]->animSpeed, true);
-		}
-		else if (editor->tile[index]->animated) {
-			editor->tile[index]->animated = false;
-			fbl_set_sprite_animation(editor->tile[index]->id, false, editor->tile[index]->textureX, editor->tile[index]->textureY,
-				editor->tileSize, editor->tileSize, editor->tile[index]->animFrames, editor->tile[index]->animSpeed, true);
-		}
+
+		editor->tile[index]->animated = !editor->tile[index]->animated;
+		fbl_set_sprite_animation(editor->tile[index]->id, editor->tile[index]->animated, editor->tile[index]->textureX, editor->tile[index]->textureY,
+			editor->tileSize, editor->tileSize, editor->tile[index]->animFrames, editor->tile[index]->animSpeed, true);
 
 		std::cout << "Tile is animated: " << editor->tile[index]->animated << std::endl;
 
