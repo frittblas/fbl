@@ -18,7 +18,7 @@ extern ScenEdit *editor;
 // return the index for the tile vector based on the cursor coordinates.
 int getIndexAtCursor() {
 
-	return (editor->mapMarkerX / editor->tileSize) + editor->mapWidth * (editor->mapMarkerY / editor->tileSize);
+	return (editor->tileSettings.x / editor->tileSize) + editor->mapWidth * (editor->tileSettings.y / editor->tileSize);
 
 }
 
@@ -28,10 +28,10 @@ int getIndexAtCursor() {
 
 int selectSpriteLeft(int x, int y) {
 
-	if (editor->drawTileX > 0)
-		editor->drawTileX -= editor->tileSize;
+	if (editor->tileSettings.textureX > 0)
+		editor->tileSettings.textureX -= editor->tileSize;
 
-	fbl_set_sprite_image(editor->drawTileId, editor->drawTileX, editor->drawTileY, editor->tileSize, editor->tileSize, 0);
+	fbl_set_sprite_image(editor->tileSettings.id, editor->tileSettings.textureX, editor->tileSettings.textureY, editor->tileSize, editor->tileSize, 0);
 
 	return 0;
 
@@ -39,10 +39,10 @@ int selectSpriteLeft(int x, int y) {
 
 int selectSpriteRight(int x, int y) {
 
-	if (editor->drawTileX < (fbl_get_texture_w() - editor->tileSize))
-		editor->drawTileX += editor->tileSize;
+	if (editor->tileSettings.textureX < (fbl_get_texture_w() - editor->tileSize))
+		editor->tileSettings.textureX += editor->tileSize;
 
-	fbl_set_sprite_image(editor->drawTileId, editor->drawTileX, editor->drawTileY, editor->tileSize, editor->tileSize, 0);
+	fbl_set_sprite_image(editor->tileSettings.id, editor->tileSettings.textureX, editor->tileSettings.textureY, editor->tileSize, editor->tileSize, 0);
 
 	return 0;
 
@@ -50,10 +50,10 @@ int selectSpriteRight(int x, int y) {
 
 int selectSpriteUp(int x, int y) {
 
-	if (editor->drawTileY > 0)
-		editor->drawTileY -= editor->tileSize;
+	if (editor->tileSettings.textureY > 0)
+		editor->tileSettings.textureY -= editor->tileSize;
 
-	fbl_set_sprite_image(editor->drawTileId, editor->drawTileX, editor->drawTileY, editor->tileSize, editor->tileSize, 0);
+	fbl_set_sprite_image(editor->tileSettings.id, editor->tileSettings.textureX, editor->tileSettings.textureY, editor->tileSize, editor->tileSize, 0);
 
 	return 0;
 
@@ -61,10 +61,10 @@ int selectSpriteUp(int x, int y) {
 
 int selectSpriteDown(int x, int y) {
 
-	if (editor->drawTileY < (fbl_get_texture_h() - editor->tileSize))
-		editor->drawTileY += editor->tileSize;
+	if (editor->tileSettings.textureY < (fbl_get_texture_h() - editor->tileSize))
+		editor->tileSettings.textureY += editor->tileSize;
 
-	fbl_set_sprite_image(editor->drawTileId, editor->drawTileX, editor->drawTileY, editor->tileSize, editor->tileSize, 0);
+	fbl_set_sprite_image(editor->tileSettings.id, editor->tileSettings.textureX, editor->tileSettings.textureY, editor->tileSize, editor->tileSize, 0);
 
 	return 0;
 
@@ -103,6 +103,10 @@ int incLayer(int x, int y) {
 		editor->tile[index]->layer++;
 		fbl_update_text(editor->layerTextId, 255, 255, 255, 255, (char*)"Layer: %d (-+)", editor->tile[index]->layer);
 	}
+	else {
+		editor->tileSettings.layer++;
+		fbl_update_text(editor->layerTextId, 255, 255, 255, 255, (char*)"Layer: %d (-+)", editor->tileSettings.layer);
+	}
 
 	return 0;
 
@@ -118,6 +122,12 @@ int decLayer(int x, int y) {
 			fbl_update_text(editor->layerTextId, 255, 255, 255, 255, (char*)"Layer: %d (-+)", editor->tile[index]->layer);
 		}
 	}
+	else {
+		if (editor->tileSettings.layer > 0) {
+			editor->tileSettings.layer--;
+			fbl_update_text(editor->layerTextId, 255, 255, 255, 255, (char*)"Layer: %d (-+)", editor->tileSettings.layer);
+		}
+	}
 
 	return 0;
 
@@ -128,10 +138,13 @@ int toggleKinematic(int x, int y) {
 	int index = getIndexAtCursor();
 
 	if (editor->tile[index] != nullptr) {
+		/*
 		if (!editor->tile[index]->kinematic)
 			editor->tile[index]->kinematic = true;
 		else if (editor->tile[index]->kinematic)
 			editor->tile[index]->kinematic = false;
+			*/
+		editor->tile[index]->kinematic = !editor->tile[index]->kinematic;
 
 		std::cout << "Tile is kinematic: " << editor->tile[index]->kinematic << std::endl;
 
@@ -149,12 +162,12 @@ int toggleAnimation(int x, int y) {
 	if (editor->tile[index] != nullptr) {
 		if (!editor->tile[index]->animated) {
 			editor->tile[index]->animated = true;
-			fbl_set_sprite_animation(editor->tile[index]->id, true, editor->tile[index]->texture_x, editor->tile[index]->texture_y,
+			fbl_set_sprite_animation(editor->tile[index]->id, true, editor->tile[index]->textureX, editor->tile[index]->textureY,
 				editor->tileSize, editor->tileSize, editor->tile[index]->animFrames, editor->tile[index]->animSpeed, true);
 		}
 		else if (editor->tile[index]->animated) {
 			editor->tile[index]->animated = false;
-			fbl_set_sprite_animation(editor->tile[index]->id, false, editor->tile[index]->texture_x, editor->tile[index]->texture_y,
+			fbl_set_sprite_animation(editor->tile[index]->id, false, editor->tile[index]->textureX, editor->tile[index]->textureY,
 				editor->tileSize, editor->tileSize, editor->tile[index]->animFrames, editor->tile[index]->animSpeed, true);
 		}
 

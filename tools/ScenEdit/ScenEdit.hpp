@@ -30,18 +30,6 @@ class ScenEdit {
 
 
     public:
-        uint32_t mapWidth = 45; // 30
-        uint32_t mapHeight = 25; // 17
-        uint32_t drawTileX = 0;
-        uint32_t drawTileY = 0;
-        uint32_t mapWtextId, mapHtextId;
-        uint32_t layerTextId, animFramesTextId, animSpeedTextId;
-        uint32_t bgRectId, drawTileId, mapMarkerId;
-        uint32_t mapMarkerX = 0;
-        uint32_t mapMarkerY = 0;
-
-        std::vector<TileData*> tile;
-
         const int tileSize = 32;
 
         const int sceenWidthInTiles = 30;
@@ -50,6 +38,16 @@ class ScenEdit {
         const int spdFast = 5;
         const int spdMed = 10;
         const int spdSlow = 25;
+
+        uint32_t mapWidth = 45; // sceenWidthInTiles
+        uint32_t mapHeight = 25; // sceenHeightInTiles
+        uint32_t mapWtextId, mapHtextId;    // id's for text objects
+        uint32_t layerTextId, animFramesTextId, animSpeedTextId;
+        uint32_t kinematicBoxId, animatedBoxId;
+        uint32_t bgRectId, mapMarkerId;
+
+        std::vector<TileData*> tile;    // vector that holds all the tiles
+        TileData tileSettings;    // holds the parameters for the current tile to be drawn
 
         ScenEdit();     // constructor, set everything up
         ~ScenEdit();    // destructor, clean everything up
