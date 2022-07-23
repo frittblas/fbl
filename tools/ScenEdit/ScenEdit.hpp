@@ -10,6 +10,7 @@
 *
 */
 
+#pragma once
 
 #include <iostream>
 #include <vector>
@@ -21,16 +22,11 @@
 class ScenEdit {
 
     private:
-        uint32_t numTiles = 0;
-        uint8_t bgColorR, bgColorG, bgColorB;
-        uint8_t tintColorR, tintColorG, tintColorB, tintColorA;
         bool showGUI = true;
         int keyAccess = 10;
         std::vector<int> guiId; // all the id's for the Gui elements.
 
-
     public:
-        const int tileSize = 32;
 
         // these will fill a screen (960x540)
         const int screenWidthInTiles = 30;
@@ -41,7 +37,9 @@ class ScenEdit {
         const int spdMed = 10;
         const int spdSlow = 25;
 
-        uint32_t mapWidth, mapHeight;   // map wh
+        uint32_t mapWidth, mapHeight, tileSize;   // map wh and tile size
+        uint8_t  bgColorR, bgColorG, bgColorB;   // bg color
+        uint8_t  tintColorR, tintColorG, tintColorB, tintColorA; // night time tint color
         uint32_t mapWtextId, mapHtextId;    // id's for text objects
         uint32_t layerTextId, animFramesTextId, animSpeedTextId;
         uint32_t kinematicBoxId, animatedBoxId; // checkbox id's
@@ -60,7 +58,7 @@ class ScenEdit {
         void copyTile();
         void removeTile();
         void showTileInfo();
-        void resetMap();
+        void resetMap(uint32_t w, uint32_t h);
         void snapToGrid(uint32_t &x, uint32_t &y);
         void toggleGUI();
 

@@ -31,6 +31,8 @@ ScenEdit::ScenEdit() {
 	mapWidth = 45;	// screenWidthInTiles;
 	mapHeight = 25; // screenHeightInTiles;
 
+	tileSize = 32;  // default to 32 (can be changed in the .scn-files)
+
 	// allocate memory for the tile-list
 	tile.reserve(mapWidth * mapHeight);
 
@@ -55,15 +57,15 @@ ScenEdit::ScenEdit() {
 	// load font
 	fbl_load_ttf_font("edosz.ttf", 18);
 
-	// set bg-color (blue as default) and time of day-tint (all set to 255 means tint deactivated)
-	// these values can be set int the map save-file (map.sce)
+	// set bg-color (blue as default) and time of day-tint (alpha set to 0 means tint deactivated)
+	// these values can be set int the map save-file (map.scn)
 	bgColorR = 50;
 	bgColorG = 50;
 	bgColorB = 150;
 	tintColorR = 255;
 	tintColorG = 255;
 	tintColorB = 255;
-	tintColorA = 255;
+	tintColorA = 0;
 
 	// set default values to the tile settings
 	tileSettings.id = 0;	// id of the current tile to be drawn
@@ -253,7 +255,7 @@ void ScenEdit::getInput() {
 
 	// reset map with r
 	if (fbl_get_key_down(FBLK_R) && keyAccess == 0) {
-		resetMap();
+		resetMap(screenWidthInTiles, screenHeightInTiles);
 		keyAccess = spdSlow;
 	}
 
@@ -463,7 +465,7 @@ void ScenEdit::showTileInfo() {
 
 }
 
-void ScenEdit::resetMap() {
+void ScenEdit::resetMap(uint32_t w, uint32_t h) {
 
 	// remove all sprites, resetting the fbl sprite id counter.
 	fbl_destroy_all_sprites();
@@ -478,15 +480,15 @@ void ScenEdit::resetMap() {
 	}
 
 	// recreate the current tile to draw, as id 0
-	tileSettings.textureX = 96;
-	tileSettings.textureY = 416;
+	tileSettings.textureX = 0;
+	tileSettings.textureY = 0;
 	tileSettings.id = fbl_create_sprite(tileSettings.textureX, tileSettings.textureY, tileSize, tileSize, 0);
 	fbl_set_sprite_xy(tileSettings.id, fbl_get_screen_w() - 96 - 16, 64 - 16); // compensate for ui center-drawing
 	fbl_fix_sprite_to_screen(tileSettings.id, true);
 
-	// reset the map size to fit the screen (960x540)
-	mapWidth = 30;
-	mapHeight = 17;
+	// resize the map
+	mapWidth = w;
+	mapHeight = h;
 
 	fbl_update_text(editor->mapWtextId, 255, 255, 255, 255, (char*)"Map width: %d (+)", editor->mapWidth);
 	fbl_update_text(editor->mapHtextId, 255, 255, 255, 255, (char*)"Map height: %d (+)", editor->mapHeight);
@@ -591,7 +593,7 @@ void fbl_game_loop()
 void fbl_end()
 {
 
-	editor->resetMap();	// free tile-mem
+	editor->resetMap(0, 0);	// free tile-mem
 	delete editor;
 
 	std::cout<<"Bye!"<<std::endl;

@@ -11,6 +11,8 @@
 *
 */
 
+#pragma once
+
 int getIndexAtCursor();
 
 int selectSpriteLeft(int x, int y);

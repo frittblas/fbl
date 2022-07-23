@@ -252,11 +252,12 @@ int decAnimSpeed(int x, int y) {
 
 int saveMap(int x, int y) {
 
-	bool success = Disk::getInstance().saveMap();
+	bool success = Disk::getInstance().saveMap(*editor, "assets/map.scn");
 
-	if (success) {
-
-	}
+	if (success)
+		std::cout << "Saved map to assets/map.scn" << std::endl;
+	else
+		std::cout << "Error saving map!" << std::endl;
 
 	return 0;
 
@@ -264,11 +265,12 @@ int saveMap(int x, int y) {
 
 int loadMap(int x, int y) {
 
-	bool success = Disk::getInstance().loadMap();
+	bool success = Disk::getInstance().loadMap(*editor, "assets/map.scn");
 
-	if (success) {
-
-	}
+	if (success)
+		std::cout << "Loaded map from assets/map.scn" << std::endl;
+	else
+		std::cout << "Error loading map!" << std::endl;
 
 	return 0;
 
@@ -276,7 +278,7 @@ int loadMap(int x, int y) {
 
 int exportLua(int x, int y) {
 
-	bool success = Disk::getInstance().exportMapLua();
+	bool success = Disk::getInstance().exportMapLua(*editor, "assets/map.lua");
 
 	if (success) {
 

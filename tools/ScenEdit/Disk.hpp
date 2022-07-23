@@ -10,8 +10,13 @@
 *
 */
 
-#include <iostream>
-#include <vector>
+#pragma once
+
+//#include <iostream>
+#include <fstream>
+//#include <vector>
+
+#include "ScenEdit.hpp"
 
 
 class Disk {
@@ -26,8 +31,8 @@ class Disk {
 
         static Disk &getInstance();
 
-        static bool saveMap();
-        static bool loadMap();
-        static bool exportMapLua();
+        static bool saveMap(ScenEdit& editor, std::string filename);
+        static bool loadMap(ScenEdit& editor, std::string filename);
+        static bool exportMapLua(ScenEdit& editor, std::string filename);
 
 };
