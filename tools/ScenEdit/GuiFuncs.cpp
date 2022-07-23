@@ -281,8 +281,10 @@ int exportLua(int x, int y) {
 	bool success = Disk::getInstance().exportMapLua(*editor, "assets/map.lua");
 
 	if (success) {
-
+		std::cout << "Exported map to assets/map.lua" << std::endl;
 	}
+	else
+		std::cout << "Error exporting map!" << std::endl;
 
 	return 0;
 

@@ -47,7 +47,7 @@ bool Disk::saveMap(ScenEdit& editor, std::string filename) {
     outFile << (uint32_t)editor.bgColorR << " " << (uint32_t)editor.bgColorG << " " << (uint32_t)editor.bgColorB << std::endl;
 
     // then, night time tint color (rgba)
-    outFile << (uint32_t)editor.tintColorR << " " << (uint32_t)editor.tintColorG << " " << (uint32_t)editor.tintColorB << " " << (uint32_t)editor.tintColorA << std::endl;
+    outFile << (uint32_t)editor.tintColorR << " " << (uint32_t)editor.tintColorG << " " << (uint32_t)editor.tintColorB << " " << (uint32_t)editor.tintColorOn << std::endl;
 
     // then write all the tile data from the tile-vector, one line at a time
     for (TileData* curTile : editor.tile) {
@@ -93,7 +93,7 @@ bool Disk::loadMap(ScenEdit& editor, std::string filename) {
     editor.resetMap(editor.mapWidth, editor.mapHeight);
 
     // then, bg color (rgb)
-    uint32_t r, g, b, a;
+    uint32_t r, g, b, on;
 
     inFile >> r >> g >> b;
     editor.bgColorR = (uint8_t)r;
@@ -102,12 +102,12 @@ bool Disk::loadMap(ScenEdit& editor, std::string filename) {
     std::cout << (uint32_t)editor.bgColorR << " " << (uint32_t)editor.bgColorG << " " << (uint32_t)editor.bgColorB << std::endl;
 
     // then, night time tint color (rgba)
-    inFile >> r >> g >> b >> a;
+    inFile >> r >> g >> b >> on;
     editor.tintColorR = (uint8_t)r;
     editor.tintColorG = (uint8_t)g;
     editor.tintColorB = (uint8_t)b;
-    editor.tintColorA = (uint8_t)a;
-    std::cout << (uint32_t)editor.tintColorR << " " << (uint32_t)editor.tintColorG << " " << (uint32_t)editor.tintColorB << " " << (uint32_t)editor.tintColorA << std::endl;
+    editor.tintColorOn = (uint8_t)on;
+    std::cout << (uint32_t)editor.tintColorR << " " << (uint32_t)editor.tintColorG << " " << (uint32_t)editor.tintColorB << " " << (uint32_t)editor.tintColorOn << std::endl;
     
 
     // then write all the tile data from the tile-vector to the tile settings, one line at a time
@@ -123,6 +123,16 @@ bool Disk::loadMap(ScenEdit& editor, std::string filename) {
     }
 
     inFile.close();
+
+    // set bg color
+    fbl_set_clear_color(editor.bgColorR, editor.bgColorG, editor.bgColorB, 255);
+
+    // set night time tint if alpha higher than 0
+    if (editor.tintColorOn > 0) {
+
+        fbl_set_lighting_tint(true, editor.tintColorR, editor.tintColorG, editor.tintColorB);
+
+    }
 
     // reset the cursor coordinates to 0, 0
     editor.tileSettings.x = 0;

@@ -29,6 +29,7 @@ int incAnimFrames(int x, int y);
 int decAnimFrames(int x, int y);
 int incAnimSpeed(int x, int y);
 int decAnimSpeed(int x, int y);
+
 int saveMap(int x, int y);
 int loadMap(int x, int y);
 int exportLua(int x, int y);

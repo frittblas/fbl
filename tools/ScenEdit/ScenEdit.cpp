@@ -57,15 +57,15 @@ ScenEdit::ScenEdit() {
 	// load font
 	fbl_load_ttf_font("edosz.ttf", 18);
 
-	// set bg-color (blue as default) and time of day-tint (alpha set to 0 means tint deactivated)
-	// these values can be set int the map save-file (map.scn)
+	// set bg-color (blue as default) and time of day-tint (tintColorOn set to 0 means tint deactivated)
+	// these values can be set in the map save-file (map.scn)
 	bgColorR = 50;
 	bgColorG = 50;
 	bgColorB = 150;
 	tintColorR = 255;
 	tintColorG = 255;
 	tintColorB = 255;
-	tintColorA = 0;
+	tintColorOn = 0;
 
 	// set default values to the tile settings
 	tileSettings.id = 0;	// id of the current tile to be drawn

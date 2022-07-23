@@ -39,7 +39,7 @@ class ScenEdit {
 
         uint32_t mapWidth, mapHeight, tileSize;   // map wh and tile size
         uint8_t  bgColorR, bgColorG, bgColorB;   // bg color
-        uint8_t  tintColorR, tintColorG, tintColorB, tintColorA; // night time tint color
+        uint8_t  tintColorR, tintColorG, tintColorB, tintColorOn; // night time tint color
         uint32_t mapWtextId, mapHtextId;    // id's for text objects
         uint32_t layerTextId, animFramesTextId, animSpeedTextId;
         uint32_t kinematicBoxId, animatedBoxId; // checkbox id's
