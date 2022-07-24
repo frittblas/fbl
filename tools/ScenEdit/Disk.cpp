@@ -39,15 +39,19 @@ bool Disk::saveMap(ScenEdit& editor, std::string filename) {
 
     // first write the header "ScenEditMap"
     outFile << "ScenEditMap" << std::endl;
+    std::cout << "ScenEditMap" << std::endl;    // echo to the screen
 
     // then write mapW and mapH and tile size
     outFile << editor.mapWidth << " " << editor.mapHeight << " " << editor.tileSize << std::endl;
+    std::cout << editor.mapWidth << " " << editor.mapHeight << " " << editor.tileSize << std::endl;
 
     // then, bg color (rgb)
     outFile << (uint32_t)editor.bgColorR << " " << (uint32_t)editor.bgColorG << " " << (uint32_t)editor.bgColorB << std::endl;
+    std::cout << (uint32_t)editor.bgColorR << " " << (uint32_t)editor.bgColorG << " " << (uint32_t)editor.bgColorB << std::endl;
 
     // then, night time tint color (rgba)
     outFile << (uint32_t)editor.tintColorR << " " << (uint32_t)editor.tintColorG << " " << (uint32_t)editor.tintColorB << " " << (uint32_t)editor.tintColorOn << std::endl;
+    std::cout << (uint32_t)editor.tintColorR << " " << (uint32_t)editor.tintColorG << " " << (uint32_t)editor.tintColorB << " " << (uint32_t)editor.tintColorOn << std::endl;
 
     // then write all the tile data from the tile-vector, one line at a time
     for (TileData* curTile : editor.tile) {
@@ -55,6 +59,9 @@ bool Disk::saveMap(ScenEdit& editor, std::string filename) {
         if (curTile != nullptr) {
             
             outFile << curTile->x << " " << curTile->y << " " << curTile->textureX << " " << curTile->textureY << " " << curTile->layer
+                << " " << curTile->kinematic << " " << curTile->animated << " " << curTile->animFrames << " " << curTile->animSpeed << std::endl;
+
+            std::cout << curTile->x << " " << curTile->y << " " << curTile->textureX << " " << curTile->textureY << " " << curTile->layer
                 << " " << curTile->kinematic << " " << curTile->animated << " " << curTile->animFrames << " " << curTile->animSpeed << std::endl;
 
         }
@@ -85,6 +92,7 @@ bool Disk::loadMap(ScenEdit& editor, std::string filename) {
         std::cout << "Incorrect header for the map file!" << std::endl;
         return false;
     }
+
     // then read mapW and mapH and tile size
     inFile >> editor.mapWidth >> editor.mapHeight >> editor.tileSize;
     std::cout << editor.mapWidth << " " << editor.mapHeight << " " << editor.tileSize << std::endl;
@@ -117,6 +125,10 @@ bool Disk::loadMap(ScenEdit& editor, std::string filename) {
             >> editor.tileSettings.layer >> editor.tileSettings.kinematic >> editor.tileSettings.animated
             >> editor.tileSettings.animFrames >> editor.tileSettings.animSpeed;
 
+        std::cout << editor.tileSettings.x << " " << editor.tileSettings.y << " " << editor.tileSettings.textureX << " " << editor.tileSettings.textureY << " "
+            << editor.tileSettings.layer << " " << editor.tileSettings.kinematic << " " << editor.tileSettings.animated << " "
+            << editor.tileSettings.animFrames << " " << editor.tileSettings.animSpeed << " " << std::endl;
+
         // and add the tile to the map
         editor.addTile();
 
@@ -128,11 +140,8 @@ bool Disk::loadMap(ScenEdit& editor, std::string filename) {
     fbl_set_clear_color(editor.bgColorR, editor.bgColorG, editor.bgColorB, 255);
 
     // set night time tint if alpha higher than 0
-    if (editor.tintColorOn > 0) {
-
+    if (editor.tintColorOn > 0)
         fbl_set_lighting_tint(true, editor.tintColorR, editor.tintColorG, editor.tintColorB);
-
-    }
 
     // reset the cursor coordinates to 0, 0
     editor.tileSettings.x = 0;
