@@ -198,7 +198,7 @@ void fbl_end(void);
 
 int  fbl_engine_init(int w, int h, int fps);
 int  fbl_set_window_mode(unsigned int mode);
-void fbl_set_assets_folder_name(const char *name);		(normally you son't need to use this from Lua)
+void fbl_set_assets_folder_name(const char *name);		(normally you don't need to use this from Lua)
 void fbl_set_clear_color(int r, int g, int b, int a);
 void fbl_set_screen_wh(int w, int h);
 int  fbl_get_screen_w(void);
@@ -314,6 +314,7 @@ void   fbl_set_ui_elem_xy(int id, int x, int y);
 int    fbl_get_ui_elem_x(int id);
 int    fbl_get_ui_elem_y(int id);
 int    fbl_get_ui_elem_val(int id);
+void   fbl_set_ui_elem_val(int id, int value);
 void   fbl_set_ui_elem_active(int id, bool active);
 bool   fbl_get_ui_elem_active(int id);
 int    fbl_get_num_ui_elems(void);
