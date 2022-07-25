@@ -77,8 +77,17 @@ int incMapX(int x, int y) {
 
 	editor->mapWidth++;
 
+	editor->tile.resize(editor->mapWidth * editor->mapHeight);
 
+	int lastIndex = editor->tile.size();
 
+	std::cout << "lastIndex = " << lastIndex << std::endl;
+
+	// set all the new elements to nullptr
+	for (uint32_t i = lastIndex; i < (editor->mapWidth * editor->mapHeight); i++)
+		editor->tile.push_back(nullptr);
+
+	// update text object and write to the console
 	fbl_update_text(editor->mapWtextId, 255, 255, 255, 255, (char*)"Map width: %d (+)", editor->mapWidth);
 	std::cout << "inc map width" << std::endl;
 
@@ -88,11 +97,20 @@ int incMapX(int x, int y) {
 
 int incMapY(int x, int y) {
 
-	// NOTE: actually change the size of the vector also :)
-
-	std::cout << "inc map height" << std::endl;
 	editor->mapHeight++;
+
+	editor->tile.resize(editor->mapWidth * editor->mapHeight);
+
+	int lastIndex = editor->tile.size();
+
+	std::cout << "lastIndex = " << lastIndex << std::endl;
+
+	// set all the new elements to nullptr
+	for (uint32_t i = lastIndex; i < (editor->mapWidth * editor->mapHeight); i++)
+		editor->tile.push_back(nullptr);
+
 	fbl_update_text(editor->mapHtextId, 255, 255, 255, 255, (char*)"Map height: %d (+)", editor->mapHeight);
+	std::cout << "inc map height" << std::endl;
 
 	return 0;
 
