@@ -30,7 +30,7 @@ class Disk {
         static Disk &getInstance();
 
         static bool saveMap(ScenEdit& editor, std::string filename);
-        static bool loadMap(ScenEdit& editor, std::string filename);
+        static bool loadMap(ScenEdit& editor, std::string filename);    // this calls resetMap, which deletas all sprites!
         static bool exportMapLua(ScenEdit& editor, std::string filename);
 
 };

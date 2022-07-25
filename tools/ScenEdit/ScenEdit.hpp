@@ -35,6 +35,7 @@ class ScenEdit {
         uint32_t screenWidthInTiles = 30;
         uint32_t screenHeightInTiles = 17;
 
+        bool standAlone;    // if true it works like an editor otherwise it can be used from a game
         uint32_t mapWidth, mapHeight, tileSize;   // map wh and tile size
         uint8_t  bgColorR, bgColorG, bgColorB;   // bg color
         uint8_t  tintColorR, tintColorG, tintColorB, tintColorOn; // night time tint color
@@ -46,10 +47,11 @@ class ScenEdit {
         std::vector<TileData*> tile;    // vector that holds all the tiles
         TileData tileSettings;    // holds the parameters for the current tile to be drawn
 
-        ScenEdit();     // constructor, set everything up
+        ScenEdit(bool runStandAlone);     // constructor, set everything up
         ~ScenEdit();    // destructor, clean everything up
 
         void setup(uint32_t mapW, uint32_t mapH, uint32_t tSize);
+        void setupGUI();
         void fitTilesToScreen();
         void tick();
         void getInput();
@@ -58,7 +60,7 @@ class ScenEdit {
         void copyTile();
         void removeTile();
         void showTileInfo();
-        void resetMap(uint32_t w, uint32_t h);
+        void resetMap(uint32_t w, uint32_t h);  // this will delete all sprites
         void snapToGrid(uint32_t &x, uint32_t &y);
         void toggleGUI();
 

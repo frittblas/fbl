@@ -26,7 +26,7 @@ void fbl_start()
 
 	fbl_set_window_title((char*)"ScenEdit 1.0");
 
-	editor = new ScenEdit();
+	editor = new ScenEdit(true);
 
 
 }

@@ -149,8 +149,9 @@ bool Disk::loadMap(ScenEdit& editor, std::string filename) {
     editor.tileSettings.textureX = 0;
     editor.tileSettings.textureY = 0;
 
-    // show info on the up/left most tile
-    editor.showTileInfo();
+    // show info on the up/left most tile if in stand alone mode
+    if(editor.standAlone)
+        editor.showTileInfo();
 
     return true;
 }

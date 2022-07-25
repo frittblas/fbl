@@ -20,7 +20,7 @@ struct TileData {
     uint32_t x, y;
     uint32_t textureX, textureY;
     uint32_t layer;
-    bool kinematic, animated;
+    bool kinematic, animated;   // NOTE: change kinematic to terrain and have 0,1,2 as walkable, solid, water
     uint32_t animFrames, animSpeed;
 
 };

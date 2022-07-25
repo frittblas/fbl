@@ -16,13 +16,19 @@
 
 // ScenEdit-class implementation
 
-ScenEdit::ScenEdit() {
+ScenEdit::ScenEdit(bool runStandAlone) {
+
+	standAlone = runStandAlone;
 
 	// draw everything from top left
 	fbl_set_sprite_align(FBL_SPRITE_ALIGN_UP_LEFT);
 
 	// set up with default values
 	setup(screenWidthInTiles, screenHeightInTiles, 32);
+
+	// setup GUI if in stand alone mode
+	if (standAlone)
+		setupGUI();
 
 }
 
@@ -46,8 +52,6 @@ ScenEdit::~ScenEdit() {
 
 void ScenEdit::setup(uint32_t mapW, uint32_t mapH, uint32_t tSize) {
 
-	const int lMargin = 300; // Gui text gets drawn this far from the right
-
 	// set up the editor, map and tile size
 	mapWidth = mapW;
 	mapHeight = mapH;
@@ -61,23 +65,6 @@ void ScenEdit::setup(uint32_t mapW, uint32_t mapH, uint32_t tSize) {
 		tile.push_back(nullptr);
 
 	fitTilesToScreen();
-
-	std::cout << "Welcome to ScenEdit!" << std::endl;
-	std::cout << "Control the camera with WASD." << std::endl;
-	std::cout << "Control the marker with arrows or mouse." << std::endl;
-	std::cout << "Draw a tile with space or left mouse button." << std::endl;
-	std::cout << "Delete tile with del or right mouse button." << std::endl;
-	std::cout << "Center the map with C and reset map with R." << std::endl;
-	std::cout << "Will load spritesheet_.png and ui_.png at the start." << std::endl;
-	std::cout << "Will save and load map.scn and export map.lua." << std::endl;
-	std::cout << "Tile vector size: " << tile.size() << std::endl;
-
-	// load textures
-	fbl_load_ui_texture((char*)"ui_.png");	// load ui texture
-	fbl_load_texture((char*)"spritesheet_.png");	// load sprite texture
-
-	// load font
-	fbl_load_ttf_font("edosz.ttf", 18);
 
 	// set bg-color (blue as default) and time of day-tint (tintColorOn set to 0 means tint deactivated)
 	// these values can be set in the map save-file (map.scn)
@@ -101,7 +88,29 @@ void ScenEdit::setup(uint32_t mapW, uint32_t mapH, uint32_t tSize) {
 	tileSettings.animFrames = 1;	// how many frames in total are there in the animation
 	tileSettings.animSpeed = 10;	// how many frames delay between each image
 
-	// first UI
+}
+
+void ScenEdit::setupGUI() {
+
+	const int lMargin = 300; // Gui text gets drawn this far from the right
+
+	// load textures
+	fbl_load_ui_texture((char*)"ui_.png");	// load ui texture
+	fbl_load_texture((char*)"spritesheet_.png");	// load sprite texture
+
+	// load font
+	fbl_load_ttf_font("edosz.ttf", 18);
+
+	// print help to the console
+	std::cout << "Welcome to ScenEdit!" << std::endl;
+	std::cout << "Control the camera with WASD." << std::endl;
+	std::cout << "Control the marker with arrows or mouse." << std::endl;
+	std::cout << "Draw a tile with space or left mouse button." << std::endl;
+	std::cout << "Delete tile with del or right mouse button." << std::endl;
+	std::cout << "Center the map with C and reset map with R." << std::endl;
+	std::cout << "Will load spritesheet_.png and ui_.png at the start." << std::endl;
+	std::cout << "Will save and load map.scn and export map.lua." << std::endl;
+	std::cout << "Tile vector size: " << tile.size() << std::endl;
 
 	// dark grey, filled rect with alpha as bg, draw from middle 2X size
 	bgRectId = fbl_create_prim(FBL_RECT, fbl_get_screen_w() - 160, fbl_get_screen_h() / 2, 160, fbl_get_screen_h() / 2, 0, 0, true);
@@ -202,11 +211,6 @@ void ScenEdit::setup(uint32_t mapW, uint32_t mapH, uint32_t tSize) {
 	// rects are 2X size in fbl :)(it's because of the translate shape stuff. Just scale down 2x to make fit)
 	// temporarily fixed this by adding a new shape to draw (1 after FBL_RAY, in primitives.c)
 	fbl_set_prim_color(mapMarkerId, 255, 255, 255, 100);
-
-
-	//std::cout << "Prims: " << fbl_get_num_prims() << std::endl;
-	//std::cout << "UI's: " << fbl_get_num_ui_elems() << std::endl;
-
 
 }
 
@@ -494,27 +498,9 @@ void ScenEdit::resetMap(uint32_t w, uint32_t h) {
 
 	}
 
-	// recreate the current tile to draw, as id 0
-	tileSettings.textureX = 0;
-	tileSettings.textureY = 0;
-	tileSettings.id = fbl_create_sprite(tileSettings.textureX, tileSettings.textureY, tileSize, tileSize, 0);
-	fbl_set_sprite_xy(tileSettings.id, fbl_get_screen_w() - 96 - 16, 64 - 16); // compensate for ui center-drawing
-	fbl_fix_sprite_to_screen(tileSettings.id, true);
-
-	// recreate the marMarker prim, with new size
-	fbl_delete_prim(mapMarkerId);
-	mapMarkerId = fbl_create_prim(FBL_RAY + 1, tileSettings.x, tileSettings.y, tileSize, tileSize, 0, 0, false);
-	fbl_set_prim_color(mapMarkerId, 255, 255, 255, 100);
-
-	// set the border for the new tilesize
-	fitTilesToScreen();
-
 	// resize the map
 	mapWidth = w;
 	mapHeight = h;
-
-	fbl_update_text(mapWtextId, 255, 255, 255, 255, (char*)"Map width: %d (+)", mapWidth);
-	fbl_update_text(mapHtextId, 255, 255, 255, 255, (char*)"Map height: %d (+)", mapHeight);
 
 	// resize memory for the tile-list
 	tile.resize(mapWidth * mapHeight);
@@ -526,16 +512,39 @@ void ScenEdit::resetMap(uint32_t w, uint32_t h) {
 	for (uint32_t i = 0; i < (mapWidth * mapHeight); i++)
 		tile.push_back(nullptr);
 
-	// set the map marker xy to 0
-	tileSettings.x = 0;
-	tileSettings.y = 0;
-	fbl_set_prim_xy(mapMarkerId, tileSettings.x, tileSettings.y);
+	if (standAlone) {
+
+		// recreate the current tile to draw, as id 0
+		tileSettings.textureX = 0;
+		tileSettings.textureY = 0;
+		tileSettings.id = fbl_create_sprite(tileSettings.textureX, tileSettings.textureY, tileSize, tileSize, 0);
+		fbl_set_sprite_xy(tileSettings.id, fbl_get_screen_w() - 96 - 16, 64 - 16); // compensate for ui center-drawing
+		fbl_fix_sprite_to_screen(tileSettings.id, true);
+
+		// recreate the marMarker prim, with new size
+		fbl_delete_prim(mapMarkerId);
+		mapMarkerId = fbl_create_prim(FBL_RAY + 1, tileSettings.x, tileSettings.y, tileSize, tileSize, 0, 0, false);
+		fbl_set_prim_color(mapMarkerId, 255, 255, 255, 100);
+
+		// set the border for the new tilesize
+		fitTilesToScreen();
+
+		// update the w and h text
+		fbl_update_text(mapWtextId, 255, 255, 255, 255, (char*)"Map width: %d (+)", mapWidth);
+		fbl_update_text(mapHtextId, 255, 255, 255, 255, (char*)"Map height: %d (+)", mapHeight);
+
+		// set the map marker xy to 0
+		tileSettings.x = 0;
+		tileSettings.y = 0;
+		fbl_set_prim_xy(mapMarkerId, tileSettings.x, tileSettings.y);
+
+		// show the correct tile info
+		showTileInfo();
+
+	}
 
 	// reset the camera
 	fbl_set_camera_xy(0, 0);
-
-	// show the correct tile info
-	showTileInfo();
 
 	std::cout << "Reset map! Tile vector size: " << tile.size() << std::endl;
 
