@@ -151,6 +151,7 @@
     <ClCompile Include="..\..\src\ui.c" />
     <ClCompile Include="..\..\tools\ScenEdit\Disk.cpp" />
     <ClCompile Include="..\..\tools\ScenEdit\GuiFuncs.cpp" />
+    <ClCompile Include="..\..\tools\ScenEdit\Main.cpp" />
     <ClCompile Include="..\..\tools\ScenEdit\ScenEdit.cpp" />
   </ItemGroup>
   <ItemGroup>

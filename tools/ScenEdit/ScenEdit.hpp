@@ -14,9 +14,7 @@
 
 #include <iostream>
 #include <vector>
-
 #include "../../src/fbl.hpp"
-
 #include "TileData.hpp"
 
 class ScenEdit {
@@ -28,14 +26,14 @@ class ScenEdit {
 
     public:
 
-        // these will fill a screen (960x540)
-        const int screenWidthInTiles = 30;
-        const int screenHeightInTiles = 17;
-
         // control when we can press button again
         const int spdFast = 5;
         const int spdMed = 10;
         const int spdSlow = 25;
+
+        // these numbers will fill a screen with tiles (960x540)
+        uint32_t screenWidthInTiles = 30;
+        uint32_t screenHeightInTiles = 17;
 
         uint32_t mapWidth, mapHeight, tileSize;   // map wh and tile size
         uint8_t  bgColorR, bgColorG, bgColorB;   // bg color
@@ -51,6 +49,8 @@ class ScenEdit {
         ScenEdit();     // constructor, set everything up
         ~ScenEdit();    // destructor, clean everything up
 
+        void setup(uint32_t mapW, uint32_t mapH, uint32_t tSize);
+        void fitTilesToScreen();
         void tick();
         void getInput();
         void processMouse(int button);

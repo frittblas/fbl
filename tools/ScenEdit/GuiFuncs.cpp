@@ -75,9 +75,12 @@ int selectSpriteDown(int x, int y) {
 
 int incMapX(int x, int y) {
 
-	std::cout << "inc map width" << std::endl;
 	editor->mapWidth++;
+
+
+
 	fbl_update_text(editor->mapWtextId, 255, 255, 255, 255, (char*)"Map width: %d (+)", editor->mapWidth);
+	std::cout << "inc map width" << std::endl;
 
 	return 0;
 

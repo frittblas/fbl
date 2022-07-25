@@ -14,24 +14,44 @@
 #include "GuiFuncs.hpp"
 
 
-ScenEdit *editor;
-
-
 // ScenEdit-class implementation
 
 ScenEdit::ScenEdit() {
 
-	int lMargin = 300; // Gui text gets drawn this far from the right
-
-    // set up the editor
-
 	// draw everything from top left
 	fbl_set_sprite_align(FBL_SPRITE_ALIGN_UP_LEFT);
 
-	mapWidth = 45;	// screenWidthInTiles;
-	mapHeight = 25; // screenHeightInTiles;
+	// set up with default values
+	setup(screenWidthInTiles, screenHeightInTiles, 32);
 
-	tileSize = 32;  // default to 32 (can be changed in the .scn-files)
+}
+
+ScenEdit::~ScenEdit() {
+
+	fbl_destroy_texture();
+	fbl_destroy_all_sprites();
+	fbl_destroy_all_prims();
+	fbl_destroy_all_text_objects();
+	fbl_destroy_ttf_font();
+	fbl_destroy_ui_texture();
+	fbl_destroy_all_ui_elems();
+	//fbl_destroy_all_emitters();
+	//fbl_destroy_all_sounds();
+	//fbl_destroy_music();
+	//fbl_pathf_shutdown();
+	fbl_lua_shutdown();
+	fbl_phys_shutdown();
+
+}
+
+void ScenEdit::setup(uint32_t mapW, uint32_t mapH, uint32_t tSize) {
+
+	const int lMargin = 300; // Gui text gets drawn this far from the right
+
+	// set up the editor, map and tile size
+	mapWidth = mapW;
+	mapHeight = mapH;
+	tileSize = tSize;
 
 	// allocate memory for the tile-list
 	tile.reserve(mapWidth * mapHeight);
@@ -39,6 +59,8 @@ ScenEdit::ScenEdit() {
 	// set all elements to nullptr
 	for (uint32_t i = 0; i < (mapWidth * mapHeight); i++)
 		tile.push_back(nullptr);
+
+	fitTilesToScreen();
 
 	std::cout << "Welcome to ScenEdit!" << std::endl;
 	std::cout << "Control the camera with WASD." << std::endl;
@@ -181,30 +203,23 @@ ScenEdit::ScenEdit() {
 	// temporarily fixed this by adding a new shape to draw (1 after FBL_RAY, in primitives.c)
 	fbl_set_prim_color(mapMarkerId, 255, 255, 255, 100);
 
-	
+
 	//std::cout << "Prims: " << fbl_get_num_prims() << std::endl;
 	//std::cout << "UI's: " << fbl_get_num_ui_elems() << std::endl;
 
-}
-
-ScenEdit::~ScenEdit() {
-
-	fbl_destroy_texture();
-	fbl_destroy_all_sprites();
-	fbl_destroy_all_prims();
-	fbl_destroy_all_text_objects();
-	fbl_destroy_ttf_font();
-	fbl_destroy_ui_texture();
-	fbl_destroy_all_ui_elems();
-	//fbl_destroy_all_emitters();
-	//fbl_destroy_all_sounds();
-	//fbl_destroy_music();
-	//fbl_pathf_shutdown();
-	fbl_lua_shutdown();
-	fbl_phys_shutdown();
 
 }
 
+void ScenEdit::fitTilesToScreen() {
+
+	screenWidthInTiles = fbl_get_screen_w() / tileSize;
+	if (fbl_get_screen_w() % tileSize > (tileSize / 2))
+		screenWidthInTiles++;
+	screenHeightInTiles = fbl_get_screen_h() / tileSize;
+	if (fbl_get_screen_h() % tileSize > (tileSize / 2))
+		screenHeightInTiles++;
+
+}
 
 void ScenEdit::tick() {
 
@@ -365,8 +380,8 @@ void ScenEdit::addTile() {
 		tile[index]->animSpeed = tileSettings.animSpeed;
 
 		// turn on the animation if animated == true, otherwise do nothing
-		fbl_set_sprite_animation(editor->tile[index]->id, tile[index]->animated, editor->tile[index]->textureX, editor->tile[index]->textureY,
-			editor->tileSize, editor->tileSize, editor->tile[index]->animFrames, editor->tile[index]->animSpeed, true);
+		fbl_set_sprite_animation(tile[index]->id, tile[index]->animated, tile[index]->textureX, tile[index]->textureY,
+			tileSize, tileSize, tile[index]->animFrames, tile[index]->animSpeed, true);
 
 		std::cout << "Added sprite at X: " << tileSettings.x / tileSize << ", Y: " << tileSettings.y / tileSize << std::endl;
 		std::cout << "Number of tiles: " << fbl_get_num_sprites() - 1 << std::endl; // -1 because of the select sprite
@@ -486,12 +501,20 @@ void ScenEdit::resetMap(uint32_t w, uint32_t h) {
 	fbl_set_sprite_xy(tileSettings.id, fbl_get_screen_w() - 96 - 16, 64 - 16); // compensate for ui center-drawing
 	fbl_fix_sprite_to_screen(tileSettings.id, true);
 
+	// recreate the marMarker prim, with new size
+	fbl_delete_prim(mapMarkerId);
+	mapMarkerId = fbl_create_prim(FBL_RAY + 1, tileSettings.x, tileSettings.y, tileSize, tileSize, 0, 0, false);
+	fbl_set_prim_color(mapMarkerId, 255, 255, 255, 100);
+
+	// set the border for the new tilesize
+	fitTilesToScreen();
+
 	// resize the map
 	mapWidth = w;
 	mapHeight = h;
 
-	fbl_update_text(editor->mapWtextId, 255, 255, 255, 255, (char*)"Map width: %d (+)", editor->mapWidth);
-	fbl_update_text(editor->mapHtextId, 255, 255, 255, 255, (char*)"Map height: %d (+)", editor->mapHeight);
+	fbl_update_text(mapWtextId, 255, 255, 255, 255, (char*)"Map width: %d (+)", mapWidth);
+	fbl_update_text(mapHtextId, 255, 255, 255, 255, (char*)"Map height: %d (+)", mapHeight);
 
 	// resize memory for the tile-list
 	tile.resize(mapWidth * mapHeight);
@@ -510,6 +533,9 @@ void ScenEdit::resetMap(uint32_t w, uint32_t h) {
 
 	// reset the camera
 	fbl_set_camera_xy(0, 0);
+
+	// show the correct tile info
+	showTileInfo();
 
 	std::cout << "Reset map! Tile vector size: " << tile.size() << std::endl;
 
@@ -550,53 +576,3 @@ void ScenEdit::toggleGUI() {
 		fbl_set_ui_elem_active(i, showGUI);
 
 }
-
-
-//
-// Below are the fbl standard functions
-//
-
-
-void fbl_start()
-{
-	
-	// make sure that the name of the asset folder is set to what you want (default = "assets/")
-	// fbl_set_assets_folder_name("your_name/");
-
-	fbl_engine_init(960, 540, 60);
-	fbl_set_clear_color(50, 50, 150, 255);
-
-	fbl_set_window_title((char*) "ScenEdit 1.0");
-
-	editor = new ScenEdit();
-
-
-}
-
-void fbl_game_loop()
-{
-
-	if (fbl_get_key_down(FBLK_ESCAPE))
-		fbl_engine_quit();
-
-	if (fbl_get_key_down(FBLK_F9))
-		fbl_set_window_mode(0);
-	if (fbl_get_key_down(FBLK_F10))
-		fbl_set_window_mode(FBL_WINDOW_FULLSCREEN);
-	if (fbl_get_key_down(FBLK_F11))
-		fbl_set_window_mode(FBL_WINDOW_FULLSCREEN_DESKTOP);
-
-	editor->tick();
-
-}
-
-void fbl_end()
-{
-
-	editor->resetMap(0, 0);	// free tile-mem
-	delete editor;
-
-	std::cout<<"Bye!"<<std::endl;
-
-}
-

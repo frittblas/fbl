@@ -97,7 +97,7 @@ bool Disk::loadMap(ScenEdit& editor, std::string filename) {
     inFile >> editor.mapWidth >> editor.mapHeight >> editor.tileSize;
     std::cout << editor.mapWidth << " " << editor.mapHeight << " " << editor.tileSize << std::endl;
 
-    // resize the current map to the new values
+    // resize the current map to the new values, also setting the new tile size if that changed
     editor.resetMap(editor.mapWidth, editor.mapHeight);
 
     // then, bg color (rgb)
@@ -143,9 +143,14 @@ bool Disk::loadMap(ScenEdit& editor, std::string filename) {
     if (editor.tintColorOn > 0)
         fbl_set_lighting_tint(true, editor.tintColorR, editor.tintColorG, editor.tintColorB);
 
-    // reset the cursor coordinates to 0, 0
+    // reset the cursor coordinates and texture_xy to 0, 0
     editor.tileSettings.x = 0;
     editor.tileSettings.y = 0;
+    editor.tileSettings.textureX = 0;
+    editor.tileSettings.textureY = 0;
+
+    // show info on the up/left most tile
+    editor.showTileInfo();
 
     return true;
 }
