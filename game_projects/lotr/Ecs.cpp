@@ -508,7 +508,7 @@ int main()
 		quit--;
 	}
 	
-	auto& pos = gCoordinator.GetComponent<Position>(1);
+	auto& pos = gCoordinator.GetComponent<Position>(0);
 	
 	std::cout << pos.x << std::endl;
 	
