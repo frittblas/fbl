@@ -1,31 +1,19 @@
 // I got this from https://austinmorlan.com/posts/entity_component_system/
 // This was taken from the website
 // Great article!
-// Thanks you Austin Morlan!
+// Thank you Austin Morlan!
 //
 
+#pragma once
 
-#include <iostream>
 #include <cassert>
 #include <array>
 #include <unordered_map>
 #include <queue>
-#include <set>
 #include <memory>
-#include <bitset>
 
-
-// A simple type alias
-using ComponentType = std::uint8_t;
-
-// Used to define the size of arrays later on
-const ComponentType MAX_COMPONENTS = 32;
-
-// A simple type alias
-using Signature = std::bitset<MAX_COMPONENTS>;
-
-using Entity = std::uint32_t;
-const Entity MAX_ENTITIES = 5000;
+#include "Types.hpp"
+#include "System.hpp"
 
 
 class EntityManager
@@ -103,6 +91,7 @@ public:
 	virtual ~IComponentArray() = default;
 	virtual void EntityDestroyed(Entity entity) = 0;
 };
+
 
 
 template<typename T>
@@ -261,14 +250,6 @@ private:
 
 		return std::static_pointer_cast<ComponentArray<T>>(mComponentArrays[typeName]);
 	}
-};
-
-
-
-class System
-{
-public:
-	std::set<Entity> mEntities;
 };
 
 
@@ -434,82 +415,3 @@ private:
 	std::unique_ptr<EntityManager> mEntityManager;
 	std::unique_ptr<SystemManager> mSystemManager;
 };
-
-
-
-//  Components and Systems goes here
-
-struct Position
-{
-	 int x, y;
-};
-
-
-Coordinator gCoordinator;
-
-class PhysicsSystem : public System
-{
-	
-public:
-	void Init() {
-	}
-
-	void Update() {
-		for (auto const& entity : mEntities)
-		{
-			auto& pos = gCoordinator.GetComponent<Position>(entity);
-			//auto& transform = gCoordinator.GetComponent<Transform>(entity);
-
-			pos.x++;
-
-		}
-	}
-	
-};
-
-
-
-
-int main()
-{
-
-	
-	gCoordinator.Init();
-
-	gCoordinator.RegisterComponent<Position>();
-
-	auto physicsSystem = gCoordinator.RegisterSystem<PhysicsSystem>();
-
-	Signature signature;
-	signature.set(gCoordinator.GetComponentType<Position>());
-	gCoordinator.SetSystemSignature<PhysicsSystem>(signature);
-
-	std::vector<Entity> entities(MAX_ENTITIES - 4900);
-
-
-	for (auto& entity : entities)
-	{
-		entity = gCoordinator.CreateEntity();
-
-		gCoordinator.AddComponent(
-			entity,
-			Position {0, 0}
-		);
-
-	}
-
-	int quit = 100;
-
-	while (quit > 0)
-	{
-
-		physicsSystem->Update();
-		
-		quit--;
-	}
-	
-	auto& pos = gCoordinator.GetComponent<Position>(0);
-	
-	std::cout << pos.x << std::endl;
-	
-}

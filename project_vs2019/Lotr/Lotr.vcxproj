@@ -134,7 +134,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\game_projects\lotr\Ecs.cpp" />
+    <ClCompile Include="..\..\game_projects\lotr\Ecs\Systems\PhysicsSystem.cpp" />
     <ClCompile Include="..\..\game_projects\lotr\Lotr.cpp" />
     <ClCompile Include="..\..\src\a_star\a_star.c" />
     <ClCompile Include="..\..\src\dl_list\dllist.c" />
@@ -150,11 +150,23 @@
     <ClCompile Include="..\..\src\text.c" />
     <ClCompile Include="..\..\src\thread.c" />
     <ClCompile Include="..\..\src\ui.c" />
+    <ClCompile Include="..\..\tools\ScenEdit\Disk.cpp" />
+    <ClCompile Include="..\..\tools\ScenEdit\GuiFuncs.cpp" />
+    <ClCompile Include="..\..\tools\ScenEdit\ScenEdit.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\game_projects\lotr\Ecs\Components.hpp" />
+    <ClInclude Include="..\..\game_projects\lotr\Ecs\Ecs.hpp" />
+    <ClInclude Include="..\..\game_projects\lotr\Ecs\System.hpp" />
+    <ClInclude Include="..\..\game_projects\lotr\Ecs\Systems\PhysicsSystem.hpp" />
+    <ClInclude Include="..\..\game_projects\lotr\Ecs\Types.hpp" />
     <ClInclude Include="..\..\src\engine.h" />
     <ClInclude Include="..\..\src\fbl.h" />
     <ClInclude Include="..\..\src\fbl.hpp" />
+    <ClInclude Include="..\..\tools\ScenEdit\Disk.hpp" />
+    <ClInclude Include="..\..\tools\ScenEdit\GuiFuncs.hpp" />
+    <ClInclude Include="..\..\tools\ScenEdit\ScenEdit.hpp" />
+    <ClInclude Include="..\..\tools\ScenEdit\TileData.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

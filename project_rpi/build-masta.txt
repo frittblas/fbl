@@ -23,7 +23,7 @@ from the build-dir
 sdl_image works perfect as shown in the guide.
 
 sdl_ttf didn't work when cloned from the latest github version. Had to use slightly older version:
-https://frittblas.se/upload/uploads/SDL2-2.0.14.zip
+https://frittblas.se/upload/uploads__/SDL2_ttf-2.0.15.zip
 
 just follow above steps and install it.
 

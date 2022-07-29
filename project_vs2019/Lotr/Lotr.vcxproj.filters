@@ -22,6 +22,15 @@
     <Filter Include="Source Files\fbl_src\a_star">
       <UniqueIdentifier>{23eefb01-7af6-48e2-b280-28e08eadd2fa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\ScenEdit">
+      <UniqueIdentifier>{12055255-0d74-4bb6-8084-3a95ca58e1cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Ecs">
+      <UniqueIdentifier>{5fd85cf9-c0a7-4a41-8f07-b151c8bea2df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Ecs\Systems">
+      <UniqueIdentifier>{1780e2dc-d6a5-4977-89e4-fed62dc0f9c2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\a_star\a_star.c">
@@ -66,11 +75,20 @@
     <ClCompile Include="..\..\src\lua.c">
       <Filter>Source Files\fbl_src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\game_projects\lotr\Ecs.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\tools\ScenEdit\Disk.cpp">
+      <Filter>Source Files\ScenEdit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tools\ScenEdit\ScenEdit.cpp">
+      <Filter>Source Files\ScenEdit</Filter>
     </ClCompile>
     <ClCompile Include="..\..\game_projects\lotr\Lotr.cpp">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tools\ScenEdit\GuiFuncs.cpp">
+      <Filter>Source Files\ScenEdit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game_projects\lotr\Ecs\Systems\PhysicsSystem.cpp">
+      <Filter>Source Files\Ecs\Systems</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -82,6 +100,33 @@
     </ClInclude>
     <ClInclude Include="..\..\src\fbl.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tools\ScenEdit\Disk.hpp">
+      <Filter>Source Files\ScenEdit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tools\ScenEdit\ScenEdit.hpp">
+      <Filter>Source Files\ScenEdit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tools\ScenEdit\TileData.hpp">
+      <Filter>Source Files\ScenEdit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tools\ScenEdit\GuiFuncs.hpp">
+      <Filter>Source Files\ScenEdit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\lotr\Ecs\Components.hpp">
+      <Filter>Source Files\Ecs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\lotr\Ecs\Ecs.hpp">
+      <Filter>Source Files\Ecs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\lotr\Ecs\System.hpp">
+      <Filter>Source Files\Ecs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\lotr\Ecs\Systems\PhysicsSystem.hpp">
+      <Filter>Source Files\Ecs\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\lotr\Ecs\Types.hpp">
+      <Filter>Source Files\Ecs</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
