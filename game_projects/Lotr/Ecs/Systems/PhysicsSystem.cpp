@@ -2,26 +2,22 @@
 
 #include "../Ecs.hpp"
 #include "../Components.hpp"
-#include "../System.hpp"
+
+#include "PhysicsSystem.hpp"
 
 extern Coordinator gEcs;
 
-class PhysicsSystem : public System
-{
+void PhysicsSystem::Init() {
+	std::cout << "lol Init" << std::endl;
+}
 
-public:
-	void Init() {
+void PhysicsSystem::Update() {
+	for (auto const& entity : mEntities)
+	{
+		auto& pos = gEcs.GetComponent<Position>(entity);
+		//auto& transform = gCoordinator.GetComponent<Transform>(entity);
+
+		pos.x++;
+
 	}
-
-	void Update() {
-		for (auto const& entity : mEntities)
-		{
-			auto& pos = gEcs.GetComponent<Position>(entity);
-			//auto& transform = gCoordinator.GetComponent<Transform>(entity);
-
-			pos.x++;
-
-		}
-	}
-
-};
+}

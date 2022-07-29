@@ -285,8 +285,6 @@ void fbl_set_ui_elem_val(int id, int value)
     else fprintf(FBL_ERROR_OUT, "Tried to set value for ui element %d, that does not exist!\n", id);
 #endif
 
-    return 0;
-
 }
 
 /*

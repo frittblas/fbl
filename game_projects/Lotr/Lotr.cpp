@@ -34,14 +34,13 @@ void fbl_start()
 
 	editor = new ScenEdit(false);	// create new instance of ScenEdit without editor GUI
 
-	/*
 	bool success = Disk::getInstance().loadMap(*editor, "assets/map.scn");
 
 	if (success)
 		std::cout << "Loaded map from assets/map.scn" << std::endl;
 	else
 		std::cout << "Error loading map!" << std::endl;
-		*/
+
 	/////////
 
 
@@ -69,12 +68,14 @@ void fbl_start()
 
 	}
 
+	physicsSystem->Init();
+
 	int quit = 100;
 
 	while (quit > 0)
 	{
 
-		//physicsSystem->Update();
+		physicsSystem->Update();
 
 		quit--;
 	}
