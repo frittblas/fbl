@@ -90,6 +90,15 @@
     <ClCompile Include="..\..\game_projects\lotr\Ecs\Systems\PhysicsSystem.cpp">
       <Filter>Source Files\Ecs\Systems</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\game_projects\Lotr\GameState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game_projects\Lotr\Init.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game_projects\Lotr\Progress.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\fbl.h">
@@ -127,6 +136,15 @@
     </ClInclude>
     <ClInclude Include="..\..\game_projects\lotr\Ecs\Types.hpp">
       <Filter>Source Files\Ecs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Lotr\GameState.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Lotr\Init.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Lotr\Progress.hpp">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

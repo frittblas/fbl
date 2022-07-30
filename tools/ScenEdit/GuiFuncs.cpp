@@ -14,12 +14,12 @@
 #include "ScenEdit.hpp"
 #include "Disk.hpp"
 
-extern ScenEdit *editor;
+extern ScenEdit *gEditor;
 
 // return the index for the tile vector based on the cursor coordinates.
 int getIndexAtCursor() {
 
-	return (editor->tileSettings.x / editor->tileSize) + editor->mapWidth * (editor->tileSettings.y / editor->tileSize);
+	return (gEditor->tileSettings.x / gEditor->tileSize) + gEditor->mapWidth * (gEditor->tileSettings.y / gEditor->tileSize);
 
 }
 
@@ -29,10 +29,10 @@ int getIndexAtCursor() {
 
 int selectSpriteLeft(int x, int y) {
 
-	if (editor->tileSettings.textureX > 0)
-		editor->tileSettings.textureX -= editor->tileSize;
+	if (gEditor->tileSettings.textureX > 0)
+		gEditor->tileSettings.textureX -= gEditor->tileSize;
 
-	fbl_set_sprite_image(editor->tileSettings.id, editor->tileSettings.textureX, editor->tileSettings.textureY, editor->tileSize, editor->tileSize, 0);
+	fbl_set_sprite_image(gEditor->tileSettings.id, gEditor->tileSettings.textureX, gEditor->tileSettings.textureY, gEditor->tileSize, gEditor->tileSize, 0);
 
 	return 0;
 
@@ -40,10 +40,10 @@ int selectSpriteLeft(int x, int y) {
 
 int selectSpriteRight(int x, int y) {
 
-	if (editor->tileSettings.textureX < (fbl_get_texture_w() - editor->tileSize))
-		editor->tileSettings.textureX += editor->tileSize;
+	if (gEditor->tileSettings.textureX < (fbl_get_texture_w() - gEditor->tileSize))
+		gEditor->tileSettings.textureX += gEditor->tileSize;
 
-	fbl_set_sprite_image(editor->tileSettings.id, editor->tileSettings.textureX, editor->tileSettings.textureY, editor->tileSize, editor->tileSize, 0);
+	fbl_set_sprite_image(gEditor->tileSettings.id, gEditor->tileSettings.textureX, gEditor->tileSettings.textureY, gEditor->tileSize, gEditor->tileSize, 0);
 
 	return 0;
 
@@ -51,10 +51,10 @@ int selectSpriteRight(int x, int y) {
 
 int selectSpriteUp(int x, int y) {
 
-	if (editor->tileSettings.textureY > 0)
-		editor->tileSettings.textureY -= editor->tileSize;
+	if (gEditor->tileSettings.textureY > 0)
+		gEditor->tileSettings.textureY -= gEditor->tileSize;
 
-	fbl_set_sprite_image(editor->tileSettings.id, editor->tileSettings.textureX, editor->tileSettings.textureY, editor->tileSize, editor->tileSize, 0);
+	fbl_set_sprite_image(gEditor->tileSettings.id, gEditor->tileSettings.textureX, gEditor->tileSettings.textureY, gEditor->tileSize, gEditor->tileSize, 0);
 
 	return 0;
 
@@ -62,10 +62,10 @@ int selectSpriteUp(int x, int y) {
 
 int selectSpriteDown(int x, int y) {
 
-	if (editor->tileSettings.textureY < (fbl_get_texture_h() - editor->tileSize))
-		editor->tileSettings.textureY += editor->tileSize;
+	if (gEditor->tileSettings.textureY < (fbl_get_texture_h() - gEditor->tileSize))
+		gEditor->tileSettings.textureY += gEditor->tileSize;
 
-	fbl_set_sprite_image(editor->tileSettings.id, editor->tileSettings.textureX, editor->tileSettings.textureY, editor->tileSize, editor->tileSize, 0);
+	fbl_set_sprite_image(gEditor->tileSettings.id, gEditor->tileSettings.textureX, gEditor->tileSettings.textureY, gEditor->tileSize, gEditor->tileSize, 0);
 
 	return 0;
 
@@ -75,20 +75,20 @@ int selectSpriteDown(int x, int y) {
 
 int incMapX(int x, int y) {
 
-	editor->mapWidth++;
+	gEditor->mapWidth++;
 
-	editor->tile.resize(editor->mapWidth * editor->mapHeight);
+	gEditor->tile.resize(gEditor->mapWidth * gEditor->mapHeight);
 
-	int lastIndex = editor->tile.size();
+	int lastIndex = gEditor->tile.size();
 
 	std::cout << "lastIndex = " << lastIndex << std::endl;
 
 	// set all the new elements to nullptr
-	for (uint32_t i = lastIndex; i < (editor->mapWidth * editor->mapHeight); i++)
-		editor->tile.push_back(nullptr);
+	for (uint32_t i = lastIndex; i < (gEditor->mapWidth * gEditor->mapHeight); i++)
+		gEditor->tile.push_back(nullptr);
 
 	// update text object and write to the console
-	fbl_update_text(editor->mapWtextId, 255, 255, 255, 255, (char*)"Map width: %d (+)", editor->mapWidth);
+	fbl_update_text(gEditor->mapWtextId, 255, 255, 255, 255, (char*)"Map width: %d (+)", gEditor->mapWidth);
 	std::cout << "inc map width" << std::endl;
 
 	return 0;
@@ -97,19 +97,19 @@ int incMapX(int x, int y) {
 
 int incMapY(int x, int y) {
 
-	editor->mapHeight++;
+	gEditor->mapHeight++;
 
-	editor->tile.resize(editor->mapWidth * editor->mapHeight);
+	gEditor->tile.resize(gEditor->mapWidth * gEditor->mapHeight);
 
-	int lastIndex = editor->tile.size();
+	int lastIndex = gEditor->tile.size();
 
 	std::cout << "lastIndex = " << lastIndex << std::endl;
 
 	// set all the new elements to nullptr
-	for (uint32_t i = lastIndex; i < (editor->mapWidth * editor->mapHeight); i++)
-		editor->tile.push_back(nullptr);
+	for (uint32_t i = lastIndex; i < (gEditor->mapWidth * gEditor->mapHeight); i++)
+		gEditor->tile.push_back(nullptr);
 
-	fbl_update_text(editor->mapHtextId, 255, 255, 255, 255, (char*)"Map height: %d (+)", editor->mapHeight);
+	fbl_update_text(gEditor->mapHtextId, 255, 255, 255, 255, (char*)"Map height: %d (+)", gEditor->mapHeight);
 	std::cout << "inc map height" << std::endl;
 
 	return 0;
@@ -123,13 +123,13 @@ int incLayer(int x, int y) {
 
 	int index = getIndexAtCursor();
 
-	if (editor->tile[index] != nullptr) {
-		editor->tile[index]->layer++;
-		fbl_update_text(editor->layerTextId, 255, 255, 255, 255, (char*)"Layer: %d (-+)", editor->tile[index]->layer);
+	if (gEditor->tile[index] != nullptr) {
+		gEditor->tile[index]->layer++;
+		fbl_update_text(gEditor->layerTextId, 255, 255, 255, 255, (char*)"Layer: %d (-+)", gEditor->tile[index]->layer);
 	}
 	else {
-		editor->tileSettings.layer++;
-		fbl_update_text(editor->layerTextId, 255, 255, 255, 255, (char*)"Layer: %d (-+)", editor->tileSettings.layer);
+		gEditor->tileSettings.layer++;
+		fbl_update_text(gEditor->layerTextId, 255, 255, 255, 255, (char*)"Layer: %d (-+)", gEditor->tileSettings.layer);
 	}
 
 	return 0;
@@ -140,16 +140,16 @@ int decLayer(int x, int y) {
 
 	int index = getIndexAtCursor();
 
-	if (editor->tile[index] != nullptr) {
-		if (editor->tile[index]->layer > 0) {
-			editor->tile[index]->layer--;
-			fbl_update_text(editor->layerTextId, 255, 255, 255, 255, (char*)"Layer: %d (-+)", editor->tile[index]->layer);
+	if (gEditor->tile[index] != nullptr) {
+		if (gEditor->tile[index]->layer > 0) {
+			gEditor->tile[index]->layer--;
+			fbl_update_text(gEditor->layerTextId, 255, 255, 255, 255, (char*)"Layer: %d (-+)", gEditor->tile[index]->layer);
 		}
 	}
 	else {
-		if (editor->tileSettings.layer > 0) {
-			editor->tileSettings.layer--;
-			fbl_update_text(editor->layerTextId, 255, 255, 255, 255, (char*)"Layer: %d (-+)", editor->tileSettings.layer);
+		if (gEditor->tileSettings.layer > 0) {
+			gEditor->tileSettings.layer--;
+			fbl_update_text(gEditor->layerTextId, 255, 255, 255, 255, (char*)"Layer: %d (-+)", gEditor->tileSettings.layer);
 		}
 	}
 
@@ -161,12 +161,12 @@ int toggleKinematic(int x, int y) {
 
 	int index = getIndexAtCursor();
 
-	if (editor->tile[index] != nullptr) {
-		editor->tile[index]->kinematic = !editor->tile[index]->kinematic;
-		std::cout << "Tile is kinematic: " << editor->tile[index]->kinematic << std::endl;
+	if (gEditor->tile[index] != nullptr) {
+		gEditor->tile[index]->kinematic = !gEditor->tile[index]->kinematic;
+		std::cout << "Tile is kinematic: " << gEditor->tile[index]->kinematic << std::endl;
 	}
 	else {
-		editor->tileSettings.kinematic = !editor->tileSettings.kinematic;
+		gEditor->tileSettings.kinematic = !gEditor->tileSettings.kinematic;
 	}
 
 	return 0;
@@ -178,17 +178,17 @@ int toggleAnimation(int x, int y) {
 
 	int index = getIndexAtCursor();
 
-	if (editor->tile[index] != nullptr) {
+	if (gEditor->tile[index] != nullptr) {
 
-		editor->tile[index]->animated = !editor->tile[index]->animated;
-		fbl_set_sprite_animation(editor->tile[index]->id, editor->tile[index]->animated, editor->tile[index]->textureX, editor->tile[index]->textureY,
-			editor->tileSize, editor->tileSize, editor->tile[index]->animFrames, editor->tile[index]->animSpeed, true);
+		gEditor->tile[index]->animated = !gEditor->tile[index]->animated;
+		fbl_set_sprite_animation(gEditor->tile[index]->id, gEditor->tile[index]->animated, gEditor->tile[index]->textureX, gEditor->tile[index]->textureY,
+			gEditor->tileSize, gEditor->tileSize, gEditor->tile[index]->animFrames, gEditor->tile[index]->animSpeed, true);
 
-		std::cout << "Tile is animated: " << editor->tile[index]->animated << std::endl;
+		std::cout << "Tile is animated: " << gEditor->tile[index]->animated << std::endl;
 
 	}
 	else {
-		editor->tileSettings.animated = !editor->tileSettings.animated;
+		gEditor->tileSettings.animated = !gEditor->tileSettings.animated;
 	}
 
 	return 0;
@@ -199,13 +199,13 @@ int incAnimFrames(int x, int y) {
 
 	int index = getIndexAtCursor();
 
-	if (editor->tile[index] != nullptr) {
-		editor->tile[index]->animFrames++;
-		fbl_update_text(editor->animFramesTextId, 255, 255, 255, 255, (char*)"Anim frames: %d (-+)", editor->tile[index]->animFrames);
+	if (gEditor->tile[index] != nullptr) {
+		gEditor->tile[index]->animFrames++;
+		fbl_update_text(gEditor->animFramesTextId, 255, 255, 255, 255, (char*)"Anim frames: %d (-+)", gEditor->tile[index]->animFrames);
 	}
 	else {
-		editor->tileSettings.animFrames++;
-		fbl_update_text(editor->animFramesTextId, 255, 255, 255, 255, (char*)"Anim frames: %d (-+)", editor->tileSettings.animFrames);
+		gEditor->tileSettings.animFrames++;
+		fbl_update_text(gEditor->animFramesTextId, 255, 255, 255, 255, (char*)"Anim frames: %d (-+)", gEditor->tileSettings.animFrames);
 	}
 
 	return 0;
@@ -216,16 +216,16 @@ int decAnimFrames(int x, int y) {
 
 	int index = getIndexAtCursor();
 
-	if (editor->tile[index] != nullptr) {
-		if (editor->tile[index]->animFrames > 1) {
-			editor->tile[index]->animFrames--;
-			fbl_update_text(editor->animFramesTextId, 255, 255, 255, 255, (char*)"Anim frames: %d (-+)", editor->tile[index]->animFrames);
+	if (gEditor->tile[index] != nullptr) {
+		if (gEditor->tile[index]->animFrames > 1) {
+			gEditor->tile[index]->animFrames--;
+			fbl_update_text(gEditor->animFramesTextId, 255, 255, 255, 255, (char*)"Anim frames: %d (-+)", gEditor->tile[index]->animFrames);
 		}
 	}
 	else {
-		if (editor->tileSettings.animFrames > 1) {
-			editor->tileSettings.animFrames--;
-			fbl_update_text(editor->animFramesTextId, 255, 255, 255, 255, (char*)"Anim frames: %d (-+)", editor->tileSettings.animFrames);
+		if (gEditor->tileSettings.animFrames > 1) {
+			gEditor->tileSettings.animFrames--;
+			fbl_update_text(gEditor->animFramesTextId, 255, 255, 255, 255, (char*)"Anim frames: %d (-+)", gEditor->tileSettings.animFrames);
 		}
 	}
 
@@ -237,13 +237,13 @@ int incAnimSpeed(int x, int y) {
 
 	int index = getIndexAtCursor();
 
-	if (editor->tile[index] != nullptr) {
-		editor->tile[index]->animSpeed++;
-		fbl_update_text(editor->animSpeedTextId, 255, 255, 255, 255, (char*)"Anim speed: %d (-+)", editor->tile[index]->animSpeed);
+	if (gEditor->tile[index] != nullptr) {
+		gEditor->tile[index]->animSpeed++;
+		fbl_update_text(gEditor->animSpeedTextId, 255, 255, 255, 255, (char*)"Anim speed: %d (-+)", gEditor->tile[index]->animSpeed);
 	}
 	else {
-		editor->tileSettings.animSpeed++;
-		fbl_update_text(editor->animSpeedTextId, 255, 255, 255, 255, (char*)"Anim speed: %d (-+)", editor->tileSettings.animSpeed);
+		gEditor->tileSettings.animSpeed++;
+		fbl_update_text(gEditor->animSpeedTextId, 255, 255, 255, 255, (char*)"Anim speed: %d (-+)", gEditor->tileSettings.animSpeed);
 	}
 
 	return 0;
@@ -254,16 +254,16 @@ int decAnimSpeed(int x, int y) {
 
 	int index = getIndexAtCursor();
 
-	if (editor->tile[index] != nullptr) {
-		if (editor->tile[index]->animSpeed > 1) {
-			editor->tile[index]->animSpeed--;
-			fbl_update_text(editor->animSpeedTextId, 255, 255, 255, 255, (char*)"Anim speed: %d (-+)", editor->tile[index]->animSpeed);
+	if (gEditor->tile[index] != nullptr) {
+		if (gEditor->tile[index]->animSpeed > 1) {
+			gEditor->tile[index]->animSpeed--;
+			fbl_update_text(gEditor->animSpeedTextId, 255, 255, 255, 255, (char*)"Anim speed: %d (-+)", gEditor->tile[index]->animSpeed);
 		}
 	}
 	else {
-		if (editor->tileSettings.animSpeed > 1) {
-			editor->tileSettings.animSpeed--;
-			fbl_update_text(editor->animSpeedTextId, 255, 255, 255, 255, (char*)"Anim speed: %d (-+)", editor->tileSettings.animSpeed);
+		if (gEditor->tileSettings.animSpeed > 1) {
+			gEditor->tileSettings.animSpeed--;
+			fbl_update_text(gEditor->animSpeedTextId, 255, 255, 255, 255, (char*)"Anim speed: %d (-+)", gEditor->tileSettings.animSpeed);
 		}
 	}
 
@@ -273,7 +273,7 @@ int decAnimSpeed(int x, int y) {
 
 int saveMap(int x, int y) {
 
-	bool success = Disk::getInstance().saveMap(*editor, "assets/map.scn");
+	bool success = Disk::getInstance().saveMap(*gEditor, "assets/map.scn");
 
 	if (success)
 		std::cout << "Saved map to assets/map.scn" << std::endl;
@@ -286,7 +286,7 @@ int saveMap(int x, int y) {
 
 int loadMap(int x, int y) {
 
-	bool success = Disk::getInstance().loadMap(*editor, "assets/map.scn");
+	bool success = Disk::getInstance().loadMap(*gEditor, "assets/map.scn");
 
 	if (success)
 		std::cout << "Loaded map from assets/map.scn" << std::endl;
@@ -299,7 +299,7 @@ int loadMap(int x, int y) {
 
 int exportLua(int x, int y) {
 
-	bool success = Disk::getInstance().exportMapLua(*editor, "assets/map.lua");
+	bool success = Disk::getInstance().exportMapLua(*gEditor, "assets/map.lua");
 
 	if (success) {
 		std::cout << "Exported map to assets/map.lua" << std::endl;

@@ -135,7 +135,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\game_projects\lotr\Ecs\Systems\PhysicsSystem.cpp" />
+    <ClCompile Include="..\..\game_projects\Lotr\GameState.cpp" />
+    <ClCompile Include="..\..\game_projects\Lotr\Init.cpp" />
     <ClCompile Include="..\..\game_projects\lotr\Lotr.cpp" />
+    <ClCompile Include="..\..\game_projects\Lotr\Progress.cpp" />
     <ClCompile Include="..\..\src\a_star\a_star.c" />
     <ClCompile Include="..\..\src\dl_list\dllist.c" />
     <ClCompile Include="..\..\src\fbl.c" />
@@ -160,6 +163,9 @@
     <ClInclude Include="..\..\game_projects\lotr\Ecs\System.hpp" />
     <ClInclude Include="..\..\game_projects\lotr\Ecs\Systems\PhysicsSystem.hpp" />
     <ClInclude Include="..\..\game_projects\lotr\Ecs\Types.hpp" />
+    <ClInclude Include="..\..\game_projects\Lotr\GameState.hpp" />
+    <ClInclude Include="..\..\game_projects\Lotr\Init.hpp" />
+    <ClInclude Include="..\..\game_projects\Lotr\Progress.hpp" />
     <ClInclude Include="..\..\src\engine.h" />
     <ClInclude Include="..\..\src\fbl.h" />
     <ClInclude Include="..\..\src\fbl.hpp" />

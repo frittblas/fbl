@@ -12,7 +12,7 @@
 
 #include "ScenEdit.hpp"
 
-ScenEdit* editor;
+ScenEdit* gEditor;
 
 
 void fbl_start()
@@ -26,7 +26,7 @@ void fbl_start()
 
 	fbl_set_window_title((char*)"ScenEdit 1.0");
 
-	editor = new ScenEdit(true);
+	gEditor = new ScenEdit(true);
 
 
 }
@@ -44,15 +44,15 @@ void fbl_game_loop()
 	if (fbl_get_key_down(FBLK_F11))
 		fbl_set_window_mode(FBL_WINDOW_FULLSCREEN_DESKTOP);
 
-	editor->tick();
+	gEditor->tick();
 
 }
 
 void fbl_end()
 {
 
-	editor->resetMap(0, 0);	// free tile-mem
-	delete editor;
+	gEditor->resetMap(0, 0);	// free tile-mem
+	delete gEditor;
 
 	std::cout << "Bye!" << std::endl;
 
