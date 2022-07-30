@@ -10,12 +10,7 @@
 *
 */
 
-#include "../../tools/ScenEdit/ScenEdit.hpp"
-#include "../../tools/ScenEdit/Disk.hpp"
-
-#include "Ecs/Ecs.hpp"
-#include "Ecs/Components.hpp"
-#include "Ecs/Systems/PhysicsSystem.hpp"
+#include <iostream>
 
 class Init {
 

@@ -10,10 +10,20 @@
 *
 */
 
+#include "../../tools/ScenEdit/ScenEdit.hpp"
+#include "../../tools/ScenEdit/Disk.hpp"
+
+#include "Ecs/Ecs.hpp"
+#include "Ecs/Components.hpp"
+#include "Ecs/Systems/PhysicsSystem.hpp"
+
+#include "GameState.hpp"
 #include "Init.hpp"
 
-ScenEdit* gEditor;
-Coordinator gEcs;
+// the only global objects, prefixed with g
+ScenEdit* gEditor;	// pointer to the map with optional editor
+Coordinator gEcs;	// the Entity Component System
+GameState gState;	// current game state
 
 Init Init::instance;
 

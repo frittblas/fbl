@@ -15,12 +15,13 @@ class GameState {
 
 private:
     
-    enum State {
+    enum class State {
         Title,
         Settings,
         Tutorial,
-        Wandering,
+        Exploring,
         Dialogue,
+        Shopping,
         Fighting,
         CardCollection
     };
