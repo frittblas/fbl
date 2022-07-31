@@ -29,8 +29,8 @@ class Disk {
 
         static Disk &getInstance();
 
-        static bool saveMap(ScenEdit& editor, std::string filename);
-        static bool loadMap(ScenEdit& editor, std::string filename);    // this calls resetMap, which deletas all sprites!
-        static bool exportMapLua(ScenEdit& editor, std::string filename);
+        static bool saveMap(ScenEdit& editor, std::string filename);    // save map as in text format
+        static bool loadMap(ScenEdit& editor, std::string filename);    // load text format map, this calls resetMap, which deletas all sprites!
+        static bool exportMapBin(ScenEdit& editor, std::string filename); // save map in binary format, can be loaded by fbl_load_scenedit_map()
 
 };

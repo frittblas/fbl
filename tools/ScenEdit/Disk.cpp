@@ -156,7 +156,14 @@ bool Disk::loadMap(ScenEdit& editor, std::string filename) {
     return true;
 }
 
-bool Disk::exportMapLua(ScenEdit& editor, std::string filename) {
+bool Disk::exportMapBin(ScenEdit& editor, std::string filename) {
+
+    // save map in binary format so it can be loaded by fbl_load_scenedit_map()
+    // fbl_load_scenedit_map() will use RWops so it can load files on android and stuff.
+    // NOTE: fix the TileData struct to only use uint32_t for convenience (no bools).
+    // also remove kinematic and go with the terrain variable instead. 2 buttons
+    // that change the terrain value.
+
 
     return true;
 }
