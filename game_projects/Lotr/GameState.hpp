@@ -17,6 +17,7 @@ private:
     
     enum class State {
         Title,
+        Demo,
         Settings,
         Tutorial,
         Exploring,

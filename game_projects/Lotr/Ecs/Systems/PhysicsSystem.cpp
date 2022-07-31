@@ -1,4 +1,15 @@
-#pragma once
+/*
+*
+*	Ecs
+*
+*	PhysicsSystem.cpp
+*
+*	The physics system.
+*
+*	I got this from https://austinmorlan.com/posts/entity_component_system/
+*	Rearanged it a bit for Lotr.
+*
+*/
 
 #include "../Ecs.hpp"
 #include "../Components.hpp"

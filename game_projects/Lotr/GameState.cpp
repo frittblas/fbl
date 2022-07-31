@@ -30,6 +30,9 @@ void GameState::change(State newState) {
 		case State::Title:
 			break;
 
+		case State::Demo:
+			break;
+
 		case State::Settings:
 			break;
 
@@ -60,6 +63,9 @@ void GameState::change(State newState) {
 	switch (mState) {
 
 	case State::Title:
+		break;
+
+	case State::Demo:
 		break;
 
 	case State::Settings:

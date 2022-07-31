@@ -1,8 +1,17 @@
-// I got this from https://austinmorlan.com/posts/entity_component_system/
-// This was taken from the website
-// Great article!
-// Thank you Austin Morlan!
-//
+/*
+*
+*	Ecs
+*
+*	Ecs.hpp
+*
+*	Contains the bulk of the Ecs system (EntityManager, ComponentArray, ComponentManager, SystemManager, Coordinator)
+*
+*	I got this from https://austinmorlan.com/posts/entity_component_system/
+*	This was taken from the website
+*	Thank you Austin Morlan!
+*	Rearanged it a bit for my game Lotr.
+*
+*/
 
 #pragma once
 

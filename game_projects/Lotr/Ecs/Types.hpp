@@ -1,3 +1,16 @@
+/*
+*
+*	Ecs
+*
+*	Types.hpp
+*
+*	Some aliases and constants.
+*
+*	I got this from https://austinmorlan.com/posts/entity_component_system/
+*	Rearanged it a bit for Lotr.
+*
+*/
+
 #pragma once
 
 #include <iostream>
