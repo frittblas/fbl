@@ -89,17 +89,17 @@
     <ClInclude Include="..\..\src\fbl.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\tools\ScenEdit\ScenEdit.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\tools\ScenEdit\Disk.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\tools\ScenEdit\GuiFuncs.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tools\ScenEdit\ScenEdit.hpp">
+      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\tools\ScenEdit\TileData.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
