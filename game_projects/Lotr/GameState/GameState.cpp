@@ -21,51 +21,21 @@ GameState::GameState() {
 
 	mState = StateType::Title;
 
-	Title title;
-
 	mCurrentStateInstance = new Title();	// Start by default to title screen
 
 }
 
 GameState::~GameState() {
 
+	// delete the current state instance
+
+	delete mCurrentStateInstance;
+
 }
 
 void GameState::change(StateType newState) {
 
-	// first check the current state and deallocate any resources that are in play
-	/*
-	switch (mState) {
-
-		case State::Title:
-
-			break;
-
-		case State::Demo:
-			break;
-
-		case State::Settings:
-			break;
-
-		case State::Tutorial:
-			break; 
-		
-		case State::Explore:
-			break;
-
-		case State::Dialogue:
-			break;
-
-		case State::Shop:
-			break;
-
-		case State::Fight:
-			break;
-
-		case State::CardCollection:
-			break;
-
-	} */
+	// first deallocate any resources that are in play
 
 	delete mCurrentStateInstance;	// delete the current state instance, calling the correct destructor
 

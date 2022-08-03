@@ -5,7 +5,6 @@
 *	Explore.cpp
 *
 *   Explore class implementation, takes care of the Exploring game-state.
-*   Singleton.
 *
 *	Hans Strömquist 2022
 *

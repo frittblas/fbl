@@ -5,7 +5,6 @@
 *	Title.cpp
 *
 *   Title class implementation, takes care of the title screen.
-*   Singleton.
 *
 *	Hans Strömquist 2022
 *

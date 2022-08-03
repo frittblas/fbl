@@ -15,11 +15,6 @@
 
 class Init {
 
-private:
-    static Init instance;
-
-    Init();     // private constructor, so we can't instantiate
-
 public:
     ~Init();
 
@@ -28,5 +23,10 @@ public:
     static bool initLotr();
     static void unInitLotr();
     static void initLevel(uint32_t level);
+
+private:
+    static Init instance;
+
+    Init();     // private constructor, so we can't instantiate
 
 };

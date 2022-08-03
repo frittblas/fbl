@@ -6,8 +6,8 @@
 *
 *	The physics system.
 *
-*	I got this from https://austinmorlan.com/posts/entity_component_system/
-*	Rearanged it a bit for Lotr.
+*
+*	Hans Strömquist 2022
 *
 */
 

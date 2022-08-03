@@ -14,8 +14,6 @@
 
 class Title : public IState {
 
-private:
-
 public:
     Title();
     ~Title();

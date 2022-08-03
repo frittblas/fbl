@@ -10,10 +10,14 @@
 *
 */
 
+#pragma once
+
+#include <iostream>
+
 class IState {
 
 public:
-    virtual ~IState() {}; // virtual destructor, calls the destructor of the derived classes
-    virtual void tick() {};
+    virtual ~IState() {} // virtual destructor, calls the destructor of the derived classes
+    virtual void tick() = 0;
 
 };

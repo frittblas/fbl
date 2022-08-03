@@ -13,7 +13,9 @@
 
 #include "../../src/fbl.hpp"
 #include "Init.hpp"
+#include "GameState/GameState.hpp"
 
+extern GameState gState;
 
 void fbl_start()
 {
@@ -28,6 +30,18 @@ void fbl_start()
 
 void fbl_game_loop()
 {
+
+	static int access = 0;
+
+	if (fbl_get_key_down(FBLK_SPACE) && access == 0) {
+
+		gState.get() == GameState::StateType::Title ? gState.change(GameState::StateType::Explore) : gState.change(GameState::StateType::Title);
+
+		access = 20;
+
+	}
+	access--;
+	if (access < 0) access = 0;
 
 	if (fbl_get_key_down(FBLK_ESCAPE))
 		fbl_engine_quit();
