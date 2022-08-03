@@ -4,7 +4,8 @@
 *
 *	Disk.cpp
 *
-*	Save and Load functionality for the tile editor for fbl
+*	Save and Load functionality for the tile editor for fbl.
+*   Singleton.
 *
 *	Hans Strömquist 2022
 *

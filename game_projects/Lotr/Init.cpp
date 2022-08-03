@@ -2,9 +2,10 @@
 *
 *	Lotr
 *
-*	GameState.cpp
+*	Init.cpp
 *
 *   Init class implementation, takes care of initializing the first startup and each level.
+*   Singleton.
 *
 *	Hans Strömquist 2022
 *
@@ -17,7 +18,7 @@
 #include "Ecs/Components.hpp"
 #include "Ecs/Systems/PhysicsSystem.hpp"
 
-#include "GameState.hpp"
+#include "GameState/GameState.hpp"
 #include "Init.hpp"
 
 // the only global objects, prefixed with g

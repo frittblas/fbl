@@ -5,7 +5,7 @@
 *	GuiFuncs.cpp
 *
 *	The fbl Gui-elements call functions through pointers when clicked.
-*   These are the functions, main  file
+*   These are the functions, main file.
 *
 *	Hans Strömquist 2022
 *

@@ -4,7 +4,8 @@
 *
 *	Disk.hpp
 *
-*	Save and Load functionality for the tile editor for fbl, header
+*	Save and Load functionality for the tile editor for fbl, header.
+*   Singleton.
 *
 *	Hans Strömquist 2022
 *

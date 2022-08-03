@@ -12,22 +12,33 @@
 
 #include "GameState.hpp"
 
+#include "Title.hpp"
+#include "Explore.hpp"
+
 // GameState-class implementation
 
 GameState::GameState() {
 
-	mState = State::Title;
+	mState = StateType::Title;
+
+	Title title;
+
+	mCurrentStateInstance = new Title();	// Start by default to title screen
 
 }
 
-GameState::~GameState() {}
+GameState::~GameState() {
 
-void GameState::change(State newState) {
+}
+
+void GameState::change(StateType newState) {
 
 	// first check the current state and deallocate any resources that are in play
+	/*
 	switch (mState) {
 
 		case State::Title:
+
 			break;
 
 		case State::Demo:
@@ -39,22 +50,24 @@ void GameState::change(State newState) {
 		case State::Tutorial:
 			break; 
 		
-		case State::Exploring:
+		case State::Explore:
 			break;
 
 		case State::Dialogue:
 			break;
 
-		case State::Shopping:
+		case State::Shop:
 			break;
 
-		case State::Fighting:
+		case State::Fight:
 			break;
 
 		case State::CardCollection:
 			break;
 
-	}
+	} */
+
+	delete mCurrentStateInstance;	// delete the current state instance, calling the correct destructor
 
 	// then set the new state and allocate resources for the new state
 
@@ -62,38 +75,40 @@ void GameState::change(State newState) {
 
 	switch (mState) {
 
-	case State::Title:
+	case StateType::Title:
+		mCurrentStateInstance = new Title();
 		break;
 
-	case State::Demo:
+	case StateType::Demo:
 		break;
 
-	case State::Settings:
+	case StateType::Settings:
 		break;
 
-	case State::Tutorial:
+	case StateType::Tutorial:
 		break;
 
-	case State::Exploring:
+	case StateType::Explore:
+		mCurrentStateInstance = new Explore();
 		break;
 
-	case State::Dialogue:
+	case StateType::Dialogue:
 		break;
 
-	case State::Shopping:
+	case StateType::Shop:
 		break;
 
-	case State::Fighting:
+	case StateType::Fight:
 		break;
 
-	case State::CardCollection:
+	case StateType::CardCollection:
 		break;
 
 	}
 
 }
 
-GameState::State GameState::get() {
+GameState::StateType GameState::get() {
 
 	return mState;
 }

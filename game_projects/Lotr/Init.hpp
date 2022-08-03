@@ -5,6 +5,7 @@
 *	Init.hpp
 *
 *	Init class header, takes care of initializing the first startup and loading each level.
+*   Singleton.
 *
 *	Hans Strömquist 2022
 *

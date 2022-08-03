@@ -4,7 +4,7 @@
 *
 *	Lotr.cpp
 *
-*	Entry point, contains the 3 required fbl functions for Lotr.
+*	Entry point and game loop, contains the 3 required fbl functions start() loop() and end().
 *	
 *
 *	Hans Strömquist 2022

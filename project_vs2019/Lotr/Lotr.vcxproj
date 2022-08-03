@@ -135,7 +135,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\game_projects\lotr\Ecs\Systems\PhysicsSystem.cpp" />
-    <ClCompile Include="..\..\game_projects\Lotr\GameState.cpp" />
+    <ClCompile Include="..\..\game_projects\Lotr\GameState\Explore.cpp" />
+    <ClCompile Include="..\..\game_projects\Lotr\GameState\GameState.cpp" />
+    <ClCompile Include="..\..\game_projects\Lotr\GameState\Title.cpp" />
     <ClCompile Include="..\..\game_projects\Lotr\Init.cpp" />
     <ClCompile Include="..\..\game_projects\lotr\Lotr.cpp" />
     <ClCompile Include="..\..\game_projects\Lotr\Progress.cpp" />
@@ -163,7 +165,10 @@
     <ClInclude Include="..\..\game_projects\lotr\Ecs\System.hpp" />
     <ClInclude Include="..\..\game_projects\lotr\Ecs\Systems\PhysicsSystem.hpp" />
     <ClInclude Include="..\..\game_projects\lotr\Ecs\Types.hpp" />
-    <ClInclude Include="..\..\game_projects\Lotr\GameState.hpp" />
+    <ClInclude Include="..\..\game_projects\Lotr\GameState\Explore.hpp" />
+    <ClInclude Include="..\..\game_projects\Lotr\GameState\GameState.hpp" />
+    <ClInclude Include="..\..\game_projects\Lotr\GameState\IState.hpp" />
+    <ClInclude Include="..\..\game_projects\Lotr\GameState\Title.hpp" />
     <ClInclude Include="..\..\game_projects\Lotr\Init.hpp" />
     <ClInclude Include="..\..\game_projects\Lotr\Progress.hpp" />
     <ClInclude Include="..\..\src\engine.h" />
