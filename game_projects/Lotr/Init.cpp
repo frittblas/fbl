@@ -42,7 +42,7 @@ Init& Init::getInstance() {
 bool Init::initLotr() {
 
 	fbl_engine_init(960, 540, 60);
-	//fbl_create_threadpool();
+	fbl_create_threadpool();
 
 	fbl_load_texture((char*)"spritesheet_.png");	// load sprite texture
 

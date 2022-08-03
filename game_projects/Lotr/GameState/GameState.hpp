@@ -37,6 +37,6 @@ public:
 
 private:
     StateType mState;   // enum holding the current state (int)
-    IState* mCurrentStateInstance = nullptr;    // the actual instance of the current game state
+    IState* mCurrentStateInstance;    // the actual instance of the current game state
 
 };
