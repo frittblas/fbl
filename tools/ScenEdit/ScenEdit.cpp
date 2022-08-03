@@ -203,7 +203,7 @@ void ScenEdit::setupGUI() {
 	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 96, 510);
 	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, loadMap));
 	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 64, 510);
-	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, exportLua));
+	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, exportBin));
 	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 32, 510);
 
 	// create the map marker rect

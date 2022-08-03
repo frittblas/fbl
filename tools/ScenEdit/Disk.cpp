@@ -11,7 +11,7 @@
 */
 
 
-//#include <string>
+#include <SDL.h>    // for RWops (export map to binary format)
 #include "Disk.hpp"
 
 Disk Disk::instance;
@@ -163,6 +163,7 @@ bool Disk::exportMapBin(ScenEdit& editor, std::string filename) {
     // NOTE: fix the TileData struct to only use uint32_t for convenience (no bools).
     // also remove kinematic and go with the terrain variable instead. 2 buttons
     // that change the terrain value.
+    // included SDL.h to this file so we can use RWops to both save and load maps in binary.
 
 
     return true;

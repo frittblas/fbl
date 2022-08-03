@@ -297,12 +297,12 @@ int loadMap(int x, int y) {
 
 }
 
-int exportLua(int x, int y) {
+int exportBin(int x, int y) {
 
-	bool success = Disk::getInstance().exportMapLua(*gEditor, "assets/map.lua");
+	bool success = Disk::getInstance().exportMapBin(*gEditor, "assets/map.scb");
 
 	if (success) {
-		std::cout << "Exported map to assets/map.lua" << std::endl;
+		std::cout << "Exported map to assets/map.scb" << std::endl;
 	}
 	else
 		std::cout << "Error exporting map!" << std::endl;
