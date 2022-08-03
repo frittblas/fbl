@@ -109,7 +109,7 @@ void ScenEdit::setupGUI() {
 	std::cout << "Delete tile with del or right mouse button." << std::endl;
 	std::cout << "Center the map with C and reset map with R." << std::endl;
 	std::cout << "Will load spritesheet_.png and ui_.png at the start." << std::endl;
-	std::cout << "Will save and load map.scn and export map.lua." << std::endl;
+	std::cout << "Will save and load map.scn and export binary map.scb." << std::endl;
 	std::cout << "Tile vector size: " << tile.size() << std::endl;
 
 	// dark grey, filled rect with alpha as bg, draw from middle 2X size
@@ -127,7 +127,7 @@ void ScenEdit::setupGUI() {
 	fbl_create_text(255, 255, 255, 255, (char*)"Animated:");
 	fbl_set_text_xy(2, fbl_get_screen_w() - lMargin, 350);
 
-	fbl_create_text(255, 255, 255, 255, (char*)"Save/Load/LuaExp:");
+	fbl_create_text(255, 255, 255, 255, (char*)"Save/Load/BinExp:");
 	fbl_set_text_xy(3, fbl_get_screen_w() - lMargin, 510);
 
 	// gui buttons for selecting current tile to draw
@@ -198,7 +198,7 @@ void ScenEdit::setupGUI() {
 	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, incAnimSpeed));
 	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 48, 430);
 
-	// gui buttons for save/load/luaexp
+	// gui buttons for save/load/binexp
 	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, saveMap));
 	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 96, 510);
 	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, loadMap));
@@ -274,7 +274,7 @@ void ScenEdit::getInput() {
 
 	// reset map with r
 	if (fbl_get_key_down(FBLK_R) && keyAccess == 0) {
-		resetMap(screenWidthInTiles, screenHeightInTiles);
+		resetMap(screenWidthInTiles, screenHeightInTiles);	// reset map to fit screen
 		keyAccess = spdSlow;
 	}
 
@@ -399,14 +399,31 @@ void ScenEdit::copyTile() {
 	// find the correct index
 	int index = getIndexAtCursor();
 
-	// copy the values from the current tile to tile settings (not the id or xy)
-	tileSettings.textureX = tile[index]->textureX;
-	tileSettings.textureY = tile[index]->textureY;
-	tileSettings.layer = tile[index]->layer;
-	tileSettings.kinematic = tile[index]->kinematic;
-	tileSettings.animated = tile[index]->animated;
-	tileSettings.animFrames = tile[index]->animFrames;
-	tileSettings.animSpeed = tile[index]->animSpeed;
+	if (tile[index] != nullptr) {
+
+		// copy the values from the current tile to tile settings (not the id or xy)
+		tileSettings.textureX = tile[index]->textureX;
+		tileSettings.textureY = tile[index]->textureY;
+		tileSettings.layer = tile[index]->layer;
+		tileSettings.kinematic = tile[index]->kinematic;
+		tileSettings.animated = tile[index]->animated;
+		tileSettings.animFrames = tile[index]->animFrames;
+		tileSettings.animSpeed = tile[index]->animSpeed;
+
+	}
+	else {
+		// copy standard values, reset
+		tileSettings.textureX = 0;
+		tileSettings.textureY = 0;
+		tileSettings.layer = 1;
+		tileSettings.kinematic = false;
+		tileSettings.animated = false;
+		tileSettings.animFrames = 1;
+		tileSettings.animSpeed = 10;
+
+		showTileInfo();
+
+	}
 
 	std::cout << "Copied current tile settings!" << std::endl;
 
