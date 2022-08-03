@@ -33,6 +33,7 @@ public:
 
     void  change(StateType state);
     StateType get();
+    void tick();
 
 private:
     StateType mState;   // enum holding the current state (int)

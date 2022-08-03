@@ -12,12 +12,10 @@
 
 #pragma once
 
-#include <iostream>
-
 class IState {
 
 public:
-    virtual ~IState() {} // virtual destructor, calls the destructor of the derived classes
+    virtual ~IState() = default; // virtual destructor, so the destructor gets called of the derived classes
     virtual void tick() = 0;
 
 };

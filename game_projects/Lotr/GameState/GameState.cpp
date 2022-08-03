@@ -82,3 +82,9 @@ GameState::StateType GameState::get() {
 
 	return mState;
 }
+
+void GameState::tick() {
+
+	mCurrentStateInstance->tick();
+
+}

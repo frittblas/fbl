@@ -31,6 +31,9 @@ Title::~Title() {
 // implement the virtual tick() function
 void Title::tick() {
 
+	int num = std::rand() / ((RAND_MAX + 1u) / 20); // random numbers from 0-19
 
+	if (num == 0)
+		std::cout << "Tick title!" << std::endl;
 
 }

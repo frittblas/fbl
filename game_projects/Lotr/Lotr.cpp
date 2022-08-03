@@ -53,6 +53,8 @@ void fbl_game_loop()
 	if (fbl_get_key_down(FBLK_F11))
 		fbl_set_window_mode(FBL_WINDOW_FULLSCREEN_DESKTOP);
 
+	gState.tick();
+
 }
 
 void fbl_end()
