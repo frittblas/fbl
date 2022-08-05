@@ -92,6 +92,7 @@ int fbl_engine_init(int w, int h, int fps)
 		// return 1;
 	}
 
+	//fbl_set_render_logical_size(960, 540);
 
 	SDL_CreateWindowAndRenderer(w, h, 0, &fbl_engine.window, &fbl_engine.renderer);
 

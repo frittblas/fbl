@@ -21,7 +21,10 @@ void fbl_start()
 	// make sure that the name of the asset folder is set to what you want (default = "assets/")
 	// fbl_set_assets_folder_name("your_name/");
 
+
 	fbl_engine_init(960, 540, 60);
+	//fbl_set_render_logical_size(960, 540);
+
 	fbl_set_clear_color(50, 50, 150, 255);
 
 	fbl_set_window_title((char*)"ScenEdit 1.0");
