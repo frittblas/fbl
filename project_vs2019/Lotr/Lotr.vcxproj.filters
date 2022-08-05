@@ -114,6 +114,9 @@
     <ClCompile Include="..\..\game_projects\Lotr\GameState\Settings.cpp">
       <Filter>Source Files\GameState</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\game_projects\Lotr\UserInput.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\fbl.h">
@@ -175,6 +178,9 @@
     </ClInclude>
     <ClInclude Include="..\..\game_projects\Lotr\GameState\Settings.hpp">
       <Filter>Source Files\GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Lotr\UserInput.hpp">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

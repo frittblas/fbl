@@ -19,10 +19,12 @@ class GameState {
 public:
     
     enum class StateType {
+        // these will reload resources (sprites, text etc)
         Title,
         Demo,
         Settings,
         Tutorial,
+        // these share resources
         Explore,
         Dialogue,
         Shop,
