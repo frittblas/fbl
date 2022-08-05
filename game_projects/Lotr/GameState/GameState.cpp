@@ -11,9 +11,12 @@
 */
 
 #include "GameState.hpp"
+#include "../Init.hpp"
 
 #include "Title.hpp"
+#include "Settings.hpp"
 #include "Explore.hpp"
+#include "Dialogue.hpp"
 
 // GameState-class implementation
 
@@ -41,11 +44,11 @@ void GameState::change(StateType newState) {
 
 	// then set the new state and allocate resources for the new state
 
-	mState = newState;
-
-	switch (mState) {
+	switch (newState) {
 
 	case StateType::Title:
+		if (mState >= StateType::Explore)
+			Init::getInstance().unLoadLevel();	// reset map if we're coming from the game
 		mCurrentStateInstance = new Title();
 		break;
 
@@ -53,6 +56,7 @@ void GameState::change(StateType newState) {
 		break;
 
 	case StateType::Settings:
+		mCurrentStateInstance = new Settings();
 		break;
 
 	case StateType::Tutorial:
@@ -60,9 +64,12 @@ void GameState::change(StateType newState) {
 
 	case StateType::Explore:
 		mCurrentStateInstance = new Explore();
+		if (mState == StateType::Title)
+			Init::getInstance().loadLevel();	// init first level if we're coming from the title screen
 		break;
 
 	case StateType::Dialogue:
+		mCurrentStateInstance = new Dialogue();
 		break;
 
 	case StateType::Shop:
@@ -75,6 +82,9 @@ void GameState::change(StateType newState) {
 		break;
 
 	}
+
+	// finally set the new state
+	mState = newState;
 
 }
 

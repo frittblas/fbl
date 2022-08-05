@@ -22,7 +22,8 @@ public:
 
     static bool initLotr();
     static void unInitLotr();
-    static void initLevel(uint32_t level);
+    static void loadLevel();
+    static void unLoadLevel();
 
 private:
     static Init instance;

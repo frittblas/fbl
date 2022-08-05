@@ -24,7 +24,6 @@ void fbl_start()
 	// fbl_set_assets_folder_name("your_name/");
 
 	Init::getInstance().initLotr();
-	Init::getInstance().initLevel(1);
 
 }
 
@@ -33,13 +32,23 @@ void fbl_game_loop()
 
 	static int access = 0;
 
-	if (fbl_get_key_down(FBLK_SPACE) && access == 0) {
-
-		gState.get() == GameState::StateType::Title ? gState.change(GameState::StateType::Explore) : gState.change(GameState::StateType::Title);
-
+	if (fbl_get_key_down(FBLK_1) && access == 0) {
+		gState.change(GameState::StateType::Title);
 		access = 20;
-
 	}
+	if (fbl_get_key_down(FBLK_2) && access == 0) {
+		gState.change(GameState::StateType::Settings);
+		access = 20;
+	}
+	if (fbl_get_key_down(FBLK_3) && access == 0) {
+		gState.change(GameState::StateType::Explore);
+		access = 20;
+	}
+	if (fbl_get_key_down(FBLK_4) && access == 0) {
+		gState.change(GameState::StateType::Dialogue);
+		access = 20;
+	}
+
 	access--;
 	if (access < 0) access = 0;
 

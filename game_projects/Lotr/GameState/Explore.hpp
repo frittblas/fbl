@@ -4,7 +4,7 @@
 *
 *	Explore.hpp
 *
-*	Explore class header, takes care of the Exploring game state.
+*	Explore class header, takes care of the Explore game state.
 *
 *	Hans Strömquist 2022
 *

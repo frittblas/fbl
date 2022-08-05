@@ -42,7 +42,8 @@ Init& Init::getInstance() {
 bool Init::initLotr() {
 
 	fbl_engine_init(960, 540, 60);
-	fbl_create_threadpool();
+	fbl_set_clear_color(33, 68, 33, 255);
+	//fbl_create_threadpool();
 
 	fbl_load_texture((char*)"spritesheet_.png");	// load sprite texture
 
@@ -99,7 +100,7 @@ void Init::unInitLotr() {
 
 }
 
-void Init::initLevel(uint32_t level) {
+void Init::loadLevel() {
 
 	bool success = Disk::getInstance().loadMap(*gEditor, "assets/map.scn");
 
@@ -107,5 +108,11 @@ void Init::initLevel(uint32_t level) {
 		std::cout << "Loaded map from assets/map.scn" << std::endl;
 	else
 		std::cout << "Error loading map!" << std::endl;
+
+}
+
+void Init::unLoadLevel() {
+
+	gEditor->resetMap(0, 0);
 
 }

@@ -4,7 +4,7 @@
 *
 *	Explore.cpp
 *
-*   Explore class implementation, takes care of the Exploring game-state.
+*   Explore class implementation, takes care of the Explore game-state.
 *
 *	Hans Strömquist 2022
 *

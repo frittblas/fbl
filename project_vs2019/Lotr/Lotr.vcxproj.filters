@@ -108,6 +108,12 @@
     <ClCompile Include="..\..\game_projects\Lotr\GameState\Title.cpp">
       <Filter>Source Files\GameState</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\game_projects\Lotr\GameState\Dialogue.cpp">
+      <Filter>Source Files\GameState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game_projects\Lotr\GameState\Settings.cpp">
+      <Filter>Source Files\GameState</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\fbl.h">
@@ -162,6 +168,12 @@
       <Filter>Source Files\GameState</Filter>
     </ClInclude>
     <ClInclude Include="..\..\game_projects\Lotr\GameState\IState.hpp">
+      <Filter>Source Files\GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Lotr\GameState\Dialogue.hpp">
+      <Filter>Source Files\GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Lotr\GameState\Settings.hpp">
       <Filter>Source Files\GameState</Filter>
     </ClInclude>
   </ItemGroup>
