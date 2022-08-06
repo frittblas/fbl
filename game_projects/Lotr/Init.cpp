@@ -18,9 +18,9 @@
 #include "Ecs/Components.hpp"
 #include "Ecs/Systems/PhysicsSystem.hpp"
 
+#include "Init.hpp"
 #include "GameState/GameState.hpp"
 #include "UserInput.hpp"
-#include "Init.hpp"
 
 // the only global objects, the map, with optional editor, prefixed with g
 ScenEdit* gEditor;	// pointer to the map with optional editor
@@ -28,16 +28,16 @@ Coordinator gEcs;	// the Entity Component System
 UserInput gInput;	// keyboard and mouse input from the user
 GameState* gState;	// current game state
 
-Init Init::instance;
-
 // Init-class implementation
 
-Init::Init() {}
-Init::~Init() {}
+Init::Init() {
 
-Init& Init::getInstance() {
+	initLotr();
 
-	return instance;
+}
+Init::~Init() {
+
+	unInitLotr();
 
 }
 
@@ -118,5 +118,12 @@ void Init::loadLevel() {
 void Init::unLoadLevel() {
 
 	gEditor->resetMap(0, 0);
+
+}
+
+void Init::update() {
+
+	gInput.tick();	// get user input
+	gState->tick(); // update the current state
 
 }

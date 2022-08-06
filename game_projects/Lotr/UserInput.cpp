@@ -12,7 +12,6 @@
 
 #include "../../src/fbl.hpp"
 #include "GameState/GameState.hpp"
-#include "Init.hpp"
 #include "UserInput.hpp"
 
 extern GameState* gState;

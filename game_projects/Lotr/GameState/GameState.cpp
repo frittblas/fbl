@@ -10,13 +10,15 @@
 *
 */
 
-#include "GameState.hpp"
 #include "../Init.hpp"
+#include "GameState.hpp"
 
 #include "Title.hpp"
 #include "Settings.hpp"
 #include "Explore.hpp"
 #include "Dialogue.hpp"
+
+extern Init* gInit;
 
 // GameState-class implementation
 
@@ -48,7 +50,7 @@ void GameState::change(StateType newState) {
 
 	case StateType::Title:
 		if (mState >= StateType::Explore)
-			Init::getInstance().unLoadLevel();	// reset map if we're coming from the game
+			gInit->unLoadLevel();	// reset map if we're coming from the game
 		mCurrentStateInstance = new Title();
 		break;
 
@@ -65,7 +67,7 @@ void GameState::change(StateType newState) {
 	case StateType::Explore:
 		mCurrentStateInstance = new Explore();
 		if (mState == StateType::Title)
-			Init::getInstance().loadLevel();	// init first level if we're coming from the title screen
+			gInit->loadLevel();	// init first level if we're coming from the title screen
 		break;
 
 	case StateType::Dialogue:

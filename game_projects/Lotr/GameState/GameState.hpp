@@ -40,7 +40,7 @@ public:
     void tick();
 
 private:
-    StateType mState;   // enum holding the current state (int)
+    StateType mState;   // enum holding the current state
     IState* mCurrentStateInstance;    // the actual instance of the current game state
 
 };

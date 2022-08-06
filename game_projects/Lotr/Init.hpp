@@ -11,23 +11,16 @@
 *
 */
 
-#include <iostream>
-
 class Init {
 
 public:
+    Init();
     ~Init();
 
-    static Init& getInstance();
-
-    static bool initLotr();
-    static void unInitLotr();
-    static void loadLevel();
-    static void unLoadLevel();
-
-private:
-    static Init instance;
-
-    Init();     // private constructor, so we can't instantiate
+    bool initLotr();
+    void unInitLotr();
+    void loadLevel();
+    void unLoadLevel();
+    void update();
 
 };
