@@ -21,10 +21,10 @@
 #include "GameState/GameState.hpp"
 #include "Init.hpp"
 
-// the only global objects, prefixed with g
+// the only global objects, the map, with optional editor, prefixed with g
 ScenEdit* gEditor;	// pointer to the map with optional editor
 Coordinator gEcs;	// the Entity Component System
-GameState gState;	// current game state
+GameState* gState;	// current game state
 
 Init Init::instance;
 
@@ -42,12 +42,13 @@ Init& Init::getInstance() {
 bool Init::initLotr() {
 
 	fbl_engine_init(960, 540, 60);
-	fbl_set_clear_color(33, 68, 33, 255);
+	fbl_set_clear_color(33, 68, 33, 255);	// forest green
 	//fbl_create_threadpool();
 
 	fbl_load_texture((char*)"spritesheet_.png");	// load sprite texture
 
 	gEditor = new ScenEdit(false);	// create new instance of ScenEdit without editor GUI
+	gState = new GameState();
 
 	gEcs.Init();
 
@@ -98,6 +99,7 @@ void Init::unInitLotr() {
 	gEditor->resetMap(0, 0);	// free tile-mem
 	delete gEditor;
 
+	delete gState;
 }
 
 void Init::loadLevel() {
