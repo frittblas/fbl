@@ -2,10 +2,9 @@
 *
 *	Lotr
 *
-*	Init.cpp
+*	Game.cpp
 *
-*   Init class implementation, takes care of initializing the first startup and each level.
-*   Singleton.
+*   Game class implementation, takes care of initializing the first startup and to load each level.
 *
 *	Hans Strömquist 2022
 *
@@ -18,7 +17,7 @@
 #include "Ecs/Components.hpp"
 #include "Ecs/Systems/PhysicsSystem.hpp"
 
-#include "Init.hpp"
+#include "Game.hpp"
 #include "GameState/GameState.hpp"
 #include "UserInput.hpp"
 
@@ -28,20 +27,20 @@ Coordinator gEcs;	// the Entity Component System
 UserInput gInput;	// keyboard and mouse input from the user
 GameState* gState;	// current game state
 
-// Init-class implementation
+// Game-class implementation
 
-Init::Init() {
+Game::Game() {
 
 	initLotr();
 
 }
-Init::~Init() {
+Game::~Game() {
 
 	unInitLotr();
 
 }
 
-bool Init::initLotr() {
+bool Game::initLotr() {
 
 	fbl_engine_init(960, 540, 60);
 	fbl_set_clear_color(33, 68, 33, 255);	// forest green
@@ -96,7 +95,7 @@ bool Init::initLotr() {
 
 }
 
-void Init::unInitLotr() {
+void Game::unInitLotr() {
 
 	gEditor->resetMap(0, 0);	// free tile-mem
 	delete gEditor;
@@ -104,7 +103,7 @@ void Init::unInitLotr() {
 	delete gState;
 }
 
-void Init::loadLevel() {
+void Game::loadLevel() {
 
 	bool success = Disk::getInstance().loadMap(*gEditor, "assets/map.scn");
 
@@ -115,13 +114,13 @@ void Init::loadLevel() {
 
 }
 
-void Init::unLoadLevel() {
+void Game::unLoadLevel() {
 
 	gEditor->resetMap(0, 0);
 
 }
 
-void Init::update() {
+void Game::update() {
 
 	gInput.tick();	// get user input
 	gState->tick(); // update the current state

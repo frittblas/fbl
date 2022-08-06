@@ -2,20 +2,19 @@
 *
 *	Lotr
 *
-*	Init.hpp
+*	Game.hpp
 *
-*	Init class header, takes care of initializing the first startup and loading each level.
-*   Singleton.
+*	Game class header, takes care of initializing the first startup and to load each level.
 *
 *	Hans Strömquist 2022
 *
 */
 
-class Init {
+class Game {
 
 public:
-    Init();
-    ~Init();
+    Game();
+    ~Game();
 
     bool initLotr();
     void unInitLotr();

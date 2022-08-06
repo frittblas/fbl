@@ -93,7 +93,7 @@
     <ClCompile Include="..\..\game_projects\lotr\Ecs\Systems\PhysicsSystem.cpp">
       <Filter>Source Files\Ecs\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\game_projects\Lotr\Init.cpp">
+    <ClCompile Include="..\..\game_projects\Lotr\Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\game_projects\Lotr\Progress.cpp">
@@ -155,7 +155,7 @@
     <ClInclude Include="..\..\game_projects\lotr\Ecs\Types.hpp">
       <Filter>Source Files\Ecs</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\game_projects\Lotr\Init.hpp">
+    <ClInclude Include="..\..\game_projects\Lotr\Game.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\game_projects\Lotr\Progress.hpp">

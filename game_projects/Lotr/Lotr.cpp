@@ -12,9 +12,9 @@
 */
 
 #include "../../src/fbl.hpp"
-#include "Init.hpp"
+#include "Game.hpp"
 
-Init* gInit;
+Game* gGame;
 
 void fbl_start()
 {
@@ -22,21 +22,21 @@ void fbl_start()
 	// make sure that the name of the asset folder is set to what you want (default = "assets/")
 	// fbl_set_assets_folder_name("your_name/");
 
-	gInit = new Init();
+	gGame = new Game();
 
 }
 
 void fbl_game_loop()
 {
 
-	gInit->update();
+	gGame->update();
 
 }
 
 void fbl_end()
 {
 
-	gInit->unInitLotr();
+	gGame->unInitLotr();
 	//std::cout<<"Bye!"<<std::endl;
 
 }
