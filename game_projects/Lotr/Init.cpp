@@ -19,11 +19,13 @@
 #include "Ecs/Systems/PhysicsSystem.hpp"
 
 #include "GameState/GameState.hpp"
+#include "UserInput.hpp"
 #include "Init.hpp"
 
 // the only global objects, the map, with optional editor, prefixed with g
 ScenEdit* gEditor;	// pointer to the map with optional editor
 Coordinator gEcs;	// the Entity Component System
+UserInput gInput;	// keyboard and mouse input from the user
 GameState* gState;	// current game state
 
 Init Init::instance;
