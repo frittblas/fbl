@@ -144,7 +144,9 @@
     <ClCompile Include="..\..\game_projects\Lotr\GameState\Title.cpp" />
     <ClCompile Include="..\..\game_projects\Lotr\Game.cpp" />
     <ClCompile Include="..\..\game_projects\lotr\Lotr.cpp" />
+    <ClCompile Include="..\..\game_projects\Lotr\Objects.cpp" />
     <ClCompile Include="..\..\game_projects\Lotr\Progress.cpp" />
+    <ClCompile Include="..\..\game_projects\Lotr\SysManager.cpp" />
     <ClCompile Include="..\..\game_projects\Lotr\UserInput.cpp" />
     <ClCompile Include="..\..\src\a_star\a_star.c" />
     <ClCompile Include="..\..\src\dl_list\dllist.c" />
@@ -179,7 +181,9 @@
     <ClInclude Include="..\..\game_projects\Lotr\GameState\Settings.hpp" />
     <ClInclude Include="..\..\game_projects\Lotr\GameState\Title.hpp" />
     <ClInclude Include="..\..\game_projects\Lotr\Game.hpp" />
+    <ClInclude Include="..\..\game_projects\Lotr\Objects.hpp" />
     <ClInclude Include="..\..\game_projects\Lotr\Progress.hpp" />
+    <ClInclude Include="..\..\game_projects\Lotr\SysManager.hpp" />
     <ClInclude Include="..\..\game_projects\Lotr\UserInput.hpp" />
     <ClInclude Include="..\..\src\engine.h" />
     <ClInclude Include="..\..\src\fbl.h" />

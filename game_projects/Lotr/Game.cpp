@@ -19,8 +19,10 @@
 #include "Ecs/Systems/SpriteSystem.hpp"
 
 #include "Game.hpp"
+#include "SysManager.hpp"
 #include "UserInput.hpp"
 #include "Chars.hpp"
+#include "Objects.hpp"
 #include "Progress.hpp"
 #include "GameState/GameState.hpp"
 
@@ -53,9 +55,11 @@ bool Game::init() {
 	gEditor = new ScenEdit(false);	// create new instance of ScenEdit without editor GUI
 	mMap = gEditor;					// assign gEditor pointer to mMap, so we can avoid global state. Only use mMap after this.
 	mEcs = new Coordinator();
+	mSysManager = new SysManager();
 	mState = new GameState();
 	mInput = new UserInput();
 	mChars = new Chars();
+	mObjects = new Objects();
 	mProgress = new Progress();
 
 	// init the Ecs
@@ -67,7 +71,7 @@ bool Game::init() {
 
 	// register systems
 	auto spriteSystem = mEcs->RegisterSystem<SpriteSystem>();
-	mChars->mSpriteSystem = spriteSystem;
+	mSysManager->mSpriteSystem = spriteSystem;
 
 	// set up what components the systems require
 	Signature signature;
@@ -83,7 +87,7 @@ bool Game::init() {
 	//								 id id id id num tx ty   w   h   anim fr spd dir dirl
 	mEcs->AddComponent(player, Sprite{0, 0, 0, 0, 4, 0, 224, 32, 32, true, 2, 12, 1, 1});
 
-	mChars->mSpriteSystem->Init(*this->mEcs);
+	mSysManager->mSpriteSystem->Init(*this->mEcs);
 
 	/*
 	auto physicsSystem = mEcs->RegisterSystem<PhysicsSystem>();
@@ -124,9 +128,11 @@ void Game::unInit() {
 	mMap->resetMap(0, 0);	// free tile-mem
 
 	delete mMap;
+	delete mSysManager;
 	delete mState;
 	delete mInput;
 	delete mChars;
+	delete mObjects;
 	delete mProgress;
 
 }
@@ -148,7 +154,7 @@ void Game::loadLevel() {
 		std::cout << "Error loading map!" << std::endl;
 
 	// set up graphics for the player
-	mChars->mSpriteSystem->Init(*this->mEcs);
+	mSysManager->mSpriteSystem->Init(*this->mEcs);
 
 }
 

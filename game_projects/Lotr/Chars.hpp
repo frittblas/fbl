@@ -42,10 +42,9 @@ public:
     };
 
     Entity mFrodo;  // the player!
-    std::shared_ptr<SpriteSystem> mSpriteSystem; // the sprite system NOTE: move this to a Systems.cpp
 
     // array of classic characters from the books
-    Entity mAllChars[sizeof(Name)];
+    Entity mAllChars[17]; // sizeof(Name)?
 
     std::vector<Entity> mAlly;      // list of all the allies (in one scene at a time)
     std::vector<Entity> mMonster;   // list of all the monsters (in one scene at a time)

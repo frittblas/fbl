@@ -123,6 +123,12 @@
     <ClCompile Include="..\..\game_projects\Lotr\Chars.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\game_projects\Lotr\Objects.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game_projects\Lotr\SysManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\fbl.h">
@@ -192,6 +198,12 @@
       <Filter>Source Files\Ecs\Systems</Filter>
     </ClInclude>
     <ClInclude Include="..\..\game_projects\Lotr\Chars.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Lotr\Objects.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Lotr\SysManager.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

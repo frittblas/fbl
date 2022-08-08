@@ -12,10 +12,13 @@
 
 #pragma once
 
+#include <vector>
+#include "Ecs/Types.hpp"
 
 class Objects {
 
 public:
+    std::vector<Entity> mMoveBlock; // list of all the movable blocks in a scene
 
     Objects();
     ~Objects();
