@@ -10,7 +10,6 @@
 *
 */
 
-#include "../Game.hpp"
 #include "GameState.hpp"
 
 #include "Title.hpp"
@@ -38,7 +37,7 @@ GameState::~GameState() {
 
 }
 
-void GameState::change(StateType newState) {
+void GameState::change(Game& g, StateType newState) {
 
 	// first deallocate any resources that are in play
 
@@ -50,7 +49,7 @@ void GameState::change(StateType newState) {
 
 	case StateType::Title:
 		if (mState >= StateType::Explore)
-			gGame->unLoadLevel();	// reset map if we're coming from the game
+			g.unLoadLevel();	// reset map if we're coming from the game
 		mCurrentStateInstance = new Title();
 		break;
 
@@ -67,7 +66,7 @@ void GameState::change(StateType newState) {
 	case StateType::Explore:
 		mCurrentStateInstance = new Explore();
 		if (mState == StateType::Title)
-			gGame->loadLevel();	// init first level if we're coming from the title screen
+			g.loadLevel();	// init first level if we're coming from the title screen
 		break;
 
 	case StateType::Dialogue:

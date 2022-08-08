@@ -22,6 +22,7 @@
 #include "UserInput.hpp"
 
 // the only global objects, the map, with optional editor, prefixed with g
+extern Game* gGame;
 ScenEdit* gEditor;	// pointer to the map with optional editor
 Coordinator gEcs;	// the Entity Component System
 UserInput gInput;	// keyboard and mouse input from the user
@@ -31,16 +32,16 @@ GameState* gState;	// current game state
 
 Game::Game() {
 
-	initLotr();
+	init();
 
 }
 Game::~Game() {
 
-	unInitLotr();
+	unInit();
 
 }
 
-bool Game::initLotr() {
+bool Game::init() {
 
 	fbl_engine_init(960, 540, 60);
 	fbl_set_clear_color(33, 68, 33, 255);	// forest green
@@ -95,13 +96,21 @@ bool Game::initLotr() {
 
 }
 
-void Game::unInitLotr() {
+void Game::unInit() {
 
 	gEditor->resetMap(0, 0);	// free tile-mem
 	delete gEditor;
 
 	delete gState;
 }
+
+void Game::update() {
+
+	gInput.tick(*gGame);	// get user input
+	gState->tick(); // update the current state
+
+}
+
 
 void Game::loadLevel() {
 
@@ -117,12 +126,5 @@ void Game::loadLevel() {
 void Game::unLoadLevel() {
 
 	gEditor->resetMap(0, 0);
-
-}
-
-void Game::update() {
-
-	gInput.tick();	// get user input
-	gState->tick(); // update the current state
 
 }

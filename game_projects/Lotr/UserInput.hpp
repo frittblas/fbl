@@ -12,11 +12,13 @@
 
 #pragma once
 
+#include "Game.hpp"
+
 class UserInput {
 
 public:
     UserInput();
     ~UserInput();
 
-    void tick();
+    void tick(Game& g);
 };

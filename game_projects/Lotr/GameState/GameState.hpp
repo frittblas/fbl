@@ -12,6 +12,7 @@
 
 #pragma once
 
+#include "../Game.hpp"
 #include "IState.hpp"
 
 class GameState {
@@ -35,7 +36,7 @@ public:
     GameState();
     ~GameState();
 
-    void  change(StateType newState);
+    void  change(Game& g, StateType newState);
     StateType get();
     void tick();
 

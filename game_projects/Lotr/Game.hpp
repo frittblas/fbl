@@ -18,10 +18,10 @@ public:
     Game();
     ~Game();
 
-    bool initLotr();
-    void unInitLotr();
+    bool init();
+    void unInit();
+    void update();
     void loadLevel();
     void unLoadLevel();
-    void update();
 
 };

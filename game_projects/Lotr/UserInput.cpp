@@ -11,33 +11,33 @@
 */
 
 #include "../../src/fbl.hpp"
-#include "GameState/GameState.hpp"
 #include "UserInput.hpp"
+#include "GameState/GameState.hpp"
 
 extern GameState* gState;
 
 UserInput::UserInput() {};
 UserInput::~UserInput() {};
 
-void UserInput::tick() {
+void UserInput::tick(Game& g) {
 
 
 	static int access = 0;
 
 	if (fbl_get_key_down(FBLK_1) && access == 0) {
-		gState->change(GameState::StateType::Title);
+		gState->change(g, GameState::StateType::Title);
 		access = 20;
 	}
 	if (fbl_get_key_down(FBLK_2) && access == 0) {
-		gState->change(GameState::StateType::Settings);
+		gState->change(g, GameState::StateType::Settings);
 		access = 20;
 	}
 	if (fbl_get_key_down(FBLK_3) && access == 0) {
-		gState->change(GameState::StateType::Explore);
+		gState->change(g, GameState::StateType::Explore);
 		access = 20;
 	}
 	if (fbl_get_key_down(FBLK_4) && access == 0) {
-		gState->change(GameState::StateType::Dialogue);
+		gState->change(g, GameState::StateType::Dialogue);
 		access = 20;
 	}
 
