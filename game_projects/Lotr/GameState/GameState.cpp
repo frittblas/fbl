@@ -17,8 +17,6 @@
 #include "Explore.hpp"
 #include "Dialogue.hpp"
 
-extern Game* gGame;
-
 // GameState-class implementation
 
 GameState::GameState() {

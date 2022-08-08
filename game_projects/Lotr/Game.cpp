@@ -28,6 +28,7 @@ Coordinator gEcs;	// the Entity Component System
 UserInput gInput;	// keyboard and mouse input from the user
 GameState* gState;	// current game state
 
+
 // Game-class implementation
 
 Game::Game() {
@@ -106,7 +107,7 @@ void Game::unInit() {
 
 void Game::update() {
 
-	gInput.tick(*gGame);	// get user input
+	gInput.tick(*this);	// get user input
 	gState->tick(); // update the current state
 
 }
