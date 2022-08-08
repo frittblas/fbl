@@ -36,7 +36,6 @@ void fbl_game_loop()
 void fbl_end()
 {
 
-	gGame->unInitLotr();
-	//std::cout<<"Bye!"<<std::endl;
+	delete gGame;
 
 }

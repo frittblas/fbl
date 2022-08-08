@@ -35,7 +35,7 @@ public:
     GameState();
     ~GameState();
 
-    void  change(StateType state);
+    void  change(StateType newState);
     StateType get();
     void tick();
 

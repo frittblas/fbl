@@ -10,6 +10,8 @@
 *
 */
 
+#pragma once
+
 #include "IState.hpp"
 
 class Settings : public IState {
