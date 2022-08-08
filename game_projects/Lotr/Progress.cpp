@@ -10,4 +10,18 @@
 *
 */
 
+#include "Progress.hpp"
 
+// Progress-class implementation
+
+Progress::Progress() {
+
+	room = level = 1;
+	std::cout << "createed progress obj" << std::endl;
+}
+
+Progress::~Progress() {
+
+	std::cout << "destroyed progress obj" << std::endl;
+
+}

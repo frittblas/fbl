@@ -13,9 +13,11 @@
 
 #include "../System.hpp"
 
+class Coordinator;
+
 class PhysicsSystem : public System
 {
 public:
-	void Init();
-	void Update();
+	void Init(Coordinator& ecs);
+	void Update(Coordinator& ecs);
 };

@@ -18,15 +18,13 @@
 #include "Ecs/Systems/PhysicsSystem.hpp"
 
 #include "Game.hpp"
-#include "GameState/GameState.hpp"
 #include "UserInput.hpp"
+#include "Progress.hpp"
+#include "GameState/GameState.hpp"
 
-// the only global objects (file scope!), the map, with optional editor, prefixed with g
-ScenEdit* gEditor;	// pointer to the map with optional editor
-Coordinator gEcs;	// the Entity Component System
-UserInput gInput;	// keyboard and mouse input from the user
-GameState* gState;	// current game state
-
+// the only global object (file scope!), the map, with optional editor, prefixed with g
+// this is assigned to the Game-class member variable mMap, so there is no global state at all.
+ScenEdit* gEditor;	// pointer to the map with optional editor, has to be called gEditor bc it's externed in GuiFuncs.cpp
 
 // Game-class implementation
 
@@ -49,47 +47,43 @@ bool Game::init() {
 
 	fbl_load_texture((char*)"spritesheet_.png");	// load sprite texture
 
+	// create instances of the Game-class sub systems
 	gEditor = new ScenEdit(false);	// create new instance of ScenEdit without editor GUI
-	gState = new GameState();
+	mMap = gEditor;					// assign gEditor pointer to mMap, so we can avoid global state.
+	mEcs = new Coordinator();
+	mState = new GameState();
+	mInput = new UserInput();
+	mProgress = new Progress();
 
-	gEcs.Init();
-
-	gEcs.RegisterComponent<Position>();
-
-	auto physicsSystem = gEcs.RegisterSystem<PhysicsSystem>();
+	mEcs->Init();
+	mEcs->RegisterComponent<Position>();
+	auto physicsSystem = mEcs->RegisterSystem<PhysicsSystem>();
 
 	Signature signature;
-	signature.set(gEcs.GetComponentType<Position>());
-	gEcs.SetSystemSignature<PhysicsSystem>(signature);
+	signature.set(mEcs->GetComponentType<Position>());
+	mEcs->SetSystemSignature<PhysicsSystem>(signature);
 
 	std::vector<Entity> entities(MAX_ENTITIES);
 
-
 	for (auto& entity : entities)
 	{
-		entity = gEcs.CreateEntity();
-
-		gEcs.AddComponent(
+		entity = mEcs->CreateEntity();
+		mEcs->AddComponent(
 			entity,
 			Position{ 0, 0 }
 		);
-
 	}
 
-	physicsSystem->Init();
+	physicsSystem->Init(*this->mEcs);
 
 	int quit = 100;
-
 	while (quit > 0)
 	{
-
-		physicsSystem->Update();
-
+		physicsSystem->Update(*this->mEcs);
 		quit--;
 	}
 
-	auto& pos = gEcs.GetComponent<Position>(0);
-
+	auto& pos = mEcs->GetComponent<Position>(0);
 	std::cout << pos.x << std::endl;
 
 	return true;
@@ -98,16 +92,19 @@ bool Game::init() {
 
 void Game::unInit() {
 
-	gEditor->resetMap(0, 0);	// free tile-mem
-	delete gEditor;
+	mMap->resetMap(0, 0);	// free tile-mem
 
-	delete gState;
+	delete mMap;
+	delete mState;
+	delete mInput;
+	delete mProgress;
+
 }
 
 void Game::update() {
 
-	gInput.tick(*this, *gState);	// get user input
-	gState->tick(); // update the current state
+	mInput->tick(*this);	// get user input
+	mState->tick();			// update the current state
 
 }
 

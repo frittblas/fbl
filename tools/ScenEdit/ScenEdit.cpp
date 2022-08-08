@@ -48,6 +48,8 @@ ScenEdit::~ScenEdit() {
 	fbl_lua_shutdown();
 	fbl_phys_shutdown();
 
+	std::cout << "Shut down ScenEdit instance!" << std::endl;
+
 }
 
 void ScenEdit::setup(uint32_t mapW, uint32_t mapH, uint32_t tSize) {

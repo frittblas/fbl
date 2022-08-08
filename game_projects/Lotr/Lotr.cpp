@@ -14,7 +14,7 @@
 #include "../../src/fbl.hpp"
 #include "Game.hpp"
 
-Game* gGame;
+Game* gGame;	// the Game-instance, only used in this file (file scope)
 
 void fbl_start()
 {

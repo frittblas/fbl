@@ -12,8 +12,9 @@
 
 #pragma once
 
-#include "../Game.hpp"
 #include "IState.hpp"
+
+class Game;
 
 class GameState {
 

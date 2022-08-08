@@ -16,16 +16,16 @@
 
 #include "PhysicsSystem.hpp"
 
-extern Coordinator gEcs;
+//extern Coordinator gEcs;
 
-void PhysicsSystem::Init() {
+void PhysicsSystem::Init(Coordinator& ecs) {
 	std::cout << "lol Init" << std::endl;
 }
 
-void PhysicsSystem::Update() {
+void PhysicsSystem::Update(Coordinator& ecs) {
 	for (auto const& entity : mEntities)
 	{
-		auto& pos = gEcs.GetComponent<Position>(entity);
+		auto& pos = ecs.GetComponent<Position>(entity);
 		//auto& transform = gCoordinator.GetComponent<Transform>(entity);
 
 		pos.x++;

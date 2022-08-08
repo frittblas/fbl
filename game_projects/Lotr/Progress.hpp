@@ -11,3 +11,16 @@
 */
 
 #pragma once
+
+#include <iostream>
+
+class Progress {
+
+public:
+    uint32_t room;
+    uint32_t level;
+
+    Progress();
+    ~Progress();
+
+};

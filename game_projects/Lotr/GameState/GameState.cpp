@@ -10,6 +10,7 @@
 *
 */
 
+#include "../Game.hpp"
 #include "GameState.hpp"
 
 #include "Title.hpp"
