@@ -14,11 +14,13 @@
 
 #include "IState.hpp"
 
+class Game;
+
 class Settings : public IState {
 
 public:
     Settings();
     ~Settings();
 
-    virtual void tick();
+    virtual void tick(Game& g) override;
 };

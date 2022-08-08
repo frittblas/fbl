@@ -12,10 +12,12 @@
 
 #pragma once
 
+class Game;
+
 class IState {
 
 public:
     virtual ~IState() = default; // virtual destructor, so the destructor gets called of the derived classes
-    virtual void tick() = 0;
+    virtual void tick(Game& g) = 0;
 
 };

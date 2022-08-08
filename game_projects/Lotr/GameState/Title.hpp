@@ -12,11 +12,13 @@
 
 #include "IState.hpp"
 
+class Game;
+
 class Title : public IState {
 
 public:
     Title();
     ~Title();
 
-    virtual void tick();
+    virtual void tick(Game& g) override;
 };

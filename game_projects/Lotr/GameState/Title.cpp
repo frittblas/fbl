@@ -12,6 +12,7 @@
 
 #include <iostream>
 #include "../../../src/fbl.hpp"
+#include "../Game.hpp"
 #include "Title.hpp"
 
 int lotrTitleId, lotrSubTitleId, authorTextId;
@@ -50,7 +51,7 @@ Title::~Title() {
 
 
 // implement the virtual tick() function
-void Title::tick() {
+void Title::tick(Game& g) {
 
 	int num = std::rand() / ((RAND_MAX + 1u) / 20); // random numbers from 0-19
 

@@ -26,6 +26,7 @@ struct Position
 // the sprite render component
 struct Sprite
 {
+    // try to use smaller datatypes to be more cache friendly
 
     uint16_t id[4]; // 4 sprites, one for each direction (up, right, left, down)
     uint8_t num;    // number of actual sprites (max 4)

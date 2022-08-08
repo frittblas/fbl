@@ -93,8 +93,8 @@ GameState::StateType GameState::get() {
 	return mState;
 }
 
-void GameState::tick() {
+void GameState::tick(Game& g) {
 
-	mCurrentStateInstance->tick();
+	mCurrentStateInstance->tick(g);
 
 }

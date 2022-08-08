@@ -11,6 +11,7 @@
 */
 
 #include <iostream>
+#include "../Game.hpp"
 #include "Explore.hpp"
 
 // Explore-class implementation
@@ -27,7 +28,7 @@ Explore::~Explore() {
 
 }
 
-void Explore::tick() {
+void Explore::tick(Game& g) {
 
 	int num = std::rand() / ((RAND_MAX + 1u) / 20); // random numbers from 0-19
 

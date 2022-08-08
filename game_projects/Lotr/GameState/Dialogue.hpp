@@ -14,12 +14,14 @@
 
 #include "IState.hpp"
 
+class Game;
+
 class Dialogue : public IState{
 
 public:
     Dialogue();
     ~Dialogue();
 
-    virtual void tick();
+    virtual void tick(Game& g) override;
 
 };

@@ -11,7 +11,9 @@
 */
 
 #include <iostream>
+#include "../Game.hpp"
 #include "Settings.hpp"
+
 
 // Settings-class implementation
 
@@ -29,7 +31,7 @@ Settings::~Settings() {
 
 
 // implement the virtual tick() function
-void Settings::tick() {
+void Settings::tick(Game& g) {
 
 	int num = std::rand() / ((RAND_MAX + 1u) / 20); // random numbers from 0-19
 

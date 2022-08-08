@@ -11,6 +11,7 @@
 */
 
 #include <iostream>
+#include "../Game.hpp"
 #include "Dialogue.hpp"
 
 // Dialogue-class implementation
@@ -28,7 +29,7 @@ Dialogue::~Dialogue() {
 
 }
 
-void Dialogue::tick() {
+void Dialogue::tick(Game& g) {
 
 	int num = std::rand() / ((RAND_MAX + 1u) / 20); // random numbers from 0-19
 

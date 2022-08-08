@@ -133,7 +133,7 @@ void Game::unInit() {
 void Game::update() {
 
 	mInput->tick(*this);	// get user input
-	mState->tick();			// update the current state
+	mState->tick(*this);			// update the current state
 
 	s->Update(*this->mEcs);
 

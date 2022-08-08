@@ -32,10 +32,13 @@ void SpriteSystem::Init(Coordinator& ecs) {
 			if (spr.animated)	// turn on animation if requested
 				fbl_set_sprite_animation(spr.id[i], true, spr.textureX + (i * (spr.w * spr.frames)), spr.textureY, spr.w, spr.h, spr.frames, spr.speed, true);
 			
-			// deactivate all sprites, then turn on the one facing the current direction
+			// deactivate all sprites
 			fbl_set_sprite_active(spr.id[i], false);
-			fbl_set_sprite_active(spr.id[spr.dir], true);
+			
 		}
+
+		// turn on the one facing the current direction
+		fbl_set_sprite_active(spr.id[spr.dir], true);
 
 	}
 

@@ -39,7 +39,7 @@ public:
 
     void  change(Game& g, StateType newState);
     StateType get();
-    void tick();
+    void tick(Game& g);
 
 private:
     StateType mState;   // enum holding the current state
