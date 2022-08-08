@@ -14,6 +14,11 @@
 #include "../Game.hpp"
 #include "Explore.hpp"
 
+#include "../Ecs/Ecs.hpp"
+#include "../Chars.hpp"
+#include "../Ecs/Systems/SpriteSystem.hpp"
+
+
 // Explore-class implementation
 
 Explore::Explore() {
@@ -29,6 +34,10 @@ Explore::~Explore() {
 }
 
 void Explore::tick(Game& g) {
+
+
+	g.mChars->mSpriteSystem->Update(*g.mEcs);
+
 
 	int num = std::rand() / ((RAND_MAX + 1u) / 20); // random numbers from 0-19
 

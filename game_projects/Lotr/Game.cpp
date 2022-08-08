@@ -20,14 +20,13 @@
 
 #include "Game.hpp"
 #include "UserInput.hpp"
+#include "Chars.hpp"
 #include "Progress.hpp"
 #include "GameState/GameState.hpp"
 
 // the only global object (file scope!), the map, with optional editor, prefixed with g
 // this is assigned to the Game-class member variable mMap, so there is no global state at all.
 ScenEdit* gEditor;	// pointer to the map with optional editor, has to be called gEditor bc it's externed in GuiFuncs.cpp
-
-std::shared_ptr<SpriteSystem> s;
 
 // Game-class implementation
 
@@ -56,6 +55,7 @@ bool Game::init() {
 	mEcs = new Coordinator();
 	mState = new GameState();
 	mInput = new UserInput();
+	mChars = new Chars();
 	mProgress = new Progress();
 
 	// init the Ecs
@@ -67,7 +67,7 @@ bool Game::init() {
 
 	// register systems
 	auto spriteSystem = mEcs->RegisterSystem<SpriteSystem>();
-	s = spriteSystem;
+	mChars->mSpriteSystem = spriteSystem;
 
 	// set up what components the systems require
 	Signature signature;
@@ -83,7 +83,7 @@ bool Game::init() {
 	//								 id id id id num tx ty   w   h   anim fr spd dir dirl
 	mEcs->AddComponent(player, Sprite{0, 0, 0, 0, 4, 0, 224, 32, 32, true, 2, 12, 1, 1});
 
-	spriteSystem->Init(*this->mEcs);
+	mChars->mSpriteSystem->Init(*this->mEcs);
 
 	/*
 	auto physicsSystem = mEcs->RegisterSystem<PhysicsSystem>();
@@ -126,6 +126,7 @@ void Game::unInit() {
 	delete mMap;
 	delete mState;
 	delete mInput;
+	delete mChars;
 	delete mProgress;
 
 }
@@ -133,9 +134,7 @@ void Game::unInit() {
 void Game::update() {
 
 	mInput->tick(*this);	// get user input
-	mState->tick(*this);			// update the current state
-
-	s->Update(*this->mEcs);
+	mState->tick(*this);	// update the current state
 
 }
 
@@ -149,7 +148,7 @@ void Game::loadLevel() {
 		std::cout << "Error loading map!" << std::endl;
 
 	// set up graphics for the player
-	s->Init(*this->mEcs);
+	mChars->mSpriteSystem->Init(*this->mEcs);
 
 }
 

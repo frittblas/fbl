@@ -18,6 +18,7 @@ class Coordinator;
 class ScenEdit;
 class GameState;
 class UserInput;
+class Chars;
 class Progress;
 
 class Game {
@@ -27,6 +28,7 @@ public:
     ScenEdit* mMap;         // the game map, this points to gEditor
     GameState* mState;  	// current game state
     UserInput* mInput;	    // keyboard and mouse input from the user
+    Chars* mChars;          // all the characters in the game, including the player.
     Progress* mProgress;    // general game progress
 
     Game();

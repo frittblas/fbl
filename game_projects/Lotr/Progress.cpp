@@ -17,11 +17,11 @@
 Progress::Progress() {
 
 	room = level = 1;
-	std::cout << "createed progress obj" << std::endl;
+	std::cout << "Initialized Progress subsystem." << std::endl;
 }
 
 Progress::~Progress() {
 
-	std::cout << "destroyed progress obj" << std::endl;
+	std::cout << "Destroyed progress subsystem." << std::endl;
 
 }
