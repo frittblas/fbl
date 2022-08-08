@@ -21,8 +21,7 @@
 #include "GameState/GameState.hpp"
 #include "UserInput.hpp"
 
-// the only global objects, the map, with optional editor, prefixed with g
-extern Game* gGame;
+// the only global objects (file scope!), the map, with optional editor, prefixed with g
 ScenEdit* gEditor;	// pointer to the map with optional editor
 Coordinator gEcs;	// the Entity Component System
 UserInput gInput;	// keyboard and mouse input from the user
@@ -107,7 +106,7 @@ void Game::unInit() {
 
 void Game::update() {
 
-	gInput.tick(*this);	// get user input
+	gInput.tick(*this, *gState);	// get user input
 	gState->tick(); // update the current state
 
 }

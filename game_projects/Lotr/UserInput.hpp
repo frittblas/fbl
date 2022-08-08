@@ -13,6 +13,7 @@
 #pragma once
 
 #include "Game.hpp"
+#include "GameState/GameState.hpp"
 
 class UserInput {
 
@@ -20,5 +21,5 @@ public:
     UserInput();
     ~UserInput();
 
-    void tick(Game& g);
+    void tick(Game& g, GameState& gs);
 };

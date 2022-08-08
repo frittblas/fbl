@@ -24,4 +24,7 @@ public:
     void loadLevel();
     void unLoadLevel();
 
+private:
+
+
 };
