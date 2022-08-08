@@ -16,8 +16,6 @@
 
 #include "PhysicsSystem.hpp"
 
-//extern Coordinator gEcs;
-
 void PhysicsSystem::Init(Coordinator& ecs) {
 	std::cout << "lol Init" << std::endl;
 }

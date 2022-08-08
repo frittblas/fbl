@@ -49,7 +49,7 @@ bool Game::init() {
 
 	// create instances of the Game-class sub systems
 	gEditor = new ScenEdit(false);	// create new instance of ScenEdit without editor GUI
-	mMap = gEditor;					// assign gEditor pointer to mMap, so we can avoid global state.
+	mMap = gEditor;					// assign gEditor pointer to mMap, so we can avoid global state. Only use mMap after this.
 	mEcs = new Coordinator();
 	mState = new GameState();
 	mInput = new UserInput();
@@ -122,6 +122,6 @@ void Game::loadLevel() {
 
 void Game::unLoadLevel() {
 
-	gEditor->resetMap(0, 0);
+	mMap->resetMap(0, 0);
 
 }
