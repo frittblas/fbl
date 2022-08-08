@@ -117,6 +117,9 @@
     <ClCompile Include="..\..\game_projects\Lotr\UserInput.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\game_projects\Lotr\Ecs\Systems\SpriteSystem.cpp">
+      <Filter>Source Files\Ecs\Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\fbl.h">
@@ -181,6 +184,9 @@
     </ClInclude>
     <ClInclude Include="..\..\game_projects\Lotr\UserInput.hpp">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Lotr\Ecs\Systems\SpriteSystem.hpp">
+      <Filter>Source Files\Ecs\Systems</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

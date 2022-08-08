@@ -16,6 +16,7 @@
 #include "Ecs/Ecs.hpp"
 #include "Ecs/Components.hpp"
 #include "Ecs/Systems/PhysicsSystem.hpp"
+#include "Ecs/Systems/SpriteSystem.hpp"
 
 #include "Game.hpp"
 #include "UserInput.hpp"
@@ -25,6 +26,8 @@
 // the only global object (file scope!), the map, with optional editor, prefixed with g
 // this is assigned to the Game-class member variable mMap, so there is no global state at all.
 ScenEdit* gEditor;	// pointer to the map with optional editor, has to be called gEditor bc it's externed in GuiFuncs.cpp
+
+std::shared_ptr<SpriteSystem> s;
 
 // Game-class implementation
 
@@ -55,8 +58,34 @@ bool Game::init() {
 	mInput = new UserInput();
 	mProgress = new Progress();
 
+	// init the Ecs
 	mEcs->Init();
+	
+	// register components
 	mEcs->RegisterComponent<Position>();
+	mEcs->RegisterComponent<Sprite>();
+
+	// register systems
+	auto spriteSystem = mEcs->RegisterSystem<SpriteSystem>();
+	s = spriteSystem;
+
+	// set up what components the systems require
+	Signature signature;
+	signature.set(mEcs->GetComponentType<Position>());
+	signature.set(mEcs->GetComponentType<Sprite>());
+	mEcs->SetSystemSignature<SpriteSystem>(signature);
+
+	// create the player entity
+	Entity player = mEcs->CreateEntity();
+
+	// add components to the entity
+	mEcs->AddComponent(player, Position{64, 64});
+	//								 id id id id num tx ty   w   h   anim fr spd dir dirl
+	mEcs->AddComponent(player, Sprite{0, 0, 0, 0, 4, 0, 224, 32, 32, true, 2, 12, 1, 1});
+
+	spriteSystem->Init(*this->mEcs);
+
+	/*
 	auto physicsSystem = mEcs->RegisterSystem<PhysicsSystem>();
 
 	Signature signature;
@@ -85,7 +114,7 @@ bool Game::init() {
 
 	auto& pos = mEcs->GetComponent<Position>(0);
 	std::cout << pos.x << std::endl;
-
+	*/
 	return true;
 
 }
@@ -106,17 +135,21 @@ void Game::update() {
 	mInput->tick(*this);	// get user input
 	mState->tick();			// update the current state
 
-}
+	s->Update(*this->mEcs);
 
+}
 
 void Game::loadLevel() {
 
-	bool success = Disk::getInstance().loadMap(*gEditor, "assets/map.scn");
+	bool success = Disk::getInstance().loadMap(*gEditor, "assets/map.scn"); // this calls fbl_destroy_all_sprites()
 
 	if (success)
 		std::cout << "Loaded map from assets/map.scn" << std::endl;
 	else
 		std::cout << "Error loading map!" << std::endl;
+
+	// set up graphics for the player
+	s->Init(*this->mEcs);
 
 }
 
