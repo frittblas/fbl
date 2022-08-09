@@ -60,7 +60,7 @@ void PathSystem::Update(Coordinator& ecs) {
 		}
 
 		// do the pathfinding only if we haven't reached the goal
-		if (pos.x != path.goalX && pos.y != path.goalY) {
+		//if (pos.x != path.goalX && pos.y != path.goalY) {
 
 			fbl_pathf_read_path(path.id, pos.x, pos.y, 1);
 
@@ -69,7 +69,7 @@ void PathSystem::Update(Coordinator& ecs) {
 			if (pos.y > fbl_pathf_get_y_path(path.id)) pos.y--;
 			if (pos.y < fbl_pathf_get_y_path(path.id)) pos.y++;
 
-		}
+		//}
 
 	}
 

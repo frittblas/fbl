@@ -41,9 +41,13 @@ Title::Title() {
 
 Title::~Title() {
 
+	/*
 	fbl_delete_text(lotrTitleId);
 	fbl_delete_text(authorTextId);
 	fbl_delete_text(lotrSubTitleId);
+	*/
+
+	fbl_destroy_all_text_objects();
 
 	std::cout << "Destroy Title!" << std::endl;
 

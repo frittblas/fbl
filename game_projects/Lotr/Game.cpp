@@ -95,15 +95,15 @@ bool Game::init() {
 	mEcs->SetSystemSignature<PathSystem>(sig2);
 
 	// create the player entity
-	Entity player = mEcs->CreateEntity();
+	mChars->mFrodo = mEcs->CreateEntity();
 
 	// add components to the entity
 								  //	 x   y
-	mEcs->AddComponent(player, Position{ 64, 64 });
+	mEcs->AddComponent(mChars->mFrodo, Position{ 64, 64 });
 								  //  id id id id num tx ty   w   h   anim fr spd dir dirl
-	mEcs->AddComponent(player, Sprite{ 0, 0, 0, 0, 4, 0, 224, 32, 32, true, 2, 12, 1, 1 });
+	mEcs->AddComponent(mChars->mFrodo, Sprite{ 0, 0, 0, 0, 4, 0, 224, 32, 32, true, 2, 12, 1, 1 });
 										//	x	y
-	mEcs->AddComponent(player, Path{ 0, 256, 128, true });
+	mEcs->AddComponent(mChars->mFrodo, Path{ 0, 256, 128, true });
 
 	mSysManager->mSpriteSystem->Init(*this->mEcs);
 	mSysManager->mPathSystem->Init(*this->mEcs);
