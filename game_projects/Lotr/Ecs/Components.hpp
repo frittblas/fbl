@@ -48,3 +48,11 @@ struct Path
     bool newPath;   // is this is set to true, find a new path
 
 };
+
+// the mouse controller component (control a character in explore mode)
+struct MouseCtrl
+{
+
+    bool clicked;   // so the fbl_mouse function doesn't fire several times.
+
+};

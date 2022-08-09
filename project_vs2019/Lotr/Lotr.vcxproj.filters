@@ -129,6 +129,9 @@
     <ClCompile Include="..\..\game_projects\Lotr\SysManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\game_projects\Lotr\Ecs\Systems\MouseCtrlSystem.cpp">
+      <Filter>Source Files\Ecs\Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\fbl.h">
@@ -205,6 +208,9 @@
     </ClInclude>
     <ClInclude Include="..\..\game_projects\Lotr\SysManager.hpp">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Lotr\Ecs\Systems\MouseCtrlSystem.hpp">
+      <Filter>Source Files\Ecs\Systems</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
