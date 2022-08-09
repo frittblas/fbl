@@ -18,20 +18,20 @@
 
 Dialogue::Dialogue() {
 
-	std::cout << "Alloc Dialogue!" << std::endl;
+	std::cout << "Started Dialogue state." << std::endl;
 
 }
 
 Dialogue::~Dialogue() {
 
 
-	std::cout << "Destroy Dialogue!" << std::endl;
+	std::cout << "Destroyed Dialogue state." << std::endl;
 
 }
 
 void Dialogue::tick(Game& g) {
 
-	int num = std::rand() / ((RAND_MAX + 1u) / 20); // random numbers from 0-19
+	int num = std::rand() / ((RAND_MAX + 1u) / 50); // random numbers from 0-49
 
 	if (num == 0)
 		std::cout << "Tick dialogue!" << std::endl;

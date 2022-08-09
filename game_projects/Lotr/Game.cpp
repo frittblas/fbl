@@ -98,14 +98,14 @@ bool Game::init() {
 	mChars->mFrodo = mEcs->CreateEntity();
 
 	// add components to the entity
-								  //	 x   y
+											  // x   y
 	mEcs->AddComponent(mChars->mFrodo, Position{ 64, 64 });
-								  //  id id id id num tx ty   w   h   anim fr spd dir dirl
+										   // id id id id num tx ty   w   h   anim fr spd dir dirl
 	mEcs->AddComponent(mChars->mFrodo, Sprite{ 0, 0, 0, 0, 4, 0, 224, 32, 32, true, 2, 12, 1, 1 });
-										//	x	y
-	mEcs->AddComponent(mChars->mFrodo, Path{ 0, 256, 128, true });
+										 // id   gX   gY  newPath
+	mEcs->AddComponent(mChars->mFrodo, Path{ 0, 0, 0, false });
 
-	mSysManager->mSpriteSystem->Init(*this->mEcs);
+	//mSysManager->mSpriteSystem->Init(*this->mEcs);
 	mSysManager->mPathSystem->Init(*this->mEcs);
 
 	/*

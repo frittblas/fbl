@@ -35,7 +35,7 @@ Title::Title() {
 	authorTextId = fbl_create_text(212, 175, 55, 255, "Hans Stromquist 2022");
 	fbl_set_text_xy(authorTextId, 10, 520);
 
-	std::cout << "Alloc Title!" << std::endl;
+	std::cout << "Started Title state." << std::endl;
 
 }
 
@@ -49,7 +49,7 @@ Title::~Title() {
 
 	fbl_destroy_all_text_objects();
 
-	std::cout << "Destroy Title!" << std::endl;
+	std::cout << "Destroyed Title state." << std::endl;
 
 }
 
@@ -57,8 +57,8 @@ Title::~Title() {
 // implement the virtual tick() function
 void Title::tick(Game& g) {
 
-	int num = std::rand() / ((RAND_MAX + 1u) / 20); // random numbers from 0-19
 
+	int num = std::rand() / ((RAND_MAX + 1u) / 50); // random numbers from 0-49
 	if (num == 0)
 		std::cout << "Tick title!" << std::endl;
 

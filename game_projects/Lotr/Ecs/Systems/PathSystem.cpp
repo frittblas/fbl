@@ -54,13 +54,16 @@ void PathSystem::Update(Coordinator& ecs) {
 		// find path if newPath is true
 		if (path.newPath) {
 
-			fbl_pathf_set_path_status(path.id, fbl_pathf_find_path(path.id, pos.x, pos.y, path.goalX, path.goalY, FBL_PATHF_NO_DIAG));
+			fbl_pathf_set_path_status(path.id, fbl_pathf_find_path(path.id, pos.x, pos.y, path.goalX, path.goalY, FBL_PATHF_USE_DIAG));
 			path.newPath = false;
+
+			if(fbl_pathf_get_path_status(path.id) == FBL_PATHF_FOUND)
+				std::cout << "New path for id: " << (int)path.id << std::endl;	// need to cast path.id bc of auto& (Path&)
 
 		}
 
 		// do the pathfinding only if we haven't reached the goal
-		//if (pos.x != path.goalX && pos.y != path.goalY) {
+		if (fbl_pathf_get_path_status(path.id) == FBL_PATHF_FOUND) {
 
 			fbl_pathf_read_path(path.id, pos.x, pos.y, 1);
 
@@ -69,7 +72,9 @@ void PathSystem::Update(Coordinator& ecs) {
 			if (pos.y > fbl_pathf_get_y_path(path.id)) pos.y--;
 			if (pos.y < fbl_pathf_get_y_path(path.id)) pos.y++;
 
-		//}
+			//std::cout << "pathing!" << std::endl;
+
+		}
 
 	}
 
