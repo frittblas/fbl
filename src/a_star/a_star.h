@@ -18,10 +18,10 @@ extern "C" {
 
 /*  change these to fit your project */
 
-#define A_STAR_MAP_WIDTH	25
-#define A_STAR_MAP_HEIGHT	25
+#define A_STAR_MAP_WIDTH	60
+#define A_STAR_MAP_HEIGHT	34
 #define A_STAR_TILE_SIZE	32
-#define A_STAR_NUM_CHARS	4
+#define A_STAR_NUM_CHARS	8
 
 /* return values and stuff */
 

@@ -90,7 +90,7 @@
     <ClCompile Include="..\..\tools\ScenEdit\GuiFuncs.cpp">
       <Filter>Source Files\ScenEdit</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\game_projects\lotr\Ecs\Systems\PhysicsSystem.cpp">
+    <ClCompile Include="..\..\game_projects\lotr\Ecs\Systems\PathSystem.cpp">
       <Filter>Source Files\Ecs\Systems</Filter>
     </ClCompile>
     <ClCompile Include="..\..\game_projects\Lotr\Game.cpp">
@@ -161,7 +161,7 @@
     <ClInclude Include="..\..\game_projects\lotr\Ecs\System.hpp">
       <Filter>Source Files\Ecs</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\game_projects\lotr\Ecs\Systems\PhysicsSystem.hpp">
+    <ClInclude Include="..\..\game_projects\lotr\Ecs\Systems\PathSystem.hpp">
       <Filter>Source Files\Ecs\Systems</Filter>
     </ClInclude>
     <ClInclude Include="..\..\game_projects\lotr\Ecs\Types.hpp">

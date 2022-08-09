@@ -16,7 +16,9 @@
 
 #include "../Ecs/Ecs.hpp"
 #include "../SysManager.hpp"
+
 #include "../Ecs/Systems/SpriteSystem.hpp"
+#include "../Ecs/Systems/PathSystem.hpp"
 
 
 // Explore-class implementation
@@ -36,8 +38,8 @@ Explore::~Explore() {
 void Explore::tick(Game& g) {
 
 
-	g.mSysManager->mSpriteSystem->Update(*g.mEcs);
-
+	g.mSysManager->mSpriteSystem->Update(*g.mEcs);	// update the sprite system
+	g.mSysManager->mPathSystem->Update(*g.mEcs);	// update the path system
 
 	int num = std::rand() / ((RAND_MAX + 1u) / 20); // random numbers from 0-19
 

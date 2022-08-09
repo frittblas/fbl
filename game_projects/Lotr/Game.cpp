@@ -15,10 +15,12 @@
 
 #include "Ecs/Ecs.hpp"
 #include "Ecs/Components.hpp"
-#include "Ecs/Systems/PhysicsSystem.hpp"
+
 #include "Ecs/Systems/SpriteSystem.hpp"
+#include "Ecs/Systems/PathSystem.hpp"
 
 #include "Game.hpp"
+
 #include "SysManager.hpp"
 #include "UserInput.hpp"
 #include "Chars.hpp"
@@ -28,6 +30,7 @@
 
 // the only global object (file scope!), the map, with optional editor, prefixed with g
 // this is assigned to the Game-class member variable mMap, so there is no global state at all.
+// Don't use this. Use mMap instead.
 ScenEdit* gEditor;	// pointer to the map with optional editor, has to be called gEditor bc it's externed in GuiFuncs.cpp
 
 // Game-class implementation
@@ -49,6 +52,11 @@ bool Game::init() {
 	fbl_set_clear_color(33, 68, 33, 255);	// forest green
 	//fbl_create_threadpool();
 
+	// init pathfinding
+	if (fbl_pathf_init() == FBL_PATHF_OUT_OF_MEM) {
+		// do stuff if no mem
+	}
+
 	fbl_load_texture((char*)"spritesheet_.png");	// load sprite texture
 
 	// create instances of the Game-class sub systems
@@ -68,54 +76,39 @@ bool Game::init() {
 	// register components
 	mEcs->RegisterComponent<Position>();
 	mEcs->RegisterComponent<Sprite>();
+	mEcs->RegisterComponent<Path>();
 
 	// register systems
-	auto spriteSystem = mEcs->RegisterSystem<SpriteSystem>();
-	mSysManager->mSpriteSystem = spriteSystem;
+	//auto spriteSystem = mEcs->RegisterSystem<SpriteSystem>();
+	mSysManager->mSpriteSystem = mEcs->RegisterSystem<SpriteSystem>();
+	mSysManager->mPathSystem = mEcs->RegisterSystem<PathSystem>();
 
 	// set up what components the systems require
-	Signature signature;
-	signature.set(mEcs->GetComponentType<Position>());
-	signature.set(mEcs->GetComponentType<Sprite>());
-	mEcs->SetSystemSignature<SpriteSystem>(signature);
+	Signature sig1;
+	sig1.set(mEcs->GetComponentType<Position>());
+	sig1.set(mEcs->GetComponentType<Sprite>());
+	mEcs->SetSystemSignature<SpriteSystem>(sig1);
+
+	Signature sig2;
+	sig2.set(mEcs->GetComponentType<Position>());
+	sig2.set(mEcs->GetComponentType<Path>());
+	mEcs->SetSystemSignature<PathSystem>(sig2);
 
 	// create the player entity
 	Entity player = mEcs->CreateEntity();
 
 	// add components to the entity
-	mEcs->AddComponent(player, Position{64, 64});
-	//								 id id id id num tx ty   w   h   anim fr spd dir dirl
-	mEcs->AddComponent(player, Sprite{0, 0, 0, 0, 4, 0, 224, 32, 32, true, 2, 12, 1, 1});
+								  //	 x   y
+	mEcs->AddComponent(player, Position{ 64, 64 });
+								  //  id id id id num tx ty   w   h   anim fr spd dir dirl
+	mEcs->AddComponent(player, Sprite{ 0, 0, 0, 0, 4, 0, 224, 32, 32, true, 2, 12, 1, 1 });
+										//	x	y
+	mEcs->AddComponent(player, Path{ 0, 256, 128, true });
 
 	mSysManager->mSpriteSystem->Init(*this->mEcs);
+	mSysManager->mPathSystem->Init(*this->mEcs);
 
 	/*
-	auto physicsSystem = mEcs->RegisterSystem<PhysicsSystem>();
-
-	Signature signature;
-	signature.set(mEcs->GetComponentType<Position>());
-	mEcs->SetSystemSignature<PhysicsSystem>(signature);
-
-	std::vector<Entity> entities(MAX_ENTITIES);
-
-	for (auto& entity : entities)
-	{
-		entity = mEcs->CreateEntity();
-		mEcs->AddComponent(
-			entity,
-			Position{ 0, 0 }
-		);
-	}
-
-	physicsSystem->Init(*this->mEcs);
-
-	int quit = 100;
-	while (quit > 0)
-	{
-		physicsSystem->Update(*this->mEcs);
-		quit--;
-	}
-
 	auto& pos = mEcs->GetComponent<Position>(0);
 	std::cout << pos.x << std::endl;
 	*/
@@ -146,12 +139,19 @@ void Game::update() {
 
 void Game::loadLevel() {
 
-	bool success = Disk::getInstance().loadMap(*gEditor, "assets/map.scn"); // this calls fbl_destroy_all_sprites()
+	bool success = Disk::getInstance().loadMap(*mMap, "assets/map.scn"); // this calls fbl_destroy_all_sprites()
 
 	if (success)
 		std::cout << "Loaded map from assets/map.scn" << std::endl;
 	else
 		std::cout << "Error loading map!" << std::endl;
+
+	// set up the map for path finding
+	for (int i = 0; i < fbl_pathf_get_map_w(); i++) {
+		for (int j = 0; j < fbl_pathf_get_map_h(); j++) {
+			fbl_pathf_set_walkability(i, j, FBL_PATHF_WALKABLE);
+		}
+	}
 
 	// set up graphics for the player
 	mSysManager->mSpriteSystem->Init(*this->mEcs);

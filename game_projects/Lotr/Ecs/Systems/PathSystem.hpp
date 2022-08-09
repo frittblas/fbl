@@ -2,9 +2,9 @@
 *
 *	Ecs
 *
-*	PhysicsSystem.hpp
+*	PathSystem.hpp
 *
-*	The physics system header.
+*	The path system header.
 *
 *	Hans Strömquist 2022
 *
@@ -15,7 +15,7 @@
 
 class Coordinator;
 
-class PhysicsSystem : public System
+class PathSystem : public System
 {
 public:
 	void Init(Coordinator& ecs);

@@ -6,3 +6,20 @@ talking to npc that sells stuff:
 -I don't remember you being in the book?
 -Oh, there's tons of stuff that happened that aren't in the book.
 -what book?
+
+---
+
+Components:
+
+Already in:
+
+Position
+Sprite
+
+Todo:
+Path
+MouseControl
+
+Other stuff:
+Add Cards and deck, think about a good solution.
+Ecs? probably! or oop..

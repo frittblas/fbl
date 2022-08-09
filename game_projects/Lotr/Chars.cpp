@@ -17,6 +17,7 @@
 Chars::Chars() {
 
 	std::cout << "Initialized Chars subsystem." << std::endl;
+
 }
 
 Chars::~Chars() {

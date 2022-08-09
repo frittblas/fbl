@@ -25,11 +25,11 @@ void SpriteSystem::Init(Coordinator& ecs) {
 		auto& pos = ecs.GetComponent<Position>(entity);
 		auto& spr = ecs.GetComponent<Sprite>(entity);
 
-		// loop through all the sprites (max 4), create them and set som params
+		// loop through all the sprites (max 4), create them and set the required parameters
 		for (int i = 0; i < spr.num; i++) {
 			spr.id[i] = fbl_create_sprite(i * (spr.w * spr.frames), spr.textureY, spr.w, spr.h, 0);	// create a sprite
 			fbl_set_sprite_xy(spr.id[i], pos.x, pos.y);	// set the coordinates
-			if (spr.animated)	// turn on animation if requested
+			if (spr.animated)	// turn on animation if it's requested
 				fbl_set_sprite_animation(spr.id[i], true, spr.textureX + (i * (spr.w * spr.frames)), spr.textureY, spr.w, spr.h, spr.frames, spr.speed, true);
 			
 			// deactivate all sprites
@@ -42,7 +42,7 @@ void SpriteSystem::Init(Coordinator& ecs) {
 
 	}
 
-	std::cout << "Sprite system init!" << std::endl;
+	std::cout << "Sprite component system initialized!" << std::endl;
 
 }
 
@@ -53,7 +53,7 @@ void SpriteSystem::Update(Coordinator& ecs) {
 		auto& pos = ecs.GetComponent<Position>(entity);
 		auto& spr = ecs.GetComponent<Sprite>(entity);
 
-		// update sprite direction only if different from last frame
+		// update sprite direction only if it's different from last frame
 		if (spr.dir != spr.dirLast) {
 
 			// first set all sprites to inactive

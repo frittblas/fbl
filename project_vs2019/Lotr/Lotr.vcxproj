@@ -135,7 +135,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\game_projects\Lotr\Chars.cpp" />
-    <ClCompile Include="..\..\game_projects\lotr\Ecs\Systems\PhysicsSystem.cpp" />
+    <ClCompile Include="..\..\game_projects\lotr\Ecs\Systems\PathSystem.cpp" />
     <ClCompile Include="..\..\game_projects\Lotr\Ecs\Systems\SpriteSystem.cpp" />
     <ClCompile Include="..\..\game_projects\Lotr\GameState\Dialogue.cpp" />
     <ClCompile Include="..\..\game_projects\Lotr\GameState\Explore.cpp" />
@@ -171,7 +171,7 @@
     <ClInclude Include="..\..\game_projects\lotr\Ecs\Components.hpp" />
     <ClInclude Include="..\..\game_projects\lotr\Ecs\Ecs.hpp" />
     <ClInclude Include="..\..\game_projects\lotr\Ecs\System.hpp" />
-    <ClInclude Include="..\..\game_projects\lotr\Ecs\Systems\PhysicsSystem.hpp" />
+    <ClInclude Include="..\..\game_projects\lotr\Ecs\Systems\PathSystem.hpp" />
     <ClInclude Include="..\..\game_projects\Lotr\Ecs\Systems\SpriteSystem.hpp" />
     <ClInclude Include="..\..\game_projects\lotr\Ecs\Types.hpp" />
     <ClInclude Include="..\..\game_projects\Lotr\GameState\Dialogue.hpp" />

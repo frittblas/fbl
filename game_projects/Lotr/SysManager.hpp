@@ -15,11 +15,13 @@
 #include <iostream>
 
 class SpriteSystem;
+class PathSystem;
 
 class SysManager {
 
 public:
     std::shared_ptr<SpriteSystem> mSpriteSystem; // the sprite system
+    std::shared_ptr<PathSystem> mPathSystem;     // the path system
 
     SysManager();
     ~SysManager();

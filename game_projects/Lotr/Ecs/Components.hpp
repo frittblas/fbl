@@ -15,18 +15,19 @@
 
 #include <iostream>
 
+// try to use smaller datatypes to be more cache friendly
+
 // the position of an entity
 struct Position
 {
 
-    int x, y;   // position in the world
+    uint16_t x, y;   // position in the world
 
 };
 
 // the sprite render component
 struct Sprite
 {
-    // try to use smaller datatypes to be more cache friendly
 
     uint16_t id[4]; // 4 sprites, one for each direction (up, right, left, down)
     uint8_t num;    // number of actual sprites (max 4)
@@ -35,5 +36,15 @@ struct Sprite
     bool animated;  // is animated or not
     uint8_t frames, speed; // how many animation frames, and anim speed
     uint8_t dir, dirLast;    // facing direction, and last frame dir
+
+};
+
+// the path finding component
+struct Path
+{
+
+    uint8_t id; // the path id from the a_star module
+    uint16_t goalX, goalY;  // the coords of the current goal to reach
+    bool newPath;   // is this is set to true, find a new path
 
 };
