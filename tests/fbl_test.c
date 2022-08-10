@@ -17,8 +17,8 @@
 
 #define NUM_DEMOS 8
 
-#define LOGICAL_RES_X 960
-#define LOGICAL_RES_Y 540
+#define LOGICAL_RES_W 960
+#define LOGICAL_RES_H 540
 
 /* for timing */
 
@@ -70,7 +70,7 @@ void fbl_start()
 
 
 	fbl_engine_init(1280, 720, 60);
-	fbl_set_render_logical_size(LOGICAL_RES_X, LOGICAL_RES_Y);
+	fbl_set_render_logical_size(LOGICAL_RES_W, LOGICAL_RES_H);
 	fbl_set_clear_color(168, 230, 255, 255);
 	//fbl_set_clear_color(0, 0, 0, 255);
 	printf("FBL version: %s, running on %s, and %s\n", fbl_get_version(), fbl_get_platform(), fbl_get_renderer());
@@ -100,8 +100,8 @@ void fbl_start()
 	left_button = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, NULL);
 	right_button = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, NULL);
 
-	fbl_set_ui_elem_xy(left_button, 64, fbl_get_screen_h() - 64);
-	fbl_set_ui_elem_xy(right_button, fbl_get_screen_w() - 64, fbl_get_screen_h() - 64);
+	fbl_set_ui_elem_xy(left_button, 64, LOGICAL_RES_H - 64);
+	fbl_set_ui_elem_xy(right_button, LOGICAL_RES_W - 64, LOGICAL_RES_H - 64);
 
 
 	(*demo_setup[cur_demo])();
@@ -129,9 +129,9 @@ void fbl_game_loop()
 	if (fbl_get_key_down(FBLK_F11)) {
 
 		fbl_set_window_mode(FBL_WINDOW_FULLSCREEN_DESKTOP);
-		
-		//fbl_set_viewport(0, 0, fbl_get_screen_w(), fbl_get_screen_w());
-		//fbl_set_render_logical_size(fbl_get_screen_w(), fbl_get_screen_w());
+
+		//fbl_set_viewport(0, 0, LOGICAL_RES_W, LOGICAL_RES_H);
+		//fbl_set_render_logical_size(LOGICAL_RES_W, LOGICAL_RES_H);
 		//fbl_set_render_scale(2.0, 2.0);
 	}
 
@@ -197,7 +197,7 @@ void create_100_sprites()
 	for (int i = 0; i < 100; i++) {
 
 		lol = fbl_create_sprite(0, 0, 32, 64, 0);
-		fbl_set_sprite_xy(lol, fbl_get_mouse_x() + fbl_get_camera_x(), fbl_get_mouse_y() + fbl_get_camera_y());
+		fbl_set_sprite_xy(lol, fbl_get_mouse_logical_x() + fbl_get_camera_x(), fbl_get_mouse_logical_y() + fbl_get_camera_y());
 
 		//fbl_set_sprite_animation(lol, true, 4, 24, false);
 		fbl_set_sprite_animation(lol, true, 0, 0, 32, 64, 4, 24, true);
@@ -303,7 +303,7 @@ void run_demo_1()
 
 	// check this out!!!, key_up event keeps triggering
 
-	if(fbl_get_key_up(FBLK_RETURN)) printf("up\n");
+	if (fbl_get_key_up(FBLK_RETURN)) printf("up\n");
 
 
 
@@ -334,7 +334,7 @@ void setup_demo_2(void)
 	fbl_create_sprite(0, 0, 32, 32, 16);
 
 	/* generally, store the id somewhere */
-	
+
 	fbl_set_sprite_phys(0, true, FBL_CIRCLE, FBL_PHYS_DYNAMIC, true);	// circle physics shape
 	fbl_set_sprite_phys(1, true, FBL_CIRCLE, FBL_PHYS_DYNAMIC, true);
 
@@ -349,7 +349,7 @@ void setup_demo_2(void)
 	fbl_set_ui_elem_xy(sound_button, 100, 100);
 	music_button = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 32, 32, 32, /*pressed_button*/NULL); // if NULL instead of function pointer, check fbl_get_ui_elem_val()
 	fbl_set_ui_elem_xy(music_button, 200, 100);
-	
+
 
 	/* write something */
 
@@ -357,7 +357,7 @@ void setup_demo_2(void)
 	fbl_create_text(255, 0, 255, 0, "click on some things");
 	fbl_set_text_xy(0, 400, 400);
 	fbl_set_text_align(0, FBL_ALIGN_RIGHT);
-	
+
 	/* create lines with static colission */
 
 	line[0] = fbl_create_prim(FBL_LINE, 10, 300, 550, 360, 0, true, false);
@@ -383,7 +383,7 @@ void setup_demo_2(void)
 	fbl_create_prim(FBL_POINT, 400, 200, 0, 0, 40, true, false); // no need to store id for measly pixel :(
 
 
-	ping_sound = fbl_load_sound("door.ogg"); 
+	ping_sound = fbl_load_sound("door.ogg");
 
 	fbl_load_music("song_99.ogg");	// only one piece of music is loaded at a time
 
@@ -405,7 +405,7 @@ void run_demo_2()
 		lol = fbl_create_sprite(0, 0, 32, 32, 16);
 		fbl_set_sprite_phys(lol, true, FBL_RECT, FBL_PHYS_DYNAMIC, true);
 		fbl_set_sprite_animation(lol, true, 0, 0, 32, 32, 4, 24, false);
-		fbl_set_sprite_xy(lol, fbl_get_mouse_x() + fbl_get_camera_x(), fbl_get_mouse_y() + fbl_get_camera_y());
+		fbl_set_sprite_xy(lol, fbl_get_mouse_logical_x() + fbl_get_camera_x(), fbl_get_mouse_logical_y() + fbl_get_camera_y());
 
 		if (lol % 10 == 0)
 			printf("num sprites = %d\n", fbl_get_num_sprites());
@@ -464,7 +464,6 @@ void setup_demo_3()
 	/*
 	lol = fbl_create_sprite(0, 0, 32, 64);
 	fbl_set_sprite_xy(lol, 100, 100);
-
 	lol = fbl_create_sprite(0, 0, 32, 64);
 	fbl_set_sprite_xy(lol, 200, 200);
 	*/
@@ -484,7 +483,7 @@ void setup_demo_3()
 
 
 	fbl_create_sprite(0, 0, 20, 20, 0);
-	fbl_set_sprite_xy(0, fbl_get_screen_w() / 2, fbl_get_screen_h() / 2 - 64);
+	fbl_set_sprite_xy(0, LOGICAL_RES_W / 2, LOGICAL_RES_H / 2 - 64);
 
 
 	/* create 80 boxes with physics */
@@ -496,8 +495,8 @@ void setup_demo_3()
 
 		lol = fbl_create_sprite(0, 0, 20, 20, 0);
 		fbl_set_sprite_xy(lol, rand() % 600 + 20, rand() % 300);
-		if(lol > 70)
-			fbl_set_sprite_phys(lol, true, FBL_RECT, FBL_PHYS_KINEMATIC, true); 
+		if (lol > 70)
+			fbl_set_sprite_phys(lol, true, FBL_RECT, FBL_PHYS_KINEMATIC, true);
 		else
 			fbl_set_sprite_phys(lol, true, FBL_RECT, FBL_PHYS_DYNAMIC, true);
 	}
@@ -526,8 +525,8 @@ void run_demo_3()
 	if (fbl_get_mouse_click(FBLMB_LEFT))
 	{
 
-		fbl_set_sprite_xy(0, fbl_get_mouse_x() + fbl_get_camera_x(), fbl_get_mouse_y() + fbl_get_camera_y());
-		printf("mouse clicked at = %d, %d\n", fbl_get_mouse_x() + fbl_get_camera_x(), fbl_get_mouse_y() + fbl_get_camera_y());
+		fbl_set_sprite_xy(0, fbl_get_mouse_logical_x() + fbl_get_camera_x(), fbl_get_mouse_logical_y() + fbl_get_camera_y());
+		printf("mouse clicked at = %d, %d\n", fbl_get_mouse_logical_x() + fbl_get_camera_x(), fbl_get_mouse_logical_y() + fbl_get_camera_y());
 
 	}
 
@@ -560,12 +559,10 @@ void setup_demo_4()
 	int i, j;
 
 	/* this demo works with these constants in a_star.h:
-
 	#define A_STAR_MAP_WIDTH	27
 	#define A_STAR_MAP_HEIGHT	16
 	#define A_STAR_TILE_SIZE	32
 	#define A_STAR_NUM_CHARS	1
-
 	*/
 
 	/* make it so sprites are drawn from top left corner */
@@ -616,7 +613,7 @@ void setup_demo_4()
 
 
 	/* make top left square walkable */
-	 
+
 	fbl_pathf_set_walkability(0, 0, FBL_PATHF_WALKABLE);
 
 
@@ -680,10 +677,10 @@ void run_demo_4()
 
 	fbl_set_sprite_xy(pathfinder, loc_x[0], loc_y[0]);
 	fbl_set_sprite_xy(light1, loc_x[0] - 48, loc_y[0] - 48);
-	
+
 
 	/* let the big light follow the mouse */
-	fbl_set_sprite_xy(light2, fbl_get_mouse_x() - (128/2)*3, fbl_get_mouse_y() - (128/2)*3);
+	fbl_set_sprite_xy(light2, fbl_get_mouse_logical_x() - (128 / 2) * 3, fbl_get_mouse_logical_y() - (128 / 2) * 3);
 
 
 }
@@ -743,30 +740,21 @@ void setup_demo_6()
 	/*
 	for (i = 0; i < nums; i++) {
 		fbl_create_sprite(0, 0, 64, 64, 0);
-		pos_x[i] = rand() % fbl_get_screen_w();
-		pos_y[i] = rand() % fbl_get_screen_h();
+		pos_x[i] = rand() % LOGICAL_RES_W;
+		pos_y[i] = rand() % LOGICAL_RES_H;
 		fbl_set_sprite_xy(i, pos_x[i], pos_y[i]);
 		//fbl_set_sprite_xy(i, -200, 100);
 		//fbl_set_sprite_blendmode(i, rand() % 2 + 1);
 		fbl_set_sprite_alpha(i, rand() % 255);
 		fbl_set_sprite_color(i, 255, rand() % 255, rand() % 255);
-
 		dir_x[i] = 1;
 		if (rand() % 2 == 0) dir_x[i] = -1;
-
 		dir_y[i] = 1;
 		if (rand() % 2 == 0) dir_y[i] = -1;
-
 		scale[i] = (float)(((rand() % 10) + 5) / 10.0);
-
 		//fbl_set_sprite_scale(i, scale[i]);
-
 		//fbl_set_sprite_active(i, false);
-
-
 	}
-
-
 	fbl_set_sprite_alpha(nums-1, 255);
 	fbl_set_sprite_color(nums-1, 0, 0, 0);
 	fbl_set_sprite_xy(nums-1, 200, 200);
@@ -775,11 +763,11 @@ void setup_demo_6()
 
 	//fbl_sort_sprites(FBL_SORT_BY_LAYER | FBL_SORT_BY_BLENDMODE);
 
-	
+
 	for (i = 0; i < nums; i++) {
 		fbl_create_prim(FBL_RECT, 0, 0, 32, 32, 0, false, true);
-		pos_x[i] = rand() % fbl_get_screen_w();
-		pos_y[i] = rand() % fbl_get_screen_h();
+		pos_x[i] = rand() % LOGICAL_RES_W;
+		pos_y[i] = rand() % LOGICAL_RES_H;
 		fbl_set_prim_xy(i, pos_x[i], pos_y[i]);
 		fbl_set_prim_color(i, 255, rand() % 255, rand() % 255, rand() % 255);
 
@@ -790,7 +778,7 @@ void setup_demo_6()
 		if (rand() % 2 == 0) dir_y[i] = -1;
 
 	}
-	
+
 
 	flag = 1;
 	frams = 0;
@@ -827,50 +815,43 @@ void run_demo_6()
 		pos_x[i] += dir_x[i];
 		pos_y[i] += dir_y[i];
 
-		if (pos_x[i] > fbl_get_screen_w()) dir_x[i] = -1;
+		if (pos_x[i] > LOGICAL_RES_W) dir_x[i] = -1;
 		if (pos_x[i] < 0) dir_x[i] = 1;
-		if (pos_y[i] > fbl_get_screen_h()) dir_y[i] = -1;
+		if (pos_y[i] > LOGICAL_RES_H) dir_y[i] = -1;
 		if (pos_y[i] < 0) dir_y[i] = 1;
 
 	}
 
 	/*
 	for (i = 0; i < nums; i++) {
-
 		fbl_set_sprite_xy(i, pos_x[i], pos_y[i]);
-
 		pos_x[i] += dir_x[i];
 		pos_y[i] += dir_y[i];
-
-		if (pos_x[i] > fbl_get_screen_w()) dir_x[i] = -1;
+		if (pos_x[i] > LOGICAL_RES_W) dir_x[i] = -1;
 		if (pos_x[i] < 0) dir_x[i] = 1;
-		if (pos_y[i] > fbl_get_screen_h()) dir_y[i] = -1;
+		if (pos_y[i] > LOGICAL_RES_H) dir_y[i] = -1;
 		if (pos_y[i] < 0) dir_y[i] = 1;
-	
+
 	}
 	*/
 	/*
 	for (i = 0; i < nums; i++) {
-
 		fbl_set_sprite_xy(i, fbl_get_sprite_x(i) + dir_x[i], fbl_get_sprite_y(i) + dir_y[i]);
-
-		if (fbl_get_sprite_x(i) > fbl_get_screen_w()) dir_x[i] = -1;
+		if (fbl_get_sprite_x(i) > LOGICAL_RES_W) dir_x[i] = -1;
 		if (fbl_get_sprite_x(i) < 0) dir_x[i] = 1;
-		if (fbl_get_sprite_y(i) > fbl_get_screen_h()) dir_y[i] = -1;
+		if (fbl_get_sprite_y(i) > LOGICAL_RES_H) dir_y[i] = -1;
 		if (fbl_get_sprite_y(i) < 0) dir_y[i] = 1;
 
-	
 		fbl_set_sprite_scale(i, scale[i] + 0.1);
 		fbl_get_sprite_color(i, &r, &g, &b);
 		r--;
 		g--;
 		b--;
 		fbl_set_sprite_color(i, r, g, b);
-
 	}
 	*/
-	
-	
+
+
 	/* move camera */
 
 	if (fbl_get_key_down(FBLK_UP)) fbl_set_camera_xy(fbl_get_camera_x(), fbl_get_camera_y() - 1);
@@ -880,7 +861,7 @@ void run_demo_6()
 
 
 	frams++;
-	
+
 }
 
 
@@ -911,7 +892,7 @@ void setup_demo_7()
 	fbl_set_emitter_color(1, rand() % 255, rand() % 255, rand() % 255, 255, true);
 	fbl_set_emitter_color(1, rand() % 255, rand() % 255, rand() % 255, 0, false);
 
-	
+
 	//fbl_set_fps_locked(false);
 	//fbl_set_system_delay_ms(0);
 
@@ -930,9 +911,9 @@ void run_demo_7()
 	if (fbl_get_key_down(FBLK_A)) printf("A key down!%d\n", fbl_get_num_active_particles(0));
 	if (fbl_get_key_up(FBLK_A)) printf("A key up!%d\n", fbl_get_raw_frames_count());
 
-	fbl_set_emitter_xy(1, fbl_get_mouse_x() + fbl_get_camera_x(), fbl_get_mouse_y() + fbl_get_camera_y());
+	fbl_set_emitter_xy(1, fbl_get_mouse_logical_x() + fbl_get_camera_x(), fbl_get_mouse_logical_y() + fbl_get_camera_y());
 
-	
+
 	if (fbl_timer_get_ticks() > start_time + 10000) {
 		if (flag) {
 			printf("10 seconds passed.\n");
@@ -991,11 +972,11 @@ void setup_demo_8()
 		int lol = fbl_create_sprite(96, 320, 32, 32, 0);
 		fbl_set_sprite_xy(lol, rand() % 900 + 20, rand() % 500);
 		fbl_set_sprite_phys(lol, true, FBL_RECT, FBL_PHYS_KINEMATIC, true);
-		
+
 	}
 
-	x_offset = fbl_get_screen_w() / 2;
-	y_offset = fbl_get_screen_h() / 2;
+	x_offset = LOGICAL_RES_W / 2;
+	y_offset = LOGICAL_RES_H / 2;
 
 	angle = 0.0;
 
@@ -1018,11 +999,11 @@ void setup_demo_8()
 
 void run_demo_8()
 {
-	
+
 	if (fbl_get_mouse_click(FBLMB_LEFT)) {
 
 		angle += 0.2;	//spin slowly
-			if (angle > 360) angle = 0;
+		if (angle > 360) angle = 0;
 
 		double tmp = angle;
 
@@ -1032,10 +1013,10 @@ void run_demo_8()
 			double x = circle_radius * cos(angle_rad) + x_offset;
 			double y = circle_radius * sin(angle_rad) + y_offset;
 			angle = angle + pie_slice / num_rays;
-			fbl_set_prim_xy(i, fbl_get_mouse_x(), fbl_get_mouse_y());
-			fbl_set_prim_size(i, x + fbl_get_mouse_x() - x_offset, y + fbl_get_mouse_y() - y_offset, 0);
+			fbl_set_prim_xy(i, fbl_get_mouse_logical_x(), fbl_get_mouse_logical_y());
+			fbl_set_prim_size(i, x + fbl_get_mouse_logical_x() - x_offset, y + fbl_get_mouse_logical_y() - y_offset, 0);
 		}
-		
+
 		angle = tmp;
 
 		//if (rand() % 10 == 1) printf("%d", fbl_get_num_prims());
@@ -1133,8 +1114,8 @@ void unload_all()
 	left_button = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, NULL);
 	right_button = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, NULL);
 
-	fbl_set_ui_elem_xy(left_button, 64, fbl_get_screen_h() - 64);
-	fbl_set_ui_elem_xy(right_button, fbl_get_screen_w() -64, fbl_get_screen_h() - 64);
+	fbl_set_ui_elem_xy(left_button, 64, LOGICAL_RES_H - 64);
+	fbl_set_ui_elem_xy(right_button, LOGICAL_RES_W - 64, LOGICAL_RES_H - 64);
 
 	// set time of day to normal (day)
 	fbl_set_lighting_tint(false, 0, 0, 0);

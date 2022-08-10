@@ -453,8 +453,8 @@ int process_ui_elem(int tag, void *ui_elem, void *dummy)
     
         //SDL_GetMouseState(&point.x, &point.y);
 
-		point.x = fbl_get_mouse_x();
-		point.y = fbl_get_mouse_y();
+		point.x = fbl_get_mouse_logical_x();
+		point.y = fbl_get_mouse_logical_y();
     
     
         /* adjust for ui element gets drawn from the center */

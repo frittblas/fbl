@@ -59,8 +59,8 @@ void Explore::tick(Game& g) {
 
 		auto& p = g.mEcs->GetComponent<Path>(g.mChars->mFrodo);
 
-		p.goalX = fbl_get_mouse_x();
-		p.goalY = fbl_get_mouse_y();
+		p.goalX = fbl_get_mouse_logical_x();
+		p.goalY = fbl_get_mouse_logical_y();
 
 		while (p.goalX % 32 != 0) p.goalX--;
 		while (p.goalY % 32 != 0) p.goalY--;

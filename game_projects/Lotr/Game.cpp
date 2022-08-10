@@ -49,6 +49,7 @@ Game::~Game() {
 bool Game::init() {
 
 	fbl_engine_init(1280, 720, 60);
+	fbl_set_render_logical_size(960, 540);
 	fbl_set_clear_color(33, 68, 33, 255);	// forest green
 	//fbl_create_threadpool();
 
