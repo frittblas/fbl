@@ -38,6 +38,11 @@ public:
     static const int LogicalResW = 960;
     static const int LogicalResH = 540;
 
+    static const int MapW = 60;
+    static const int MapH = 34;
+
+    static const int TileSize = 32;
+
     Game();
     ~Game();
 

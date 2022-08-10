@@ -16,6 +16,8 @@
 #include "../Ecs.hpp"
 #include "../Components.hpp"
 
+#include "../../Game.hpp"
+
 #include "MouseCtrlSystem.hpp"
 
 void MouseCtrlSystem::Init(Coordinator& ecs) {
@@ -53,8 +55,9 @@ void MouseCtrlSystem::Update(Coordinator& ecs) {
 			path.goalX = fbl_get_mouse_logical_x();
 			path.goalY = fbl_get_mouse_logical_y();
 
-			while (path.goalX % 32 != 0) path.goalX--;
-			while (path.goalY % 32 != 0) path.goalY--;
+			// snap to grid
+			while (path.goalX % Game::TileSize != 0) path.goalX--;
+			while (path.goalY % Game::TileSize != 0) path.goalY--;
 
 			path.newPath = true;
 
