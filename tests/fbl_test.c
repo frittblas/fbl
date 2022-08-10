@@ -17,6 +17,9 @@
 
 #define NUM_DEMOS 8
 
+#define LOGICAL_RES_X 960
+#define LOGICAL_RES_Y 540
+
 /* for timing */
 
 unsigned int start_time;
@@ -66,7 +69,8 @@ void fbl_start()
 	// fbl_set_assets_folder_name("your_name/");
 
 
-	fbl_engine_init(960, 540, 60);
+	fbl_engine_init(1280, 720, 60);
+	fbl_set_render_logical_size(LOGICAL_RES_X, LOGICAL_RES_Y);
 	fbl_set_clear_color(168, 230, 255, 255);
 	//fbl_set_clear_color(0, 0, 0, 255);
 	printf("FBL version: %s, running on %s, and %s\n", fbl_get_version(), fbl_get_platform(), fbl_get_renderer());
@@ -120,6 +124,7 @@ void fbl_game_loop()
 	}
 	if (fbl_get_key_down(FBLK_F10)) {
 		fbl_set_window_mode(FBL_WINDOW_FULLSCREEN);
+		//fbl_set_render_scale(2.0, 2.0);
 	}
 	if (fbl_get_key_down(FBLK_F11)) {
 
@@ -127,7 +132,7 @@ void fbl_game_loop()
 		
 		//fbl_set_viewport(0, 0, fbl_get_screen_w(), fbl_get_screen_w());
 		//fbl_set_render_logical_size(fbl_get_screen_w(), fbl_get_screen_w());
-		fbl_set_render_scale(2.0, 2.0);
+		//fbl_set_render_scale(2.0, 2.0);
 	}
 
 	cycle_demos();

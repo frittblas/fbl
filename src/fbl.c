@@ -92,10 +92,8 @@ int fbl_engine_init(int w, int h, int fps)
 		// return 1;
 	}
 
-	//fbl_set_render_logical_size(480, 270);
 
 	SDL_CreateWindowAndRenderer(w, h, 0, &fbl_engine.window, &fbl_engine.renderer);
-
 
 	//SDL_SetRenderDrawColor(fbl_engine.renderer, 168, 230, 255, 255);
 

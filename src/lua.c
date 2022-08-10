@@ -173,6 +173,8 @@ int lua_get_mouse_click(lua_State *lua_env);
 int lua_get_mouse_release(lua_State *lua_env);
 int lua_get_mouse_x(lua_State *lua_env);
 int lua_get_mouse_y(lua_State *lua_env);
+int lua_get_mouse_logical_x(lua_State* lua_env);
+int lua_get_mouse_logical_y(lua_State* lua_env);
 
 /* pathfind */
 
@@ -512,6 +514,8 @@ void register_fbl_functions_to_lua()
 	lua_register(fbl_lua_env, "fbl_get_mouse_release", lua_get_mouse_release);
 	lua_register(fbl_lua_env, "fbl_get_mouse_x", lua_get_mouse_x);
 	lua_register(fbl_lua_env, "fbl_get_mouse_y", lua_get_mouse_y);
+	lua_register(fbl_lua_env, "fbl_get_mouse_logical_x", lua_get_mouse_logical_x);
+	lua_register(fbl_lua_env, "fbl_get_mouse_logical_y", lua_get_mouse_logical_y);
 
 
 	/* pathfind */
@@ -2041,6 +2045,24 @@ int lua_get_mouse_y(lua_State *lua_env)
 {
 
 	lua_pushnumber(lua_env, (lua_Number)fbl_get_mouse_y());
+
+	return 1;
+
+}
+
+int lua_get_mouse_logical_x(lua_State* lua_env)
+{
+
+	lua_pushnumber(lua_env, (lua_Number)fbl_get_mouse_logical_x());
+
+	return 1;
+
+}
+
+int lua_get_mouse_logical_y(lua_State* lua_env)
+{
+
+	lua_pushnumber(lua_env, (lua_Number)fbl_get_mouse_logical_y());
 
 	return 1;
 

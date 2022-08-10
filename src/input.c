@@ -23,6 +23,9 @@ bool key_up[NUM_KEYS] = { 0 };
 bool mouse_button_down[NUM_KEYS] = { 0 };
 bool mouse_button_up[NUM_KEYS] = { 0 };
 
+int logical_mouse_x = 0;
+int logical_mouse_y = 0;
+
 int last_touch_x = 0;
 int last_touch_y = 0;
 
@@ -74,7 +77,7 @@ int fbl_get_mouse_x()
 		x = last_touch_x;
 
 	return x;
-
+	
 }
 
 int fbl_get_mouse_y()
@@ -93,6 +96,22 @@ int fbl_get_mouse_y()
 
 }
 
+/*
+ * Get mouse and touch coordinates when using logical resolution.
+ */
+int fbl_get_mouse_logical_x()
+{
+
+	return logical_mouse_x;
+
+}
+
+int fbl_get_mouse_logical_y()
+{
+
+	return logical_mouse_y;
+
+}
 
 /*
  * Deal with all keypresses
@@ -669,9 +688,15 @@ void engine_process_mouse(SDL_Event *event)
 
 		}
 
+
 		//event->type = 0;
 		//SDL_FlushEvent(event->type);
 
+	}
+	else if (event->type == SDL_MOUSEMOTION) {
+		//printf("x=%d, y=%d, xrel=%d, yrel=%d\n", event->motion.x, event->motion.y, event->motion.xrel, event->motion.yrel);
+		logical_mouse_x = event->motion.x;
+		logical_mouse_y = event->motion.y;
 	}
 
 }
