@@ -23,12 +23,12 @@ Title::Title() {
 
 	fbl_load_ttf_font("anirm.ttf", 48);
 	lotrTitleId = fbl_create_text(212, 175, 55, 255, "Lord of the rings");
-	fbl_set_text_xy(lotrTitleId, 480, 100);
+	fbl_set_text_xy(lotrTitleId, Game::LogicalResW / 2, 100);
 	fbl_set_text_align(lotrTitleId, FBL_ALIGN_CENTER);
 
 	fbl_load_ttf_font("anirm.ttf", 26);
 	lotrSubTitleId = fbl_create_text(154, 33, 34, 255, "a retarded journey");
-	fbl_set_text_xy(lotrSubTitleId, 480, 200);
+	fbl_set_text_xy(lotrSubTitleId, Game::LogicalResW / 2, 200);
 	fbl_set_text_align(lotrSubTitleId, FBL_ALIGN_CENTER);
 
 	fbl_load_ttf_font("anirm.ttf", 16);

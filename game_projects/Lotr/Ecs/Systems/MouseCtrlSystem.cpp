@@ -24,9 +24,8 @@ void MouseCtrlSystem::Init(Coordinator& ecs) {
 	for (auto const& entity : mEntities)
 	{
 
-		auto& pos = ecs.GetComponent<Position>(entity);
-		auto& path = ecs.GetComponent<Path>(entity);
-
+		auto& mCtrl = ecs.GetComponent<MouseCtrl>(entity);
+		mCtrl.clicked = false;
 
 	}
 
@@ -39,8 +38,29 @@ void MouseCtrlSystem::Update(Coordinator& ecs) {
 
 	for (auto const& entity : mEntities)
 	{
-		auto& pos = ecs.GetComponent<Position>(entity);
+
 		auto& path = ecs.GetComponent<Path>(entity);
+		auto& mCtrl = ecs.GetComponent<MouseCtrl>(entity);
+
+		if (fbl_get_mouse_click(FBLMB_LEFT)) {
+
+			mCtrl.clicked = true;
+
+		}
+
+		if (fbl_get_mouse_release(FBLMB_LEFT) && mCtrl.clicked) {
+
+			path.goalX = fbl_get_mouse_logical_x();
+			path.goalY = fbl_get_mouse_logical_y();
+
+			while (path.goalX % 32 != 0) path.goalX--;
+			while (path.goalY % 32 != 0) path.goalY--;
+
+			path.newPath = true;
+
+			mCtrl.clicked = false;
+
+		}
 
 
 	}

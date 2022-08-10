@@ -17,6 +17,12 @@
 
 #define NUM_DEMOS 8
 
+/* This is the resolution that we will use throughout the demos.
+ * No matter what the real resolution is, the fbl program will scale this
+ * logical res to whatever real res you choose. Mouse coordinates are translated
+ * to just work.
+ */
+
 #define LOGICAL_RES_W 960
 #define LOGICAL_RES_H 540
 
@@ -120,19 +126,10 @@ void fbl_game_loop()
 		fbl_engine_quit();
 
 	if (fbl_get_key_down(FBLK_F9)) {
-		fbl_set_window_mode(0);
-	}
-	if (fbl_get_key_down(FBLK_F10)) {
-		fbl_set_window_mode(FBL_WINDOW_FULLSCREEN);
-		//fbl_set_render_scale(2.0, 2.0);
+		fbl_set_window_mode(0);	// windowed
 	}
 	if (fbl_get_key_down(FBLK_F11)) {
-
 		fbl_set_window_mode(FBL_WINDOW_FULLSCREEN_DESKTOP);
-
-		//fbl_set_viewport(0, 0, LOGICAL_RES_W, LOGICAL_RES_H);
-		//fbl_set_render_logical_size(LOGICAL_RES_W, LOGICAL_RES_H);
-		//fbl_set_render_scale(2.0, 2.0);
 	}
 
 	cycle_demos();

@@ -51,7 +51,7 @@ void PathSystem::Update(Coordinator& ecs) {
 		auto& pos = ecs.GetComponent<Position>(entity);
 		auto& path = ecs.GetComponent<Path>(entity);
 
-		// find path if newPath is true
+		// find path if newPath is true (meaning a new path has been requested)
 		if (path.newPath) {
 
 			fbl_pathf_set_path_status(path.id, fbl_pathf_find_path(path.id, pos.x, pos.y, path.goalX, path.goalY, FBL_PATHF_USE_DIAG));
@@ -67,10 +67,10 @@ void PathSystem::Update(Coordinator& ecs) {
 
 			fbl_pathf_read_path(path.id, pos.x, pos.y, 1);
 
-			if (pos.x > fbl_pathf_get_x_path(path.id)) pos.x--;
-			if (pos.x < fbl_pathf_get_x_path(path.id)) pos.x++;
-			if (pos.y > fbl_pathf_get_y_path(path.id)) pos.y--;
-			if (pos.y < fbl_pathf_get_y_path(path.id)) pos.y++;
+			if (pos.x > fbl_pathf_get_x_path(path.id)) pos.x -= 2;
+			if (pos.x < fbl_pathf_get_x_path(path.id)) pos.x += 2;
+			if (pos.y > fbl_pathf_get_y_path(path.id)) pos.y -= 2;
+			if (pos.y < fbl_pathf_get_y_path(path.id)) pos.y += 2;
 
 			//std::cout << "pathing!" << std::endl;
 

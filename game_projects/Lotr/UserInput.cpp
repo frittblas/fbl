@@ -47,7 +47,7 @@ void UserInput::tick(Game& g) {
 		fbl_engine_quit();
 
 	if (fbl_get_key_down(FBLK_F9))
-		fbl_set_window_mode(0);
+		fbl_set_window_mode(0);	// windowed
 	if (fbl_get_key_down(FBLK_F10))
 		fbl_set_window_mode(FBL_WINDOW_FULLSCREEN);
 	if (fbl_get_key_down(FBLK_F11))

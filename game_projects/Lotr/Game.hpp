@@ -35,6 +35,9 @@ public:
     Objects* mObjects;      // all the game objects (movable blocks, shops etc)
     Progress* mProgress;    // general game progress
 
+    static const int LogicalResW = 960;
+    static const int LogicalResH = 540;
+
     Game();
     ~Game();
 

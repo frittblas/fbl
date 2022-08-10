@@ -453,7 +453,7 @@ int process_ui_elem(int tag, void *ui_elem, void *dummy)
     
         //SDL_GetMouseState(&point.x, &point.y);
 
-		point.x = fbl_get_mouse_logical_x();
+		point.x = fbl_get_mouse_logical_x();    // NOTE: this seems to work fine but it used to, too :) (using getMouseState())
 		point.y = fbl_get_mouse_logical_y();
     
     

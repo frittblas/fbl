@@ -18,6 +18,7 @@
 
 #include "Ecs/Systems/SpriteSystem.hpp"
 #include "Ecs/Systems/PathSystem.hpp"
+#include "Ecs/Systems/MouseCtrlSystem.hpp"
 
 #include "Game.hpp"
 
@@ -48,8 +49,8 @@ Game::~Game() {
 
 bool Game::init() {
 
-	fbl_engine_init(1280, 720, 60);
-	fbl_set_render_logical_size(960, 540);
+	fbl_engine_init(960, 540, 60);
+	fbl_set_render_logical_size(LogicalResW, LogicalResH);
 	fbl_set_clear_color(33, 68, 33, 255);	// forest green
 	//fbl_create_threadpool();
 
@@ -78,11 +79,13 @@ bool Game::init() {
 	mEcs->RegisterComponent<Position>();
 	mEcs->RegisterComponent<Sprite>();
 	mEcs->RegisterComponent<Path>();
+	mEcs->RegisterComponent<MouseCtrl>();
 
 	// register systems
 	//auto spriteSystem = mEcs->RegisterSystem<SpriteSystem>();
 	mSysManager->mSpriteSystem = mEcs->RegisterSystem<SpriteSystem>();
 	mSysManager->mPathSystem = mEcs->RegisterSystem<PathSystem>();
+	mSysManager->mMouseCtrlSystem = mEcs->RegisterSystem<MouseCtrlSystem>();
 
 	// set up what components the systems require
 	Signature sig1;
@@ -95,6 +98,12 @@ bool Game::init() {
 	sig2.set(mEcs->GetComponentType<Path>());
 	mEcs->SetSystemSignature<PathSystem>(sig2);
 
+	Signature sig3;
+	sig2.set(mEcs->GetComponentType<Position>());
+	sig2.set(mEcs->GetComponentType<Path>());
+	sig2.set(mEcs->GetComponentType<MouseCtrl>());
+	mEcs->SetSystemSignature<MouseCtrlSystem>(sig2);
+
 	// create the player entity
 	mChars->mFrodo = mEcs->CreateEntity();
 
@@ -103,8 +112,10 @@ bool Game::init() {
 	mEcs->AddComponent(mChars->mFrodo, Position{ 64, 64 });
 										   // id id id id num tx ty   w   h   anim fr spd dir dirl
 	mEcs->AddComponent(mChars->mFrodo, Sprite{ 0, 0, 0, 0, 4, 0, 224, 32, 32, true, 2, 12, 1, 1 });
-										 // id   gX   gY  newPath
+										 // id  gX gY newPath
 	mEcs->AddComponent(mChars->mFrodo, Path{ 0, 0, 0, false });
+												// clicked
+	mEcs->AddComponent(mChars->mFrodo, MouseCtrl{ false });
 
 	//mSysManager->mSpriteSystem->Init(*this->mEcs);
 	mSysManager->mPathSystem->Init(*this->mEcs);
