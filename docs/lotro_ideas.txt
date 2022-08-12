@@ -15,10 +15,15 @@ Already in:
 
 Position
 Sprite
-
-Todo:
 Path
 MouseControl
+
+Todo:
+Register components and systems in sysManager class.
+Use bitset.reset() in between.
+Position component got lastFrameX/Y
+
+Set the player up in Chars class (add components).
 
 Other stuff:
 Add Cards and deck, think about a good solution.

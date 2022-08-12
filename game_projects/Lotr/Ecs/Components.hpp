@@ -22,6 +22,7 @@ struct Position
 {
 
     uint16_t x, y;   // position in the world
+    uint16_t lastFrameX, lastFrameY;    // the position last frame
 
 };
 

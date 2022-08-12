@@ -23,7 +23,7 @@ class SysManager {
 public:
     std::shared_ptr<SpriteSystem> mSpriteSystem; // the sprite system
     std::shared_ptr<PathSystem> mPathSystem;     // the path system
-    std::shared_ptr<MouseCtrlSystem> mMouseCtrlSystem;     // the path system
+    std::shared_ptr<MouseCtrlSystem> mMouseCtrlSystem;     // the mouse controller system
 
     SysManager();
     ~SysManager();
