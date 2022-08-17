@@ -112,6 +112,34 @@ void Game::loadLevel() {
 		}
 	}
 
+	// set tiles to walkable/unwalkable
+
+	//std::cout << "fbl_w: " << fbl_pathf_get_map_w() << " mMapW :" << mMap->mapWidth << std::endl;
+	//std::cout << "tile[].size: " << mMap->tile.size() << std::endl;
+
+	// fbl_pathf_get_map_w() and mMap->mapWidth are the same, always 60*34
+
+	for (int i = 0; i < fbl_pathf_get_map_w(); i++) {
+		for (int j = 0; j < fbl_pathf_get_map_h(); j++) {
+			int index = i + mMap->mapWidth * j;
+			if (mMap->tile[index] != nullptr)
+				if (mMap->tile[index]->kinematic)
+					fbl_pathf_set_walkability(i, j, FBL_PATHF_UNWALKABLE);
+		}
+	}
+
+	/*
+	// this also works fine, 1d array to 2d coords :)
+	for (uint32_t i = 0; i < (mMap->mapWidth * mMap->mapHeight); i++) {
+		if (mMap->tile[i] != nullptr) {
+			if (mMap->tile[i]->kinematic) {
+				int x = i % mMap->mapWidth;
+				int y = i / mMap->mapWidth;
+				fbl_pathf_set_walkability(x, y, FBL_PATHF_UNWALKABLE);
+			}
+		}
+	}
+	*/
 
 	mChars->setupPlayerGfx(mEcs, mSysManager);
 

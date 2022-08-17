@@ -24,6 +24,7 @@
 #include "../Ecs/Systems/SpriteSystem.hpp"
 #include "../Ecs/Systems/PathSystem.hpp"
 #include "../Ecs/Systems/MouseCtrlSystem.hpp"
+#include "../Ecs/Systems/CameraSystem.hpp"
 
 #include "../Chars.hpp"
 
@@ -49,6 +50,7 @@ void Explore::tick(Game& g) {
 	g.mSysManager->mSpriteSystem->Update(*g.mEcs);	// update the sprite system
 	g.mSysManager->mPathSystem->Update(*g.mEcs);	// update the path system
 	g.mSysManager->mMouseCtrlSystem->Update(*g.mEcs);	// update the mouse control system
+	g.mSysManager->mCameraSystem->Update(*g.mEcs);	// update the camera system
 
 
 	int num = std::rand() / ((RAND_MAX + 1u) / 50); // random numbers from 0-49

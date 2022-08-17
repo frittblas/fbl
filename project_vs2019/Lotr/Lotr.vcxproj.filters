@@ -132,6 +132,9 @@
     <ClCompile Include="..\..\game_projects\Lotr\Ecs\Systems\MouseCtrlSystem.cpp">
       <Filter>Source Files\Ecs\Systems</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\game_projects\Lotr\Ecs\Systems\CameraSystem.cpp">
+      <Filter>Source Files\Ecs\Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\fbl.h">
@@ -210,6 +213,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\game_projects\Lotr\Ecs\Systems\MouseCtrlSystem.hpp">
+      <Filter>Source Files\Ecs\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Lotr\Ecs\Systems\CameraSystem.hpp">
       <Filter>Source Files\Ecs\Systems</Filter>
     </ClInclude>
   </ItemGroup>

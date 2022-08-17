@@ -18,6 +18,7 @@
 #include "Ecs/Systems/SpriteSystem.hpp"
 #include "Ecs/Systems/PathSystem.hpp"
 #include "Ecs/Systems/MouseCtrlSystem.hpp"
+#include "Ecs/Systems/CameraSystem.hpp"
 
 // SysManager-class implementation
 
@@ -42,12 +43,14 @@ void SysManager::setupEcs(Coordinator *mEcs) {
 	mEcs->RegisterComponent<Sprite>();
 	mEcs->RegisterComponent<Path>();
 	mEcs->RegisterComponent<MouseCtrl>();
+	mEcs->RegisterComponent<Camera>();
 
 	// register systems
 	//auto spriteSystem = mEcs->RegisterSystem<SpriteSystem>();
 	mSpriteSystem = mEcs->RegisterSystem<SpriteSystem>();
 	mPathSystem = mEcs->RegisterSystem<PathSystem>();
 	mMouseCtrlSystem = mEcs->RegisterSystem<MouseCtrlSystem>();
+	mCameraSystem = mEcs->RegisterSystem<CameraSystem>();
 
 	// set up what components the systems require
 	Signature sig;
@@ -65,5 +68,10 @@ void SysManager::setupEcs(Coordinator *mEcs) {
 	sig.set(mEcs->GetComponentType<Path>());
 	sig.set(mEcs->GetComponentType<MouseCtrl>());
 	mEcs->SetSystemSignature<MouseCtrlSystem>(sig);
+
+	sig.reset();
+	sig.set(mEcs->GetComponentType<Position>());
+	sig.set(mEcs->GetComponentType<Camera>());
+	mEcs->SetSystemSignature<CameraSystem>(sig);
 
 }

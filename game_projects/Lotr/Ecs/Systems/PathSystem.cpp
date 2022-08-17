@@ -68,10 +68,22 @@ void PathSystem::Update(Coordinator& ecs) {
 
 			fbl_pathf_read_path(path.id, pos.x, pos.y, 1);
 
-			if (pos.x > fbl_pathf_get_x_path(path.id)) { pos.x -= 2; spr.dir = Dir::Left; }
-			if (pos.x < fbl_pathf_get_x_path(path.id)) { pos.x += 2; spr.dir = Dir::Right; }
-			if (pos.y > fbl_pathf_get_y_path(path.id)) { pos.y -= 2; spr.dir = Dir::Up; }
-			if (pos.y < fbl_pathf_get_y_path(path.id)) { pos.y += 2; spr.dir = Dir::Down; }
+			if (pos.x > fbl_pathf_get_x_path(path.id)) {
+				pos.x -= 2;
+				spr.dir = Dir::Left;
+			}
+			if (pos.x < fbl_pathf_get_x_path(path.id)) {
+				pos.x += 2;
+				spr.dir = Dir::Right;
+			}
+			if (pos.y > fbl_pathf_get_y_path(path.id)) {
+				pos.y -= 2;
+				spr.dir = Dir::Up;
+			}
+			if (pos.y < fbl_pathf_get_y_path(path.id)) {
+				pos.y += 2;
+				spr.dir = Dir::Down;
+			}
 
 			//std::cout << "pathing!" << std::endl;
 

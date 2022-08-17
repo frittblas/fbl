@@ -20,6 +20,7 @@
 #include "Ecs/Systems/SpriteSystem.hpp"
 #include "Ecs/Systems/PathSystem.hpp"
 #include "Ecs/Systems/MouseCtrlSystem.hpp"
+#include "Ecs/Systems/CameraSystem.hpp"
 
 // Chars-class implementation
 
@@ -41,14 +42,16 @@ void Chars::setupPlayer(Coordinator* mEcs, SysManager* mSysManager) {
 	mFrodo = mEcs->CreateEntity();
 
 	// add components to the entity
-										// x y, lastX, lastY
-	mEcs->AddComponent(mFrodo, Position{ 64, 64, 64, 64 });
+										// x  y
+	mEcs->AddComponent(mFrodo, Position{ 64, 64 });
 								   // id id id id num tx ty   w   h   anim fr spd dir dirLast
 	mEcs->AddComponent(mFrodo, Sprite{ 0, 0, 0, 0, 4, 0, 224, 32, 32, true, 2, 12, 1, 1 });
 								 // id  gX gY newPath
 	mEcs->AddComponent(mFrodo, Path{ 0, 0, 0, false });
 									  // clicked
 	mEcs->AddComponent(mFrodo, MouseCtrl{ false });
+									// x  y
+	mEcs->AddComponent(mFrodo, Camera{ 0, 0 });
 
 	//mSysManager->mSpriteSystem->Init(*this->mEcs);
 	mSysManager->mPathSystem->Init(*mEcs);

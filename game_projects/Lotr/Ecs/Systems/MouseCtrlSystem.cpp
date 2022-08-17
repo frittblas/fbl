@@ -52,8 +52,8 @@ void MouseCtrlSystem::Update(Coordinator& ecs) {
 
 		if (fbl_get_mouse_release(FBLMB_LEFT) && mCtrl.clicked) {
 
-			path.goalX = fbl_get_mouse_logical_x();
-			path.goalY = fbl_get_mouse_logical_y();
+			path.goalX = fbl_get_mouse_logical_x() + fbl_get_camera_x();
+			path.goalY = fbl_get_mouse_logical_y() + fbl_get_camera_y();
 
 			// snap to grid
 			while (path.goalX % Game::TileSize != 0) path.goalX--;

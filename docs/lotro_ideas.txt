@@ -20,15 +20,16 @@ MouseControl
 
 Todo:
 Register components and systems in sysManager class. Done!
+Set the player up in Chars class (add components). Done!
 Use bitset.reset() in between. Done!
-Position component got lastFrameX/Y
-
 
 Add fbl log functions (SDL_Log) (not urgent)
 Add func setNew() to path-class()? Yes but not urgent :)
-Change dirs in explore mode.
-Add unwalkable tiles 
-Set the player up in Chars class (add components).
+
+Change dirs in explore mode. Done!
+Add unwalkable tiles. Done!
+
+Add camera component.
 
 Other stuff:
 Add Cards and deck, think about a good solution.

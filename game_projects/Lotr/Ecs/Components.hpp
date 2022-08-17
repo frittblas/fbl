@@ -22,7 +22,6 @@ struct Position
 {
 
     uint16_t x, y;   // position in the world
-    uint16_t lastFrameX, lastFrameY;    // the position last frame
 
 };
 
@@ -55,5 +54,13 @@ struct MouseCtrl
 {
 
     bool clicked;   // so the fbl_mouse function doesn't fire several times.
+
+};
+
+// the camera component (the camera will follow the entity with this)
+struct Camera
+{
+
+    float x, y;   // camera position
 
 };
