@@ -65,6 +65,8 @@ void SpriteSystem::Update(Coordinator& ecs) {
 
 			spr.dirLast = spr.dir;	// update the last frame dir to current dir
 
+			std::cout << "Changed dir!" << std::endl;
+
 		}
 
 		fbl_set_sprite_xy(spr.id[spr.dir], pos.x, pos.y);

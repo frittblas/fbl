@@ -15,6 +15,9 @@
 #include <vector>
 #include "Ecs/Types.hpp"
 
+class Coordinator;
+class SysManager;
+
 class Chars {
 
 public:
@@ -53,5 +56,8 @@ public:
 
     Chars();
     ~Chars();
+
+    void setupPlayer(Coordinator* mEcs, SysManager* mSysManager);
+    void setupPlayerGfx(Coordinator* mEcs, SysManager* mSysManager);
 
 };

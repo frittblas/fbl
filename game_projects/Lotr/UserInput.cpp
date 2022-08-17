@@ -22,6 +22,7 @@ void UserInput::tick(Game& g) {
 
 
 	static int access = 0;
+	static bool isFullscreen = false;
 
 	if (fbl_get_key_down(FBLK_1) && access == 0) {
 		g.mState->change(g, GameState::StateType::Title);
@@ -40,17 +41,34 @@ void UserInput::tick(Game& g) {
 		access = 20;
 	}
 
-	access--;
-	if (access < 0) access = 0;
 
 	if (fbl_get_key_down(FBLK_ESCAPE))
 		fbl_engine_quit();
 
-	if (fbl_get_key_down(FBLK_F9))
+	if (fbl_get_key_down(FBLK_F9)) {
 		fbl_set_window_mode(0);	// windowed
-	if (fbl_get_key_down(FBLK_F10))
-		fbl_set_window_mode(FBL_WINDOW_FULLSCREEN);
-	if (fbl_get_key_down(FBLK_F11))
+		isFullscreen = false;
+	}
+	if (fbl_get_key_down(FBLK_F11)) {
 		fbl_set_window_mode(FBL_WINDOW_FULLSCREEN_DESKTOP);
+		isFullscreen = true;
+	}
+
+	// support for standard alt + enter for fullscreen
+	if (fbl_get_key_down(FBLK_LALT) && fbl_get_key_down(FBLK_RETURN) && access == 0) {
+		if (isFullscreen) {
+			fbl_set_window_mode(0);	// windowed
+			isFullscreen = false;
+			access = 30;
+		}
+		else {
+			fbl_set_window_mode(FBL_WINDOW_FULLSCREEN_DESKTOP);
+			isFullscreen = true;
+			access = 30;
+		}
+	}
+
+	access--;
+	if (access < 0) access = 0;
 
 }

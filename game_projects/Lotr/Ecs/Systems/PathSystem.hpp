@@ -18,6 +18,14 @@ class Coordinator;
 class PathSystem : public System
 {
 public:
+
+    enum Dir {
+        Up,
+        Right,
+        Left,
+        Down
+    };
+
 	void Init(Coordinator& ecs);
 	void Update(Coordinator& ecs);
 };

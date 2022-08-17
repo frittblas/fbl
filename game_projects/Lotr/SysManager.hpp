@@ -18,6 +18,8 @@ class SpriteSystem;
 class PathSystem;
 class MouseCtrlSystem;
 
+class Coordinator;
+
 class SysManager {
 
 public:
@@ -27,5 +29,7 @@ public:
 
     SysManager();
     ~SysManager();
+
+    void setupEcs(Coordinator* mEcs);    // register componets and systems
 
 };

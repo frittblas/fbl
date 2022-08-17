@@ -19,10 +19,15 @@ Path
 MouseControl
 
 Todo:
-Register components and systems in sysManager class.
-Use bitset.reset() in between.
+Register components and systems in sysManager class. Done!
+Use bitset.reset() in between. Done!
 Position component got lastFrameX/Y
 
+
+Add fbl log functions (SDL_Log) (not urgent)
+Add func setNew() to path-class()? Yes but not urgent :)
+Change dirs in explore mode.
+Add unwalkable tiles 
 Set the player up in Chars class (add components).
 
 Other stuff:

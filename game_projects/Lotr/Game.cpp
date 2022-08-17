@@ -14,11 +14,6 @@
 #include "../../tools/ScenEdit/Disk.hpp"
 
 #include "Ecs/Ecs.hpp"
-#include "Ecs/Components.hpp"
-
-#include "Ecs/Systems/SpriteSystem.hpp"
-#include "Ecs/Systems/PathSystem.hpp"
-#include "Ecs/Systems/MouseCtrlSystem.hpp"
 
 #include "Game.hpp"
 
@@ -30,7 +25,7 @@
 #include "GameState/GameState.hpp"
 
 // the only global object (file scope!), the map, with optional editor, prefixed with g
-// this is assigned to the Game-class member variable mMap, so there is no global state at all.
+// this is assigned to the Game-class member variable mMap, so there is no real global state at all.
 // Don't use this. Use mMap instead.
 ScenEdit* gEditor;	// pointer to the map with optional editor, has to be called gEditor bc it's externed in GuiFuncs.cpp
 
@@ -72,58 +67,10 @@ bool Game::init() {
 	mObjects = new Objects();
 	mProgress = new Progress();
 
-	// init the Ecs
-	mEcs->Init();
-	
-	// register components
-	mEcs->RegisterComponent<Position>();
-	mEcs->RegisterComponent<Sprite>();
-	mEcs->RegisterComponent<Path>();
-	mEcs->RegisterComponent<MouseCtrl>();
+	mSysManager->setupEcs(mEcs);
 
-	// register systems
-	//auto spriteSystem = mEcs->RegisterSystem<SpriteSystem>();
-	mSysManager->mSpriteSystem = mEcs->RegisterSystem<SpriteSystem>();
-	mSysManager->mPathSystem = mEcs->RegisterSystem<PathSystem>();
-	mSysManager->mMouseCtrlSystem = mEcs->RegisterSystem<MouseCtrlSystem>();
+	mChars->setupPlayer(mEcs, mSysManager);
 
-	// set up what components the systems require
-	Signature sig1;
-	sig1.set(mEcs->GetComponentType<Position>());
-	sig1.set(mEcs->GetComponentType<Sprite>());
-	mEcs->SetSystemSignature<SpriteSystem>(sig1);
-
-	Signature sig2;
-	sig2.set(mEcs->GetComponentType<Position>());
-	sig2.set(mEcs->GetComponentType<Path>());
-	mEcs->SetSystemSignature<PathSystem>(sig2);
-
-	Signature sig3;
-	sig2.set(mEcs->GetComponentType<Position>());
-	sig2.set(mEcs->GetComponentType<Path>());
-	sig2.set(mEcs->GetComponentType<MouseCtrl>());
-	mEcs->SetSystemSignature<MouseCtrlSystem>(sig2);
-
-	// create the player entity
-	mChars->mFrodo = mEcs->CreateEntity();
-
-	// add components to the entity
-											  // x   y
-	mEcs->AddComponent(mChars->mFrodo, Position{ 64, 64 });
-										   // id id id id num tx ty   w   h   anim fr spd dir dirl
-	mEcs->AddComponent(mChars->mFrodo, Sprite{ 0, 0, 0, 0, 4, 0, 224, 32, 32, true, 2, 12, 1, 1 });
-										 // id  gX gY newPath
-	mEcs->AddComponent(mChars->mFrodo, Path{ 0, 0, 0, false });
-												// clicked
-	mEcs->AddComponent(mChars->mFrodo, MouseCtrl{ false });
-
-	//mSysManager->mSpriteSystem->Init(*this->mEcs);
-	mSysManager->mPathSystem->Init(*this->mEcs);
-
-	/*
-	auto& pos = mEcs->GetComponent<Position>(0);
-	std::cout << pos.x << std::endl;
-	*/
 	return true;
 
 }
@@ -165,8 +112,8 @@ void Game::loadLevel() {
 		}
 	}
 
-	// set up graphics for the player
-	mSysManager->mSpriteSystem->Init(*this->mEcs);
+
+	mChars->setupPlayerGfx(mEcs, mSysManager);
 
 }
 
