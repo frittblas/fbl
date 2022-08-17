@@ -29,7 +29,9 @@ Add func setNew() to path-class()? Yes but not urgent :)
 Change dirs in explore mode. Done!
 Add unwalkable tiles. Done!
 
-Add camera component.
+Add camera component. Done!
+Add camera system. Done!
+Add camera limits, lerp and deadzone.
 
 Other stuff:
 Add Cards and deck, think about a good solution.
