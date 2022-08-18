@@ -15,6 +15,8 @@
 #include "Ecs/Ecs.hpp"
 #include "Ecs/Components.hpp"
 
+#include "Game.hpp"
+
 #include "SysManager.hpp"
 
 #include "Ecs/Systems/SpriteSystem.hpp"
@@ -50,11 +52,12 @@ void Chars::setupPlayer(Coordinator* mEcs, SysManager* mSysManager) {
 	mEcs->AddComponent(mFrodo, Path{ 0, 0, 0, false });
 									  // clicked
 	mEcs->AddComponent(mFrodo, MouseCtrl{ false });
-									// x  y
-	mEcs->AddComponent(mFrodo, Camera{ 0, 0 });
+									// x  y	 damp
+	mEcs->AddComponent(mFrodo, Camera{ 0, 0, 0.1, (Game::LogicalResW / 2) - Game::TileSize*3, (Game::LogicalResH / 2) - Game::TileSize*3, 7 * Game::TileSize, 7 * Game::TileSize });
 
 	//mSysManager->mSpriteSystem->Init(*this->mEcs);
 	mSysManager->mPathSystem->Init(*mEcs);
+	mSysManager->mCameraSystem->Init(*mEcs);
 
 	/*
 	auto& pos = mEcs->GetComponent<Position>(0);
