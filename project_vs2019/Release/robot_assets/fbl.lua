@@ -346,6 +346,8 @@ bool fbl_get_mouse_click(int button);
 bool fbl_get_mouse_release(int button);
 int  fbl_get_mouse_x(void);
 int  fbl_get_mouse_y(void);
+int fbl_get_mouse_logical_x(void);
+int fbl_get_mouse_logical_y(void);
 
 
 /* lua.c */

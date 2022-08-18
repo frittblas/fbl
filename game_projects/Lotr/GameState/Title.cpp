@@ -15,24 +15,24 @@
 #include "../Game.hpp"
 #include "Title.hpp"
 
-int lotrTitleId, lotrSubTitleId, authorTextId;
+int lotrTitleId, lotrSubTitleId, authorTextId;	// not really needed!
 
 // Title-class implementation
 
 Title::Title() {
 
 	fbl_load_ttf_font("anirm.ttf", 48);
-	lotrTitleId = fbl_create_text(212, 175, 55, 255, "Lord of the rings");
+	lotrTitleId = fbl_create_text(212, 175, 55, 255, (char*)"Lord of the rings");
 	fbl_set_text_xy(lotrTitleId, Game::LogicalResW / 2, 100);
 	fbl_set_text_align(lotrTitleId, FBL_ALIGN_CENTER);
 
 	fbl_load_ttf_font("anirm.ttf", 26);
-	lotrSubTitleId = fbl_create_text(154, 33, 34, 255, "a retarded journey");
+	lotrSubTitleId = fbl_create_text(154, 33, 34, 255, (char*)"a retarded journey");
 	fbl_set_text_xy(lotrSubTitleId, Game::LogicalResW / 2, 200);
 	fbl_set_text_align(lotrSubTitleId, FBL_ALIGN_CENTER);
 
 	fbl_load_ttf_font("anirm.ttf", 16);
-	authorTextId = fbl_create_text(212, 175, 55, 255, "Hans Stromquist 2022");
+	authorTextId = fbl_create_text(212, 175, 55, 255, (char*)"Hans Stromquist 2022");
 	fbl_set_text_xy(authorTextId, 10, 520);
 
 	std::cout << "Started Title state." << std::endl;
