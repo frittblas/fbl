@@ -42,6 +42,7 @@ int main(int argc, char **argv)
 
 	fbl_start();
 	engine_start();
+
 	fbl_end();
 	engine_lua_end();
 	engine_free_all_mem();

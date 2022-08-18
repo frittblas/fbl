@@ -26,19 +26,19 @@ void UserInput::tick(Game& g) {
 
 	if (fbl_get_key_down(FBLK_1) && access == 0) {
 		g.mState->change(g, GameState::StateType::Title);
-		access = 20;
+		access = 30;
 	}
 	if (fbl_get_key_down(FBLK_2) && access == 0) {
 		g.mState->change(g, GameState::StateType::Settings);
-		access = 20;
+		access = 30;
 	}
 	if (fbl_get_key_down(FBLK_3) && access == 0) {
 		g.mState->change(g, GameState::StateType::Explore);
-		access = 20;
+		access = 30;
 	}
 	if (fbl_get_key_down(FBLK_4) && access == 0) {
 		g.mState->change(g, GameState::StateType::Dialogue);
-		access = 20;
+		access = 30;
 	}
 
 

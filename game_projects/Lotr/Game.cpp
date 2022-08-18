@@ -49,12 +49,16 @@ bool Game::init() {
 	fbl_set_clear_color(33, 68, 33, 255);	// forest green
 	//fbl_create_threadpool();
 
+
 	// init pathfinding
 	if (fbl_pathf_init() == FBL_PATHF_OUT_OF_MEM) {
 		// do stuff if no mem
 	}
 
 	fbl_load_texture((char*)"spritesheet_.png");	// load sprite texture
+	fbl_load_ui_texture((char*)"ui.png");			// load ui texture
+	fbl_load_ttf_font("anirm.ttf", 16);
+	fbl_lua_init("lotr.lua");
 
 	// create instances of the Game-class sub systems
 	gEditor = new ScenEdit(false);	// create new instance of ScenEdit without editor GUI
@@ -113,9 +117,6 @@ void Game::loadLevel() {
 	}
 
 	// set tiles to walkable/unwalkable
-
-	//std::cout << "fbl_w: " << fbl_pathf_get_map_w() << " mMapW :" << mMap->mapWidth << std::endl;
-	//std::cout << "tile[].size: " << mMap->tile.size() << std::endl;
 
 	// fbl_pathf_get_map_w() and mMap->mapWidth are the same, always 60*34
 

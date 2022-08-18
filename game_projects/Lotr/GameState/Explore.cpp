@@ -45,8 +45,6 @@ Explore::~Explore() {
 
 void Explore::tick(Game& g) {
 
-	static bool pressed = false;
-
 	g.mSysManager->mSpriteSystem->Update(*g.mEcs);	// update the sprite system
 	g.mSysManager->mPathSystem->Update(*g.mEcs);	// update the path system
 	g.mSysManager->mMouseCtrlSystem->Update(*g.mEcs);	// update the mouse control system

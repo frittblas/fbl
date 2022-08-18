@@ -75,7 +75,7 @@ void fbl_start()
 	// fbl_set_assets_folder_name("your_name/");
 
 
-	fbl_engine_init(1280, 720, 60);
+	fbl_engine_init(960, 540, 60);
 	fbl_set_render_logical_size(LOGICAL_RES_W, LOGICAL_RES_H);
 	fbl_set_clear_color(168, 230, 255, 255);
 	//fbl_set_clear_color(0, 0, 0, 255);
@@ -173,7 +173,7 @@ void setup_demo_1()
 	fbl_load_ttf_font("edosz.ttf", 30);
 	fbl_create_text(0, 255, 0, 255, "fps = %d", x);
 	fbl_create_text(0, 0, 255, 255, "delay =  %d", x);
-	fbl_create_text(255, 0, 0, 255, "even betaa in red %d", x);
+	fbl_create_text(255, 0, 0, 255, "Press space to create 100 animated sprites %d", x);
 
 	fbl_fix_text_to_screen(0, false);
 
@@ -194,7 +194,7 @@ void create_100_sprites()
 	for (int i = 0; i < 100; i++) {
 
 		lol = fbl_create_sprite(0, 0, 32, 64, 0);
-		fbl_set_sprite_xy(lol, fbl_get_mouse_logical_x() + fbl_get_camera_x(), fbl_get_mouse_logical_y() + fbl_get_camera_y());
+		fbl_set_sprite_xy(lol, fbl_get_mouse_logical_x() + fbl_get_camera_x() + rand() % 100, fbl_get_mouse_logical_y() + fbl_get_camera_y() + rand() % 100);
 
 		//fbl_set_sprite_animation(lol, true, 4, 24, false);
 		fbl_set_sprite_animation(lol, true, 0, 0, 32, 64, 4, 24, true);
