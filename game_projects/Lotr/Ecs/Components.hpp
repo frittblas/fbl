@@ -63,6 +63,6 @@ struct Camera
 
     float x, y;     // camera position
     float damp;     // camera smoothing amount
-    uint16_t trapX, trapY, trapW, trapH;    // deadzone
+    uint8_t deadZoneW, deadZoneH;    // deadzone size in tiles
 
 };

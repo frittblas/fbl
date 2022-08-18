@@ -53,11 +53,11 @@ void Chars::setupPlayer(Coordinator* mEcs, SysManager* mSysManager) {
 									  // clicked
 	mEcs->AddComponent(mFrodo, MouseCtrl{ false });
 									// x  y	 damp
-	mEcs->AddComponent(mFrodo, Camera{ 0, 0, 0.1, (Game::LogicalResW / 2) - Game::TileSize*3, (Game::LogicalResH / 2) - Game::TileSize*3, 7 * Game::TileSize, 7 * Game::TileSize });
+	mEcs->AddComponent(mFrodo, Camera{ 0, 0, 0.05, 2, 2 });
 
 	//mSysManager->mSpriteSystem->Init(*this->mEcs);
 	mSysManager->mPathSystem->Init(*mEcs);
-	mSysManager->mCameraSystem->Init(*mEcs);
+	//mSysManager->mCameraSystem->Init(*mEcs);	// creates debug rect for camera deadzone
 
 	/*
 	auto& pos = mEcs->GetComponent<Position>(0);

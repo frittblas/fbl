@@ -36,7 +36,14 @@ void CameraSystem::Init(Coordinator& ecs) {
 		auto& pos = ecs.GetComponent<Position>(entity);
 		auto& cam = ecs.GetComponent<Camera>(entity);
 
-		int id = fbl_create_prim(FBL_RAY + 1, cam.trapX, cam.trapY, cam.trapW, cam.trapH, 0, false, false);
+		// Debug Rect to visualize the deadzone
+		// find x,y,w,h
+		int x = (Game::LogicalResW / 2) - Game::TileSize * cam.deadZoneW;
+		int y = (Game::LogicalResH / 2) - Game::TileSize * cam.deadZoneH;
+		int w = (cam.deadZoneW * Game::TileSize * 2) + (1 * Game::TileSize);	// width is 2 times deadZoneW + 1 * tilesize (for the player in the middle)
+		int h = (cam.deadZoneH * Game::TileSize * 2) + (1 * Game::TileSize);	// same
+
+		int id = fbl_create_prim(FBL_RAY + 1, x, y, w, h, 0, false, false); // create debug rect for the camera deadzone
 		fbl_set_prim_color(id, 255, 255, 255, 50);
 		fbl_fix_prim_to_screen(id, true);
 
@@ -68,30 +75,27 @@ void CameraSystem::Update(Coordinator& ecs) {
 		//cam.x = (pos.x - Game::LogicalResW / 2) * 0.05 + cam.x * (1.0 - 0.05);
 		//cam.y = (pos.y - Game::LogicalResH / 2) * 0.05 + cam.y * (1.0 - 0.05);
 
-		// camera trap (or deadzone) + lerp
-		if (pos.x < ((Game::LogicalResW / 2) - Game::TileSize * 3) + fbl_get_camera_x()) {
-			cam.x = ((pos.x - Game::LogicalResW / 2) + Game::TileSize * 3) * cam.damp + cam.x * (1.0 - cam.damp);
-			std::cout << "Pushing camera bounds left!" << std::endl;
+		// camera trap (or deadzone) + lerp (subtract and add 1 pixel att the end bc otherwise always true)
+		if (pos.x < ((Game::LogicalResW / 2) - Game::TileSize * cam.deadZoneW) + fbl_get_camera_x() - 1) {
+			cam.x = ((pos.x - Game::LogicalResW / 2) + Game::TileSize * cam.deadZoneW) * cam.damp + cam.x * (1.0 - cam.damp);
+			//std::cout << "Pushing camera bounds left!" << std::endl;
 		}
 		
-		if (pos.x > ((Game::LogicalResW / 2) + Game::TileSize * 3) + fbl_get_camera_x()) {
-			cam.x = ((pos.x - Game::LogicalResW / 2) - Game::TileSize * 3) * cam.damp + cam.x * (1.0 - cam.damp);
-			std::cout << "Pushing camera bounds right!" << std::endl;
+		if (pos.x > ((Game::LogicalResW / 2) + Game::TileSize * cam.deadZoneW) + fbl_get_camera_x() + 1) {
+			cam.x = ((pos.x - Game::LogicalResW / 2) - Game::TileSize * cam.deadZoneW) * cam.damp + cam.x * (1.0 - cam.damp);
+			//std::cout << "Pushing camera bounds right!" << std::endl;
 		}
 			
-		if (pos.y < ((Game::LogicalResH / 2) - Game::TileSize * 3) + fbl_get_camera_y()) {
-			cam.y = ((pos.y - Game::LogicalResH / 2) + Game::TileSize * 3) * cam.damp + cam.y * (1.0 - cam.damp);
-			std::cout << "Pushing camera bounds up!" << std::endl;
+		if (pos.y < ((Game::LogicalResH / 2) - Game::TileSize * cam.deadZoneH) + fbl_get_camera_y() - 1) {
+			cam.y = ((pos.y - Game::LogicalResH / 2) + Game::TileSize * cam.deadZoneH) * cam.damp + cam.y * (1.0 - cam.damp);
+			//std::cout << "Pushing camera bounds up!" << std::endl;
 		}
 
-		if (pos.y > ((Game::LogicalResH / 2) + Game::TileSize * 3) + fbl_get_camera_y()) {
-			cam.y = ((pos.y - Game::LogicalResH / 2) - Game::TileSize * 3) * cam.damp + cam.y * (1.0 - cam.damp);
-			std::cout << "Pushing camera bounds down!" << std::endl;
+		if (pos.y > ((Game::LogicalResH / 2) + Game::TileSize * cam.deadZoneH) + fbl_get_camera_y() + 1) {
+			cam.y = ((pos.y - Game::LogicalResH / 2) - Game::TileSize * cam.deadZoneH) * cam.damp + cam.y * (1.0 - cam.damp);
+			//std::cout << "Pushing camera bounds down!" << std::endl;
 		}
 			
-		//std::cout << "Pushing camera bounds!" << std::endl;
-
-
 		// limit camera xy
 		if (cam.x < 0) cam.x = 0;
 		if (cam.y < 0) cam.y = 0;
