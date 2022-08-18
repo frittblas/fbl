@@ -31,7 +31,7 @@ Add unwalkable tiles. Done!
 
 Add camera component. Done!
 Add camera system. Done!
-Add camera limits, lerp and deadzone.
+Add camera limits, lerp and deadzone. Done!
 
 Other stuff:
 Add Cards and deck, think about a good solution.
