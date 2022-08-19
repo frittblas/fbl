@@ -57,8 +57,8 @@ bool Game::init() {
 
 	fbl_load_texture((char*)"spritesheet_.png");	// load sprite texture
 	fbl_load_ui_texture((char*)"ui.png");			// load ui texture
-	fbl_load_ttf_font("anirm.ttf", 16);
-	fbl_lua_init("lotr.lua");
+
+	fbl_lua_init("LotrDialogue.lua");
 
 	// create instances of the Game-class sub systems
 	gEditor = new ScenEdit(false);	// create new instance of ScenEdit without editor GUI

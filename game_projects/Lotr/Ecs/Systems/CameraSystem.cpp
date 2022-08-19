@@ -43,7 +43,7 @@ void CameraSystem::Init(Coordinator& ecs) {
 		int w = (cam.deadZoneW * Game::TileSize * 2) + (1 * Game::TileSize);	// width is 2 times deadZoneW + 1 * tilesize (for the player in the middle)
 		int h = (cam.deadZoneH * Game::TileSize * 2) + (1 * Game::TileSize);	// same
 
-		int id = fbl_create_prim(FBL_RAY + 1, x, y, w, h, 0, false, false); // create debug rect for the camera deadzone
+		int id = fbl_create_prim(FBL_RAY + 1, x, y, w, h, 0, false, false); // create debug rect
 		fbl_set_prim_color(id, 255, 255, 255, 50);
 		fbl_fix_prim_to_screen(id, true);
 

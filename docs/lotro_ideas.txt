@@ -17,6 +17,7 @@ Position
 Sprite
 Path
 MouseControl
+Camera
 
 Todo:
 Register components and systems in sysManager class. Done!
@@ -32,6 +33,11 @@ Add unwalkable tiles. Done!
 Add camera component. Done!
 Add camera system. Done!
 Add camera limits, lerp and deadzone. Done!
+
+New file, like LuaDialogue that exposes some new functions to be called
+from lua, like: StartDialogue() that sets a variable that you can pick up in Lua.
+Also some cutscene stuff maybe. And give items. High level gameplay things.
+Set up text and font stuff (and dialogs, ui) in C++. Then do dialogue with coroutines.
 
 Other stuff:
 Add Cards and deck, think about a good solution.

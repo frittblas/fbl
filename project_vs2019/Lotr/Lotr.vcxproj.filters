@@ -135,6 +135,9 @@
     <ClCompile Include="..\..\game_projects\Lotr\Ecs\Systems\CameraSystem.cpp">
       <Filter>Source Files\Ecs\Systems</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\game_projects\Lotr\LuaDialogue.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\fbl.h">
