@@ -33,11 +33,15 @@ Add unwalkable tiles. Done!
 Add camera component. Done!
 Add camera system. Done!
 Add camera limits, lerp and deadzone. Done!
+Maybe add damping even in corners?
 
 New file, like LuaDialogue that exposes some new functions to be called
 from lua, like: StartDialogue() that sets a variable that you can pick up in Lua.
 Also some cutscene stuff maybe. And give items. High level gameplay things.
 Set up text and font stuff (and dialogs, ui) in C++. Then do dialogue with coroutines.
+
+Added LuaDialogue.cpp but vc doesn't like the extern lua_State variable! Fix it!
+
 
 Other stuff:
 Add Cards and deck, think about a good solution.

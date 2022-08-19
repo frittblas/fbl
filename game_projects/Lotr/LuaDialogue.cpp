@@ -15,11 +15,22 @@
 //#include "../../src/fbl.hpp"
 //#include "Game.hpp"
 
-// these C++ functions can bee caled from Lua.
+// lotr Lua prototypes
+int luaIsInDialogue(lua_State* lua_env);
+
+//extern lua_State* fbl_lua_env;
+
+// register these C++ functions so they can be called from Lua.
 void registerFuncsToLua()
 {
 	
-
+	//lua_register(fbl_lua_env, "isInDialogue", luaIsInDialogue);
 
 }
 
+// lotr Lua implementation
+int luaIsInDialogue(lua_State* lua_env) {
+
+
+
+}
