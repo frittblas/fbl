@@ -41,7 +41,7 @@ Also some cutscene stuff maybe. And give items. High level gameplay things.
 Set up text and font stuff (and dialogs, ui) in C++. Then do dialogue with coroutines.
 
 Added LuaDialogue.cpp but vc doesn't like the extern lua_State variable! Fix it!
-
+test to put(tm): extern "C" {extern lua_State variable} in LuaDialogue.cpp.
 
 Other stuff:
 Add Cards and deck, think about a good solution.
