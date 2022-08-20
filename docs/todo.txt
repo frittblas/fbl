@@ -228,6 +228,7 @@ start Lotro - starting now! Going well.
 for 1.0 {
 
 SDL_net
+remove alpha-byte in particle struct, uneccesary :) (or change to rotation or angle)
 
 }
 
