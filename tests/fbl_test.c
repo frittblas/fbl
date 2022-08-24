@@ -692,7 +692,7 @@ void setup_demo_5()
 
 	// the window title is set in assets/main.lua
 
-	fbl_lua_init("main.lua");
+	fbl_lua_init("main.lua", NULL);
 
 }
 

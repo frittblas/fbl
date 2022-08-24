@@ -68,7 +68,7 @@ void fbl_end()
 void setup_template()
 {
 	
-	fbl_lua_init("main.lua");
+	fbl_lua_init("main.lua", NULL);
 	
 }
 

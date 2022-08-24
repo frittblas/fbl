@@ -221,5 +221,8 @@
     <ClInclude Include="..\..\game_projects\Lotr\Ecs\Systems\CameraSystem.hpp">
       <Filter>Source Files\Ecs\Systems</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\game_projects\Lotr\LuaDialogue.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

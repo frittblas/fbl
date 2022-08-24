@@ -398,7 +398,7 @@ int  fbl_get_mouse_logical_y(void);
 
 /* lua.c */
 
-int  fbl_lua_init(const char* file);
+int  fbl_lua_init(const char* file, void (*reg_funcs)());
 void fbl_lua_shutdown(void);
 void fbl_lua_do_file(const char *file);
 

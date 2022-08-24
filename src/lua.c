@@ -225,14 +225,14 @@ int lua_destroy_threadpool(lua_State* lua_env);
 
 bool fbl_lua_active = false;
 
-lua_State *fbl_lua_env;
+lua_State* fbl_lua_env;
 
 #endif
 
 /*
  * Lua init.
  */
-int fbl_lua_init(const char *file)
+int fbl_lua_init(const char *file, void (*reg_funcs)())
 {
 
 #ifdef FBL_INCLUDE_LUA
@@ -263,7 +263,8 @@ int fbl_lua_init(const char *file)
 
 	lua_call(fbl_lua_env, 0, 0);
 
-	register_fbl_functions_to_lua();
+	register_fbl_functions_to_lua();	// register all of the fbl functions
+	if(reg_funcs != NULL) reg_funcs();	// register additional functions (from your game)
 
 	fbl_lua_active = true;
 

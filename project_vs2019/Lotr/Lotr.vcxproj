@@ -186,6 +186,7 @@
     <ClInclude Include="..\..\game_projects\Lotr\GameState\Settings.hpp" />
     <ClInclude Include="..\..\game_projects\Lotr\GameState\Title.hpp" />
     <ClInclude Include="..\..\game_projects\Lotr\Game.hpp" />
+    <ClInclude Include="..\..\game_projects\Lotr\LuaDialogue.hpp" />
     <ClInclude Include="..\..\game_projects\Lotr\Objects.hpp" />
     <ClInclude Include="..\..\game_projects\Lotr\Progress.hpp" />
     <ClInclude Include="..\..\game_projects\Lotr\SysManager.hpp" />
