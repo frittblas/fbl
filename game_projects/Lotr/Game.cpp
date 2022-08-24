@@ -146,6 +146,8 @@ void Game::loadLevel() {
 
 	mChars->setupPlayerGfx(mEcs, mSysManager);
 
+	initLuaDialog();
+
 }
 
 void Game::unLoadLevel() {

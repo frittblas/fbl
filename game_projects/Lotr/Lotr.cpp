@@ -14,14 +14,11 @@
 #include "../../src/fbl.hpp"
 #include "Game.hpp"
 
-Game* gGame;	// the Game-instance, only used in this file (file scope)
+Game* gGame;	// the Game-instance, only used in this file (file scope), aaand LuaDialogue.cpp, sorry :)
 
 void fbl_start()
 {
 	
-	// make sure that the name of the asset folder is set to what you want (default = "assets/")
-	// fbl_set_assets_folder_name("your_name/");
-
 	gGame = new Game();
 
 }
