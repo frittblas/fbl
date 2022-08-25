@@ -135,7 +135,7 @@ void Game::loadLevel() {
 	// this also works fine, 1d array to 2d coords :)
 	for (uint32_t i = 0; i < (mMap->mapWidth * mMap->mapHeight); i++) {
 		if (mMap->tile[i] != nullptr) {
-			if (mMap->tile[i]->kinematic) {
+			if (mMap->tile[i]->type) {
 				int x = i % mMap->mapWidth;
 				int y = i / mMap->mapWidth;
 				fbl_pathf_set_walkability(x, y, FBL_PATHF_UNWALKABLE);
