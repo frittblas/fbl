@@ -85,7 +85,7 @@ void ScenEdit::setup(uint32_t mapW, uint32_t mapH, uint32_t tSize) {
 	tileSettings.textureX = 96;	// x of the tile to be drawn from texture
 	tileSettings.textureY = 416;
 	tileSettings.layer = 0;	// the current layer (lower is further back)
-	tileSettings.kinematic = false;	// kinematic means solid but movable, otherwise walkable
+	tileSettings.type = 0;	// type can mean different things in your game, maybe 0 = walkable etc.
 	tileSettings.animated = false;	// if the tile is animated
 	tileSettings.animFrames = 1;	// how many frames in total are there in the animation
 	tileSettings.animSpeed = 10;	// how many frames delay between each image
@@ -110,7 +110,7 @@ void ScenEdit::setupGUI() {
 	std::cout << "Draw a tile with space or left mouse button." << std::endl;
 	std::cout << "Delete tile with del or right mouse button." << std::endl;
 	std::cout << "Center the map with C and reset map with R." << std::endl;
-	std::cout << "Will load spritesheet_.png and ui_.png at the start." << std::endl;
+	std::cout << "Will load spritesheet.png and ui_2.png at the start." << std::endl;
 	std::cout << "Will save and load map.scn and export binary map.scb." << std::endl;
 	std::cout << "Tile vector size: " << tile.size() << std::endl;
 
@@ -123,14 +123,11 @@ void ScenEdit::setupGUI() {
 	fbl_create_text(255, 255, 255, 255, (char*)"Select tile:");
 	fbl_set_text_xy(0, fbl_get_screen_w() - lMargin, 64);
 
-	fbl_create_text(255, 255, 255, 255, (char*)"Kinematic:");
-	fbl_set_text_xy(1, fbl_get_screen_w() - lMargin, 310);
-
 	fbl_create_text(255, 255, 255, 255, (char*)"Animated:");
-	fbl_set_text_xy(2, fbl_get_screen_w() - lMargin, 350);
+	fbl_set_text_xy(1, fbl_get_screen_w() - lMargin, 350);
 
 	fbl_create_text(255, 255, 255, 255, (char*)"Save/Load/BinExp:");
-	fbl_set_text_xy(3, fbl_get_screen_w() - lMargin, 510);
+	fbl_set_text_xy(2, fbl_get_screen_w() - lMargin, 510);
 
 	// gui buttons for selecting current tile to draw
 	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, selectSpriteLeft));
@@ -172,9 +169,15 @@ void ScenEdit::setupGUI() {
 	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, incLayer));
 	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 48, 270);
 
-	// gui checkbox for kinematic
-	kinematicBoxId = fbl_create_ui_elem(FBL_UI_CHECKBOX, 0, 32, 32, 32, toggleKinematic);
-	fbl_set_ui_elem_xy(kinematicBoxId, fbl_get_screen_w() - 96, 310);
+	// text for type
+	typeTextId = fbl_create_text(255, 255, 255, 255, (char*)"Type: %d (-+)", 0);
+	fbl_set_text_xy(typeTextId, fbl_get_screen_w() - lMargin, 310);
+
+	// gui buttons for type
+	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, decType));
+	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 96, 310);
+	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, incType));
+	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 48, 310);
 
 	// gui checkbox for animation
 	animatedBoxId = fbl_create_ui_elem(FBL_UI_CHECKBOX, 0, 32, 32, 32, toggleAnimation);
@@ -380,7 +383,7 @@ void ScenEdit::addTile() {
 		tile[index]->textureX = tileSettings.textureX;
 		tile[index]->textureY = tileSettings.textureY;
 		tile[index]->layer = tileSettings.layer;
-		tile[index]->kinematic = tileSettings.kinematic;
+		tile[index]->type = tileSettings.type;
 		tile[index]->animated = tileSettings.animated;
 		tile[index]->animFrames = tileSettings.animFrames;
 		tile[index]->animSpeed = tileSettings.animSpeed;
@@ -407,7 +410,7 @@ void ScenEdit::copyTile() {
 		tileSettings.textureX = tile[index]->textureX;
 		tileSettings.textureY = tile[index]->textureY;
 		tileSettings.layer = tile[index]->layer;
-		tileSettings.kinematic = tile[index]->kinematic;
+		tileSettings.type = tile[index]->type;
 		tileSettings.animated = tile[index]->animated;
 		tileSettings.animFrames = tile[index]->animFrames;
 		tileSettings.animSpeed = tile[index]->animSpeed;
@@ -417,8 +420,8 @@ void ScenEdit::copyTile() {
 		// copy standard values, reset
 		tileSettings.textureX = 0;
 		tileSettings.textureY = 0;
-		tileSettings.layer = 1;
-		tileSettings.kinematic = false;
+		tileSettings.layer = 0;
+		tileSettings.type = 0;
 		tileSettings.animated = false;
 		tileSettings.animFrames = 1;
 		tileSettings.animSpeed = 10;
@@ -462,8 +465,8 @@ void ScenEdit::showTileInfo() {
 		fbl_set_sprite_image(tileSettings.id, tileSettings.textureX, tileSettings.textureY, tileSize, tileSize, 0);
 		// set the layer
 		fbl_update_text(layerTextId, 255, 255, 255, 255, (char*)"Layer: %d (-+)", tileSettings.layer);
-		// set kinematic
-		tileSettings.kinematic ? fbl_set_ui_elem_val(kinematicBoxId, true) : fbl_set_ui_elem_val(kinematicBoxId, false);
+		// set type
+		fbl_update_text(typeTextId, 255, 255, 255, 255, (char*)"Type: %d (-+)", tileSettings.type);
 		// set animated
 		tileSettings.animated ? fbl_set_ui_elem_val(animatedBoxId, true) : fbl_set_ui_elem_val(animatedBoxId, false);
 		// set the animation frames
@@ -480,8 +483,8 @@ void ScenEdit::showTileInfo() {
 		fbl_set_sprite_image(tileSettings.id, tile[index]->textureX, tile[index]->textureY, tileSize, tileSize, 0);
 		// set the layer
 		fbl_update_text(layerTextId, 255, 255, 255, 255, (char*)"Layer: %d (-+)", tile[index]->layer);
-		// set kinematic
-		tile[index]->kinematic ? fbl_set_ui_elem_val(kinematicBoxId, true) : fbl_set_ui_elem_val(kinematicBoxId, false);
+		// set type
+		fbl_update_text(typeTextId, 255, 255, 255, 255, (char*)"Type: %d (-+)", tile[index]->type);
 		// set animated
 		tile[index]->animated ? fbl_set_ui_elem_val(animatedBoxId, true) : fbl_set_ui_elem_val(animatedBoxId, false);
 		// set the animation frames
@@ -493,7 +496,7 @@ void ScenEdit::showTileInfo() {
 		std::cout << std::endl;
 		std::cout << "Tile info:" << std::endl;
 		std::cout << "Layer: " << tile[index]->layer << std::endl;
-		std::cout << "Kinematic: " << tile[index]->kinematic << std::endl;
+		std::cout << "Type: " << tile[index]->type << std::endl;
 		std::cout << "Animated: " << tile[index]->animated << std::endl;
 		std::cout << "Anim frames: " << tile[index]->animFrames << std::endl;
 		std::cout << "Anim speed: " << tile[index]->animSpeed << std::endl;
@@ -585,7 +588,7 @@ void ScenEdit::toggleGUI() {
 	fbl_set_prim_active(bgRectId, showGUI);
 
 	// the plain text id's start at 0
-	for(int i = 0; i < 4; i++)
+	for(int i = 0; i < 3; i++)
 		fbl_set_text_active(i, showGUI);
 
 	fbl_set_sprite_active(tileSettings.id, showGUI);
@@ -594,10 +597,10 @@ void ScenEdit::toggleGUI() {
 	fbl_set_text_active(mapHtextId, showGUI);
 
 	fbl_set_text_active(layerTextId, showGUI);
+	fbl_set_text_active(typeTextId, showGUI);
 	fbl_set_text_active(animFramesTextId, showGUI);
 	fbl_set_text_active(animSpeedTextId, showGUI);
 
-	fbl_set_ui_elem_active(kinematicBoxId, showGUI);
 	fbl_set_ui_elem_active(animatedBoxId, showGUI);
 
 	for (int i : guiId)

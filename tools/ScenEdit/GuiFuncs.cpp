@@ -157,16 +157,39 @@ int decLayer(int x, int y) {
 
 }
 
-int toggleKinematic(int x, int y) {
+int incType(int x, int y) {
+
 
 	int index = getIndexAtCursor();
 
 	if (gEditor->tile[index] != nullptr) {
-		gEditor->tile[index]->kinematic = !gEditor->tile[index]->kinematic;
-		std::cout << "Tile is kinematic: " << gEditor->tile[index]->kinematic << std::endl;
+		gEditor->tile[index]->type++;
+		fbl_update_text(gEditor->typeTextId, 255, 255, 255, 255, (char*)"Type: %d (-+)", gEditor->tile[index]->type);
 	}
 	else {
-		gEditor->tileSettings.kinematic = !gEditor->tileSettings.kinematic;
+		gEditor->tileSettings.type++;
+		fbl_update_text(gEditor->typeTextId, 255, 255, 255, 255, (char*)"Type: %d (-+)", gEditor->tileSettings.type);
+	}
+
+	return 0;
+
+}
+
+int decType(int x, int y) {
+
+	int index = getIndexAtCursor();
+
+	if (gEditor->tile[index] != nullptr) {
+		if (gEditor->tile[index]->type > 0) {
+			gEditor->tile[index]->type--;
+			fbl_update_text(gEditor->typeTextId, 255, 255, 255, 255, (char*)"Type: %d (-+)", gEditor->tile[index]->type);
+		}
+	}
+	else {
+		if (gEditor->tileSettings.type > 0) {
+			gEditor->tileSettings.type--;
+			fbl_update_text(gEditor->typeTextId, 255, 255, 255, 255, (char*)"Type: %d (-+)", gEditor->tileSettings.type);
+		}
 	}
 
 	return 0;

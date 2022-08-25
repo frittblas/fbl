@@ -27,7 +27,7 @@ void fbl_start()
 
 	fbl_set_clear_color(50, 50, 150, 255);
 
-	fbl_set_window_title((char*)"ScenEdit 1.0");
+	fbl_set_window_title((char*)"ScenEdit 1.1");
 
 	gEditor = new ScenEdit(true);
 
@@ -42,8 +42,6 @@ void fbl_game_loop()
 
 	if (fbl_get_key_down(FBLK_F9))
 		fbl_set_window_mode(0);
-	if (fbl_get_key_down(FBLK_F10))
-		fbl_set_window_mode(FBL_WINDOW_FULLSCREEN);
 	if (fbl_get_key_down(FBLK_F11))
 		fbl_set_window_mode(FBL_WINDOW_FULLSCREEN_DESKTOP);
 

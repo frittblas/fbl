@@ -126,7 +126,7 @@ void Game::loadLevel() {
 		for (int j = 0; j < fbl_pathf_get_map_h(); j++) {
 			int index = i + mMap->mapWidth * j;
 			if (mMap->tile[index] != nullptr)
-				if (mMap->tile[index]->kinematic)
+				if (mMap->tile[index]->type)	// atm everything over 0 is unwalkable
 					fbl_pathf_set_walkability(i, j, FBL_PATHF_UNWALKABLE);
 		}
 	}

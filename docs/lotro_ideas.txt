@@ -24,7 +24,7 @@ Register components and systems in sysManager class. Done!
 Set the player up in Chars class (add components). Done!
 Use bitset.reset() in between. Done!
 
-Add fbl log functions (SDL_Log) (not urgent)
+Add fbl log function (SDL_Log) Done!
 Add func setNew() to path-class()? Yes but not urgent :)
 
 Change dirs in explore mode. Done!
@@ -39,6 +39,7 @@ New file, like LuaDialogue that exposes some new functions to be called
 from lua, like: StartDialogue() that sets a variable that you can pick up in Lua.
 Also some cutscene stuff maybe. And give items. High level gameplay things.
 Set up text and font stuff (and dialogs, ui) in C++. Then do dialogue with coroutines. On the way!
+Trigger system to start dialogues!
 
 Added LuaDialogue.cpp but vc doesn't like the extern lua_State variable! Fix it!
 test to put(tm): extern "C" {extern lua_State variable} in LuaDialogue.cpp. Done!!

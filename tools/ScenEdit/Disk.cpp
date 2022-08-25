@@ -60,10 +60,10 @@ bool Disk::saveMap(ScenEdit& editor, std::string filename) {
         if (curTile != nullptr) {
             
             outFile << curTile->x << " " << curTile->y << " " << curTile->textureX << " " << curTile->textureY << " " << curTile->layer
-                << " " << curTile->kinematic << " " << curTile->animated << " " << curTile->animFrames << " " << curTile->animSpeed << std::endl;
+                << " " << curTile->type << " " << curTile->animated << " " << curTile->animFrames << " " << curTile->animSpeed << std::endl;
 
             std::cout << curTile->x << " " << curTile->y << " " << curTile->textureX << " " << curTile->textureY << " " << curTile->layer
-                << " " << curTile->kinematic << " " << curTile->animated << " " << curTile->animFrames << " " << curTile->animSpeed << std::endl;
+                << " " << curTile->type << " " << curTile->animated << " " << curTile->animFrames << " " << curTile->animSpeed << std::endl;
 
         }
 
@@ -123,11 +123,11 @@ bool Disk::loadMap(ScenEdit& editor, std::string filename) {
     while (inFile.peek() != EOF) {
 
         inFile >> editor.tileSettings.x >> editor.tileSettings.y >> editor.tileSettings.textureX >> editor.tileSettings.textureY
-            >> editor.tileSettings.layer >> editor.tileSettings.kinematic >> editor.tileSettings.animated
+            >> editor.tileSettings.layer >> editor.tileSettings.type >> editor.tileSettings.animated
             >> editor.tileSettings.animFrames >> editor.tileSettings.animSpeed;
 
         std::cout << editor.tileSettings.x << " " << editor.tileSettings.y << " " << editor.tileSettings.textureX << " " << editor.tileSettings.textureY << " "
-            << editor.tileSettings.layer << " " << editor.tileSettings.kinematic << " " << editor.tileSettings.animated << " "
+            << editor.tileSettings.layer << " " << editor.tileSettings.type << " " << editor.tileSettings.animated << " "
             << editor.tileSettings.animFrames << " " << editor.tileSettings.animSpeed << " " << std::endl;
 
         // and add the tile to the map
@@ -162,8 +162,6 @@ bool Disk::exportMapBin(ScenEdit& editor, std::string filename) {
     // save map in binary format so it can be loaded by fbl_load_scenedit_map()
     // fbl_load_scenedit_map() will use RWops so it can load files on android and stuff.
     // NOTE: fix the TileData struct to only use uint32_t for convenience (no bools).
-    // also remove kinematic and go with the terrain variable instead. 2 buttons
-    // that change the terrain value.
     // included SDL.h to this file so we can use RWops to both save and load maps in binary.
 
 
