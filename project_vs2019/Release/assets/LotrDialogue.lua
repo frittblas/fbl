@@ -4,22 +4,23 @@
 --
 --	LotrDialogue.lua
 --
---	Contains dialogue stuff
+--	Contains dialogue stuff for lotr
 --
---	This will be called from your C-program if you call fbl_lua_init()
+--	This will be called from your C/C++-program if you call fbl_lua_init()
 --	in the beginning of your program. First, the fbl_lua_start(),
 --	then, fbl_lua_loop() will be called every frame. Last, fbl_lua_end()
---	will be called when you end the program from C to clean stuff up.
+--	will be called when you end the program from C/C++ to clean stuff up.
 --
 --	You have full access to the fbl api from here!
---  + some gameplay related lotr-functions.
+--  + some special gameplay related lotr-functions.
 --
 --	Hans Strömquist 2022
 --
 --
 
--- constants from C++
+-- constants
 
+Stay = -1
 Title = 0
 Demo = 1
 Settings = 2
@@ -31,18 +32,19 @@ Shop = 6
 Fight = 7
 CardCollection = 8
 
+-- valid responses
+
+OK	= 1
+YES = 1
+NO  = 2
+
 -- functions that can be called
 
 -- isInDialogue() (returns 1 or 0)
 -- setState(int state)
 -- displayDialog()
 -- hideDialog()
--- getResponse()
-
--- valid responses
-
-YES = 1
-NO  = 2
+-- getResponse() (returns 0 or 1, 2 (OK, YES, NO))
 
 -- globals
 
@@ -73,69 +75,70 @@ function debug_console(iter)
 
 end
 
-function dispDialogW(text, reply1, reply2)
+-- display dialog and set wait for response-flag
+function disp_dw(text1, text2, text3, reply1, reply2)
 
-	--if not g_wait_response then
-		displayDialog(text, reply1, reply2)
-		g_wait_response = true
-	--end
+	displayDialog(text1, text2, text3, reply1, reply2)
+	g_wait_response = true
 
 end
 
-function setNewState(state)
+-- hide dialog and set state
+function set_state(state)
 	hideDialog()
 	setState(state)
 end
 
+--advance dialogue
+function advance(state, iter)
+	g_wait_response = false -- not waiting for response anymore
+	hideDialog()
+	if state ~= Stay then	-- only change state if not Staying (in dialogue)
+		setState(state)
+	end
+	print("reached!")
+	return iter
+end
+
 -- dialogues for the different characters
 
-g_dialogue = coroutine.create(function ()
-	local iter = 1
-	while true do
-		if iter == 1 then
-			print("Hello young masta", iter)
-			displayDialog("Greetings! this is the first dialog.", "Ok", "")
-		elseif iter == 2 then
-			print("Hello old masta!! This is longer!", iter)
-			displayDialog("Hello adventurer! May I insterest you in some reasonable items on your quest?", "Yes", "No")
-		elseif iter == 3 then
-			print("penultimate one", iter)
-			displayDialog("if this works its fine", "Ok", "")
-		else
-			print("last one", iter)
-			displayDialog("if THIS works its nice, last message this is, im sure of it", "Ok", "")
-		end
-
-		debug_console(iter)
-		iter = iter + 1
-		
-		coroutine.yield()
-	end
-	end)
-	
 	g_dialogue1 = coroutine.create(function ()
 	local iter = 1
 	while true do
 		if iter == 1 then
 			if not g_wait_response then
-				dispDialogW("Greetings! this is the first dialog.", "Ok", "")
-			elseif g_wait_response then
-				if getResponse() == NO then
-					g_wait_response = false
-					--iter = iter + 1	-- advance dialogue
-					setNewState(Explore)
-				end
+				disp_dw("Greetings! this is the first dialog.", "Second line.", "Third glorious line of exquisit writing..", "Ok..", " ")
+			elseif getResponse() == OK then
+				iter = advance(Explore, iter + 1) -- advance to next dialog and go to Explore state
 			end
-			
 		elseif iter == 2 then
-			print("Hello old masta!! This is longer!", iter)
-			displayDialog("Hello adventurer! May I insterest you in some reasonable items on your quest?", "Yes", "No")
+			if not g_wait_response then
+				disp_dw("If you answer no, you will be sent back to first dialog!", " ", " ", "Yes", "No")
+			elseif getResponse() == NO then
+				iter = advance(Explore, 1) -- reset dialogue and go to Explore state
+			elseif getResponse() == YES then
+				iter = advance(Stay, iter + 1) -- advance to next dialog and don't change state
+			end
 		elseif iter == 3 then
-			print("penultimate one", iter)
-			displayDialog("if this works its fine", "Ok", "")
+			if not g_wait_response then
+				disp_dw("What's your favourite colour?", " ", " ", "Green", "Blue")
+			elseif getResponse() == YES then
+				iter = advance(Stay, iter + 1) -- advance to next dialog and stay
+			elseif getResponse() == NO then
+				iter = advance(Stay, iter + 2) -- advance 2 dialog steps and stay
+			end
+		elseif iter == 4 then
+			if not g_wait_response then
+				disp_dw("You chose Green!", " ", " ", "Ok great.", "Can I go?")
+			elseif getResponse() == YES or getResponse() == NO then
+				iter = advance(Explore, 1) -- reset dialogue and go to Explore state
+			end
 		else
-			print("last one", iter)
-			displayDialog("if THIS works its nice, last message this is, im sure of it", "Ok", "")
+			if not g_wait_response then
+				disp_dw("You chose Blue!", " ", " ", "Ok", " ")
+			elseif getResponse() == OK then
+				iter = advance(Explore, 1) -- reset dialogue and go to Explore state
+			end
 		end
 
 		--debug_console(iter)

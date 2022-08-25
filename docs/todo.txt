@@ -221,6 +221,21 @@ Add set_ui_elem_val to lua! Done!
 start SceneEdit - 95% done change kinematic to terrain (walkable/solid/water)
 start Lotro - starting now! Going well.
 
+add fbl_log()
+
+maybe add:
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+// legacy C code
+
+#ifdef __cplusplus
+}
+#endif
+
+(add this to all fbl *.c-files, so everything can be compiled as C++ aswell as C)
 
 }
 
@@ -228,7 +243,7 @@ start Lotro - starting now! Going well.
 for 1.0 {
 
 SDL_net
-remove alpha-byte in particle struct, uneccesary :) (or change to rotation or angle)
+remove alpha-byte in particle struct, it's not needed! :) (or change to rotation or angle)
 
 }
 

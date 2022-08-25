@@ -12,6 +12,7 @@
 */
 
 #include <iostream>
+//#include <string>
 #include "../../src/fbl.hpp"
 #include "../../dependencies/common/lua-5.4.1/include/lua.hpp"
 #include "Game.hpp"
@@ -138,31 +139,37 @@ int luaSetState(lua_State* lua_env) {
 
 int luaDisplayDialog(lua_State* lua_env) {
 
-	char* text = (char*)lua_tostring(lua_env, 1);
-	char* reply1 = (char*)lua_tostring(lua_env, 2);
-	char* reply2 = (char*)lua_tostring(lua_env, 3);
-
-	// hide the old dialog first
-	//luaHideDialog(NULL);
-
+	char* text1 = (char*)lua_tostring(lua_env, 1);
+	char* text2 = (char*)lua_tostring(lua_env, 2);
+	char* text3 = (char*)lua_tostring(lua_env, 3);
+	char* reply1 = (char*)lua_tostring(lua_env, 4);
+	char* reply2 = (char*)lua_tostring(lua_env, 5);
+	
 	// activate the square
 	fbl_set_prim_active(gSquareId, true);
 	fbl_set_prim_active(gOutlineId, true);
 
 	// update the text
-	fbl_update_text(gText1Id, 255, 255, 255, 0, text);
+	fbl_update_text(gText1Id, 255, 255, 255, 0, text1);
+	fbl_update_text(gText2Id, 255, 255, 255, 0, text2);
+	fbl_update_text(gText3Id, 255, 255, 255, 0, text3);
 
 	fbl_set_text_active(gText1Id, true);
 	fbl_set_text_active(gText2Id, true);
 	fbl_set_text_active(gText3Id, true);
 
+	// update the response text
+	fbl_update_text(gResponseYesId, 255, 255, 255, 0, reply1);
 	fbl_set_text_active(gResponseYesId, true);
-	fbl_set_text_active(gResponseNoId, true);
+
+	if (strlen(reply2) > 1) {
+		fbl_update_text(gResponseNoId, 255, 255, 255, 0, reply2);
+		fbl_set_text_active(gResponseNoId, true);
+		fbl_set_ui_elem_active(gButtonNo, true);
+	}
 
 	fbl_set_ui_elem_active(gButtonYes, true);
-	fbl_set_ui_elem_active(gButtonNo, true);
 
-	//std::cout << "Displayed the Dialog!!" << std::endl;
 
 	return 1;
 
