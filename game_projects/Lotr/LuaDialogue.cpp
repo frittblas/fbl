@@ -11,6 +11,7 @@
 *
 */
 
+#include <iostream>
 #include "../../src/fbl.hpp"
 #include "../../dependencies/common/lua-5.4.1/include/lua.hpp"
 #include "Game.hpp"
@@ -142,7 +143,7 @@ int luaDisplayDialog(lua_State* lua_env) {
 	char* reply2 = (char*)lua_tostring(lua_env, 3);
 
 	// hide the old dialog first
-	luaHideDialog(NULL);
+	//luaHideDialog(NULL);
 
 	// activate the square
 	fbl_set_prim_active(gSquareId, true);
@@ -160,6 +161,8 @@ int luaDisplayDialog(lua_State* lua_env) {
 
 	fbl_set_ui_elem_active(gButtonYes, true);
 	fbl_set_ui_elem_active(gButtonNo, true);
+
+	std::cout << "Displayed the Dialog!!" << std::endl;
 
 	return 1;
 

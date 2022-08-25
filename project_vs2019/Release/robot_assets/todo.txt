@@ -48,7 +48,7 @@ Keep a lua table with all the robots' stats (and coroutine dialogue?) available 
 Exploration state:
 Make gameplay for exploration. Dialogue system with coroutines. Basics done!
 Make pathfind movement in exploration with mouseclick/touch.
-Make suuper simple tilemap editor that outputs lua code with create_sprite and set_sprite_xy.
+Make suuper simple tilemap editor that outputs lua code with create_sprite and set_sprite_xy. Done.
 Find a way to put the dragon quest slime in the game.
 
 
@@ -67,6 +67,6 @@ Use particle effects as much as possible. :) camera shake? yes?
 
 prefix filescope local variables with f_ and real globals with g_
 
-Add laser (raycasting).
+Add laser (raycasting). Done.
 
 The robots and maze-tiles could be kinematic physics objects.

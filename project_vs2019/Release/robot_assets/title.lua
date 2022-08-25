@@ -92,7 +92,7 @@ function tick_title()
 	if fbl_get_mouse_click(FBLMB_LEFT) > 0 or fbl_get_key_down(4) > 0 then
 		--fbl_set_window_mode(1) -- doesn't work in emscripten, or it did but not mobile? yes
 		--change_game_state(STATE_RUN_MAZE)
-		change_game_state(STATE_RUN_MAZE)
+		change_game_state(STATE_EXPLORE)
 	end
 
 
