@@ -108,7 +108,7 @@ void initLuaDialog() {
 	// hide
 	luaHideDialog(NULL);
 
-	fbl_load_ttf_font("edosz.ttf", 16);
+	//fbl_load_ttf_font("edosz.ttf", 16);
 	//fbl_load_ttf_font("anirm.ttf", 15);
 
 }
@@ -162,6 +162,7 @@ int luaDisplayDialog(lua_State* lua_env) {
 	fbl_update_text(gResponseYesId, 255, 255, 255, 0, reply1);
 	fbl_set_text_active(gResponseYesId, true);
 
+	// if you want a single ? or something, as a reply option, write a space after (in Lua) so it gets picked up by this.
 	if (strlen(reply2) > 1) {
 		fbl_update_text(gResponseNoId, 255, 255, 255, 0, reply2);
 		fbl_set_text_active(gResponseNoId, true);
@@ -201,7 +202,7 @@ int luaGetResponse(lua_State* lua_env) {
 
 	if (fbl_get_ui_elem_val(gButtonYes))
 		response = 1;
-	if (fbl_get_ui_elem_val(gButtonNo))
+	else if (fbl_get_ui_elem_active(gButtonNo) && fbl_get_ui_elem_val(gButtonNo))
 		response = 2;
 
 	lua_pushnumber(lua_env, (lua_Number)response);

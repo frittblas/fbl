@@ -96,11 +96,16 @@ function advance(state, iter)
 	if state ~= Stay then	-- only change state if not Staying (in dialogue)
 		setState(state)
 	end
-	print("reached!")
+	--print("reached!")
+	--debug_console(iter)
 	return iter
 end
 
+--
 -- dialogues for the different characters
+--
+-- If you don't want anything on lines 2 and 3, just leave one empy space (" ")! Nothing else.
+-- If you only want one character as reply 2, type "? ", so it gets picked up correctly.
 
 	g_dialogue1 = coroutine.create(function ()
 	local iter = 1
@@ -113,17 +118,17 @@ end
 			end
 		elseif iter == 2 then
 			if not g_wait_response then
-				disp_dw("If you answer no, you will be sent back to first dialog!", " ", " ", "Yes", "No")
+				disp_dw("If you answer no, you will be sent back", "to first dialog!", " ", "That's arostarous", "No")
 			elseif getResponse() == NO then
-				iter = advance(Explore, 1) -- reset dialogue and go to Explore state
+				iter = advance(Stay, 1)
 			elseif getResponse() == YES then
 				iter = advance(Stay, iter + 1) -- advance to next dialog and don't change state
 			end
 		elseif iter == 3 then
 			if not g_wait_response then
-				disp_dw("What's your favourite colour?", " ", " ", "Green", "Blue")
+				disp_dw("..", "What's your..", "..favourite colour?", "Green", "Blue")
 			elseif getResponse() == YES then
-				iter = advance(Stay, iter + 1) -- advance to next dialog and stay
+				iter = advance(Stay, iter + 1)
 			elseif getResponse() == NO then
 				iter = advance(Stay, iter + 2) -- advance 2 dialog steps and stay
 			end
@@ -131,11 +136,11 @@ end
 			if not g_wait_response then
 				disp_dw("You chose Green!", " ", " ", "Ok great.", "Can I go?")
 			elseif getResponse() == YES or getResponse() == NO then
-				iter = advance(Explore, 1) -- reset dialogue and go to Explore state
+				iter = advance(Explore, 1)
 			end
 		else
 			if not g_wait_response then
-				disp_dw("You chose Blue!", " ", " ", "Ok", " ")
+				disp_dw("You chose Blue!", " ", " ", "Ok", "")
 			elseif getResponse() == OK then
 				iter = advance(Explore, 1) -- reset dialogue and go to Explore state
 			end
@@ -150,8 +155,8 @@ end
 
 function fbl_lua_start()
 
-	make_strict()
-	g_current_dialogue = g_dialogue1
+	make_strict()	-- have to declare variables beforehand
+	g_current_dialogue = g_dialogue1	-- set curreent dialogue to something relevant
 	print("Lua dialogue system initialized!\n")
 	
 end
@@ -160,6 +165,9 @@ function fbl_lua_loop()
 
 	if isInDialogue() > 0 then
 	
+		-- first find the correct dialogue, somehow :)
+	
+		-- then resume it!
 		coroutine.resume(g_current_dialogue)
 		
 	end
