@@ -11,8 +11,6 @@
 *
 */
 
-#include <iostream>
-//#include <string>
 #include "../../src/fbl.hpp"
 #include "../../dependencies/common/lua-5.4.1/include/lua.hpp"
 #include "Game.hpp"

@@ -30,6 +30,7 @@ char *read_file_to_buf(const char* filename);
 int lua_engine_init(lua_State *lua_env);
 int lua_set_window_mode(lua_State *lua_env);
 int lua_set_assets_folder_name(lua_State* lua_env);
+int lua_fbl_log(lua_State* lua_env);
 int lua_set_clear_color(lua_State *lua_env);
 int lua_set_screen_wh(lua_State* lua_env);
 int lua_get_screen_w(lua_State *lua_env);
@@ -368,6 +369,7 @@ void register_fbl_functions_to_lua()
 	lua_register(fbl_lua_env, "fbl_engine_init", lua_engine_init);
 	lua_register(fbl_lua_env, "fbl_set_window_mode", lua_set_window_mode);
 	lua_register(fbl_lua_env, "fbl_set_assets_folder_name", lua_set_assets_folder_name);
+	lua_register(fbl_lua_env, "fbl_log", lua_fbl_log);
 	lua_register(fbl_lua_env, "fbl_set_clear_color", lua_set_clear_color);
 	lua_register(fbl_lua_env, "fbl_set_screen_wh", lua_set_screen_wh);
 	lua_register(fbl_lua_env, "fbl_get_screen_w", lua_get_screen_w);
@@ -657,6 +659,17 @@ int lua_set_assets_folder_name(lua_State* lua_env)
 	fbl_set_assets_folder_name(name);
 
 	return 1;
+
+}
+
+int lua_fbl_log(lua_State* lua_env)
+{
+
+	char* format = (char*)lua_tostring(lua_env, 1);
+
+	//int variable_args = (int)lua_tonumber(lua_env, 2); // NOTE: figure out
+
+	fbl_log(format);
 
 }
 

@@ -199,6 +199,7 @@ void fbl_end(void);
 int  fbl_engine_init(int w, int h, int fps);
 int  fbl_set_window_mode(unsigned int mode);
 void fbl_set_assets_folder_name(const char *name);		(normally you don't need to use this from Lua)
+void fbl_log(const char *msg, ...);
 void fbl_set_clear_color(int r, int g, int b, int a);
 void fbl_set_screen_wh(int w, int h);
 int  fbl_get_screen_w(void);

@@ -13,9 +13,6 @@
 
 #include "engine.h"
 
-/* for string formatting */
-#include <stdarg.h>
-
 /* functions only used by text.c */
 
 int destroy_text_object_image(int tag, void *text_obj, void *dummy);

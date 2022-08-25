@@ -13,7 +13,7 @@
 
 #include "engine.h"
 
-
+ 
 /* functions only used by fbl.c */
 
 void emscripten_loop_handler();
@@ -395,6 +395,28 @@ void fbl_set_assets_folder_name(const char *name)
 #else
 	strcpy(name_of_assets_folder, name);
 #endif
+
+}
+
+/*
+ * Log stuff :)
+ */
+void fbl_log(const char* msg, ...) {
+
+
+	/* put the formatted text in text_buf */
+
+	va_list args;
+	char text_buf[256];
+	va_start(args, msg);
+#ifdef _MSC_VER
+	vsprintf_s(text_buf, 256, msg, args);
+#else
+	vsprintf(text_buf, format, args);
+#endif
+	va_end(args);
+
+	SDL_Log(text_buf);
 
 }
 

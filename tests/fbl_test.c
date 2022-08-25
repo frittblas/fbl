@@ -210,7 +210,7 @@ void create_100_sprites()
 
 	}
 
-	printf("num sprites = %d\n", fbl_get_num_sprites());
+	fbl_log("num sprites = %d\n", fbl_get_num_sprites());
 
 }
 

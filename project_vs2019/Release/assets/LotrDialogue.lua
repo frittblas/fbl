@@ -118,7 +118,7 @@ end
 			end
 		elseif iter == 2 then
 			if not g_wait_response then
-				disp_dw("If you answer no, you will be sent back", "to first dialog!", " ", "That's arostarous", "No")
+				disp_dw("If you answer no, you will be sent back", "to first dialog!", " ", "That's arostarous", "That's arostarous")
 			elseif getResponse() == NO then
 				iter = advance(Stay, 1)
 			elseif getResponse() == YES then
@@ -157,7 +157,7 @@ function fbl_lua_start()
 
 	make_strict()	-- have to declare variables beforehand
 	g_current_dialogue = g_dialogue1	-- set curreent dialogue to something relevant
-	print("Lua dialogue system initialized!\n")
+	print("Lua dialogue system initialized!")
 	
 end
 

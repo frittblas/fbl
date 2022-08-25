@@ -221,7 +221,7 @@ Add set_ui_elem_val to lua! Done!
 start SceneEdit - 95% done change kinematic to terrain (walkable/solid/water)
 start Lotro - starting now! Going well.
 
-add fbl_log()
+add fbl_log() Done! (Lua version of format, ... - stuff needs fixing!)
 
 maybe add:
 
