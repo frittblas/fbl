@@ -97,8 +97,8 @@ void ScenEdit::setupGUI() {
 	const int lMargin = 300; // Gui text gets drawn this far from the right
 
 	// load textures
-	fbl_load_ui_texture((char*)"ui_.png");	// load ui texture
-	fbl_load_texture((char*)"spritesheet_.png");	// load sprite texture
+	fbl_load_ui_texture((char*)"ui_2.png");	// load ui texture
+	fbl_load_texture((char*)"spritesheet.png");	// load sprite texture
 
 	// load font
 	fbl_load_ttf_font("edosz.ttf", 18);

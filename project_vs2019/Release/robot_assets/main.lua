@@ -80,7 +80,7 @@ function fbl_lua_start()
 	fbl_set_sprite_align(FBL_SPRITE_ALIGN_CENTER)	-- sprites are drawn from top left corner???????????
 
 
-	fbl_load_ui_texture("gfx/ui.png")	-- load ui texture
+	fbl_load_ui_texture("gfx/ui_1.png")	-- load ui texture
 	
 	-- big font normal
 	fbl_load_ttf_font("font/roboto.ttf", 50)

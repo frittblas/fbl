@@ -162,7 +162,7 @@ int luaDisplayDialog(lua_State* lua_env) {
 	fbl_set_ui_elem_active(gButtonYes, true);
 	fbl_set_ui_elem_active(gButtonNo, true);
 
-	std::cout << "Displayed the Dialog!!" << std::endl;
+	//std::cout << "Displayed the Dialog!!" << std::endl;
 
 	return 1;
 

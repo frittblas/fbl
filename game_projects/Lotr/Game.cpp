@@ -57,8 +57,8 @@ bool Game::init() {
 		// do stuff if no mem
 	}
 
-	fbl_load_texture((char*)"spritesheet_.png");	// load sprite texture
-	fbl_load_ui_texture((char*)"ui.png");			// load ui texture
+	fbl_load_texture((char*)"spritesheet.png");	// load sprite texture
+	fbl_load_ui_texture((char*)"ui_1.png");			// load ui texture
 
 	fbl_lua_init("LotrDialogue.lua", registerFuncsToLua);
 

@@ -101,7 +101,7 @@ void fbl_start()
 
 	/* ui */
 
-	fbl_load_ui_texture("ui.png");
+	fbl_load_ui_texture("ui_1.png");
 
 	left_button = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, NULL);
 	right_button = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, NULL);
@@ -115,7 +115,7 @@ void fbl_start()
 	//fbl_set_fps_locked(false);
 	//fbl_set_system_delay_ms(0);
 
-	//fbl_create_threadpool();
+	fbl_create_threadpool();
 
 }
 
@@ -160,26 +160,36 @@ void setup_demo_1()
 
 
 	fbl_load_texture("spritesheet.png");
-	fbl_create_sprite(0, 0, 32, 64, 0);
-	fbl_create_sprite(32, 0, 32, 64, 0);
-	fbl_create_sprite(0, 0, 32, 64, 0);
-	fbl_create_sprite(0, 0, 32, 64, 0);
-	fbl_create_sprite(0, 0, 32, 64, 0);
 
-	fbl_fix_sprite_to_screen(0, true);
+
+	// normally you should save the id returned by create_sprite() to an int variable.
+	int old_man = fbl_create_sprite(0, 0, 32, 32, 0); // id 0
+	fbl_create_sprite(32, 0, 32, 32, 0); // id 1
+	fbl_create_sprite(0, 0, 32, 32, 0);	// id 2 etc
+	fbl_create_sprite(0, 0, 32, 32, 0);
+	fbl_create_sprite(0, 0, 32, 32, 0);
+
+	fbl_fix_sprite_to_screen(old_man, true);
+	fbl_set_sprite_active(old_man, false);
+
+	// the movable sprite
+	fbl_set_sprite_xy(2, x + 54, y + 22);
 
 	printf("num sprites = %d\n", fbl_get_num_sprites());
 
 	fbl_load_ttf_font("edosz.ttf", 30);
-	fbl_create_text(0, 255, 0, 255, "fps = %d", x);
-	fbl_create_text(0, 0, 255, 255, "delay =  %d", x);
-	fbl_create_text(255, 0, 0, 255, "Press space to create 100 animated sprites %d", x);
+	fbl_create_text(0, 155, 0, 255, "fps = %d", x);
+	fbl_create_text(0, 0, 155, 255, "delay =  %d", x);
+	fbl_create_text(155, 0, 0, 255, "Press space to create 100 animated sprites.");
+	fbl_create_text(255, 255, 255, 255, "Move spinning sprite with wasd and camera with arrows.");
 
 	fbl_fix_text_to_screen(0, false);
 
+	// set the text coords using "hard" id's (not recommended), instead save the id to a variable with meaningful name.
 	fbl_set_text_xy(0, 0, 100);
 	fbl_set_text_xy(1, 0, 200);
 	fbl_set_text_xy(2, 0, 300);
+	fbl_set_text_xy(3, 100, 510);
 
 	printf("num text objects = %d\n", fbl_get_num_text_objects());
 
@@ -193,16 +203,14 @@ void create_100_sprites()
 
 	for (int i = 0; i < 100; i++) {
 
-		lol = fbl_create_sprite(0, 0, 32, 64, 0);
-		fbl_set_sprite_xy(lol, fbl_get_mouse_logical_x() + fbl_get_camera_x() + rand() % 100, fbl_get_mouse_logical_y() + fbl_get_camera_y() + rand() % 100);
+		lol = fbl_create_sprite(192, 32, 32, 32, 0);
+		fbl_set_sprite_xy(lol, fbl_get_mouse_logical_x() + fbl_get_camera_x() + rand() % 150, fbl_get_mouse_logical_y() + fbl_get_camera_y() + rand() % 150);
 
-		//fbl_set_sprite_animation(lol, true, 4, 24, false);
-		fbl_set_sprite_animation(lol, true, 0, 0, 32, 64, 4, 24, true);
-
-		if (lol % 10 == 0)
-			printf("num sprites = %d\n", fbl_get_num_sprites());
+		fbl_set_sprite_animation(lol, true, 192, 32, 32, 32, 2, 24, true);
 
 	}
+
+	printf("num sprites = %d\n", fbl_get_num_sprites());
 
 }
 
@@ -222,7 +230,6 @@ void run_demo_1()
 	if (x > 300) x = 301;
 
 	if (x == 200) {
-		//fbl_delete_sprite(4); // nothing happens as it should ??????????? what does this mean lol just move on
 		fbl_set_sprite_active(1, false);
 		fbl_set_sprite_flip(4, 3);
 		printf("num sprites = %d\n", fbl_get_num_sprites());
@@ -239,12 +246,16 @@ void run_demo_1()
 		printf("num sprites = %d\n", fbl_get_num_sprites());
 		printf("num text objs = %d\n", fbl_get_num_text_objects());
 
+		// deactivate sprites 3, 4
+		fbl_set_sprite_active(3, false);
+		fbl_set_sprite_active(4, false);
+
 	}
 
 
 	if (x % 3 == 0) {
-		fbl_update_text(0, 0, 255, 0, 255, "fps = %d", fbl_get_fps());
-		fbl_update_text(1, 0, 0, 255, 255, "delay = %d", fbl_get_system_delay_ms());
+		fbl_update_text(0, 0, 155, 0, 255, "fps = %d", fbl_get_fps());
+		fbl_update_text(1, 0, 0, 155, 255, "delay = %d", fbl_get_system_delay_ms());
 	}
 
 	static int loly = 0;
@@ -264,8 +275,6 @@ void run_demo_1()
 
 		fbl_set_fps_locked(false);
 		printf("fps unlocked\n");
-
-		//fbl_lua_do_file("main_.lua");
 
 		fbl_set_sprite_layer(2, 1);
 		fbl_sort_sprites(FBL_SORT_BY_LAYER);
@@ -288,7 +297,7 @@ void run_demo_1()
 	else if (fbl_get_key_down(FBLK_LEFT)) fbl_set_camera_xy(fbl_get_camera_x() - 2, fbl_get_camera_y());
 	else if (fbl_get_key_down(FBLK_RIGHT)) fbl_set_camera_xy(fbl_get_camera_x() + 2, fbl_get_camera_y());
 
-	/* move a sprite with wasd */
+	/* move a sprite (id 2) with wasd */
 
 	if (fbl_get_key_down(FBLK_W)) fbl_set_sprite_xy(2, fbl_get_sprite_x(2), fbl_get_sprite_y(2) - 2);
 	if (fbl_get_key_down(FBLK_S)) fbl_set_sprite_xy(2, fbl_get_sprite_x(2), fbl_get_sprite_y(2) + 2);
@@ -304,8 +313,8 @@ void run_demo_1()
 
 
 
-	//fbl_set_sprite_angle(2, angle);
-	//angle += 1.3;
+	fbl_set_sprite_angle(2, angle);
+	angle += 1.3;
 
 
 }
@@ -326,7 +335,7 @@ void setup_demo_2(void)
 
 	fbl_phys_init();
 
-	fbl_load_texture("ui.png");
+	fbl_load_texture("ui_1.png");
 	fbl_create_sprite(0, 0, 32, 32, 16);
 	fbl_create_sprite(0, 0, 32, 32, 16);
 
@@ -340,8 +349,6 @@ void setup_demo_2(void)
 
 
 	/* create some ui elements */
-
-	//fbl_load_ui_texture("ui.png");
 	sound_button = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 32, 32, 32, /*pressed_button*/NULL); // if NULL instead of function pointer, check fbl_get_ui_elem_val()
 	fbl_set_ui_elem_xy(sound_button, 100, 100);
 	music_button = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 32, 32, 32, /*pressed_button*/NULL); // if NULL instead of function pointer, check fbl_get_ui_elem_val()
@@ -380,7 +387,7 @@ void setup_demo_2(void)
 	fbl_create_prim(FBL_POINT, 400, 200, 0, 0, 40, true, false); // no need to store id for measly pixel :(
 
 
-	ping_sound = fbl_load_sound("door.ogg");
+	ping_sound = fbl_load_sound("ping.ogg");
 
 	fbl_load_music("song_99.ogg");	// only one piece of music is loaded at a time
 
@@ -458,13 +465,6 @@ void setup_demo_3()
 
 	fbl_set_sprite_align(FBL_SPRITE_ALIGN_CENTER);
 
-	/*
-	lol = fbl_create_sprite(0, 0, 32, 64);
-	fbl_set_sprite_xy(lol, 100, 100);
-	lol = fbl_create_sprite(0, 0, 32, 64);
-	fbl_set_sprite_xy(lol, 200, 200);
-	*/
-
 
 	fbl_create_prim(FBL_LINE, 10, 300, 630, 360, 0, false, false);
 	fbl_set_prim_color(0, 255, 0, 0, 255);
@@ -478,21 +478,18 @@ void setup_demo_3()
 	fbl_set_prim_color(2, 255, 0, 0, 255);
 	fbl_set_prim_phys(2, true, FBL_PHYS_STATIC, false);
 
-
-	fbl_create_sprite(0, 0, 20, 20, 0);
+	// slime
+	fbl_create_sprite(0, 64, 32, 32, 0);
 	fbl_set_sprite_xy(0, LOGICAL_RES_W / 2, LOGICAL_RES_H / 2 - 64);
 
 
 	/* create 80 boxes with physics */
 
-	for (i = 1; i < 80; i++) {
+	for (i = 1; i < 50; i++) {
 
-		//lol = fbl_create_prim(FBL_CIRCLE, rand() % 660, rand() % 330, 1, 360, rand() % 30 + 10, false, false);
-		//fbl_set_prim_color(lol, 0, 0, 255, 50);
-
-		lol = fbl_create_sprite(0, 0, 20, 20, 0);
+		lol = fbl_create_sprite(32, 480, 32, 32, 0);
 		fbl_set_sprite_xy(lol, rand() % 600 + 20, rand() % 300);
-		if (lol > 70)
+		if (lol < 5)
 			fbl_set_sprite_phys(lol, true, FBL_RECT, FBL_PHYS_KINEMATIC, true);
 		else
 			fbl_set_sprite_phys(lol, true, FBL_RECT, FBL_PHYS_DYNAMIC, true);
@@ -504,10 +501,6 @@ void setup_demo_3()
 	fbl_set_system_delay_ms(0);
 	*/
 
-
-	//fbl_pathf_init();
-
-
 	flag = 1;
 
 	start_time = fbl_timer_get_ticks();
@@ -518,7 +511,7 @@ void setup_demo_3()
 void run_demo_3()
 {
 
-
+	// move slime (id 0)
 	if (fbl_get_mouse_click(FBLMB_LEFT))
 	{
 
@@ -528,7 +521,7 @@ void run_demo_3()
 	}
 
 
-
+	// remove slime after 10 sec
 	if (fbl_timer_get_ticks() > start_time + 10000) {
 		if (flag) {
 			printf("10 seconds passed.\n");
@@ -575,7 +568,7 @@ void setup_demo_4()
 
 	fbl_set_window_title("Demo 4: Pathfinding");
 
-	fbl_load_texture("spritesheet_.png");
+	fbl_load_texture("spritesheet.png");
 
 
 	fbl_pathf_set_path_status(0, FBL_PATHF_NOT_STARTED);
@@ -959,7 +952,7 @@ void setup_demo_8()
 
 	fbl_phys_init();	// have to call this before using rays
 
-	fbl_load_texture("spritesheet_.png");
+	fbl_load_texture("spritesheet.png");
 
 	fbl_set_sprite_align(FBL_SPRITE_ALIGN_CENTER);
 
