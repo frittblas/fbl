@@ -31,8 +31,9 @@ Dialogue::~Dialogue() {
 
 void Dialogue::tick(Game& g) {
 
-	int num = std::rand() / ((RAND_MAX + 1u) / 50); // random numbers from 0-49
 
+
+	int num = std::rand() / ((RAND_MAX + 1u) / 50); // random numbers from 0-49
 	if (num == 0)
 		std::cout << "Tick dialogue!" << std::endl;
 

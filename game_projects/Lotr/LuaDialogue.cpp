@@ -70,7 +70,7 @@ void initLuaDialog() {
 	fbl_set_prim_color(gOutlineId, 255, 255, 255, 255);
 	fbl_fix_prim_to_screen(gOutlineId, true);
 
-	fbl_load_ttf_font("anirm.ttf", 15);
+	fbl_load_ttf_font("ringm.ttf", 18);
 
 	// create 1st line of text
 	gText1Id = fbl_create_text(255, 255, 255, 0, " ");
@@ -111,7 +111,18 @@ void initLuaDialog() {
 
 }
 
-// lotr Lua implementation
+void unInitLuaDialog() {
+
+	fbl_destroy_all_prims();
+	fbl_destroy_all_text_objects();
+	fbl_destroy_all_ui_elems();
+
+}
+
+//
+//	Here follows the high level gameplay functions that you can call from the Lua dialogue system.
+//
+
 int luaIsInDialogue(lua_State* lua_env) {
 
 	int inDialogue = 0;

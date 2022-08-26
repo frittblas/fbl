@@ -118,7 +118,7 @@ end
 			end
 		elseif iter == 2 then
 			if not g_wait_response then
-				disp_dw("If you answer no, you will be sent back", "to first dialog!", " ", "That's arostarous", "That's arostarous")
+				disp_dw("If you answer no, you will be sent back", "to first dialog!", " ", "That's arosta..", "That's arostarous!")
 			elseif getResponse() == NO then
 				iter = advance(Stay, 1)
 			elseif getResponse() == YES then
