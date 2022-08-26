@@ -163,13 +163,15 @@ end
 
 function fbl_lua_loop()
 
-	if isInDialogue() > 0 then
+	if getState() == Dialogue then
 	
 		-- first find the correct dialogue, somehow :)
 	
 		-- then resume it!
 		coroutine.resume(g_current_dialogue)
 		
+	elseif getState() == Title then
+		-- reset the iter-variables in all the coroutines once!
 	end
 
 end

@@ -66,3 +66,12 @@ struct Camera
     uint8_t deadZoneW, deadZoneH;    // deadzone size in tiles
 
 };
+
+// Dialogue trigger component, player starts dialogue with entities with this.
+struct DialogueTrigger
+{
+
+    uint8_t dialogueId; // id of which dialogue to use in the Lua system
+
+
+};

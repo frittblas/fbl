@@ -25,14 +25,13 @@ extern "C" {
 extern Game* gGame;
 
 // id's for the dialog-box
-
 int gSquareId, gOutlineId, gText1Id, gText2Id, gText3Id;
 int gResponseYesId, gResponseNoId;
 int gButtonYes, gButtonNo;
 
 
 // lotr Lua prototypes
-int luaIsInDialogue(lua_State* lua_env);
+int luaGetState(lua_State* lua_env);
 int luaSetState(lua_State* lua_env);
 int luaDisplayDialog(lua_State* lua_env);
 int luaHideDialog(lua_State* lua_env);
@@ -43,7 +42,7 @@ int luaGetResponse(lua_State* lua_env);
 void registerFuncsToLua()
 {
 	
-	lua_register(fbl_lua_env, "isInDialogue", luaIsInDialogue);
+	lua_register(fbl_lua_env, "getState", luaGetState);
 	lua_register(fbl_lua_env, "setState", luaSetState);
 
 	lua_register(fbl_lua_env, "displayDialog", luaDisplayDialog);
@@ -123,14 +122,10 @@ void unInitLuaDialog() {
 //	Here follows the high level gameplay functions that you can call from the Lua dialogue system.
 //
 
-int luaIsInDialogue(lua_State* lua_env) {
+int luaGetState(lua_State* lua_env) {
 
-	int inDialogue = 0;
-
-	if(gGame->mState->get() == GameState::StateType::Dialogue)
-		inDialogue = 1;
-
-	lua_pushnumber(lua_env, (lua_Number)inDialogue);
+	
+	lua_pushnumber(lua_env, (lua_Number)static_cast<int>(gGame->mState->get()));
 
 	return 1;
 

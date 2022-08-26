@@ -146,6 +146,7 @@ void ScenEdit::setupGUI() {
 	tileSettings.id = fbl_create_sprite(tileSettings.textureX, tileSettings.textureY, tileSize, tileSize, 0);
 	fbl_set_sprite_xy(tileSettings.id, fbl_get_screen_w() - 96 - 16, 64 - 16); // compensate for ui center-drawing
 	fbl_fix_sprite_to_screen(tileSettings.id, true);
+	fbl_set_sprite_layer(tileSettings.id, 1);	// make sure the current drawing tile is on top, check resetMap() aswell
 
 	// text showing map size
 	mapWtextId = fbl_create_text(255, 255, 255, 255, (char*)"Map width: %d (+)", mapWidth);
@@ -280,6 +281,13 @@ void ScenEdit::getInput() {
 	// reset map with r
 	if (fbl_get_key_down(FBLK_R) && keyAccess == 0) {
 		resetMap(screenWidthInTiles, screenHeightInTiles);	// reset map to fit screen
+		keyAccess = spdSlow;
+	}
+
+	// sort tiles with s
+	if (fbl_get_key_down(FBLK_Z) && keyAccess == 0) {
+		fbl_sort_sprites(FBL_SORT_BY_LAYER);
+		std::cout << "Sorted sprites!" << std::endl;
 		keyAccess = spdSlow;
 	}
 
@@ -542,6 +550,7 @@ void ScenEdit::resetMap(uint32_t w, uint32_t h) {
 		tileSettings.id = fbl_create_sprite(tileSettings.textureX, tileSettings.textureY, tileSize, tileSize, 0);
 		fbl_set_sprite_xy(tileSettings.id, fbl_get_screen_w() - 96 - 16, 64 - 16); // compensate for ui center-drawing
 		fbl_fix_sprite_to_screen(tileSettings.id, true);
+		fbl_set_sprite_layer(tileSettings.id, 1);	// current drawing tile is on top (requires sorting with Z)
 
 		// recreate the marMarker prim, with new size
 		fbl_delete_prim(mapMarkerId);
