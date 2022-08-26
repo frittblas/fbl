@@ -138,6 +138,9 @@
     <ClCompile Include="..\..\game_projects\Lotr\LuaDialogue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\game_projects\Lotr\Ecs\Systems\DialogueTrigSystem.cpp">
+      <Filter>Source Files\Ecs\Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\fbl.h">
@@ -223,6 +226,9 @@
     </ClInclude>
     <ClInclude Include="..\..\game_projects\Lotr\LuaDialogue.hpp">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Lotr\Ecs\Systems\DialogueTrigSystem.hpp">
+      <Filter>Source Files\Ecs\Systems</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

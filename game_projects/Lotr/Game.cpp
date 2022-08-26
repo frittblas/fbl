@@ -144,6 +144,8 @@ void Game::loadLevel() {
 	}
 	*/
 
+	mChars->setupNpc(*this);
+
 	mChars->setupPlayerGfx(mEcs, mSysManager);
 
 }

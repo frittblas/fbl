@@ -10,17 +10,20 @@
 *
 */
 
-#include "Chars.hpp"
-
+#include "../../tools/ScenEdit/ScenEdit.hpp"
 #include "Ecs/Ecs.hpp"
 #include "Ecs/Components.hpp"
 
+#include "Game.hpp"
 #include "SysManager.hpp"
+
+#include "Chars.hpp"
 
 #include "Ecs/Systems/SpriteSystem.hpp"
 #include "Ecs/Systems/PathSystem.hpp"
-#include "Ecs/Systems/MouseCtrlSystem.hpp"
-#include "Ecs/Systems/CameraSystem.hpp"
+//#include "Ecs/Systems/MouseCtrlSystem.hpp"
+//#include "Ecs/Systems/CameraSystem.hpp"
+//#include "Ecs/Systems/DialogueTrigSystem.hpp"
 
 // Chars-class implementation
 
@@ -53,6 +56,7 @@ void Chars::setupPlayer(Coordinator* mEcs, SysManager* mSysManager) {
 									// x  y	 damp  w  h
 	mEcs->AddComponent(mFrodo, Camera{ 0, 0, 0.05, 2, 2 });
 
+
 	//mSysManager->mSpriteSystem->Init(*this->mEcs);
 	mSysManager->mPathSystem->Init(*mEcs);
 	//mSysManager->mCameraSystem->Init(*mEcs);	// creates debug rect for camera deadzone
@@ -69,5 +73,37 @@ void Chars::setupPlayerGfx(Coordinator* mEcs, SysManager* mSysManager) {
 
 	// set up graphics for the player
 	mSysManager->mSpriteSystem->Init(*mEcs);
+
+}
+
+void Chars::setupNpc(Game& g) {
+
+	// Npc characters start at tile->type == 10
+	// type 0 - 9 are reserved for different terrain
+
+	for (int i = 0; i < Game::MapW; i++) {
+		for (int j = 0; j < Game::MapH; j++) {
+			int index = i + g.mMap->mapWidth * j;
+			if (g.mMap->tile[index] != nullptr)
+				if (g.mMap->tile[index]->type > 9)
+
+					switch (g.mMap->tile[index]->type) {
+
+					case 10 :	// Npc with type 10 (-10) = 0 = Slime :)
+
+						g.mChars->mNpc.push_back(g.mEcs->CreateEntity());
+						int id = g.mChars->mNpc.front();
+						uint16_t x = g.mMap->tile[index]->x;
+						uint16_t y = g.mMap->tile[index]->y;
+						uint8_t dialogueId = g.mMap->tile[index]->type - 10;
+						g.mEcs->AddComponent(id, Position{ x, y });
+						g.mEcs->AddComponent(id, DialogueTrigger{ dialogueId });
+						break;
+
+					}
+					
+		}
+	}
+
 
 }
