@@ -670,6 +670,8 @@ int lua_fbl_log(lua_State* lua_env)
 	//int variable_args = (int)lua_tonumber(lua_env, 2); // NOTE: figure out
 
 	fbl_log(format);
+	
+	return 1;
 
 }
 

@@ -412,7 +412,7 @@ void fbl_log(const char* msg, ...) {
 #ifdef _MSC_VER
 	vsprintf_s(text_buf, 256, msg, args);
 #else
-	vsprintf(text_buf, format, args);
+	vsprintf(text_buf, msg, args);
 #endif
 	va_end(args);
 
