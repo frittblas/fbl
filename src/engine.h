@@ -48,7 +48,7 @@
 
 /* fbl version */
 
-#define FBL_VERSION "0.9.8"
+#define FBL_VERSION "0.9.9"
 
 /* engine struct */
 

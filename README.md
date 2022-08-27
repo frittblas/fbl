@@ -10,7 +10,7 @@ Planned platforms: MacOSX (used to work but don't have a mac anymore), IOS (prob
 
 Started March 6th 2017.
 
-Features (current ver. 0.9.8):
+Features (current ver. 0.9.9):
 
 - Sprite engine
 - Primitives
@@ -25,6 +25,8 @@ Features (current ver. 0.9.8):
 - Lua scripting
 - Multithreading
 - Raycasting
+- 2D lights
+- Scene editor (tilemaps)
 
 - Program in C/C++ or Lua or a mix.
 - Fast, lightweight engine and simple API.
@@ -32,16 +34,13 @@ Features (current ver. 0.9.8):
 
 upcoming features (ver 1.0)
 
-- 2d lights
-- Networking
-- Scene editor
-- Custom OpengGL renderer
-- 3D
+- Networking (SDL_net)
+
 
 /Hans
 
 
-~150 functions you can call (from C, C++ or Lua) to make 2d game programming
+More than 150 functions you can call (from C, C++ or Lua) to make 2d game programming
 easy and insanely fun :|
 
 Sprites, primitives, text objects, particle emitters
@@ -84,8 +83,7 @@ The fbl_get_key_up() and fbl_get_mouse_release() keep returning true until any a
 
 If you deactivate a sprite with physics, the physics will remain off even
 if you turn it on again. You have to manually turn on physics again, including
-any special shape or weight etc. The body needs to be removed entirely.
-(Just remove it from the space? And the add again?) Fix until 1.0.
+any special shape or weight etc.
 
 Use .png and .ogg and .ttf files for media.
 
@@ -109,7 +107,7 @@ then run-masta.bat
 
 The emscripten output is then located in emsdk-master\upstream\emscripten\fbl\project_emscripten\output
 
-A demo of the functionality: (cycle through demos with F1-F2): http://www.frittblas.se/fbl/output_2/fbl_test.html
+A demo of the functionality: (cycle through demos with F1-F2): http://www.frittblas.se/fbl/output/fbl_test.html
 Try clicking on stuff and use WASD and arrow keys to control the sprite and the camera in demo 1 :)
 
 to be continued..

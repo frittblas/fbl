@@ -1,5 +1,17 @@
 Release history:
 
+New in version 0.9.9 (2022-08-27):
+
+Added 2D-lights, using lightmaps and blendmodes, check out the demos!
+Added a complete tilemap editor (ScenEdit).
+Did a ton of work on the lotr-game (game_projects).
+Added logical resolution so apps can adapt to different resolutions.
+Many small fixes and refactoring.
+Bugfixes, optimisations.
+Next release (1.0) will add multiplayer support (SDL_net), then I'm done with fbl.
+
+Will start a new C++ OpenGL 3D engine.
+
 New in version 0.9.8 (2022-04-15):
 
 Added raycasting! New primitive type FBL_RAY.
