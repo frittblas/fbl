@@ -40,7 +40,7 @@ NO  = 2
 
 -- functions that can be called
 
--- isInDialogue() (returns 1 or 0)
+-- getState() (returns the above states, except Stay)
 -- setState(int state)
 -- displayDialog()
 -- hideDialog()
@@ -146,8 +146,6 @@ end
 			end
 		end
 
-		--debug_console(iter)
-		
 		coroutine.yield()
 		
 	end
@@ -166,6 +164,8 @@ function fbl_lua_loop()
 	if getState() == Dialogue then
 	
 		-- first find the correct dialogue, somehow :)
+		-- check getCurrentDoalogue() that returns an id
+		-- then set g_current_dialogue to the correct one.
 	
 		-- then resume it!
 		coroutine.resume(g_current_dialogue)

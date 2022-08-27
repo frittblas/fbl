@@ -19,6 +19,7 @@
 #include "../../Game.hpp"
 #include "../../GameState/GameState.hpp"
 #include "../../Chars.hpp"
+#include "../../LuaDialogue.hpp"
 
 #include "DialogueTrigSystem.hpp"
 
@@ -45,9 +46,13 @@ void DialogueTrigSystem::Update(Game& g) {
 
 		auto& player = g.mEcs->GetComponent<Position>(g.mChars->mFrodo);
 
-		if (pos.x == player.x + Game::TileSize)
-			g.mState->change(g, GameState::StateType::Dialogue);
+		if (pos.x == player.x + Game::TileSize && pos.y == player.y)
+			showTalkButton(true);
+		else
+			showTalkButton(false);
 
+		if(fbl_get_ui_elem_val(2))
+			g.mState->change(g, GameState::StateType::Dialogue);
 
 	}
 

@@ -162,7 +162,7 @@ create file fbl.hpp that contains:
 
 for 0.9.8 release {
 Add Cpp-support - DONE!
-Add working android port with Lua - works! Just clean up and make look good :) DONE! (will make look better)
+Add working android port with Lua - works! Just clean up and make look good :) DONE! (will make look even better)
 Make more streamlined cross compilation between win, web and android. DONE!
 When loading assets, fix android path. (no assets/) Use #ifdef __ANDROID__  DONE!
 const char* in platform_string thing, and .h-file DONE!
@@ -195,12 +195,13 @@ Remove the redundant emscripten chipmunk include dir. DONE!! nice..
 Make "NAME_OF_ASSET_FOLDER" or whatever an fbl-command. So you can change it in code. So the robot game works :) DONE!!
 
 Scale Android and fullscreen pc to fill the screen! experimenting, scale works great but mouse is off. Logical doesn't work (am I using it right?)
+DONE!! works lika da charm
 
 Fix one particle to screen. (don't worry, threads will help with performance w. alot of particles :) - will fix this when making lotr!
 
-Make android version concat the required .lua-files then run the lua load_string().
+Make android version concat the required .lua-files then run the lua load_string(). Hmm maybe not? Or do it manually?
 Raycast collission (shape gets returned, but who's shape is it? :)
-Delete demo 1. Make something else :) demo 1 is horrible.
+Delete demo 1. Make something else :) demo 1 is horrible. Ok fixed it to be slightly better :)
 
 Add set_sprite_image to lua! Done!
 
@@ -208,7 +209,7 @@ Add get_texture_wh to fbl and lua? Done!
 
 something buggy about ui elements/prim/rect fix it :) (kinda solved: unfilled prim rect is drawn 2x the size, just deal with it)
 ok narrowed it down to rect (not circle) is twice as fat as it should! Find other instances of rect pls :)
-ok fbl rect is not great, it always gets draw twice the size, and the culling is not good either.
+ok fbl rect is not great, it always gets drawn twice the size, and the culling is not perfect either..
 just add a up left aligned rect with normal size to list of prims for now. done.
 
 Figure out how to compile C++ projects with emscripten (mixed with C), maybe compile fbl as lib? fbl.bc, then em++ scenEdit.cpp?
@@ -218,7 +219,7 @@ Made bat files: build-fbl-lib.bat and build-scenedit-fbl-lib.bat
 
 Add set_ui_elem_val to lua! Done!
 
-start SceneEdit - 95% done change kinematic to terrain (walkable/solid/water)
+start SceneEdit - 95% done change kinematic to terrain (walkable/solid/water).. DONE, including terrain (tile-type)!
 start Lotro - starting now! Going well.
 
 add fbl_log() Done! (Lua version of format, ... - stuff needs fixing!)
@@ -237,13 +238,17 @@ extern "C" {
 
 (add this to all fbl *.c-files, so everything can be compiled as C++ aswell as C)
 
+remove alpha-byte in particle struct, it's not needed! :) (or change to rotation or angle)
+
+0.99 release is very soon!
+
 }
 
 
 for 1.0 {
 
 SDL_net
-remove alpha-byte in particle struct, it's not needed! :) (or change to rotation or angle)
+
 
 }
 

@@ -17,3 +17,5 @@ void registerFuncsToLua();
 // note the difference between dialogue and dialog :)
 void initLuaDialog();
 void unInitLuaDialog();
+
+void showTalkButton(bool set);

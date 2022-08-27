@@ -16,6 +16,8 @@
 #include "Game.hpp"
 #include "GameState/GameState.hpp"
 
+#include "LuaDialogue.hpp"
+
 //  use the correct lua environment (from fbl)
 extern "C" {
 	extern lua_State* fbl_lua_env;
@@ -28,6 +30,10 @@ extern Game* gGame;
 int gSquareId, gOutlineId, gText1Id, gText2Id, gText3Id;
 int gResponseYesId, gResponseNoId;
 int gButtonYes, gButtonNo;
+int gTextTalk, gButtonTalk;
+
+// id of the current dialogue to start
+int currentDialogueId = 0;
 
 
 // lotr Lua prototypes
@@ -97,12 +103,22 @@ void initLuaDialog() {
 	fbl_set_text_xy(gResponseNoId, x + 30, y + 64);
 
 	// ui yes / no and Ok buttons
-	gButtonYes = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, 0);
+	gButtonYes = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, NULL);
 	fbl_set_ui_elem_xy(gButtonYes, x - 215, y + 64);
-	gButtonNo = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, 0);
+	gButtonNo = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, NULL);
 	fbl_set_ui_elem_xy(gButtonNo, x, y + 64);
 
+	// the "Talk" text and button
+	gTextTalk = fbl_create_text(255, 255, 255, 0, "Talk");
+	fbl_set_text_align(gTextTalk, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(gTextTalk, Game::LogicalResW / 2, 32);
+
+	gButtonTalk = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, NULL);
+	fbl_set_ui_elem_xy(gButtonTalk, Game::LogicalResW / 2 - 32, 32);
+
+
 	// hide
+	showTalkButton(false);
 	luaHideDialog(NULL);
 
 	//fbl_load_ttf_font("edosz.ttf", 16);
@@ -115,6 +131,13 @@ void unInitLuaDialog() {
 	fbl_destroy_all_prims();
 	fbl_destroy_all_text_objects();
 	fbl_destroy_all_ui_elems();
+
+}
+
+void showTalkButton(bool set) {
+
+	fbl_set_text_active(gTextTalk, set);
+	fbl_set_ui_elem_active(gButtonTalk, set);
 
 }
 
