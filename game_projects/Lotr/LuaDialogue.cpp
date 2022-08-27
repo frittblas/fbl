@@ -78,12 +78,12 @@ void initLuaDialog() {
 	fbl_load_ttf_font("ringm.ttf", 18);
 
 	// create 1st line of text
-	gText1Id = fbl_create_text(255, 255, 255, 0, " ");
+	gText1Id = fbl_create_text(255, 255, 255, 0, (char*)" ");
 	fbl_set_text_align(gText1Id, FBL_ALIGN_LEFT);
 	fbl_set_text_xy(gText1Id, x - 230, y - 70);
 
 	// 2nd line
-	gText2Id = fbl_create_text(255, 255, 255, 0, " ");
+	gText2Id = fbl_create_text(255, 255, 255, 0, (char*)" ");
 	fbl_set_text_align(gText2Id, FBL_ALIGN_LEFT);
 	fbl_set_text_xy(gText2Id, x - 230, y - 30);
 
@@ -93,12 +93,12 @@ void initLuaDialog() {
 	fbl_set_text_xy(gText3Id, x - 230, y + 10);
 
 	// Yes-type response, or single "ok"
-	gResponseYesId = fbl_create_text(255, 255, 255, 0, "Yes");
+	gResponseYesId = fbl_create_text(255, 255, 255, 0, (char*)"Yes");
 	fbl_set_text_align(gResponseYesId, FBL_ALIGN_LEFT);
 	fbl_set_text_xy(gResponseYesId, x - 185, y + 64);
 
 	// No-type response
-	gResponseNoId = fbl_create_text(255, 255, 255, 0, "No");
+	gResponseNoId = fbl_create_text(255, 255, 255, 0, (char*)"No");
 	fbl_set_text_align(gResponseNoId, FBL_ALIGN_LEFT);
 	fbl_set_text_xy(gResponseNoId, x + 30, y + 64);
 
@@ -109,7 +109,7 @@ void initLuaDialog() {
 	fbl_set_ui_elem_xy(gButtonNo, x, y + 64);
 
 	// the "Talk" text and button
-	gTextTalk = fbl_create_text(255, 255, 255, 0, "Talk");
+	gTextTalk = fbl_create_text(255, 255, 255, 0, (char*)"Talk");
 	fbl_set_text_align(gTextTalk, FBL_ALIGN_LEFT);
 	fbl_set_text_xy(gTextTalk, Game::LogicalResW / 2, 32);
 
