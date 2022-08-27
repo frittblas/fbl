@@ -16,10 +16,14 @@ project_vs2019/SceneEdit/Release
 project_vs2019/SceneEdit/x64
 
 project_vs2019/Debug/
-project_vs2019/x64/
+
+project_vs2019/x64/Release/*.exe
+project_vs2019/x64/Release/*.lib
+project_vs2019/x64/Release/*.pdb
+project_vs2019/x64/Release/*.exp
+
 project_vs2019/Release/*.exe
 project_vs2019/Release/*.lib
 project_vs2019/Release/*.pdb
 project_vs2019/Release/*.exp
 
-project_emscripten/output/

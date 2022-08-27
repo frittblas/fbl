@@ -1,0 +1,12 @@
+--
+--
+--	ROBOT GAME
+--
+--	skill.lua
+--
+--	Contains skill stuff
+--
+--	Hans Strömquist 2022
+--
+--
+

@@ -115,7 +115,7 @@ void fbl_start()
 	//fbl_set_fps_locked(false);
 	//fbl_set_system_delay_ms(0);
 
-	fbl_create_threadpool();
+	//fbl_create_threadpool();
 
 }
 

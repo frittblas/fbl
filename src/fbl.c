@@ -416,7 +416,7 @@ void fbl_log(const char* msg, ...) {
 #endif
 	va_end(args);
 
-	SDL_Log(text_buf);
+	SDL_Log("%s", text_buf);
 
 }
 
