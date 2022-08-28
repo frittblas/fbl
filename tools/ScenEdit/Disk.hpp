@@ -13,10 +13,7 @@
 
 #pragma once
 
-#include <fstream>
-
-#include "ScenEdit.hpp"
-
+class ScenEdit;
 
 class Disk {
 
@@ -30,8 +27,8 @@ class Disk {
 
         static Disk &getInstance();
 
-        static bool saveMap(ScenEdit& editor, std::string filename);    // save map as in text format
-        static bool loadMap(ScenEdit& editor, std::string filename);    // load text format map, this calls resetMap, which deletas all sprites!
-        static bool exportMapBin(ScenEdit& editor, std::string filename); // save map in binary format, can be loaded by fbl_load_scenedit_map()
+        static bool saveMap(ScenEdit& editor, std::string filename);    // save map in text format
+        static bool loadMap(ScenEdit& editor, std::string filename);    // load text format map, this calls resetMap, which deletes all sprites!
+        static bool loadMap_fbl(ScenEdit& editor, std::string filename);   // save map with RWops and with correct path on all platforms.
 
 };

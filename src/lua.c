@@ -248,9 +248,6 @@ int fbl_lua_init(const char *file, void (*reg_funcs)())
 	luaL_loadstring(fbl_lua_env, buf);
 	free(buf);
 #else
-	//char* buf = read_file_to_buf(new_path);
-	//luaL_loadstring(fbl_lua_env, buf);
-	//free(buf);
 	if (luaL_loadfile(fbl_lua_env, new_path)) {
 		fprintf(FBL_ERROR_OUT, "%s", lua_tostring(fbl_lua_env, -1));	// print error msg, including syntax errors, very helpful!
 	}

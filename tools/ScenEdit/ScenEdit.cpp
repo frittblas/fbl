@@ -13,7 +13,6 @@
 #include "ScenEdit.hpp"
 #include "GuiFuncs.hpp"
 
-
 // ScenEdit-class implementation
 
 ScenEdit::ScenEdit(bool runStandAlone) {
@@ -111,7 +110,7 @@ void ScenEdit::setupGUI() {
 	std::cout << "Delete tile with del or right mouse button." << std::endl;
 	std::cout << "Center the map with C and reset map with R." << std::endl;
 	std::cout << "Will load spritesheet.png and ui_2.png at the start." << std::endl;
-	std::cout << "Will save and load map.scn and export binary map.scb." << std::endl;
+	std::cout << "Will save and load map.scn." << std::endl;
 	std::cout << "Tile vector size: " << tile.size() << std::endl;
 
 	// dark grey, filled rect with alpha as bg, draw from middle 2X size
@@ -126,7 +125,7 @@ void ScenEdit::setupGUI() {
 	fbl_create_text(255, 255, 255, 255, (char*)"Animated:");
 	fbl_set_text_xy(1, fbl_get_screen_w() - lMargin, 350);
 
-	fbl_create_text(255, 255, 255, 255, (char*)"Save/Load/BinExp:");
+	fbl_create_text(255, 255, 255, 255, (char*)"Save/Load/Load_fbl:");
 	fbl_set_text_xy(2, fbl_get_screen_w() - lMargin, 510);
 
 	// gui buttons for selecting current tile to draw
@@ -209,7 +208,7 @@ void ScenEdit::setupGUI() {
 	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 96, 510);
 	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, loadMap));
 	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 64, 510);
-	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, exportBin));
+	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, loadMapFbl));
 	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 32, 510);
 
 	// create the map marker rect

@@ -104,10 +104,10 @@ void Game::update() {
 
 void Game::loadLevel() {
 
-	bool success = Disk::getInstance().loadMap(*mMap, "assets/map.scn"); // this calls fbl_destroy_all_sprites()
+	bool success = Disk::getInstance().loadMap_fbl(*mMap, "map.scn"); // this calls fbl_destroy_all_sprites()
 
 	if (success)
-		std::cout << "Loaded map from assets/map.scn" << std::endl;
+		std::cout << "Loaded map: map.scn" << std::endl;
 	else
 		std::cout << "Error loading map!" << std::endl;
 

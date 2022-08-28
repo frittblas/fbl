@@ -320,15 +320,15 @@ int loadMap(int x, int y) {
 
 }
 
-int exportBin(int x, int y) {
+int loadMapFbl(int x, int y) {
 
-	bool success = Disk::getInstance().exportMapBin(*gEditor, "assets/map.scb");
+	bool success = Disk::getInstance().loadMap_fbl(*gEditor, "map.scn");
 
 	if (success) {
-		std::cout << "Exported map to assets/map.scb" << std::endl;
+		std::cout << "Loaded map: map.scn" << std::endl;
 	}
 	else
-		std::cout << "Error exporting map!" << std::endl;
+		std::cout << "Error loading map!" << std::endl;
 
 	return 0;
 

@@ -33,4 +33,4 @@ int decAnimSpeed(int x, int y);
 
 int saveMap(int x, int y);
 int loadMap(int x, int y);
-int exportBin(int x, int y);
+int loadMapFbl(int x, int y);
