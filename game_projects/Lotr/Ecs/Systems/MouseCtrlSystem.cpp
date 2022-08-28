@@ -41,6 +41,7 @@ void MouseCtrlSystem::Update(Coordinator& ecs) {
 	for (auto const& entity : mEntities)
 	{
 
+		auto& pos = ecs.GetComponent<Position>(entity);
 		auto& path = ecs.GetComponent<Path>(entity);
 		auto& mCtrl = ecs.GetComponent<MouseCtrl>(entity);
 
@@ -59,7 +60,8 @@ void MouseCtrlSystem::Update(Coordinator& ecs) {
 			while (path.goalX % Game::TileSize != 0) path.goalX--;
 			while (path.goalY % Game::TileSize != 0) path.goalY--;
 
-			path.newPath = true;
+			if(!(pos.x == path.goalX && pos.y == path.goalY))	// can't click on yourself
+				path.newPath = true;
 
 			mCtrl.clicked = false;
 

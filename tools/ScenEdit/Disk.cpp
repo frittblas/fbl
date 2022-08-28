@@ -187,18 +187,19 @@ bool Disk::loadMap_fbl(ScenEdit& editor, std::string filename) {
     int num_words = 0;
     std::ofstream outFile;
 
+    /*
     outFile.open("out.txt", std::ios::out); // out = overwrite every time
 
     if (outFile.fail()) {
         return false;
     }
+    */
 
-    //for (auto x : buf_cpp)
     for (std::string::size_type i = 0; i < buf_cpp.size(); i++)
     {
-        //if (x == '\r') x = ' ';
-        //if (x == '\n') continue;
-        //if (x == ' ')
+
+        // NOTE: rewrite this someday :)
+
         if (buf_cpp[i] == '\r') {
             buf_cpp[i] = ' ';
             if(buf_cpp[i + 1] == '\n')
@@ -220,87 +221,87 @@ bool Disk::loadMap_fbl(ScenEdit& editor, std::string filename) {
                         std::cout << "Incorrect header for the map file!" << std::endl;
                         return false;
                     }
-                    outFile << word << std::endl;
+                    //outFile << word << std::endl;
                     break;
                 case 1:
                     editor.mapWidth = std::stoi(word);
-                    outFile << (uint32_t)editor.mapWidth << " ";
+                    //outFile << (uint32_t)editor.mapWidth << " ";
                     break;
                 case 2:
                     editor.mapHeight = std::stoi(word);
-                    outFile << (uint32_t)editor.mapHeight << " ";
+                    //outFile << (uint32_t)editor.mapHeight << " ";
                     break;
                 case 3:
                     editor.tileSize = std::stoi(word);
-                    outFile << (uint32_t)editor.tileSize << std::endl;
+                    //outFile << (uint32_t)editor.tileSize << std::endl;
                     // resize the current map to the new values, also setting the new tile size if that changed
                     editor.resetMap(editor.mapWidth, editor.mapHeight);
                     break;
                 case 4:
-                    editor.bgColorR = std::stoi(word);
-                    outFile << (uint32_t)editor.bgColorR << " ";
+                    editor.bgColorR = (uint8_t)std::stoi(word);
+                    //outFile << (uint32_t)editor.bgColorR << " ";
                     break;
                 case 5:
-                    editor.bgColorG = std::stoi(word);
-                    outFile << (uint32_t)editor.bgColorG << " ";
+                    editor.bgColorG = (uint8_t)std::stoi(word);
+                    //outFile << (uint32_t)editor.bgColorG << " ";
                     break;
                 case 6:
-                    editor.bgColorB = std::stoi(word);
-                    outFile << (uint32_t)editor.bgColorB << std::endl;
+                    editor.bgColorB = (uint8_t)std::stoi(word);
+                    //outFile << (uint32_t)editor.bgColorB << std::endl;
                     break;
                 case 7:
-                    editor.tintColorR = std::stoi(word);
-                    outFile << (uint32_t)editor.tintColorR << " ";
+                    editor.tintColorR = (uint8_t)std::stoi(word);
+                    //outFile << (uint32_t)editor.tintColorR << " ";
                     break;
                 case 8:
-                    editor.tintColorG = std::stoi(word);
-                    outFile << (uint32_t)editor.tintColorG << " ";
+                    editor.tintColorG = (uint8_t)std::stoi(word);
+                    //outFile << (uint32_t)editor.tintColorG << " ";
                     break;
                 case 9:
-                    editor.tintColorB = std::stoi(word);
-                    outFile << (uint32_t)editor.tintColorB << " ";
+                    editor.tintColorB = (uint8_t)std::stoi(word);
+                    //outFile << (uint32_t)editor.tintColorB << " ";
                     break;
                 case 10:
-                    editor.tintColorOn = std::stoi(word);
-                    outFile << (uint32_t)editor.tintColorOn << std::endl;
+                    editor.tintColorOn = (uint8_t)std::stoi(word);
+                    //outFile << (uint32_t)editor.tintColorOn << std::endl;
                     break;
 
                 // now the tile-data
                 case 11:
                     editor.tileSettings.x = std::stoi(word);
-                    outFile << (uint32_t)editor.tileSettings.x << " ";
+                    //outFile << (uint32_t)editor.tileSettings.x << " ";
                     break;
                 case 12:
                     editor.tileSettings.y = std::stoi(word);
-                    outFile << (uint32_t)editor.tileSettings.y << " ";
+                    //outFile << (uint32_t)editor.tileSettings.y << " ";
                     break;
                 case 13:
                     editor.tileSettings.textureX = std::stoi(word);
-                    outFile << (uint32_t)editor.tileSettings.textureX << " ";
+                    //outFile << (uint32_t)editor.tileSettings.textureX << " ";
                     break;
                 case 14:
                     editor.tileSettings.textureY = std::stoi(word);
-                    outFile << (uint32_t)editor.tileSettings.textureY << " ";
+                    //outFile << (uint32_t)editor.tileSettings.textureY << " ";
                     break;
                 case 15:
                     editor.tileSettings.layer = std::stoi(word);
-                    outFile << (uint32_t)editor.tileSettings.layer << " ";
+                    //outFile << (uint32_t)editor.tileSettings.layer << " ";
                     break;
                 case 16:
                     editor.tileSettings.type = std::stoi(word);
-                    outFile << (uint32_t)editor.tileSettings.type << " ";
+                    //outFile << (uint32_t)editor.tileSettings.type << " ";
                     break;
                 case 17:
                     editor.tileSettings.animated = (bool)std::stoi(word);
-                    outFile << (uint32_t)editor.tileSettings.animated << " ";
+                    //outFile << (uint32_t)editor.tileSettings.animated << " ";
                     break;
                 case 18:
                     editor.tileSettings.animFrames = std::stoi(word);
-                    outFile << (uint32_t)editor.tileSettings.animFrames << " ";
+                    //outFile << (uint32_t)editor.tileSettings.animFrames << " ";
                     break;
                 case 19:
                     editor.tileSettings.animSpeed = std::stoi(word);
-                    outFile << (uint32_t)editor.tileSettings.animSpeed << std::endl;
+                    //outFile << (uint32_t)editor.tileSettings.animSpeed << std::endl;
 
                     // add the tile
                     editor.addTile();
@@ -313,13 +314,11 @@ bool Disk::loadMap_fbl(ScenEdit& editor, std::string filename) {
             if (num_words > 19) num_words = 11; // repeat for all tiles
         }
         else {
-            //word = word + x;
             word = word + buf_cpp[i];
         }
     }
 
-    //outFile << word << std::endl;
-    outFile.close();
+    //outFile.close();
 
 
     // set bg color

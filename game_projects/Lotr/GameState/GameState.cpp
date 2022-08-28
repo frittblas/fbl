@@ -13,6 +13,11 @@
 #include "../Game.hpp"
 #include "GameState.hpp"
 
+#include "../Chars.hpp"
+#include "../SysManager.hpp"
+
+#include "../Ecs/Systems/PathSystem.hpp"
+
 #include "Title.hpp"
 #include "Settings.hpp"
 #include "Explore.hpp"
@@ -49,9 +54,11 @@ void GameState::change(Game& g, StateType newState) {
 	switch (newState) {
 
 	case StateType::Title:
-		if (mState >= StateType::Explore) {
+		if (mState == StateType::Explore) {
 			g.unLoadLevel();	// reset map if we're coming from the game
 			unInitLuaDialog();	// also remove resources for dialogue (prims, text etc)
+			g.mChars->removePlayer(g.mEcs);
+			g.mChars->removeNpc(g.mEcs);
 		}
 		mCurrentStateInstance = new Title();
 		break;
@@ -71,6 +78,16 @@ void GameState::change(Game& g, StateType newState) {
 		if (mState == StateType::Title) {
 			g.loadLevel();		// init first level if we're coming from the title screen
 			initLuaDialog();	// set up prims and text and ui for the dialog box.
+			g.mChars->setupPlayer(g.mEcs, g.mSysManager);
+			g.mChars->setupPlayerGfx(g.mEcs, g.mSysManager);
+			g.mChars->setupNpc(g);
+
+
+
+			//mSysManager->mSpriteSystem->Init(*this->mEcs);
+			g.mSysManager->mPathSystem->Init(*g.mEcs);
+			//mSysManager->mCameraSystem->Init(*mEcs);	// creates debug rect for camera deadzone
+
 		}
 		break;
 

@@ -75,8 +75,6 @@ bool Game::init() {
 
 	mSysManager->setupEcs(mEcs);
 
-	mChars->setupPlayer(mEcs, mSysManager);
-
 	return true;
 
 }
@@ -143,10 +141,6 @@ void Game::loadLevel() {
 		}
 	}
 	*/
-
-	mChars->setupNpc(*this);
-
-	mChars->setupPlayerGfx(mEcs, mSysManager);
 
 }
 

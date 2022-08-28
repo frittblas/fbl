@@ -31,11 +31,14 @@ void PathSystem::Init(Coordinator& ecs) {
 
 		path.id = nextAvailableId++;	// set id, then increment
 
+
 		// set the goal to be the current position
 		//path.goalX = pos.x;
 		//path.goalY = pos.y;
 
 		//path.newPath = false;
+
+		std::cout << "Path id: " << (int)path.id << std::endl;
 
 	}
 

@@ -57,15 +57,12 @@ void Chars::setupPlayer(Coordinator* mEcs, SysManager* mSysManager) {
 	mEcs->AddComponent(mFrodo, Camera{ 0, 0, 0.05, 2, 2 });
 
 
-	//mSysManager->mSpriteSystem->Init(*this->mEcs);
-	mSysManager->mPathSystem->Init(*mEcs);
-	//mSysManager->mCameraSystem->Init(*mEcs);	// creates debug rect for camera deadzone
+}
 
-	/*
-	auto& pos = mEcs->GetComponent<Position>(0);
-	std::cout << pos.x << std::endl;
-	*/
+void Chars::removePlayer(Coordinator* mEcs) {
 
+	mEcs->DestroyEntity(mFrodo);
+	
 }
 
 void Chars::setupPlayerGfx(Coordinator* mEcs, SysManager* mSysManager) {
@@ -98,6 +95,7 @@ void Chars::setupNpc(Game& g) {
 						uint8_t dialogueId = g.mMap->tile[index]->type - 10;
 						g.mEcs->AddComponent(id, Position{ x, y });
 						g.mEcs->AddComponent(id, DialogueTrigger{ dialogueId });
+						std::cout << "Npc added." << std::endl;
 						break;
 
 					}
@@ -105,5 +103,15 @@ void Chars::setupNpc(Game& g) {
 		}
 	}
 
+}
+
+void Chars::removeNpc(Coordinator* mEcs) {
+
+	for (Entity e : mNpc) {
+		mEcs->DestroyEntity(e);
+		std::cout << "Npc removed." << std::endl;
+	}
+
+	mNpc.clear();
 
 }

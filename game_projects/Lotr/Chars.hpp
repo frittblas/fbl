@@ -61,8 +61,10 @@ public:
     ~Chars();
 
     void setupPlayer(Coordinator* mEcs, SysManager* mSysManager);
+    void removePlayer(Coordinator* mEcs);
     void setupPlayerGfx(Coordinator* mEcs, SysManager* mSysManager);
 
     void setupNpc(Game& g);
+    void removeNpc(Coordinator* mEcs);
 
 };
