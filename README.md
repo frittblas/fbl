@@ -28,7 +28,7 @@ Features (current ver. 0.9.9):
 - Raycasting
 - 2D lights
 - Scene editor (tilemaps)
--
+*
 - Program in C/C++ or Lua or a mix.
 - Fast, lightweight engine and simple API.
 

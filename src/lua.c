@@ -312,10 +312,10 @@ void fbl_lua_do_file(const char *file)
 
 
 /*
- *  This is used only by the Android port atm.
+ *  This is used only by the Android port atm. And loadMap_fbl.
  *	Load a text-file (Lua-file) to a buffer and return it.
  *	This can later be run by luaL_loadstring() and gets around the fact
- *	that Lua uses FILE* to read. This enables us to read and run Lua-files
+ *	that Lua uses FILE* to read. This enables you to read and run Lua-files
  *	on Android.
  * 
  */

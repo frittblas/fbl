@@ -209,6 +209,8 @@ bool Disk::loadMap_fbl(ScenEdit& editor, std::string filename) {
 
             //word.erase(std::remove_if(word.begin(), word.end(), ::isspace), word.end());
 
+            // NOTE: cast with uint8_t on the color :)
+
             switch (num_words) {
 
                 case 0 :
