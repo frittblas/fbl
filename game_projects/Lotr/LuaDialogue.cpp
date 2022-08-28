@@ -88,7 +88,7 @@ void initLuaDialog() {
 	fbl_set_text_xy(gText2Id, x - 230, y - 30);
 
 	// 3rd line
-	gText3Id = fbl_create_text(255, 255, 255, 0, " ");
+	gText3Id = fbl_create_text(255, 255, 255, 0, (char*)" ");
 	fbl_set_text_align(gText3Id, FBL_ALIGN_LEFT);
 	fbl_set_text_xy(gText3Id, x - 230, y + 10);
 

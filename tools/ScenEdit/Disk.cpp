@@ -132,11 +132,11 @@ bool Disk::loadMap(ScenEdit& editor, std::string filename) {
     while (inFile.peek() != EOF) {
 
         inFile >> editor.tileSettings.x >> editor.tileSettings.y >> editor.tileSettings.textureX >> editor.tileSettings.textureY
-            >> editor.tileSettings.layer >> editor.tileSettings.type >> (bool)editor.tileSettings.animated
+            >> editor.tileSettings.layer >> editor.tileSettings.type >> editor.tileSettings.animated
             >> editor.tileSettings.animFrames >> editor.tileSettings.animSpeed;
 
         std::cout << editor.tileSettings.x << " " << editor.tileSettings.y << " " << editor.tileSettings.textureX << " " << editor.tileSettings.textureY << " "
-            << editor.tileSettings.layer << " " << editor.tileSettings.type << " " << (bool)editor.tileSettings.animated << " "
+            << editor.tileSettings.layer << " " << editor.tileSettings.type << " " << editor.tileSettings.animated << " "
             << editor.tileSettings.animFrames << " " << editor.tileSettings.animSpeed << " " << std::endl;
 
         // and add the tile to the map

@@ -41,6 +41,12 @@ void UserInput::tick(Game& g) {
 		access = 30;
 	}
 
+	// for android, temporary :)
+	if (fbl_get_mouse_release(FBLMB_LEFT) && access == 0 && g.mState->get() == GameState::StateType::Title) {
+		g.mState->change(g, GameState::StateType::Explore);
+		access = 30;
+	}
+
 
 	if (fbl_get_key_down(FBLK_ESCAPE))
 		fbl_engine_quit();
