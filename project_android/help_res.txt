@@ -4,28 +4,32 @@ Install Android Nkd. I use version r21d.
 You should have Java JDK installed aswell (no later version than 15.02)
 
 Download:
-https://frittblas.se/fbl/fbl_android_studio_and_cmdline_working.rar
+https://frittblas.se/fbl/fbl_android_latest.rar
 Unrar somewhere.
 
-cd to fbl_android_studio\fbl_project
+cd to fbl_android\fbl_project\
 
 Edit local.properties to suit your system (paths to Sdk and Ndk).
 
-type:
+To build, type:
 
 gradlew AssembleDebug
 
 Will create .apk in:
 
-fbl_android_studio\fbl_project\app\build\outputs\apk
+fbl_android\fbl_project\app\build\outputs\apk
 
 gradle installdebug (on device)
 
 or release
 
-
 NOTE:
 
-Everything is working now including Lua!
-The next step will be to make everything look better (on Android that is)
-and support different things like "tabbing" out of app and back etc.
+To change project:
+
+cd to fbl_android\fbl_project\app\jni\src\
+
+and paste the fbl folder there, (keeping the whole dir-structure).
+
+Edit Android.mk in that /src/-dir to suit your needs. Default
+is the lotr-project (Android_fbl.mk is fbl_test.c)

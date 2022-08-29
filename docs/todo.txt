@@ -240,7 +240,7 @@ extern "C" {
 
 remove alpha-byte in particle struct, it's not needed! :) (or change to rotation or angle)
 
-0.99 release is very soon!
+0.99 release is very soon! Done.
 
 }
 
@@ -248,7 +248,8 @@ remove alpha-byte in particle struct, it's not needed! :) (or change to rotation
 for 1.0 {
 
 SDL_net
-
+Add visual studio 2022 project with updated dependencies (SDL 2.24.0 etc with latest addons).
+Also for emscripten (easy) and Android (medium :).
 
 }
 
