@@ -12,13 +12,9 @@
 
 
 #include "../../../src/fbl.hpp"
-
-#include "../Game.hpp"
-#include "Explore.hpp"
-
 #include "../Ecs/Ecs.hpp"
 #include "../Ecs/Components.hpp"
-
+#include "../Game.hpp"
 #include "../SysManager.hpp"
 
 #include "../Ecs/Systems/SpriteSystem.hpp"
@@ -28,7 +24,7 @@
 #include "../Ecs/Systems/DialogueTrigSystem.hpp"
 
 #include "../Chars.hpp"
-
+#include "Explore.hpp"
 
 // Explore-class implementation
 

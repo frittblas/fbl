@@ -11,6 +11,7 @@
 */
 
 #include <iostream>
+
 #include "../Game.hpp"
 #include "Settings.hpp"
 

@@ -17,7 +17,6 @@
 
 class Game;
 class Coordinator;
-class SysManager;
 
 class Chars {
 
@@ -60,9 +59,8 @@ public:
     Chars();
     ~Chars();
 
-    void setupPlayer(Coordinator* mEcs, SysManager* mSysManager);
+    void setupPlayer(Coordinator* mEcs);
     void removePlayer(Coordinator* mEcs);
-    void setupPlayerGfx(Coordinator* mEcs, SysManager* mSysManager);
 
     void setupNpc(Game& g);
     void removeNpc(Coordinator* mEcs);

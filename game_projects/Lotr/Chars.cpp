@@ -13,17 +13,8 @@
 #include "../../tools/ScenEdit/ScenEdit.hpp"
 #include "Ecs/Ecs.hpp"
 #include "Ecs/Components.hpp"
-
 #include "Game.hpp"
-#include "SysManager.hpp"
-
 #include "Chars.hpp"
-
-#include "Ecs/Systems/SpriteSystem.hpp"
-#include "Ecs/Systems/PathSystem.hpp"
-//#include "Ecs/Systems/MouseCtrlSystem.hpp"
-//#include "Ecs/Systems/CameraSystem.hpp"
-//#include "Ecs/Systems/DialogueTrigSystem.hpp"
 
 // Chars-class implementation
 
@@ -39,7 +30,7 @@ Chars::~Chars() {
 
 }
 
-void Chars::setupPlayer(Coordinator* mEcs, SysManager* mSysManager) {
+void Chars::setupPlayer(Coordinator* mEcs) {
 
 	// create the player entity
 	mFrodo = mEcs->CreateEntity();
@@ -63,14 +54,6 @@ void Chars::removePlayer(Coordinator* mEcs) {
 
 	mEcs->DestroyEntity(mFrodo);
 	
-}
-
-void Chars::setupPlayerGfx(Coordinator* mEcs, SysManager* mSysManager) {
-
-
-	// set up graphics for the player
-	mSysManager->mSpriteSystem->Init(*mEcs);
-
 }
 
 void Chars::setupNpc(Game& g) {

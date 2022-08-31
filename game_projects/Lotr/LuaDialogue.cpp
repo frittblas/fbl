@@ -15,7 +15,6 @@
 #include "../../dependencies/common/lua-5.4.1/include/lua.hpp"
 #include "Game.hpp"
 #include "GameState/GameState.hpp"
-
 #include "LuaDialogue.hpp"
 
 //  use the correct lua environment (from fbl)

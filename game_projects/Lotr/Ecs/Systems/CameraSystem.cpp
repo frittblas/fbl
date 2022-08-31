@@ -14,12 +14,9 @@
 #include <iostream>
 
 #include "../../../../src/fbl.hpp"
-
 #include "../Ecs.hpp"
 #include "../Components.hpp"
-
 #include "../../Game.hpp"
-
 #include "CameraSystem.hpp"
 
 /*

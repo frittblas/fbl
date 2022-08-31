@@ -10,11 +10,9 @@
 *
 */
 
-#include "SysManager.hpp"
-
 #include "Ecs/Ecs.hpp"
 #include "Ecs/Components.hpp"
-
+#include "SysManager.hpp"
 #include "Ecs/Systems/SpriteSystem.hpp"
 #include "Ecs/Systems/PathSystem.hpp"
 #include "Ecs/Systems/MouseCtrlSystem.hpp"

@@ -12,18 +12,14 @@
 
 #include "../../tools/ScenEdit/ScenEdit.hpp"
 #include "../../tools/ScenEdit/Disk.hpp"
-
 #include "Ecs/Ecs.hpp"
-
 #include "Game.hpp"
-
 #include "SysManager.hpp"
 #include "UserInput.hpp"
 #include "Chars.hpp"
 #include "Objects.hpp"
 #include "Progress.hpp"
 #include "GameState/GameState.hpp"
-
 #include "LuaDialogue.hpp"
 
 // the only global object (file scope!), the map, with optional editor, prefixed with g
@@ -102,7 +98,7 @@ void Game::update() {
 
 void Game::loadLevel() {
 
-	bool success = Disk::getInstance().loadMap_fbl(*mMap, "map.scn"); // this calls fbl_destroy_all_sprites()
+	bool success = Disk::getInstance().loadMap_fbl(*mMap, "map.scn"); // note that this calls fbl_destroy_all_sprites()
 
 	if (success)
 		std::cout << "Loaded map: map.scn" << std::endl;
@@ -110,37 +106,23 @@ void Game::loadLevel() {
 		std::cout << "Error loading map!" << std::endl;
 
 	// set up the map for path finding
-	for (int i = 0; i < fbl_pathf_get_map_w(); i++) {
-		for (int j = 0; j < fbl_pathf_get_map_h(); j++) {
+	for (int i = 0; i < mMap->mapWidth; i++) {
+		for (int j = 0; j < mMap->mapHeight; j++) {
 			fbl_pathf_set_walkability(i, j, FBL_PATHF_WALKABLE);
 		}
 	}
 
 	// set tiles to walkable/unwalkable
+	for (int i = 0; i < mMap->mapWidth; i++) {
+		for (int j = 0; j < mMap->mapHeight; j++) {
 
-	// fbl_pathf_get_map_w() and mMap->mapWidth are the same, always 60*34
-
-	for (int i = 0; i < fbl_pathf_get_map_w(); i++) {
-		for (int j = 0; j < fbl_pathf_get_map_h(); j++) {
 			int index = i + mMap->mapWidth * j;
+			
 			if (mMap->tile[index] != nullptr)
-				if (mMap->tile[index]->type)	// atm everything over 0 is unwalkable
+				if (mMap->tile[index]->type > 0)	// atm everything over 0 is unwalkable
 					fbl_pathf_set_walkability(i, j, FBL_PATHF_UNWALKABLE);
 		}
 	}
-
-	/*
-	// this also works fine, 1d array to 2d coords :)
-	for (uint32_t i = 0; i < (mMap->mapWidth * mMap->mapHeight); i++) {
-		if (mMap->tile[i] != nullptr) {
-			if (mMap->tile[i]->type) {
-				int x = i % mMap->mapWidth;
-				int y = i / mMap->mapWidth;
-				fbl_pathf_set_walkability(x, y, FBL_PATHF_UNWALKABLE);
-			}
-		}
-	}
-	*/
 
 }
 

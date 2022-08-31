@@ -11,6 +11,7 @@
 */
 
 #include <iostream>
+
 #include "../../../src/fbl.hpp"
 #include "../Game.hpp"
 #include "Title.hpp"
