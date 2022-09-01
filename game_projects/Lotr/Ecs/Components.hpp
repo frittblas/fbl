@@ -61,7 +61,7 @@ struct MouseCtrl
 struct Camera
 {
 
-    float x, y;     // camera position
+    double x, y;    // camera position
     float damp;     // camera smoothing amount
     uint8_t deadZoneW, deadZoneH;    // deadzone size in tiles
 

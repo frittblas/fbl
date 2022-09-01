@@ -106,15 +106,15 @@ void Game::loadLevel() {
 		std::cout << "Error loading map!" << std::endl;
 
 	// set up the map for path finding
-	for (int i = 0; i < mMap->mapWidth; i++) {
-		for (int j = 0; j < mMap->mapHeight; j++) {
+	for (uint32_t i = 0; i < mMap->mapWidth; i++) {
+		for (uint32_t j = 0; j < mMap->mapHeight; j++) {
 			fbl_pathf_set_walkability(i, j, FBL_PATHF_WALKABLE);
 		}
 	}
 
 	// set tiles to walkable/unwalkable
-	for (int i = 0; i < mMap->mapWidth; i++) {
-		for (int j = 0; j < mMap->mapHeight; j++) {
+	for (uint32_t i = 0; i < mMap->mapWidth; i++) {
+		for (uint32_t j = 0; j < mMap->mapHeight; j++) {
 
 			int index = i + mMap->mapWidth * j;
 			

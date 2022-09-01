@@ -79,7 +79,7 @@ int incMapX(int x, int y) {
 
 	gEditor->tile.resize(gEditor->mapWidth * gEditor->mapHeight);
 
-	int lastIndex = gEditor->tile.size();
+	uint32_t lastIndex = gEditor->tile.size();
 
 	std::cout << "lastIndex = " << lastIndex << std::endl;
 
@@ -101,7 +101,7 @@ int incMapY(int x, int y) {
 
 	gEditor->tile.resize(gEditor->mapWidth * gEditor->mapHeight);
 
-	int lastIndex = gEditor->tile.size();
+	uint32_t lastIndex = gEditor->tile.size();
 
 	std::cout << "lastIndex = " << lastIndex << std::endl;
 

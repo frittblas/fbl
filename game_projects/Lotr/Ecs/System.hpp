@@ -14,6 +14,7 @@
 #pragma once
 
 #include <set>
+#include "Types.hpp"	// for the "using" Entity typedef (Note: this include wasn't needed before, probnably because of include order.
 
 class System
 {

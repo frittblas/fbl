@@ -110,7 +110,7 @@ void ScenEdit::setupGUI() {
 	std::cout << "Delete tile with del or right mouse button." << std::endl;
 	std::cout << "Center the map with C and reset map with R." << std::endl;
 	std::cout << "Will load spritesheet.png and ui_2.png at the start." << std::endl;
-	std::cout << "Will save and load map.scn." << std::endl;
+	std::cout << "Will save and load map.scn (text-format) and map.scb (bin-format)" << std::endl;
 	std::cout << "Tile vector size: " << tile.size() << std::endl;
 
 	// dark grey, filled rect with alpha as bg, draw from middle 2X size
