@@ -213,6 +213,8 @@ bool Disk::loadMap_fbl(ScenEdit& editor, std::string filename, int format) {
 
     }
 
+    // NOTE: read_file_to_buf can read binary also!! this is uneccesary! But i learned a stuffs
+
     else if (format == 1) { // load bin map
 
         std::ifstream inFile;
@@ -225,6 +227,7 @@ bool Disk::loadMap_fbl(ScenEdit& editor, std::string filename, int format) {
             return false;
         }
 
+        // read the whole binary map file to a string.
         std::string content{ std::istreambuf_iterator<char>(inFile), std::istreambuf_iterator<char>() };
 
         inFile.close();
@@ -264,8 +267,6 @@ bool Disk::loadMap_fbl(ScenEdit& editor, std::string filename, int format) {
 
             // this is not needed (stoi does it for you)
             //word.erase(std::remove_if(word.begin(), word.end(), ::isspace), word.end()); 
-
-            // NOTE: cast with uint8_t on the color :)
 
             switch (num_words) {
 

@@ -91,6 +91,24 @@ void ScenEdit::setup(uint32_t mapW, uint32_t mapH, uint32_t tSize) {
 
 }
 
+void ScenEdit::showHelp() {
+
+	// print help to the console
+	std::cout << "Welcome to ScenEdit!" << std::endl;
+	std::cout << "Control the camera with WASD." << std::endl;
+	std::cout << "Control the marker with arrows or mouse." << std::endl;
+	std::cout << "Draw a tile with space or left mouse button." << std::endl;
+	std::cout << "Delete tile with del or right mouse button." << std::endl;
+	std::cout << "Center the map with C and reset map with R." << std::endl;
+	std::cout << "Copy a tile with X. Load Rwops map (text) with T." << std::endl;
+	std::cout << "Load binary map with B. Sort sprites with Z." << std::endl;
+	std::cout << "Show this help with H." << std::endl;
+	std::cout << "Will load spritesheet.png and ui_2.png at the start." << std::endl;
+	std::cout << "Will save and load map.scn (text-format) and map.scb (bin-format)" << std::endl;
+	std::cout << "Tile vector size: " << tile.size() << std::endl;
+
+}
+
 void ScenEdit::setupGUI() {
 
 	const int lMargin = 300; // Gui text gets drawn this far from the right
@@ -102,16 +120,8 @@ void ScenEdit::setupGUI() {
 	// load font
 	fbl_load_ttf_font("edosz.ttf", 18);
 
-	// print help to the console
-	std::cout << "Welcome to ScenEdit!" << std::endl;
-	std::cout << "Control the camera with WASD." << std::endl;
-	std::cout << "Control the marker with arrows or mouse." << std::endl;
-	std::cout << "Draw a tile with space or left mouse button." << std::endl;
-	std::cout << "Delete tile with del or right mouse button." << std::endl;
-	std::cout << "Center the map with C and reset map with R." << std::endl;
-	std::cout << "Will load spritesheet.png and ui_2.png at the start." << std::endl;
-	std::cout << "Will save and load map.scn (text-format) and map.scb (bin-format)" << std::endl;
-	std::cout << "Tile vector size: " << tile.size() << std::endl;
+	// print usage
+	showHelp();
 
 	// dark grey, filled rect with alpha as bg, draw from middle 2X size
 	bgRectId = fbl_create_prim(FBL_RECT, fbl_get_screen_w() - 160, fbl_get_screen_h() / 2, 160, fbl_get_screen_h() / 2, 0, 0, true);
@@ -274,6 +284,7 @@ void ScenEdit::getInput() {
 	// center camera with c
 	if (fbl_get_key_down(FBLK_C) && keyAccess == 0) {
 		fbl_set_camera_xy(0, 0);
+		std::cout << "Reset camera!" << std::endl;
 		keyAccess = spdSlow;
 	}
 
@@ -299,6 +310,12 @@ void ScenEdit::getInput() {
 	// load fbl binary map with b
 	if (fbl_get_key_down(FBLK_B) && keyAccess == 0) {
 		loadMapFblBin(0, 0);
+		keyAccess = spdSlow;
+	}
+
+	// help with h
+	if (fbl_get_key_down(FBLK_B) && keyAccess == 0) {
+		showHelp();
 		keyAccess = spdSlow;
 	}
 

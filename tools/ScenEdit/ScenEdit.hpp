@@ -51,6 +51,7 @@ class ScenEdit {
         ~ScenEdit();    // destructor, clean everything up
 
         void setup(uint32_t mapW, uint32_t mapH, uint32_t tSize);
+        void showHelp();
         void setupGUI();
         void fitTilesToScreen();
         void tick();
