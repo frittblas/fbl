@@ -22,6 +22,8 @@ extern "C" {
     char* read_file_to_buf(const char* filename);   // from lua.c
 }
 
+void wrapUp(ScenEdit& editor);
+
 Disk Disk::instance;
 
 // Disk-class implementation
@@ -146,42 +148,90 @@ bool Disk::loadMap(ScenEdit& editor, std::string filename) {
 
     inFile.close();
 
-    // set bg color
-    fbl_set_clear_color(editor.bgColorR, editor.bgColorG, editor.bgColorB, 255);
-
-    // set night time tint if alpha higher than 0
-    if (editor.tintColorOn > 0)
-        fbl_set_lighting_tint(true, editor.tintColorR, editor.tintColorG, editor.tintColorB);
-
-    // reset the cursor coordinates and texture_xy to 0, 0
-    editor.tileSettings.x = 0;
-    editor.tileSettings.y = 0;
-    editor.tileSettings.textureX = 0;
-    editor.tileSettings.textureY = 0;
-
-    // show info on the up/left most tile if in stand alone mode
-    if(editor.standAlone)
-        editor.showTileInfo();
+    wrapUp(editor);
 
     return true;
 }
 
-
-
-bool Disk::loadMap_fbl(ScenEdit& editor, std::string filename) {
+bool Disk::exportBin(ScenEdit& editor, std::string filename) {
 
     // get the correct fbl path
     char* new_path = engine_get_platform_asset_path(filename.c_str());
 
+    // change filename to text
+    int len = strlen(new_path);
+    new_path[len - 1] = 'n';
+
     // read the file to buf using RWops
     char* buf = read_file_to_buf(new_path);
 
+    // change back
+    new_path[len - 1] = 'b';
+
     std::string buf_cpp(buf);
 
-    // no need to free new_path, it's static
-    free(buf);
+    std::string outFilename(new_path);
 
-    //std::cout << bufs << std::endl;  // this prints everything exacly as the text file
+
+    std::ofstream outFile;
+
+    outFile.open(outFilename, std::ofstream::binary | std::ios::out); // out = overwrite every time
+
+    if (outFile.fail()) {
+        return false;
+    }
+
+
+    size_t size = buf_cpp.size();
+    outFile.write(&buf_cpp[0], size);
+
+
+    outFile.close();
+
+}
+
+bool Disk::loadMap_fbl(ScenEdit& editor, std::string filename, int format) {
+
+    // get the correct fbl path
+    char* new_path = engine_get_platform_asset_path(filename.c_str());
+
+    std::string buf_cpp;
+
+    if (format == 0) {  // load text map
+
+        // read the file to buf using RWops
+        char* buf = read_file_to_buf(new_path);
+
+        //std::string buf_cpp(buf);
+
+        buf_cpp = buf;
+
+        // no need to free new_path, it's static
+        free(buf);
+
+    }
+
+    else if (format == 1) { // load bin map
+
+        std::ifstream inFile;
+
+        std::string new_path_cpp(new_path);
+
+        inFile.open(new_path_cpp, std::ifstream::binary | std::ios::in);
+
+        if (inFile.fail()) {
+            return false;
+        }
+
+        std::string content{ std::istreambuf_iterator<char>(inFile), std::istreambuf_iterator<char>() };
+
+        inFile.close();
+
+        buf_cpp = content;
+
+    }
+
+    //std::cout << buf_cpp << std::endl;  // this prints everything exacly as the text file
 
     std::string word = "";
     int num_words = 0;
@@ -198,17 +248,20 @@ bool Disk::loadMap_fbl(ScenEdit& editor, std::string filename) {
     for (std::string::size_type i = 0; i < buf_cpp.size(); i++)
     {
 
-        // NOTE: rewrite this someday :)
+        // NOTE: rewrite this nicer someday :)
 
+        // first catch the crlf
         if (buf_cpp[i] == '\r') {
             buf_cpp[i] = ' ';
             if(buf_cpp[i + 1] == '\n')
                 buf_cpp[i + 1] = ' ';
         }
-        if (buf_cpp[i] == ' ' && buf_cpp[i - 1] != ' ')
+
+        if (buf_cpp[i] == ' ' && buf_cpp[i - 1] != ' ')     // don't worry buf_cpp[0 - 1] is never evaluated.
         {
 
-            //word.erase(std::remove_if(word.begin(), word.end(), ::isspace), word.end());
+            // this is not needed (stoi does it for you)
+            //word.erase(std::remove_if(word.begin(), word.end(), ::isspace), word.end()); 
 
             // NOTE: cast with uint8_t on the color :)
 
@@ -320,6 +373,14 @@ bool Disk::loadMap_fbl(ScenEdit& editor, std::string filename) {
 
     //outFile.close();
 
+    wrapUp(editor);
+
+    return true;
+}
+
+// append some stuff after loading a file
+void wrapUp(ScenEdit& editor) {
+
 
     // set bg color
     fbl_set_clear_color(editor.bgColorR, editor.bgColorG, editor.bgColorB, 255);
@@ -328,17 +389,22 @@ bool Disk::loadMap_fbl(ScenEdit& editor, std::string filename) {
     if (editor.tintColorOn > 0)
         fbl_set_lighting_tint(true, editor.tintColorR, editor.tintColorG, editor.tintColorB);
 
-    // reset the cursor coordinates and texture_xy to 0, 0
-    editor.tileSettings.x = 0;
-    editor.tileSettings.y = 0;
-    editor.tileSettings.textureX = 0;
-    editor.tileSettings.textureY = 0;
-
-    // NOTE: also set layer and type to 0 and stuff
-
     // show info on the up/left most tile if in stand alone mode
-    if (editor.standAlone)
+    if (editor.standAlone) {
+
+        // reset the cursor coordinates and texture_xy to 0, 0
+        editor.tileSettings.x = 0;
+        editor.tileSettings.y = 0;
+        editor.tileSettings.textureX = 0;
+        editor.tileSettings.textureY = 0;
+        editor.tileSettings.layer = 0;
+        editor.tileSettings.type = 0;
+        editor.tileSettings.animated = false;
+        editor.tileSettings.animFrames = 1;
+        editor.tileSettings.animSpeed = 10;
+
         editor.showTileInfo();
 
-    return true;
+    }
+
 }

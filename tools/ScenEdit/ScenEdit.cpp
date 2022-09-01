@@ -125,7 +125,7 @@ void ScenEdit::setupGUI() {
 	fbl_create_text(255, 255, 255, 255, (char*)"Animated:");
 	fbl_set_text_xy(1, fbl_get_screen_w() - lMargin, 350);
 
-	fbl_create_text(255, 255, 255, 255, (char*)"Save/Load/Load_fbl:");
+	fbl_create_text(255, 255, 255, 255, (char*)"Save/Load/Exp bin:");
 	fbl_set_text_xy(2, fbl_get_screen_w() - lMargin, 510);
 
 	// gui buttons for selecting current tile to draw
@@ -208,7 +208,7 @@ void ScenEdit::setupGUI() {
 	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 96, 510);
 	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, loadMap));
 	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 64, 510);
-	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, loadMapFbl));
+	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, exportMapBin));
 	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 32, 510);
 
 	// create the map marker rect
@@ -287,6 +287,18 @@ void ScenEdit::getInput() {
 	if (fbl_get_key_down(FBLK_Z) && keyAccess == 0) {
 		fbl_sort_sprites(FBL_SORT_BY_LAYER);
 		std::cout << "Sorted sprites!" << std::endl;
+		keyAccess = spdSlow;
+	}
+
+	// load fbl text map with t
+	if (fbl_get_key_down(FBLK_T) && keyAccess == 0) {
+		loadMapFblText(0, 0);
+		keyAccess = spdSlow;
+	}
+
+	// load fbl binary map with b
+	if (fbl_get_key_down(FBLK_B) && keyAccess == 0) {
+		loadMapFblBin(0, 0);
 		keyAccess = spdSlow;
 	}
 

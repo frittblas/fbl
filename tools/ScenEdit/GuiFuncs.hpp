@@ -31,6 +31,8 @@ int decAnimFrames(int x, int y);
 int incAnimSpeed(int x, int y);
 int decAnimSpeed(int x, int y);
 
-int saveMap(int x, int y);
-int loadMap(int x, int y);
-int loadMapFbl(int x, int y);
+int saveMap(int x, int y);			// save map iostream text format
+int loadMap(int x, int y);			// load map iostream text format
+int exportMapBin(int x, int y);		// save map iostream bin format
+int loadMapFblText(int x, int y);	// load map RWops text format
+int loadMapFblBin(int x, int y);	// load map RWops bin format

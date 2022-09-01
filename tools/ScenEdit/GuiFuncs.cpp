@@ -320,15 +320,42 @@ int loadMap(int x, int y) {
 
 }
 
-int loadMapFbl(int x, int y) {
+int exportMapBin(int x, int y) {
 
-	bool success = Disk::getInstance().loadMap_fbl(*gEditor, "map.scn");
+	bool success = Disk::getInstance().exportBin(*gEditor, "map.scb");
+
+	if (success)
+		std::cout << "Exported binary map: map.scb" << std::endl;
+	else
+		std::cout << "Error saving bin map!" << std::endl;
+
+	return 0;
+
+}
+
+int loadMapFblText(int x, int y) {
+
+	bool success = Disk::getInstance().loadMap_fbl(*gEditor, "map.scn", 0);	// the last 0 is for text format
 
 	if (success) {
-		std::cout << "Loaded map: map.scn" << std::endl;
+		std::cout << "Loaded text map: map.scn" << std::endl;
 	}
 	else
-		std::cout << "Error loading map!" << std::endl;
+		std::cout << "Error loading text map!" << std::endl;
+
+	return 0;
+
+}
+
+int loadMapFblBin(int x, int y) {
+
+	bool success = Disk::getInstance().loadMap_fbl(*gEditor, "map.scb", 1);	// the last 0 is for bin format
+
+	if (success) {
+		std::cout << "Loaded bin map: map.scb" << std::endl;
+	}
+	else
+		std::cout << "Error loading bin map!" << std::endl;
 
 	return 0;
 

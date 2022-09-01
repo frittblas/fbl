@@ -29,6 +29,8 @@ class Disk {
 
         static bool saveMap(ScenEdit& editor, std::string filename);    // save map in text format
         static bool loadMap(ScenEdit& editor, std::string filename);    // load text format map, this calls resetMap, which deletes all sprites!
-        static bool loadMap_fbl(ScenEdit& editor, std::string filename);   // save map with RWops and with correct path on all platforms.
+
+        static bool exportBin(ScenEdit& editor, std::string filename);    // save map in bin format
+        static bool loadMap_fbl(ScenEdit& editor, std::string filename, int format);   // load map with RWops and with correct path on all platforms (0 = text, 1 = bin)
 
 };
