@@ -187,6 +187,8 @@ bool Disk::exportBin(ScenEdit& editor, std::string filename) {
 
 
     outFile.close();
+	
+	return true;
 
 }
 
