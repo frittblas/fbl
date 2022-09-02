@@ -155,7 +155,7 @@ function fbl_lua_start()
 
 	make_strict()	-- have to declare variables beforehand
 	g_current_dialogue = g_dialogue1	-- set curreent dialogue to something relevant
-	print("Lua dialogue system initialized!")
+	-- print("Lua dialogue system initialized!")
 	
 end
 

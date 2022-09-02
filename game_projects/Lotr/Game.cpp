@@ -42,6 +42,8 @@ Game::~Game() {
 
 bool Game::init() {
 
+	std::cout.setstate(std::ios_base::failbit);
+
 	fbl_engine_init(960, 540, 60);
 	fbl_set_render_logical_size(LogicalResW, LogicalResH);
 	fbl_set_clear_color(33, 68, 33, 255);	// forest green
@@ -87,6 +89,8 @@ void Game::unInit() {
 	delete mObjects;
 	delete mProgress;
 
+	std::cout.clear();
+
 }
 
 void Game::update() {
@@ -98,12 +102,12 @@ void Game::update() {
 
 void Game::loadLevel() {
 
-	bool success = Disk::getInstance().loadMap_fbl(*mMap, "map.scb", 0); // note that this calls fbl_destroy_all_sprites()
+	bool success = Disk::getInstance().loadMap_fbl(*mMap, "map.scn", 0); // note that this calls fbl_destroy_all_sprites()
 
 	if (success)
-		std::cout << "Loaded map: map.scn" << std::endl;
+		std::cout << "Loaded map!" << std::endl;
 	else
-		std::cout << "Error loading map!" << std::endl;
+		std::cerr << "Error loading map!" << std::endl;
 
 	// set up the map for path finding
 	for (uint32_t i = 0; i < mMap->mapWidth; i++) {

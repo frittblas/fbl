@@ -135,8 +135,8 @@ void unInitLuaDialog() {
 
 void showTalkButton(bool set) {
 
-	fbl_set_text_active(gTextTalk, set);
-	fbl_set_ui_elem_active(gButtonTalk, set);
+		fbl_set_text_active(gTextTalk, set);
+		fbl_set_ui_elem_active(gButtonTalk, set);
 
 }
 
