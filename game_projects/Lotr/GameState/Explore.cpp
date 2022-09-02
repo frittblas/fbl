@@ -46,7 +46,7 @@ void Explore::tick(Game& g) {
 	g.mSysManager->mPathSystem->Update(*g.mEcs);			// update the path system
 	g.mSysManager->mMouseCtrlSystem->Update(*g.mEcs);		// update the mouse control system
 	g.mSysManager->mCameraSystem->Update(*g.mEcs);			// update the camera system
-	g.mSysManager->mDialogueTrigSystem->Update(g);	// update the dialogue trigger system
+	g.mSysManager->mDialogueTrigSystem->Update(g);			// update the dialogue trigger system
 
 	int num = std::rand() / ((RAND_MAX + 1u) / 50); // random numbers from 0-49
 	if (num == 0)

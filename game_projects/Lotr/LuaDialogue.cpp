@@ -29,10 +29,11 @@ extern Game* gGame;
 int gSquareId, gOutlineId, gText1Id, gText2Id, gText3Id;
 int gResponseYesId, gResponseNoId;
 int gButtonYes, gButtonNo;
-int gTextTalk, gButtonTalk;
+int gTextTalk;
+int gButtonTalk; // externed in DialogueTrigSystem
 
-// id of the current dialogue to start
-int currentDialogueId = 0;
+// id of the current dialogue to start, externed in DialogueTrigSystem
+int gCurrentDialogueId = 0;
 
 
 // lotr Lua prototypes
@@ -41,7 +42,7 @@ int luaSetState(lua_State* lua_env);
 int luaDisplayDialog(lua_State* lua_env);
 int luaHideDialog(lua_State* lua_env);
 int luaGetResponse(lua_State* lua_env);
-
+int luaGetCurrentDialogueId(lua_State* lua_env);
 
 // register these C++ functions so they can be called from Lua.
 void registerFuncsToLua()
@@ -53,6 +54,8 @@ void registerFuncsToLua()
 	lua_register(fbl_lua_env, "displayDialog", luaDisplayDialog);
 	lua_register(fbl_lua_env, "hideDialog", luaHideDialog);
 	lua_register(fbl_lua_env, "getResponse", luaGetResponse);
+
+	lua_register(fbl_lua_env, "getCurrentDialogueId", luaGetCurrentDialogueId);
 
 }
 
@@ -232,6 +235,14 @@ int luaGetResponse(lua_State* lua_env) {
 		response = 2;
 
 	lua_pushnumber(lua_env, (lua_Number)response);
+
+	return 1;
+
+}
+
+int luaGetCurrentDialogueId(lua_State* lua_env) {
+
+	lua_pushnumber(lua_env, gCurrentDialogueId);
 
 	return 1;
 

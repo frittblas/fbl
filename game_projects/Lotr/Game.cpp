@@ -42,7 +42,7 @@ Game::~Game() {
 
 bool Game::init() {
 
-	std::cout.setstate(std::ios_base::failbit);
+	//std::cout.setstate(std::ios_base::failbit);	// deactivate cout
 
 	fbl_engine_init(960, 540, 60);
 	fbl_set_render_logical_size(LogicalResW, LogicalResH);

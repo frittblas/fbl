@@ -23,6 +23,9 @@
 
 #include "DialogueTrigSystem.hpp"
 
+extern int gButtonTalk;
+extern int gCurrentDialogueId;
+
 void DialogueTrigSystem::Init(Coordinator& ecs) {
 
 	for (auto const& entity : mEntities)
@@ -30,6 +33,7 @@ void DialogueTrigSystem::Init(Coordinator& ecs) {
 		auto& pos = ecs.GetComponent<Position>(entity);
 		auto& trig = ecs.GetComponent<DialogueTrigger>(entity);
 
+		std::cout << "Rame moment of trig system actually added." << std::endl;
 
 	}
 
@@ -39,20 +43,35 @@ void DialogueTrigSystem::Init(Coordinator& ecs) {
 
 void DialogueTrigSystem::Update(Game& g) {
 	
+	bool triggered = false;
+
+	auto& player = g.mEcs->GetComponent<Position>(g.mChars->mFrodo);
+
 	for (auto const& entity : mEntities)
 	{
 		auto& pos = g.mEcs->GetComponent<Position>(entity);
 		auto& trig = g.mEcs->GetComponent<DialogueTrigger>(entity);
 
-		auto& player = g.mEcs->GetComponent<Position>(g.mChars->mFrodo);
+		//std::cout << "npc dialogueId = " << (int)trig.dialogueId << "pos.x = " << pos.x << std::endl;
 
-		if (pos.x == player.x + Game::TileSize && pos.y == player.y)
+		// if the player is adjacent to an Npc with a dialogue-trigger, show the talk button
+		if (pos.x == player.x + Game::TileSize && pos.y == player.y ||
+			pos.x == player.x - Game::TileSize && pos.y == player.y ||
+			pos.y == player.y + Game::TileSize && pos.x == player.x ||
+			pos.y == player.y - Game::TileSize && pos.x == player.x) {
+
+			triggered = true;
 			showTalkButton(true);
-		else
-			showTalkButton(false);
 
-		if(fbl_get_ui_elem_val(2))
-			g.mState->change(g, GameState::StateType::Dialogue);
+			// check response from talk button
+			if (fbl_get_ui_elem_val(gButtonTalk)) {
+				gCurrentDialogueId = trig.dialogueId;	// set the
+				g.mState->change(g, GameState::StateType::Dialogue);
+			}
+
+		}
+		else if (!triggered)
+			showTalkButton(false);
 
 	}
 

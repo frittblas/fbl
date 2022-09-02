@@ -15,6 +15,7 @@
 #include "../Ecs/Systems/SpriteSystem.hpp"
 #include "../Ecs/Systems/PathSystem.hpp"
 #include "../Ecs/Systems/CameraSystem.hpp"
+#include "../Ecs/Systems/DialogueTrigSystem.hpp"
 
 #include "GameState.hpp"
 #include "Title.hpp"
@@ -95,6 +96,7 @@ void GameState::change(Game& g, StateType newState) {
 				g.mSysManager->mSpriteSystem->Init(*g.mEcs);	// create sprites for all entities with a sprite component
 				g.mSysManager->mPathSystem->Init(*g.mEcs);		// assign a unique path id to the entities with a path component
 				g.mSysManager->mCameraSystem->Init(*g.mEcs);	// creates debug rect for camera deadzone
+				g.mSysManager->mDialogueTrigSystem->Init(*g.mEcs);
 
 			}
 			break;
