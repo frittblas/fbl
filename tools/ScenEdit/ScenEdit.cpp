@@ -314,7 +314,7 @@ void ScenEdit::getInput() {
 	}
 
 	// help with h
-	if (fbl_get_key_down(FBLK_B) && keyAccess == 0) {
+	if (fbl_get_key_down(FBLK_H) && keyAccess == 0) {
 		showHelp();
 		keyAccess = spdSlow;
 	}

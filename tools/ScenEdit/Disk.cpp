@@ -158,20 +158,18 @@ bool Disk::exportBin(ScenEdit& editor, std::string filename) {
     // get the correct fbl path
     char* new_path = engine_get_platform_asset_path(filename.c_str());
 
-    // change filename to text
+    // change filename to text version *.scn
     int len = strlen(new_path);
     new_path[len - 1] = 'n';
 
-    // read the file to buf using RWops
+    // read the file to buf using RWops (note that you have to save the map before exporting)
     char* buf = read_file_to_buf(new_path);
 
-    // change back
+    // change back to *.scb
     new_path[len - 1] = 'b';
 
-    std::string buf_cpp(buf);
-
+    std::string buf_cpp(buf);   // create cpp string from the buf
     std::string outFilename(new_path);
-
 
     std::ofstream outFile;
 
@@ -181,10 +179,8 @@ bool Disk::exportBin(ScenEdit& editor, std::string filename) {
         return false;
     }
 
-
     size_t size = buf_cpp.size();
-    outFile.write(&buf_cpp[0], size);
-
+    outFile.write(&buf_cpp[0], size);   // write the buf to bin file in one go
 
     outFile.close();
 	
@@ -243,7 +239,7 @@ bool Disk::loadMap_fbl(ScenEdit& editor, std::string filename, int format) {
     std::ofstream outFile;
 
     /*
-    outFile.open("out.txt", std::ios::out); // out = overwrite every time
+    outFile.open("out.txt", std::ios::out);
 
     if (outFile.fail()) {
         return false;

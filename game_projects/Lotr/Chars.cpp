@@ -65,21 +65,22 @@ void Chars::setupNpc(Game& g) {
 		for (int j = 0; j < Game::MapH; j++) {
 			int index = i + g.mMap->mapWidth * j;
 			if (g.mMap->tile[index] != nullptr)
-				if (g.mMap->tile[index]->type > 9)
+				if (g.mMap->tile[index]->type > 9)	// if the type is 10 or more = not terrain anymore but Npc!
 
 					switch (g.mMap->tile[index]->type) {
 
-					case 10 :	// Npc with type 10 (-10) = 0 = Slime :)
+						case 10 :	// Npc with type 10 (-10) = 0 = slime
+						case 11:	// type 11 (-10) = 1 = also slime :)
 
-						g.mChars->mNpc.push_back(g.mEcs->CreateEntity());
-						int id = g.mChars->mNpc.front();
-						uint16_t x = g.mMap->tile[index]->x;
-						uint16_t y = g.mMap->tile[index]->y;
-						uint8_t dialogueId = g.mMap->tile[index]->type - 10;
-						g.mEcs->AddComponent(id, Position{ x, y });
-						g.mEcs->AddComponent(id, DialogueTrigger{ dialogueId });
-						std::cout << "Npc added." << std::endl;
-						break;
+							int id = g.mEcs->CreateEntity();
+							g.mChars->mNpc.push_back(id);
+							uint16_t x = g.mMap->tile[index]->x;
+							uint16_t y = g.mMap->tile[index]->y;
+							uint8_t dialogueId = g.mMap->tile[index]->type - 10;
+							g.mEcs->AddComponent(id, Position{ x, y });
+							g.mEcs->AddComponent(id, DialogueTrigger{ dialogueId });
+							std::cout << "Npc added." << std::endl;
+							break;
 
 					}
 					
