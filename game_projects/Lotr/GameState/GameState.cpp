@@ -98,7 +98,7 @@ void GameState::change(Game& g, StateType newState) {
 				g.mSysManager->mPathSystem->Init(*g.mEcs);		// assign a unique path id to the entities with a path component
 				//g.mSysManager->mCameraSystem->Init(*g.mEcs);	// creates debug rect for camera deadzone
 
-				fbl_lua_init("LotrDialogue.lua", registerFuncsToLua);
+				fbl_lua_init("LotrDialogue.lua", registerFuncsToLua);	// set this up each new game, so the dialogues restart
 
 			}
 

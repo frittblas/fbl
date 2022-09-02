@@ -20,6 +20,7 @@
 
 -- constants
 
+-- game states
 Stay = -1
 Title = 0
 Demo = 1
@@ -31,6 +32,9 @@ Dialogue = 5
 Shop = 6
 Fight = 7
 CardCollection = 8
+
+-- number of dialogues
+NUM_DIALOGUES = 2
 
 -- valid responses
 
@@ -50,6 +54,7 @@ NO  = 2
 
 local g_current_dialogue = nil
 local g_wait_response = false
+local g_dialogue = {}
 
 ----------------------------
 -- The following two function will force you to declare all variables beforehand (great)
@@ -107,71 +112,117 @@ end
 -- If you don't want anything on lines 2 and 3, just leave one empy space (" ")! Nothing else.
 -- If you only want one character as reply 2, type "? ", so it gets picked up correctly.
 
-	g_dialogue1 = coroutine.create(function ()
-	local iter = 1
-	while true do
-		if iter == 1 then
-			if not g_wait_response then
-				disp_dw("Greetings! this is the first dialog.", "Second line.", "Third glorious line of exquisit writing..", "Ok..", " ")
-			elseif getResponse() == OK then
-				iter = advance(Explore, iter + 1) -- advance to next dialog and go to Explore state
-			end
-		elseif iter == 2 then
-			if not g_wait_response then
-				disp_dw("If you answer no, you will be sent back", "to first dialog!", " ", "That's arosta..", "That's arostarous!")
-			elseif getResponse() == NO then
-				iter = advance(Stay, 1)
-			elseif getResponse() == YES then
-				iter = advance(Stay, iter + 1) -- advance to next dialog and don't change state
-			end
-		elseif iter == 3 then
-			if not g_wait_response then
-				disp_dw("..", "What's your..", "..favourite colour?", "Green", "Blue")
-			elseif getResponse() == YES then
-				iter = advance(Stay, iter + 1)
-			elseif getResponse() == NO then
-				iter = advance(Stay, iter + 2) -- advance 2 dialog steps and stay
-			end
-		elseif iter == 4 then
-			if not g_wait_response then
-				disp_dw("You chose Green!", " ", " ", "Ok great.", "Can I go?")
-			elseif getResponse() == YES or getResponse() == NO then
-				iter = advance(Explore, 1)
-			end
-		else
-			if not g_wait_response then
-				disp_dw("You chose Blue!", " ", " ", "Ok", "")
-			elseif getResponse() == OK then
-				iter = advance(Explore, 1) -- reset dialogue and go to Explore state
-			end
+g_dialogue[0] = coroutine.create(function ()
+local iter = 1
+while true do
+	if iter == 1 then
+		if not g_wait_response then
+			disp_dw("Greetings! I am the first slime", "I'm reasonable", "Go ahead and ask the other slime", "Ok..", " ")
+		elseif getResponse() == OK then
+			iter = advance(Explore, iter + 1) -- advance to next dialog and go to Explore state
 		end
-
-		coroutine.yield()
-		
+	elseif iter == 2 then
+		if not g_wait_response then
+			disp_dw("If you answer no, you will be sent back", "to first dialog!", " ", "That's arosta..", "That's arostarous!")
+		elseif getResponse() == NO then
+			iter = advance(Stay, 1)
+		elseif getResponse() == YES then
+			iter = advance(Stay, iter + 1) -- advance to next dialog and don't change state
+		end
+	elseif iter == 3 then
+		if not g_wait_response then
+			disp_dw("..", "What's your..", "..favourite colour?", "Green", "Blue")
+		elseif getResponse() == YES then
+			iter = advance(Stay, iter + 1)
+		elseif getResponse() == NO then
+			iter = advance(Stay, iter + 2) -- advance 2 dialog steps and stay
+		end
+	elseif iter == 4 then
+		if not g_wait_response then
+			disp_dw("You chose Green!", " ", " ", "Ok great.", "Can I go?")
+		elseif getResponse() == YES or getResponse() == NO then
+			iter = advance(Explore, 1)
+		end
+	else
+		if not g_wait_response then
+			disp_dw("You chose Blue!", " ", " ", "Ok", "")
+		elseif getResponse() == OK then
+			iter = advance(Explore, 1) -- reset dialogue and go to Explore state
+		end
 	end
-	end)
+
+	coroutine.yield()
+	
+end
+end)
+
+g_dialogue[1] = coroutine.create(function ()
+local iter = 1
+while true do
+	if iter == 1 then
+		if not g_wait_response then
+			disp_dw("Hello! I am the second slime", "I'm not as reasonable", "Ask the other slime", "Good stuff..", " ")
+		elseif getResponse() == OK then
+			iter = advance(Explore, iter + 1) -- advance to next dialog and go to Explore state
+		end
+	elseif iter == 2 then
+		if not g_wait_response then
+			disp_dw("If you answer no, you will be sent back", "to first dialog!", " ", "That's arosta..", "That's arostarous!")
+		elseif getResponse() == NO then
+			iter = advance(Stay, 1)
+		elseif getResponse() == YES then
+			iter = advance(Stay, iter + 1) -- advance to next dialog and don't change state
+		end
+	elseif iter == 3 then
+		if not g_wait_response then
+			disp_dw("..", "What's your..", "..favourite colour?", "Green", "Blue")
+		elseif getResponse() == YES then
+			iter = advance(Stay, iter + 1)
+		elseif getResponse() == NO then
+			iter = advance(Stay, iter + 2) -- advance 2 dialog steps and stay
+		end
+	elseif iter == 4 then
+		if not g_wait_response then
+			disp_dw("You chose Green!", " ", " ", "Ok great.", "Can I go?")
+		elseif getResponse() == YES or getResponse() == NO then
+			iter = advance(Explore, 1)
+		end
+	else
+		if not g_wait_response then
+			disp_dw("You chose Blue!", " ", " ", "Ok", "")
+		elseif getResponse() == OK then
+			iter = advance(Explore, 1) -- reset dialogue and go to Explore state
+		end
+	end
+
+	coroutine.yield()
+	
+end
+end)
 
 function fbl_lua_start()
 
 	make_strict()	-- have to declare variables beforehand
-	g_current_dialogue = g_dialogue1	-- set curreent dialogue to something relevant
-	print("Lua dialogue system initialized!")
+
+	-- print("Lua dialogue system initialized!")
 	
 end
 
 function fbl_lua_loop()
 
+	local dialogue_index
+
 	if getState() == Dialogue then
-	
-		-- first find the correct dialogue, somehow :)
-		-- check getCurrentDoalogue() that returns an id
-		-- then set g_current_dialogue to the correct one.
+
+		-- get the correct dialogue id
+		dialogue_index = getCurrentDialogueId()
 	
 		-- then resume it!
-		coroutine.resume(g_current_dialogue)
+		coroutine.resume(g_dialogue[dialogue_index])
 		
 	elseif getState() == Title then
 		-- reset the iter-variables in all the coroutines once!
+		-- g_reset_dialogues = true
 	end
 
 end
