@@ -20,7 +20,7 @@
 #include "Objects.hpp"
 #include "Progress.hpp"
 #include "GameState/GameState.hpp"
-#include "LuaDialogue.hpp"
+//#include "LuaDialogue.hpp"
 
 // the only global object (file scope!), the map, with optional editor, prefixed with g
 // this is assigned to the Game-class member variable mMap, so there is no real global state at all.
@@ -58,7 +58,7 @@ bool Game::init() {
 	fbl_load_texture((char*)"spritesheet.png");	// load sprite texture
 	fbl_load_ui_texture((char*)"ui_1.png");			// load ui texture
 
-	fbl_lua_init("LotrDialogue.lua", registerFuncsToLua);
+	// fbl_lua_init("LotrDialogue.lua", registerFuncsToLua);
 
 	// create instances of the Game-class sub systems
 	gEditor = new ScenEdit(false);	// create new instance of ScenEdit without editor GUI

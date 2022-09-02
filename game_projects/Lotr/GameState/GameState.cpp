@@ -10,12 +10,13 @@
 *
 */
 
+#include "../../../src/fbl.hpp"
+
 #include "../Game.hpp"
 
 #include "../Ecs/Systems/SpriteSystem.hpp"
 #include "../Ecs/Systems/PathSystem.hpp"
 #include "../Ecs/Systems/CameraSystem.hpp"
-#include "../Ecs/Systems/DialogueTrigSystem.hpp"
 
 #include "GameState.hpp"
 #include "Title.hpp"
@@ -64,6 +65,8 @@ void GameState::change(Game& g, StateType newState) {
 				g.mChars->removePlayer(g.mEcs);	// delete the player completely
 				g.mChars->removeNpc(g.mEcs);	// also delete all npcs in the current scene
 
+				fbl_lua_shutdown();	// so the dialogues gets reset
+
 			}
 
 			mCurrentStateInstance = new Title();
@@ -84,8 +87,6 @@ void GameState::change(Game& g, StateType newState) {
 
 		case StateType::Explore:
 
-			mCurrentStateInstance = new Explore();
-
 			if (mState == StateType::Title) {	// if coming from title (new game)
 
 				g.loadLevel();		// init first level
@@ -95,10 +96,14 @@ void GameState::change(Game& g, StateType newState) {
 
 				g.mSysManager->mSpriteSystem->Init(*g.mEcs);	// create sprites for all entities with a sprite component
 				g.mSysManager->mPathSystem->Init(*g.mEcs);		// assign a unique path id to the entities with a path component
-				g.mSysManager->mCameraSystem->Init(*g.mEcs);	// creates debug rect for camera deadzone
-				g.mSysManager->mDialogueTrigSystem->Init(*g.mEcs);
+				//g.mSysManager->mCameraSystem->Init(*g.mEcs);	// creates debug rect for camera deadzone
+
+				fbl_lua_init("LotrDialogue.lua", registerFuncsToLua);
 
 			}
+
+			mCurrentStateInstance = new Explore();
+
 			break;
 
 		case StateType::Dialogue:

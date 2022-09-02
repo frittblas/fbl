@@ -23,6 +23,7 @@
 
 #include "DialogueTrigSystem.hpp"
 
+// these are from LuaDialogue.cpp
 extern int gButtonTalk;
 extern int gCurrentDialogueId;
 
@@ -32,9 +33,6 @@ void DialogueTrigSystem::Init(Coordinator& ecs) {
 	{
 		auto& pos = ecs.GetComponent<Position>(entity);
 		auto& trig = ecs.GetComponent<DialogueTrigger>(entity);
-
-		std::cout << "Rame moment of trig system actually added." << std::endl;
-
 	}
 
 	std::cout << "Dialogue trigger component system initialized!" << std::endl;
@@ -51,8 +49,6 @@ void DialogueTrigSystem::Update(Game& g) {
 	{
 		auto& pos = g.mEcs->GetComponent<Position>(entity);
 		auto& trig = g.mEcs->GetComponent<DialogueTrigger>(entity);
-
-		//std::cout << "npc dialogueId = " << (int)trig.dialogueId << "pos.x = " << pos.x << std::endl;
 
 		// if the player is adjacent to an Npc with a dialogue-trigger, show the talk button
 		if (pos.x == player.x + Game::TileSize && pos.y == player.y ||

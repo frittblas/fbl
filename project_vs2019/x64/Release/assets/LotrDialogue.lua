@@ -20,6 +20,7 @@
 
 -- constants
 
+-- game states
 Stay = -1
 Title = 0
 Demo = 1
@@ -31,6 +32,9 @@ Dialogue = 5
 Shop = 6
 Fight = 7
 CardCollection = 8
+
+-- number of dialogues
+NUM_DIALOGUES = 2
 
 -- valid responses
 
@@ -157,7 +161,7 @@ local iter = 1
 while true do
 	if iter == 1 then
 		if not g_wait_response then
-			disp_dw("Hello! I am the secon slime", "I'm not as reasonable", "Ask the other slime", "Good stuff..", " ")
+			disp_dw("Hello! I am the second slime", "I'm not as reasonable", "Ask the other slime", "Good stuff..", " ")
 		elseif getResponse() == OK then
 			iter = advance(Explore, iter + 1) -- advance to next dialog and go to Explore state
 		end
@@ -199,7 +203,7 @@ end)
 function fbl_lua_start()
 
 	make_strict()	-- have to declare variables beforehand
-	g_current_dialogue = g_dialogue[0]	-- set curreent dialogue to something relevant
+
 	-- print("Lua dialogue system initialized!")
 	
 end
@@ -218,6 +222,7 @@ function fbl_lua_loop()
 		
 	elseif getState() == Title then
 		-- reset the iter-variables in all the coroutines once!
+		-- g_reset_dialogues = true
 	end
 
 end
