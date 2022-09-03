@@ -52,13 +52,11 @@ NO  = 2
 
 -- globals
 
-local g_current_dialogue = nil
 local g_wait_response = false
 local g_dialogue = {}
 
 ----------------------------
--- The following two function will force you to declare all variables beforehand (great)
--- functions don't need this
+-- The following function will force you to declare all variables beforehand (great)
 ----------------------------
 
 function make_strict()
@@ -90,20 +88,24 @@ end
 
 -- hide dialog and set state
 function set_state(state)
+
 	hideDialog()
 	setState(state)
+	
 end
 
 --advance dialogue
 function advance(state, iter)
+
 	g_wait_response = false -- not waiting for response anymore
 	hideDialog()
+	
 	if state ~= Stay then	-- only change state if not Staying (in dialogue)
 		setState(state)
 	end
-	--print("reached!")
-	--debug_console(iter)
+	
 	return iter
+	
 end
 
 --

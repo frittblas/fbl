@@ -77,7 +77,7 @@ void initLuaDialog() {
 	fbl_set_prim_color(gOutlineId, 255, 255, 255, 255);
 	fbl_fix_prim_to_screen(gOutlineId, true);
 
-	fbl_load_ttf_font("ringm.ttf", 18);
+	fbl_load_ttf_font("garamond.ttf", 22);
 
 	// create 1st line of text
 	gText1Id = fbl_create_text(255, 255, 255, 0, (char*)" ");
@@ -122,9 +122,6 @@ void initLuaDialog() {
 	// hide
 	showTalkButton(false);
 	luaHideDialog(NULL);
-
-	//fbl_load_ttf_font("edosz.ttf", 16);
-	//fbl_load_ttf_font("anirm.ttf", 15);
 
 }
 

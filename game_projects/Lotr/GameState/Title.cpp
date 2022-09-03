@@ -33,7 +33,7 @@ Title::Title() {
 	fbl_set_text_align(lotrSubTitleId, FBL_ALIGN_CENTER);
 
 	fbl_load_ttf_font("anirm.ttf", 16);
-	authorTextId = fbl_create_text(212, 175, 55, 255, (char*)"Hans Stromquist 2022");
+	authorTextId = fbl_create_text(212, 175, 55, 255, (char*)"Hans Stromquist 2022                                                              www.frittblas.se");
 	fbl_set_text_xy(authorTextId, 10, 520);
 
 	std::cout << "Started Title state." << std::endl;
