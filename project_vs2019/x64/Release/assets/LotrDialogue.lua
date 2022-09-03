@@ -222,9 +222,6 @@ function fbl_lua_loop()
 		-- then resume it!
 		coroutine.resume(g_dialogue[dialogue_index])
 		
-	elseif getState() == Title then
-		-- reset the iter-variables in all the coroutines once!
-		-- g_reset_dialogues = true
 	end
 
 end
