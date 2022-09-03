@@ -61,6 +61,8 @@ void Chars::setupNpc(Game& g) {
 	// Npc characters start at tile->type == 10
 	// type 0 - 9 are reserved for different terrain
 
+	const int NpcOffset = 10;
+
 	for (int i = 0; i < Game::MapW; i++) {
 		for (int j = 0; j < Game::MapH; j++) {
 			int index = i + g.mMap->mapWidth * j;
@@ -70,14 +72,13 @@ void Chars::setupNpc(Game& g) {
 					switch (g.mMap->tile[index]->type) {
 
 						case 10 :	// Npc with type 10 (-10) = 0 = slime
-
 						case 11:	// type 11 (-10) = 1 = also slime :)
 
 							int id = g.mEcs->CreateEntity();
 							g.mChars->mNpc.push_back(id);
 							uint16_t x = g.mMap->tile[index]->x;
 							uint16_t y = g.mMap->tile[index]->y;
-							uint8_t dialogueId = g.mMap->tile[index]->type - 10;
+							uint8_t dialogueId = g.mMap->tile[index]->type - NpcOffset;
 							g.mEcs->AddComponent(id, Position{ x, y });
 							g.mEcs->AddComponent(id, DialogueTrigger{ dialogueId });
 							std::cout << "Npc added." << std::endl;

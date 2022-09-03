@@ -49,6 +49,7 @@ NO  = 2
 -- displayDialog()
 -- hideDialog()
 -- getResponse() (returns 0 or 1, 2 (OK, YES, NO))
+-- getCurrentDialogueId()
 
 -- globals
 
