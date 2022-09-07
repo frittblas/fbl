@@ -247,9 +247,16 @@ remove alpha-byte in particle struct, it's not needed! :) (or change to rotation
 
 for 1.0 {
 
-SDL_net
+Big feature fbl_net:
+Use SDL_net (make it possible to fbl_net_init() without creating window?? maybe not (for server..))
+Maybe do a blocking loop in fbl_start for the server.. and call fbl_engine_quit() immediately in fbl_loop().
+
+Medium stuffs:
 Add visual studio 2022 project with updated dependencies (SDL 2.24.0 etc with latest addons).
-Also for emscripten (easy) and Android (medium :).
+Also for emscripten (easy) and Android (medium :)
+
+small stuffs:
+Take a look at should_continue thing, debug it. maybe come up with alternative. Time the gameloop etc. lazyfoo also.
 
 }
 
