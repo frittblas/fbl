@@ -452,6 +452,11 @@ int  fbl_create_threadpool(void);
 void fbl_submit_task_tp(void (*func)());
 void fbl_destroy_threadpool(void);
 
+
+/* network */
+
+int  fbl_init_network(void);
+
 #endif
 
 /* end of fbl.h */

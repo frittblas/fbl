@@ -78,6 +78,9 @@
     <ClCompile Include="..\..\tools\ScenEdit\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\network.c">
+      <Filter>Source Files\fbl_src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\fbl.h">

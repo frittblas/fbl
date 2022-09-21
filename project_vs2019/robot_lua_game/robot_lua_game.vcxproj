@@ -69,16 +69,16 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_mixer-2.0.4\include;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_ttf-2.0.15\include;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_image-2.0.5\include;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2-2.0.12\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)..\dependencies\vc2019\lua\lua-5.4.1;$(SolutionDir)..\dependencies\vc2019\chipmunk\chipmunk-7.0.3\Release;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2-2.0.12\lib\x86\;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_image-2.0.5\lib\x86\;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_ttf-2.0.15\lib\x86\;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_mixer-2.0.4\lib\x86\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_net-2.2.0\include;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_mixer-2.0.4\include;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_ttf-2.0.15\include;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_image-2.0.5\include;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2-2.0.12\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)..\dependencies\vc2019\lua\lua-5.4.1;$(SolutionDir)..\dependencies\vc2019\chipmunk\chipmunk-7.0.3\Release;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2-2.0.12\lib\x86\;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_image-2.0.5\lib\x86\;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_ttf-2.0.15\lib\x86\;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_net-2.2.0\lib\x86;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_mixer-2.0.4\lib\x86\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_mixer-2.0.4\include;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_ttf-2.0.15\include;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_image-2.0.5\include;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2-2.0.12\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)..\dependencies\vc2019\lua\lua-5.4.1;$(SolutionDir)..\dependencies\vc2019\chipmunk\chipmunk-7.0.3\Release;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2-2.0.12\lib\x86\;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_image-2.0.5\lib\x86\;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_ttf-2.0.15\lib\x86\;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_mixer-2.0.4\lib\x86\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_mixer-2.0.4\include;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_ttf-2.0.15\include;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_image-2.0.5\include;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_net-2.2.0\include;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2-2.0.12\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_net-2.2.0\lib\x86;$(SolutionDir)..\dependencies\vc2019\lua\lua-5.4.1;$(SolutionDir)..\dependencies\vc2019\chipmunk\chipmunk-7.0.3\Release;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2-2.0.12\lib\x86\;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_image-2.0.5\lib\x86\;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_ttf-2.0.15\lib\x86\;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_mixer-2.0.4\lib\x86\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)..\dependencies\vc2019\SDL\SDL2-2.0.12\include;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_ttf-2.0.15\include;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_mixer-2.0.4\include;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_image-2.0.5\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)..\dependencies\vc2019\lua\lua-5.4.1\x64;$(SolutionDir)..\dependencies\vc2019\chipmunk\chipmunk-7.0.3\Release\x64;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2-2.0.12\lib\x64;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_ttf-2.0.15\lib\x64;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_mixer-2.0.4\lib\x64;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_image-2.0.5\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_net-2.2.0\include;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2-2.0.12\include;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_ttf-2.0.15\include;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_mixer-2.0.4\include;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_image-2.0.5\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_net-2.2.0\lib\x64;$(SolutionDir)..\dependencies\vc2019\lua\lua-5.4.1\x64;$(SolutionDir)..\dependencies\vc2019\chipmunk\chipmunk-7.0.3\Release\x64;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2-2.0.12\lib\x64;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_ttf-2.0.15\lib\x64;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_mixer-2.0.4\lib\x64;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_image-2.0.5\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -131,7 +131,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;lua5.4.1.lib;chipmunk.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;SDL2_net.lib;lua5.4.1.lib;chipmunk.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
       <AdditionalOptions>/d2:-AllowCompatibleILVersions %(AdditionalOptions)</AdditionalOptions>
     </Link>
@@ -142,6 +142,7 @@
     <ClCompile Include="..\..\src\fbl.c" />
     <ClCompile Include="..\..\src\input.c" />
     <ClCompile Include="..\..\src\lua.c" />
+    <ClCompile Include="..\..\src\network.c" />
     <ClCompile Include="..\..\src\particles.c" />
     <ClCompile Include="..\..\src\pathfind.c" />
     <ClCompile Include="..\..\src\physics.c" />
