@@ -18,6 +18,7 @@
 #include "UserInput.hpp"
 #include "Chars.hpp"
 #include "Objects.hpp"
+#include "Weather.hpp"
 #include "Progress.hpp"
 #include "GameState/GameState.hpp"
 //#include "LuaDialogue.hpp"
@@ -69,6 +70,7 @@ bool Game::init() {
 	mInput = new UserInput();
 	mChars = new Chars();
 	mObjects = new Objects();
+	mWeather = new Weather();
 	mProgress = new Progress();
 
 	mSysManager->setupEcs(mEcs);
@@ -87,6 +89,7 @@ void Game::unInit() {
 	delete mInput;
 	delete mChars;
 	delete mObjects;
+	delete mWeather;
 	delete mProgress;
 
 	std::cout.clear();

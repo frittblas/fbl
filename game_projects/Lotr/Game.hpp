@@ -21,6 +21,7 @@ class GameState;
 class UserInput;
 class Chars;
 class Objects;
+class Weather;
 class Progress;
 
 class Game {
@@ -33,6 +34,7 @@ public:
     UserInput* mInput;	    // keyboard and mouse input from the user
     Chars* mChars;          // all the characters in the game, including the player.
     Objects* mObjects;      // all the game objects (movable blocks, shops etc)
+    Weather* mWeather;      // Weather system (animated clouds and rain, day/night cycle)
     Progress* mProgress;    // general game progress
 
     static const int LogicalResW = 960;
