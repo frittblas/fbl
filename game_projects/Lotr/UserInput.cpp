@@ -15,8 +15,18 @@
 #include "GameState/GameState.hpp"
 #include "UserInput.hpp"
 
-UserInput::UserInput() {};
-UserInput::~UserInput() {};
+#include <iostream>
+
+UserInput::UserInput() {
+
+	std::cout << "Initialized UserInput subsystem." << std::endl;
+
+};
+UserInput::~UserInput() {
+
+	std::cout << "Destroyed UserInput subsystem." << std::endl;
+
+};
 
 void UserInput::tick(Game& g) {
 

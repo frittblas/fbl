@@ -12,6 +12,7 @@
 
 #include <iostream>
 #include "../Game.hpp"
+#include "../Weather.hpp"
 #include "Dialogue.hpp"
 
 // Dialogue-class implementation
@@ -24,14 +25,13 @@ Dialogue::Dialogue() {
 
 Dialogue::~Dialogue() {
 
-
 	std::cout << "Destroyed Dialogue state." << std::endl;
 
 }
 
 void Dialogue::tick(Game& g) {
 
-
+	g.mWeather->tick(g);
 
 	int num = std::rand() / ((RAND_MAX + 1u) / 50); // random numbers from 0-49
 	if (num == 0)

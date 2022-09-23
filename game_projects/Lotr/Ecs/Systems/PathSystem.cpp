@@ -31,12 +31,7 @@ void PathSystem::Init(Coordinator& ecs) {
 
 		path.id = nextAvailableId++;	// set id, then increment
 
-
-		// set the goal to be the current position
-		//path.goalX = pos.x;
-		//path.goalY = pos.y;
-
-		//path.newPath = false;
+		fbl_pathf_set_path_status(path.id, FBL_PATHF_NOT_STARTED);
 
 		std::cout << "Path id: " << (int)path.id << std::endl;
 

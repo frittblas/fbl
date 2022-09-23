@@ -12,6 +12,7 @@
 
 #include "../../tools/ScenEdit/ScenEdit.hpp"
 #include "../../tools/ScenEdit/Disk.hpp"
+
 #include "Ecs/Ecs.hpp"
 #include "Game.hpp"
 #include "SysManager.hpp"
@@ -21,7 +22,7 @@
 #include "Weather.hpp"
 #include "Progress.hpp"
 #include "GameState/GameState.hpp"
-//#include "LuaDialogue.hpp"
+
 
 // the only global object (file scope!), the map, with optional editor, prefixed with g
 // this is assigned to the Game-class member variable mMap, so there is no real global state at all.

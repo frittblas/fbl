@@ -25,6 +25,7 @@
 #include "Dialogue.hpp"
 
 #include "../Chars.hpp"
+#include "../Weather.hpp"
 #include "../SysManager.hpp"
 #include "../LuaDialogue.hpp"
 
@@ -97,6 +98,8 @@ void GameState::change(Game& g, StateType newState) {
 				g.mSysManager->mSpriteSystem->Init(*g.mEcs);	// create sprites for all entities with a sprite component
 				g.mSysManager->mPathSystem->Init(*g.mEcs);		// assign a unique path id to the entities with a path component
 				//g.mSysManager->mCameraSystem->Init(*g.mEcs);	// creates debug rect for camera deadzone
+
+				g.mWeather->initClouds(50);		// add weather on top :)
 
 				fbl_lua_init("LotrDialogue.lua", registerFuncsToLua);	// set this up each new game, so the dialogues restart
 
