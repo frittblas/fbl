@@ -70,10 +70,10 @@ bool Disk::saveMap(ScenEdit& editor, std::string filename) {
 
             // NOTE: cast these with uint32_t and test or maybe not
             
-            outFile << curTile->x << " " << curTile->y << " " << curTile->textureX << " " << curTile->textureY << " " << curTile->layer
+            outFile << curTile->x << " " << curTile->y << " " << curTile->textureX << " " << curTile->textureY << " " << curTile->flip << " " << curTile->layer
                 << " " << curTile->type << " " << (uint32_t)curTile->animated << " " << curTile->animFrames << " " << curTile->animSpeed << std::endl;
 
-            std::cout << curTile->x << " " << curTile->y << " " << curTile->textureX << " " << curTile->textureY << " " << curTile->layer
+            std::cout << curTile->x << " " << curTile->y << " " << curTile->textureX << " " << curTile->textureY << " " << curTile->flip << " " << curTile->layer
                 << " " << curTile->type << " " << (uint32_t)curTile->animated << " " << curTile->animFrames << " " << curTile->animSpeed << std::endl;
 
         }
@@ -134,11 +134,11 @@ bool Disk::loadMap(ScenEdit& editor, std::string filename) {
     while (inFile.peek() != EOF) {
 
         inFile >> editor.tileSettings.x >> editor.tileSettings.y >> editor.tileSettings.textureX >> editor.tileSettings.textureY
-            >> editor.tileSettings.layer >> editor.tileSettings.type >> editor.tileSettings.animated
+            >> editor.tileSettings.flip >> editor.tileSettings.layer >> editor.tileSettings.type >> editor.tileSettings.animated
             >> editor.tileSettings.animFrames >> editor.tileSettings.animSpeed;
 
         std::cout << editor.tileSettings.x << " " << editor.tileSettings.y << " " << editor.tileSettings.textureX << " " << editor.tileSettings.textureY << " "
-            << editor.tileSettings.layer << " " << editor.tileSettings.type << " " << editor.tileSettings.animated << " "
+            << editor.tileSettings.flip << " " << editor.tileSettings.layer << " " << editor.tileSettings.type << " " << editor.tileSettings.animated << " "
             << editor.tileSettings.animFrames << " " << editor.tileSettings.animSpeed << " " << std::endl;
 
         // and add the tile to the map
@@ -336,22 +336,26 @@ bool Disk::loadMap_fbl(ScenEdit& editor, std::string filename, int format) {
                     //outFile << (uint32_t)editor.tileSettings.textureY << " ";
                     break;
                 case 15:
+                    editor.tileSettings.flip = std::stoi(word);
+                    //outFile << (uint32_t)editor.tileSettings.flip << " ";
+                    break;
+                case 16:
                     editor.tileSettings.layer = std::stoi(word);
                     //outFile << (uint32_t)editor.tileSettings.layer << " ";
                     break;
-                case 16:
+                case 17:
                     editor.tileSettings.type = std::stoi(word);
                     //outFile << (uint32_t)editor.tileSettings.type << " ";
                     break;
-                case 17:
+                case 18:
                     editor.tileSettings.animated = (bool)std::stoi(word);
                     //outFile << (uint32_t)editor.tileSettings.animated << " ";
                     break;
-                case 18:
+                case 19:
                     editor.tileSettings.animFrames = std::stoi(word);
                     //outFile << (uint32_t)editor.tileSettings.animFrames << " ";
                     break;
-                case 19:
+                case 20:
                     editor.tileSettings.animSpeed = std::stoi(word);
                     //outFile << (uint32_t)editor.tileSettings.animSpeed << std::endl;
 
@@ -363,7 +367,7 @@ bool Disk::loadMap_fbl(ScenEdit& editor, std::string filename, int format) {
 
             word = "";
             num_words++;
-            if (num_words > 19) num_words = 11; // repeat for all tiles
+            if (num_words > 20) num_words = 11; // repeat for all tiles
         }
         else {
             word = word + buf_cpp[i];

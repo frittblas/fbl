@@ -40,7 +40,7 @@ class ScenEdit {
         uint8_t  bgColorR, bgColorG, bgColorB;   // bg color
         uint8_t  tintColorR, tintColorG, tintColorB, tintColorOn; // night time tint color
         uint32_t mapWtextId, mapHtextId;    // id's for text objects
-        uint32_t layerTextId, typeTextId, animFramesTextId, animSpeedTextId;
+        uint32_t flipTextId, layerTextId, typeTextId, animFramesTextId, animSpeedTextId;
         uint32_t animatedBoxId; // checkbox id
         uint32_t bgRectId, mapMarkerId; // gray alpha-filled rect, and the cursor
 

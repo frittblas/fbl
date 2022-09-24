@@ -83,6 +83,7 @@ void ScenEdit::setup(uint32_t mapW, uint32_t mapH, uint32_t tSize) {
 	tileSettings.y = 0;
 	tileSettings.textureX = 96;	// x of the tile to be drawn from texture
 	tileSettings.textureY = 416;
+	tileSettings.flip = 0;	// how is the tile flipped? none, horizontal, vertical, both
 	tileSettings.layer = 0;	// the current layer (lower is further back)
 	tileSettings.type = 0;	// type can mean different things in your game, maybe 0 = walkable etc.
 	tileSettings.animated = false;	// if the tile is animated
@@ -133,7 +134,7 @@ void ScenEdit::setupGUI() {
 	fbl_set_text_xy(0, fbl_get_screen_w() - lMargin, 64);
 
 	fbl_create_text(255, 255, 255, 255, (char*)"Animated:");
-	fbl_set_text_xy(1, fbl_get_screen_w() - lMargin, 350);
+	fbl_set_text_xy(1, fbl_get_screen_w() - lMargin, 364);
 
 	fbl_create_text(255, 255, 255, 255, (char*)"Save/Load/Exp bin:");
 	fbl_set_text_xy(2, fbl_get_screen_w() - lMargin, 510);
@@ -157,61 +158,69 @@ void ScenEdit::setupGUI() {
 	fbl_fix_sprite_to_screen(tileSettings.id, true);
 	fbl_set_sprite_layer(tileSettings.id, 1);	// make sure the current drawing tile is on top, check resetMap() aswell
 
+	// flip tile text
+	flipTextId = fbl_create_text(255, 255, 255, 255, (char*)"Tile flip: %d (+)", 0);
+	fbl_set_text_xy(flipTextId, fbl_get_screen_w() - lMargin, 150);
+
+	// gui button for setting tile flip
+	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, incFlip));
+	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 96, 150);
+
 	// text showing map size
 	mapWtextId = fbl_create_text(255, 255, 255, 255, (char*)"Map width: %d (+)", mapWidth);
 	mapHtextId = fbl_create_text(255, 255, 255, 255, (char*)"Map height: %d (+)", mapHeight);
-	fbl_set_text_xy(mapWtextId, fbl_get_screen_w() - lMargin, 160);
-	fbl_set_text_xy(mapHtextId, fbl_get_screen_w() - lMargin, 200);
+	fbl_set_text_xy(mapWtextId, fbl_get_screen_w() - lMargin, 190);
+	fbl_set_text_xy(mapHtextId, fbl_get_screen_w() - lMargin, 230);
 
 	// gui buttons for expanding the map size
 	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, incMapX));
-	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 96, 160);
+	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 96, 190);
 	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, incMapY));
-	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 96, 200);
+	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 96, 230);
 
 	// text for layer
 	layerTextId = fbl_create_text(255, 255, 255, 255, (char*)"Layer: %d (-+)", 0);
-	fbl_set_text_xy(layerTextId, fbl_get_screen_w() - lMargin, 270);
+	fbl_set_text_xy(layerTextId, fbl_get_screen_w() - lMargin, 284);
 
 	// gui buttons for layer
 	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, decLayer));
-	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 96, 270);
+	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 96, 284);
 	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, incLayer));
-	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 48, 270);
+	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 48, 284);
 
 	// text for type
 	typeTextId = fbl_create_text(255, 255, 255, 255, (char*)"Type: %d (-+)", 0);
-	fbl_set_text_xy(typeTextId, fbl_get_screen_w() - lMargin, 310);
+	fbl_set_text_xy(typeTextId, fbl_get_screen_w() - lMargin, 324);
 
 	// gui buttons for type
 	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, decType));
-	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 96, 310);
+	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 96, 324);
 	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, incType));
-	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 48, 310);
+	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 48, 324);
 
 	// gui checkbox for animation
 	animatedBoxId = fbl_create_ui_elem(FBL_UI_CHECKBOX, 0, 32, 32, 32, toggleAnimation);
-	fbl_set_ui_elem_xy(animatedBoxId, fbl_get_screen_w() - 96, 350);
+	fbl_set_ui_elem_xy(animatedBoxId, fbl_get_screen_w() - 96, 364);
 
 	// text for animation frames
 	animFramesTextId = fbl_create_text(255, 255, 255, 255, (char*)"Anim frames: %d (-+)", tileSettings.animFrames);
-	fbl_set_text_xy(animFramesTextId, fbl_get_screen_w() - lMargin, 390);
+	fbl_set_text_xy(animFramesTextId, fbl_get_screen_w() - lMargin, 404);
 
 	// gui buttons for anim frames
 	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, decAnimFrames));
-	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 96, 390);
+	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 96, 404);
 	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, incAnimFrames));
-	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 48, 390);
+	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 48, 404);
 
 	// text for animation speed
 	animSpeedTextId = fbl_create_text(255, 255, 255, 255, (char*)"Anim speed: %d (-+)", tileSettings.animSpeed);
-	fbl_set_text_xy(animSpeedTextId, fbl_get_screen_w() - lMargin, 430);
+	fbl_set_text_xy(animSpeedTextId, fbl_get_screen_w() - lMargin, 444);
 
 	// gui buttons for anim speed
 	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, decAnimSpeed));
-	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 96, 430);
+	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 96, 444);
 	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, incAnimSpeed));
-	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 48, 430);
+	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 48, 444);
 
 	// gui buttons for save/load/binexp
 	guiId.push_back(fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, saveMap));
@@ -407,6 +416,7 @@ void ScenEdit::addTile() {
 		// add the sprite
 		int tmpId = fbl_create_sprite(tileSettings.textureX, tileSettings.textureY, tileSize, tileSize, 0);
 		fbl_set_sprite_xy(tmpId, tileSettings.x, tileSettings.y);
+		fbl_set_sprite_flip(tmpId, tileSettings.flip);
 
 		// add a new element to the vector
 		TileData* tmpTile = new TileData();
@@ -418,6 +428,7 @@ void ScenEdit::addTile() {
 		tile[index]->y = tileSettings.y;
 		tile[index]->textureX = tileSettings.textureX;
 		tile[index]->textureY = tileSettings.textureY;
+		tile[index]->flip = tileSettings.flip;
 		tile[index]->layer = tileSettings.layer;
 		tile[index]->type = tileSettings.type;
 		tile[index]->animated = tileSettings.animated;
@@ -445,6 +456,7 @@ void ScenEdit::copyTile() {
 		// copy the values from the current tile to tile settings (not the id or xy)
 		tileSettings.textureX = tile[index]->textureX;
 		tileSettings.textureY = tile[index]->textureY;
+		tileSettings.flip = tile[index]->flip;
 		tileSettings.layer = tile[index]->layer;
 		tileSettings.type = tile[index]->type;
 		tileSettings.animated = tile[index]->animated;
@@ -456,6 +468,7 @@ void ScenEdit::copyTile() {
 		// copy standard values, reset
 		tileSettings.textureX = 0;
 		tileSettings.textureY = 0;
+		tileSettings.flip = 0;
 		tileSettings.layer = 0;
 		tileSettings.type = 0;
 		tileSettings.animated = false;
@@ -499,6 +512,8 @@ void ScenEdit::showTileInfo() {
 		// if the cursor is on an empty tile show the general current tileSettings
 
 		fbl_set_sprite_image(tileSettings.id, tileSettings.textureX, tileSettings.textureY, tileSize, tileSize, 0);
+		// set the flip
+		fbl_update_text(flipTextId, 255, 255, 255, 255, (char*)"Tile flip: %d (+)", tileSettings.flip);
 		// set the layer
 		fbl_update_text(layerTextId, 255, 255, 255, 255, (char*)"Layer: %d (-+)", tileSettings.layer);
 		// set type
@@ -517,6 +532,9 @@ void ScenEdit::showTileInfo() {
 
 		// if the cursor is on an existing tile show the settings for that tile
 		fbl_set_sprite_image(tileSettings.id, tile[index]->textureX, tile[index]->textureY, tileSize, tileSize, 0);
+		fbl_set_sprite_flip(tileSettings.id, tileSettings.flip);
+		// set the flip
+		fbl_update_text(flipTextId, 255, 255, 255, 255, (char*)"Tile flip: %d (+)", tile[index]->flip);
 		// set the layer
 		fbl_update_text(layerTextId, 255, 255, 255, 255, (char*)"Layer: %d (-+)", tile[index]->layer);
 		// set type
@@ -531,6 +549,7 @@ void ScenEdit::showTileInfo() {
 
 		std::cout << std::endl;
 		std::cout << "Tile info:" << std::endl;
+		std::cout << "Flip: " << tile[index]->flip << std::endl;
 		std::cout << "Layer: " << tile[index]->layer << std::endl;
 		std::cout << "Type: " << tile[index]->type << std::endl;
 		std::cout << "Animated: " << tile[index]->animated << std::endl;
@@ -633,6 +652,7 @@ void ScenEdit::toggleGUI() {
 	fbl_set_text_active(mapWtextId, showGUI);
 	fbl_set_text_active(mapHtextId, showGUI);
 
+	fbl_set_text_active(flipTextId, showGUI);
 	fbl_set_text_active(layerTextId, showGUI);
 	fbl_set_text_active(typeTextId, showGUI);
 	fbl_set_text_active(animFramesTextId, showGUI);
