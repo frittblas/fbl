@@ -39,7 +39,7 @@ void Weather::initClouds(int num) {
 
 	}
 
-	mCloud.clear();
+	mCloud.clear();	// clrea the vector
 
 	// create num clouds
 	for (int i = 0; i < num; i++) {
@@ -64,7 +64,7 @@ void Weather::initClouds(int num) {
 
 		tmpCloud->id = id;
 		tmpCloud->x = rand() % (Game::MapW * Game::TileSize);
-		tmpCloud->y = rand() % 160 - 32;
+		tmpCloud->y = rand() % 150 - 20;
 		tmpCloud->speed = (float)((rand() % 8) + 3) / 10;
 		tmpCloud->scale = (float)((rand() % 10) + 10) / 10;
 		tmpCloud->alpha = rand() % 200 + 55;
@@ -76,8 +76,9 @@ void Weather::initClouds(int num) {
 		fbl_set_sprite_scale(tmpCloud->id, tmpCloud->scale);
 		fbl_set_sprite_alpha(tmpCloud->id, tmpCloud->alpha);
 
-		// fix to screen? no
-		//fbl_fix_sprite_to_screen(tmpCloud->id, true);
+		// randomly flip clouds horizontally
+		if (rand() % 2 == 0)
+			fbl_set_sprite_flip(tmpCloud->id, 1);	// 1 = horizontal flip
 
 		mCloud.push_back(tmpCloud);
 
