@@ -18,6 +18,7 @@ Sprite
 Path
 MouseControl
 Camera
+DialogTrig
 
 Todo:
 Register components and systems in sysManager class. Done!
@@ -39,10 +40,16 @@ New file, like LuaDialogue that exposes some new functions to be called
 from lua, like: StartDialogue() that sets a variable that you can pick up in Lua.
 Also some cutscene stuff maybe. And give items. High level gameplay things.
 Set up text and font stuff (and dialogs, ui) in C++. Then do dialogue with coroutines. On the way!
-Trigger system to start dialogues! 80% Done!
+Trigger system to start dialogues! 95 % Done!
 
 Added LuaDialogue.cpp but vc doesn't like the extern lua_State variable! Fix it!
 test to put(tm): extern "C" {extern lua_State variable} in LuaDialogue.cpp. Done!!
+
+Add weather! On the way, clouds done! Will make (it) rain.
+Fix path finding bug where you restart when pathing. Done!
+
+Fix green borders on mobile. - Tried black rects, did not work..
+Add Tile flip in ScenEdit - Done!
 
 Other stuff:
 Add Cards and deck, think about a good solution.

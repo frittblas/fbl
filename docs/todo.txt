@@ -240,7 +240,7 @@ extern "C" {
 
 remove alpha-byte in particle struct, it's not needed! :) (or change to rotation or angle)
 
-0.99 release is very soon! Done.
+0.99 release is very soon! Done!!
 
 }
 
