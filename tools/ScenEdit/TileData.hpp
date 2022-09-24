@@ -19,7 +19,7 @@ struct TileData {
     uint32_t id;
     uint32_t x, y;
     uint32_t textureX, textureY;
-    uint32_t layer, type;
+    uint32_t flip, layer, type;
     bool animated;
     uint32_t animFrames, animSpeed;
 
