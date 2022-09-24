@@ -19,6 +19,7 @@ int selectSpriteLeft(int x, int y);
 int selectSpriteRight(int x, int y);
 int selectSpriteUp(int x, int y);
 int selectSpriteDown(int x, int y);
+int incFlip(int x, int y);
 int incMapX(int x, int y);
 int incMapY(int x, int y);
 int incLayer(int x, int y);

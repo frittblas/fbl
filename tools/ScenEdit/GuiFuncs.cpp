@@ -71,6 +71,31 @@ int selectSpriteDown(int x, int y) {
 
 }
 
+// circle through flip modes, 0 = no flip, 1 = horizontal flip, 2 = vertical flip, 3 = both flips
+
+int incFlip(int x, int y) {
+
+	int index = getIndexAtCursor();
+
+	if (gEditor->tile[index] != nullptr) {
+		gEditor->tile[index]->flip++;
+		if (gEditor->tile[index]->flip > 3)
+			gEditor->tile[index]->flip = 0;
+		fbl_update_text(gEditor->flipTextId, 255, 255, 255, 255, (char*)"Tile flip: %d (+)", gEditor->tile[index]->flip);
+		fbl_set_sprite_flip(gEditor->tile[index]->id, gEditor->tile[index]->flip);
+	}
+	else {
+		gEditor->tileSettings.flip++;
+		if (gEditor->tileSettings.flip > 3)
+			gEditor->tileSettings.flip = 0;
+		fbl_update_text(gEditor->flipTextId, 255, 255, 255, 255, (char*)"Tile flip: %d (+)", gEditor->tileSettings.flip);
+		fbl_set_sprite_flip(gEditor->tileSettings.id, gEditor->tileSettings.flip);
+	}
+
+	return 0;
+
+}
+
 // these are called by gui buttons to increase tha map size
 
 int incMapX(int x, int y) {
