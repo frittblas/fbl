@@ -231,7 +231,7 @@ void ScenEdit::setupGUI() {
 	fbl_set_ui_elem_xy(guiId.back(), fbl_get_screen_w() - 32, 510);
 
 	// create the map marker rect
-	mapMarkerId = fbl_create_prim(FBL_RAY + 1, tileSettings.x, tileSettings.y, tileSize, tileSize, 0, 0, false);
+	mapMarkerId = fbl_create_prim(FBL_NORMAL_RECT, tileSettings.x, tileSettings.y, tileSize, tileSize, 0, 0, false);
 	// rects are 2X size in fbl :)(it's because of the translate shape stuff. Just scale down 2x to make fit)
 	// temporarily fixed this by adding a new shape to draw (1 after FBL_RAY, in primitives.c)
 	fbl_set_prim_color(mapMarkerId, 255, 255, 255, 100);
@@ -601,7 +601,7 @@ void ScenEdit::resetMap(uint32_t w, uint32_t h) {
 
 		// recreate the marMarker prim, with new size
 		fbl_delete_prim(mapMarkerId);
-		mapMarkerId = fbl_create_prim(FBL_RAY + 1, tileSettings.x, tileSettings.y, tileSize, tileSize, 0, 0, false);
+		mapMarkerId = fbl_create_prim(FBL_NORMAL_RECT, tileSettings.x, tileSettings.y, tileSize, tileSize, 0, 0, false);
 		fbl_set_prim_color(mapMarkerId, 255, 255, 255, 100);
 
 		// set the border for the new tilesize

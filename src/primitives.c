@@ -792,8 +792,8 @@ int render_prim(int tag, void *prim, void *dummy)
 					if (p->thick)
 						SDL_RenderDrawLine(fbl_engine.renderer, temp_rect.x + 1, temp_rect.y + 1, temp_rect.w + 1, temp_rect.h + 1);
 				break;
-				case 8:
-					// draw a normal sized rect from the top left corner :)
+				case FBL_NORMAL_RECT:
+					// draw a normal sized filled rect from the top left corner :)
 					SDL_RenderFillRect(fbl_engine.renderer, &temp_rect);
 
 				break;

@@ -93,12 +93,18 @@ int fbl_create_emitter(int w, int h, int num_particles, int life, int rate, int 
 	}
 
 
-	fbl_emitter->type = 0;
+	fbl_emitter->type = FBL_EMITTER_FLOWER;	// default to flower
+	fbl_emitter->shape = FBL_NORMAL_RECT;	// default to filled rect (FBL_RECT = unfilled)
 
 	fbl_emitter->spawn_area.x = 0;
 	fbl_emitter->spawn_area.y = 0;
 	fbl_emitter->spawn_area.w = w;
 	fbl_emitter->spawn_area.h = h;
+
+	fbl_emitter->img_rect.x = 0;
+	fbl_emitter->img_rect.y = 0;
+	fbl_emitter->img_rect.w = 5;	/* default to 5x5 rect */
+	fbl_emitter->img_rect.h = 5;
 
 	fbl_emitter->scale_start = scale_start;
 	fbl_emitter->scale_end = scale_end;
@@ -120,7 +126,7 @@ int fbl_create_emitter(int w, int h, int num_particles, int life, int rate, int 
 
 	fbl_emitter->num_particles = num_particles;
 	fbl_emitter->life_total = life;
-	fbl_emitter->emit_rate = rate;	// example: 30 would be twice every second at 60 fps. Don't allow be division by 0!
+	fbl_emitter->emit_rate = rate;	// example: 30 would be twice every second at 60 fps. Don't allow division by 0!
 	fbl_emitter->density = density;
 	fbl_emitter->rand_amount = 1.0;
 	fbl_emitter->fix_to_screen = false;
@@ -140,14 +146,14 @@ int fbl_create_emitter(int w, int h, int num_particles, int life, int rate, int 
 	if (current_emitter == 0)
 	{
 
-		fbl_emitter_list = DLCreate(current_emitter, fbl_emitter, sizeof(FBL_SPRITE));
+		fbl_emitter_list = DLCreate(current_emitter, fbl_emitter, sizeof(FBL_PARTICLE_EMITTER));
 
 
 	}
 	else
 	{
 
-		DLAppend(&fbl_emitter_list, current_emitter, fbl_emitter, sizeof(FBL_SPRITE));
+		DLAppend(&fbl_emitter_list, current_emitter, fbl_emitter, sizeof(FBL_PARTICLE_EMITTER));
 
 	}
 
@@ -299,6 +305,28 @@ void fbl_set_emitter_color(int id, uint8_t r, uint8_t g, uint8_t b, uint8_t a, b
 
 }
 
+void fbl_set_emitter_params(int id, int type, int w, int h, int num_particles, int life, int rate, int density, float scale_start, float scale_end)
+{
+
+	FBL_PARTICLE_EMITTER* emitter = NULL;
+	DLLIST* item = get_emitter_item_at_id(id);
+
+	if (item != NULL)
+	{
+
+		emitter = ((FBL_PARTICLE_EMITTER*)item->Object);
+
+
+		emitter->type = type;
+
+
+	}
+#ifdef FBL_DEBUG
+	else fprintf(FBL_ERROR_OUT, "Tried to set parameters for particle emitter %d, that does not exist!\n", id);
+#endif
+
+}
+
 void fbl_fix_emitter_to_screen(int id, bool fix)
 {
 
@@ -396,22 +424,20 @@ int emit_particle(int tag, void* emit, void* dummy)
 					if (emitter->particle[i].life < 1)
 					{
 
-						if (emitter->fix_to_screen) {
+						emitter->particle[i].x = (float)(rand() % emitter->spawn_area.w) + (float)emitter->spawn_area.x;
+						emitter->particle[i].y = (float)(rand() % emitter->spawn_area.h) + (float)emitter->spawn_area.y;
 
-							emitter->particle[i].x = (float)(rand() % emitter->spawn_area.w) + (float)emitter->spawn_area.x;
-							emitter->particle[i].y = (float)(rand() % emitter->spawn_area.h) + (float)emitter->spawn_area.y;
-
+						// set velocity based on presets
+						switch (emitter->type) {
+							case FBL_EMITTER_FLOWER :
+								emitter->particle[i].vel_x = ((float)(rand() % ((int)emitter->vel_x_start * 10)) / 10) - (emitter->vel_x_start / 2);
+								emitter->particle[i].vel_y = ((float)(rand() % ((int)emitter->vel_y_start * 10)) / 10) - (emitter->vel_y_start / 2);
+								break;
+							case FBL_EMITTER_RAIN:
+								emitter->particle[i].vel_x = emitter->vel_x_start;
+								emitter->particle[i].vel_y = emitter->vel_y_start;
+								break;
 						}
-						else
-						{
-
-							emitter->particle[i].x = (float)(rand() % emitter->spawn_area.w) + (float)emitter->spawn_area.x - fbl_camera.x;
-							emitter->particle[i].y = (float)(rand() % emitter->spawn_area.h) + (float)emitter->spawn_area.y - fbl_camera.y;
-
-						}
-
-						emitter->particle[i].vel_x = ((float)(rand() % ((int)emitter->vel_x_start * 10)) / 10) - (emitter->vel_x_start / 2);
-						emitter->particle[i].vel_y = ((float)(rand() % ((int)emitter->vel_y_start * 10)) / 10) - (emitter->vel_y_start / 2);
 
 						emitter->particle[i].scale = emitter->scale_start;
 						emitter->particle[i].color = emitter->color_start;
@@ -449,7 +475,7 @@ int update_particle_logic(int tag, void* emit, void* dummy)
 		switch (emitter->type)
 		{
 
-			case 0:
+			case FBL_EMITTER_FLOWER:
 
 				for (i = 0; i < emitter->num_particles; i++)
 				{
@@ -470,8 +496,7 @@ int update_particle_logic(int tag, void* emit, void* dummy)
 					
 						// experiment with this velocity thing!
 						//emitter->particle[i].vel_x = _lerp(emitter->vel_x_start, emitter->vel_x_end, (float)emitter->particle[i].life / (float)emitter->life_total);
-						//if (emitter->particle[i].life < emitter->life_total / 2)
-							//emitter->particle[i].vel_y = _lerp(emitter->vel_y_start, emitter->vel_y_end, (float)emitter->particle[i].life / (float)emitter->life_total);
+						//emitter->particle[i].vel_y = _lerp(emitter->vel_y_start, emitter->vel_y_end, (float)emitter->particle[i].life / (float)emitter->life_total);
 
 
 
@@ -483,7 +508,25 @@ int update_particle_logic(int tag, void* emit, void* dummy)
 
 			break;
 
-			case 1 :
+			case FBL_EMITTER_RAIN :
+
+				for (i = 0; i < emitter->num_particles; i++)
+				{
+
+					if (emitter->particle[i].life > 0)
+					{
+
+						emitter->particle[i].x += emitter->particle[i].vel_x;
+						emitter->particle[i].y += emitter->particle[i].vel_y;
+
+						emitter->particle[i].life--;
+
+					}
+
+				}
+
+			break;
+			case FBL_EMITTER_EXPLOSION:
 				// add a different particle effect here!
 			break;
 
@@ -520,6 +563,8 @@ int  render_particles(int tag, void* emit, void* dummy)
 
 	FBL_PARTICLE_EMITTER* emitter;
 	SDL_Rect tmp_rect;
+	int cam_x = 0;
+	int cam_y = 0;
 	int i;
 
 	emitter = (FBL_PARTICLE_EMITTER*)emit;
@@ -529,23 +574,28 @@ int  render_particles(int tag, void* emit, void* dummy)
 
 		SDL_SetRenderDrawBlendMode(fbl_engine.renderer, SDL_BLENDMODE_ADD);
 
+		if (!emitter->fix_to_screen) {
+			cam_x = fbl_camera.x;
+			cam_y = fbl_camera.y;
+		}
+
 		for (i = 0; i < emitter->num_particles; i++)
 		{
 
 			if (emitter->particle[i].life > 0)
 			{
 
-				tmp_rect.x = (int)emitter->particle[i].x;
-				tmp_rect.y = (int)emitter->particle[i].y;
+				tmp_rect.x = (int)emitter->particle[i].x - cam_x;
+				tmp_rect.y = (int)emitter->particle[i].y - cam_y;
 
-				tmp_rect.w = (int)(5 * emitter->particle[i].scale);
-				tmp_rect.h = (int)(5 * emitter->particle[i].scale);
+				// if prim (with images, scale in the  drawing op)
+				tmp_rect.w = (int)(emitter->img_rect.w * emitter->particle[i].scale);
+				tmp_rect.h = (int)(emitter->img_rect.h * emitter->particle[i].scale);
 
 				/* culling */
 
 				if (tmp_rect.x > -tmp_rect.w && tmp_rect.x < (int)fbl_engine.w &&
 					tmp_rect.y > -tmp_rect.h && tmp_rect.y < (int)fbl_engine.h)
-
 				{
 
 					SDL_SetRenderDrawColor(fbl_engine.renderer, emitter->particle[i].color.r, emitter->particle[i].color.g, emitter->particle[i].color.b, emitter->particle[i].color.a);

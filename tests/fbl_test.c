@@ -66,7 +66,7 @@ int  pressed_button(int x, int y);	// callback function for ui-click
 void(*demo_setup[NUM_DEMOS])();
 void(*demo_run[NUM_DEMOS])();
 
-int cur_demo = 3;
+int cur_demo = 6;
 
 void fbl_start()
 {
@@ -865,9 +865,9 @@ void setup_demo_7()
 	fbl_set_window_title("Demo 7: Particles!");
 	fbl_set_clear_color(0, 0, 0, 255);
 
-	fbl_load_texture("p.png");
+	fbl_load_texture("spritesheet.png");
 
-	fbl_create_sprite(0, 0, 64, 64, 0);
+	fbl_create_sprite(0, 0, 32, 32, 0);
 	fbl_create_sprite(0, 0, 64, 64, 0);
 	fbl_set_sprite_xy(0, 300, 300);
 	fbl_set_sprite_xy(1, 400, 300);
@@ -876,6 +876,7 @@ void setup_demo_7()
 
 	fbl_create_emitter(10, 10, 500, 100, 1, 3, 1.0, 6.0);	// w, h, num, life, rate, density, scale_start, scale_end
 	fbl_set_emitter_xy(0, 200, 200);
+	fbl_fix_emitter_to_screen(0, true);
 
 	fbl_create_emitter(10, 10, 500, 100, 1, 3, 1.0, 5.0);
 	fbl_set_emitter_xy(1, 600, 200);
@@ -901,7 +902,7 @@ void run_demo_7()
 	if (fbl_get_key_down(FBLK_A)) printf("A key down!%d\n", fbl_get_num_active_particles(0));
 	if (fbl_get_key_up(FBLK_A)) printf("A key up!%d\n", fbl_get_raw_frames_count());
 
-	fbl_set_emitter_xy(1, fbl_get_mouse_logical_x() + fbl_get_camera_x(), fbl_get_mouse_logical_y() + fbl_get_camera_y());
+	//fbl_set_emitter_xy(1, fbl_get_mouse_logical_x() + fbl_get_camera_x(), fbl_get_mouse_logical_y() + fbl_get_camera_y());
 
 
 	if (fbl_timer_get_ticks() > start_time + 10000) {
