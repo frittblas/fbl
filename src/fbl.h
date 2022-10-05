@@ -164,7 +164,10 @@ enum FBL_PRIM_TYPES
 	FBL_HEXA,   /* not impl. yet */
 	FBL_CIRCLE,
 
-	FBL_RAY
+	FBL_RAY, /* raycasting */
+
+	FBL_NORMAL_RECT, /* rectfill drawn from top left without X2 size */
+	FBL_NO_PRIM		/* no prim can be used by the particle emitter so it uses sprite instead of prim */
 
 };
 
@@ -212,6 +215,17 @@ enum FBL_UI_ELEM_TYPES
 	FBL_UI_CHECKBOX,
 	FBL_UI_SLIDER,  /* not impl. yet */
 	FBL_UI_EDITBOX  /* not impl. yet */
+
+};
+
+/* particle emitter types */
+
+enum FBL_PARTICLE_EMITTER_TYPE
+{
+
+	FBL_EMITTER_FLOWER,
+	FBL_EMITTER_RAIN,
+	FBL_EMITTER_EXPLOSION
 
 };
 

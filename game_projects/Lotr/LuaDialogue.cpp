@@ -124,14 +124,14 @@ void initLuaDialog() {
 	luaHideDialog(NULL);
 
 	// add black rects to the left and right of the screen to look nicer on weird resolutions (i.e mobile)
-	// Remember: FBL_RAY + 1 is a normal scaled rect. Move this code to a better place later
+	// Remember: FBL_NORMAL_RECT is a normal scaled rect. Move this code to a better place later
 	// NOTE: this didn't work, can't overdraw like this. It's fine for now
 	/*
 	int overDraw = 240;
-	int tmpId = fbl_create_prim(FBL_RAY + 1, -overDraw, 0, overDraw, Game::LogicalResH, 0, false, true);
+	int tmpId = fbl_create_prim(FBL_NORMAL_RECT, -overDraw, 0, overDraw, Game::LogicalResH, 0, false, true);
 	fbl_set_prim_color(tmpId, 0, 0, 0, 255);
 	fbl_fix_prim_to_screen(tmpId, true);
-	tmpId = fbl_create_prim(FBL_RAY + 1, Game::LogicalResW, 0, overDraw, Game::LogicalResH, 0, false, true);
+	tmpId = fbl_create_prim(FBL_NORMAL_RECT, Game::LogicalResW, 0, overDraw, Game::LogicalResH, 0, false, true);
 	fbl_set_prim_color(tmpId, 0, 0, 0, 255);
 	fbl_fix_prim_to_screen(tmpId, true);
 	*/

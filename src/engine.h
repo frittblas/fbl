@@ -286,10 +286,12 @@ typedef struct {
 typedef struct
 {
 
-	Uint8 type;
+	Uint8 type;	/* flower, rain, explosion etc */
+	Uint8 shape; /* the actual particle shape, a prim or FBL_NO_PRIM (in that case, image) */
 
 	PARTICLE *particle;
 	SDL_Rect spawn_area;
+	SDL_Rect img_rect;	/* source image rect in the sprite atlas */
 
 	float scale_start;
 	float scale_end;
