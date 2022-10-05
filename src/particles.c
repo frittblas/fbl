@@ -43,19 +43,11 @@ float gravity = 1;
  * Create a particle emitter by adding an area where
  * particles spawn from.
  */
-int fbl_create_emitter(int w, int h, int num_particles, int life, int rate, int density, float scale_start, float scale_end)
+int fbl_create_emitter(int num_particles)
 {
 
 	FBL_PARTICLE_EMITTER* fbl_emitter = NULL;
 	int i;
-
-	/*
-	if (!fbl_particle_texture)
-	{
-		fprintf(FBL_ERROR_OUT, "Load particle sheet before creating emitter!\n");
-		return -1;
-	}
-	*/
 
 	fbl_emitter = malloc(sizeof(FBL_PARTICLE_EMITTER));
 
@@ -69,20 +61,7 @@ int fbl_create_emitter(int w, int h, int num_particles, int life, int rate, int 
 	/* limit to some reasonable values */
 
 	if (num_particles < 1) num_particles = 1;
-	if (num_particles > 10000) num_particles = 10000;
-
-	if (life < 1) life = 1;
-	if (life > 500) life = 500;
-
-	if (rate < 1) rate = 1;		// avoid division by 0, 1 = one emit every frame
-	if (rate > 300) rate = 300;	// one emit every 5 seconds (60 fps) is da limit
-
-	if (density < 1) density = 1;	// min 1 particle / emit
-	if (density > 10) density = 10;	// max 10 particles / emit
-
-	if (scale_start < 0.1) scale_start = 0.1f;
-	if (scale_end > 20.0) scale_start = 20.0f;
-
+	if (num_particles > 5000) num_particles = 5000;
 
 	fbl_emitter->particle = malloc(num_particles * sizeof(PARTICLE));
 
@@ -98,16 +77,16 @@ int fbl_create_emitter(int w, int h, int num_particles, int life, int rate, int 
 
 	fbl_emitter->spawn_area.x = 0;
 	fbl_emitter->spawn_area.y = 0;
-	fbl_emitter->spawn_area.w = w;
-	fbl_emitter->spawn_area.h = h;
+	fbl_emitter->spawn_area.w = 10;
+	fbl_emitter->spawn_area.h = 10;
 
 	fbl_emitter->img_rect.x = 0;
 	fbl_emitter->img_rect.y = 0;
 	fbl_emitter->img_rect.w = 5;	/* default to 5x5 rect */
 	fbl_emitter->img_rect.h = 5;
 
-	fbl_emitter->scale_start = scale_start;
-	fbl_emitter->scale_end = scale_end;
+	fbl_emitter->scale_start = 1.0;
+	fbl_emitter->scale_end = 5.0;
 
 	fbl_emitter->vel_x_start = 2.0f;
 	fbl_emitter->vel_y_start = 2.0f;
@@ -125,9 +104,9 @@ int fbl_create_emitter(int w, int h, int num_particles, int life, int rate, int 
 	fbl_emitter->color_end.a = 0;
 
 	fbl_emitter->num_particles = num_particles;
-	fbl_emitter->life_total = life;
-	fbl_emitter->emit_rate = rate;	// example: 30 would be twice every second at 60 fps. Don't allow division by 0!
-	fbl_emitter->density = density;
+	fbl_emitter->life_total = 100;
+	fbl_emitter->emit_rate = 1;	// example: 30 would be twice every second at 60 fps. Don't allow division by 0!
+	fbl_emitter->density = 3;	// how many emits at once
 	fbl_emitter->rand_amount = 1.0;
 	fbl_emitter->fix_to_screen = false;
 	fbl_emitter->active = true;
@@ -305,7 +284,31 @@ void fbl_set_emitter_color(int id, uint8_t r, uint8_t g, uint8_t b, uint8_t a, b
 
 }
 
-void fbl_set_emitter_params(int id, int type, int w, int h, int num_particles, int life, int rate, int density, float scale_start, float scale_end)
+void fbl_set_emitter_particle_shape(int id, int shape, int x, int y, int w, int h)
+{
+
+	FBL_PARTICLE_EMITTER* emitter = NULL;
+	DLLIST* item = get_emitter_item_at_id(id);
+
+	if (item != NULL)
+	{
+
+		emitter = ((FBL_PARTICLE_EMITTER*)item->Object);
+
+		emitter->shape = shape;
+		emitter->img_rect.x = x;
+		emitter->img_rect.y = y;
+		emitter->img_rect.w = w;
+		emitter->img_rect.h = h;
+
+	}
+#ifdef FBL_DEBUG
+	else fprintf(FBL_ERROR_OUT, "Tried to set particle shape for particle emitter %d, that does not exist!\n", id);
+#endif
+
+}
+
+void fbl_set_emitter_params(int id, int type, int spawn_w, int spawn_h, int life, int rate, int density, float scale_start, float scale_end)
 {
 
 	FBL_PARTICLE_EMITTER* emitter = NULL;
@@ -317,7 +320,28 @@ void fbl_set_emitter_params(int id, int type, int w, int h, int num_particles, i
 		emitter = ((FBL_PARTICLE_EMITTER*)item->Object);
 
 
+		/* limit to some reasonable values */
+
+		if (life < 1) life = 1;
+		if (life > 500) life = 500;
+
+		if (rate < 1) rate = 1;		// avoid division by 0, 1 = one emit every frame
+		if (rate > 300) rate = 300;	// one emit every 5 seconds (60 fps) is da limit
+
+		if (density < 1) density = 1;	// min 1 particle / emit
+		if (density > 10) density = 10;	// max 10 particles / emit
+
+		if (scale_start < 0.1) scale_start = 0.1f;
+		if (scale_end > 20.0) scale_start = 20.0f;
+
+
 		emitter->type = type;
+		emitter->spawn_area.w = spawn_w;
+		emitter->spawn_area.h = spawn_h;
+		emitter->life_total = life;
+		emitter->emit_rate = rate;
+		emitter->scale_start = scale_start;
+		emitter->scale_end = scale_end;
 
 
 	}
@@ -430,6 +454,9 @@ int emit_particle(int tag, void* emit, void* dummy)
 						// set velocity based on presets
 						switch (emitter->type) {
 							case FBL_EMITTER_FLOWER :
+								// NOTE: fix this so you can use < 1.0 values
+								if (emitter->vel_x_start < 1.0) emitter->vel_x_start = 1.0;
+								if (emitter->vel_y_start < 1.0) emitter->vel_y_start = 1.0;
 								emitter->particle[i].vel_x = ((float)(rand() % ((int)emitter->vel_x_start * 10)) / 10) - (emitter->vel_x_start / 2);
 								emitter->particle[i].vel_y = ((float)(rand() % ((int)emitter->vel_y_start * 10)) / 10) - (emitter->vel_y_start / 2);
 								break;
