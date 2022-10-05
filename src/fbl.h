@@ -448,12 +448,14 @@ void fbl_phys_shutdown(void);
 
 /* particles */
 
-int  fbl_create_emitter(int w, int h, int num_particles, int life, int rate, int density, float scale_start, float scale_end);
+int  fbl_create_emitter(int num_particles);
 void fbl_delete_emitter(int id);
 void fbl_set_emitter_active(int id, bool active);
 void fbl_set_emitter_xy(int id, int x, int y);
 void fbl_set_emitter_vel_xy(int id, float vel_x, float vel_y, bool start);
 void fbl_set_emitter_color(int id, uint8_t r, uint8_t g, uint8_t b, uint8_t a, bool start);
+void fbl_set_emitter_particle_shape(int id, int shape, int x, int y, int w, int h);
+void fbl_set_emitter_params(int id, int type, int spawn_w, int spawn_h, int life, int rate, int density, float scale_start, float scale_end);
 void fbl_fix_emitter_to_screen(int id, bool fix);
 int  fbl_get_num_active_particles(int emitter_id);
 int  fbl_get_num_emitters(void);

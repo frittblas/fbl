@@ -874,18 +874,26 @@ void setup_demo_7()
 	fbl_fix_sprite_to_screen(0, true);
 
 
-	fbl_create_emitter(10, 10, 500, 100, 1, 3, 1.0, 6.0);	// w, h, num, life, rate, density, scale_start, scale_end
+	fbl_create_emitter(500);	// create emitter with 500 particles
 	fbl_set_emitter_xy(0, 200, 200);
 	fbl_fix_emitter_to_screen(0, true);
 
-	fbl_create_emitter(10, 10, 500, 100, 1, 3, 1.0, 5.0);
-	fbl_set_emitter_xy(1, 600, 200);
-	fbl_set_emitter_color(1, rand() % 255, rand() % 255, rand() % 255, 255, true);
-	fbl_set_emitter_color(1, rand() % 255, rand() % 255, rand() % 255, 0, false);
+	int emitter2id = fbl_create_emitter(200);
+	fbl_set_emitter_params(emitter2id, FBL_EMITTER_RAIN, 300, 10, 100, 5, 5, 1.0, 1.0);	// id, type, spawn_W, spawn_h, life, rate, density, scale_start, scale_end
+	fbl_set_emitter_particle_shape(emitter2id, FBL_NORMAL_RECT, 0, 0, 3, 10);
+	fbl_set_emitter_xy(emitter2id, 500, 200);
+	fbl_set_emitter_vel_xy(emitter2id, 0, 1.0, true);	// crash if you call this with < 1.0 on either param using FLOWER
+	fbl_set_emitter_color(emitter2id, 30, 30, 200, 255, true);
+	//fbl_set_emitter_color(emitter2id, rand() % 255, rand() % 255, rand() % 255, 255, true);
+	//fbl_set_emitter_color(emitter2id, rand() % 255, rand() % 255, rand() % 255, 0, false);
 
+	int emitter3id = fbl_create_emitter(200);
+	fbl_set_emitter_params(emitter3id, FBL_EMITTER_RAIN, 300, 10, 100, 5, 5, 1.0, 1.0);	// id, type, spawn_W, spawn_h, life, rate, density, scale_start, scale_end
+	fbl_set_emitter_particle_shape(emitter3id, FBL_NORMAL_RECT, 0, 0, 3, 10);
+	fbl_set_emitter_xy(emitter3id, 500, 200);
+	fbl_set_emitter_vel_xy(emitter3id, 0, 1.5, true);	// crash if you call this with < 1.0 on either param using FLOWER
+	fbl_set_emitter_color(emitter3id, 100, 100, 255, 255, true);
 
-	//fbl_set_fps_locked(false);
-	//fbl_set_system_delay_ms(0);
 
 	flag = 1;
 	frams = 0;
