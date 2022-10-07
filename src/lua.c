@@ -2309,17 +2309,18 @@ int lua_phys_shutdown(lua_State *lua_env)
 int lua_create_emitter(lua_State *lua_env)
 {
 
-	int w = (int)lua_tonumber(lua_env, 1);
-	int h = (int)lua_tonumber(lua_env, 2);
-	int num = (int)lua_tonumber(lua_env, 3);
+	//int w = (int)lua_tonumber(lua_env, 1);
+	//int h = (int)lua_tonumber(lua_env, 2);
 
-	int life = (int)lua_tonumber(lua_env, 4);
-	int rate = (int)lua_tonumber(lua_env, 5);
-	int density = (int)lua_tonumber(lua_env, 6);
-	float scale_start = (float)lua_tonumber(lua_env, 7);
-	float scale_end = (float)lua_tonumber(lua_env, 8);
+	int num = (int)lua_tonumber(lua_env, 1);
 
-	fbl_create_emitter(w, h, num, life, rate, density, scale_start, scale_end);
+	//int life = (int)lua_tonumber(lua_env, 4);
+	//int rate = (int)lua_tonumber(lua_env, 5);
+	//int density = (int)lua_tonumber(lua_env, 6);
+	//float scale_start = (float)lua_tonumber(lua_env, 7);
+	//float scale_end = (float)lua_tonumber(lua_env, 8);
+
+	fbl_create_emitter(num);
 
 	return 1;
 

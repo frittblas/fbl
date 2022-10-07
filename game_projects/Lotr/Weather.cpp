@@ -63,8 +63,8 @@ void Weather::initClouds(int num) {
 		Cloud* tmpCloud = new Cloud();
 
 		tmpCloud->id = id;
-		tmpCloud->x = rand() % (Game::MapW * Game::TileSize);
-		tmpCloud->y = rand() % 150 - 20;
+		tmpCloud->x = (float)(rand() % (Game::MapW * Game::TileSize));
+		tmpCloud->y = (float)(rand() % 150 - 20);
 		tmpCloud->speed = (float)((rand() % 8) + 3) / 10;
 		tmpCloud->scale = (float)((rand() % 10) + 10) / 10;
 		tmpCloud->alpha = rand() % 200 + 55;
@@ -72,7 +72,7 @@ void Weather::initClouds(int num) {
 		// some clouds go the other way
 		if (rand() % 2 == 0) tmpCloud->speed = -tmpCloud->speed;
 
-		fbl_set_sprite_xy(tmpCloud->id, tmpCloud->x, tmpCloud->y);
+		fbl_set_sprite_xy(tmpCloud->id, (int)tmpCloud->x, (int)tmpCloud->y);
 		fbl_set_sprite_scale(tmpCloud->id, tmpCloud->scale);
 		fbl_set_sprite_alpha(tmpCloud->id, tmpCloud->alpha);
 
@@ -98,7 +98,7 @@ void Weather::tick(Game& g) {
 		if (curCloud->x < -200 || curCloud->x >(Game::MapW * Game::TileSize) + 50)
 			curCloud->speed = -curCloud->speed;
 
-		fbl_set_sprite_xy(curCloud->id, curCloud->x, curCloud->y);
+		fbl_set_sprite_xy(curCloud->id, (int)curCloud->x, (int)curCloud->y);
 
 	}
 
