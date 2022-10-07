@@ -879,18 +879,18 @@ void setup_demo_7()
 	fbl_fix_emitter_to_screen(0, true);
 
 	int emitter2id = fbl_create_emitter(200);
-	fbl_set_emitter_params(emitter2id, FBL_EMITTER_RAIN, 300, 10, 100, 5, 5, 1.0, 1.0);	// id, type, spawn_W, spawn_h, life, rate, density, scale_start, scale_end
+	fbl_set_emitter_params(emitter2id, FBL_EMITTER_RAIN, 400, 10, 100, 5, 5, 1.0, 1.0);	// id, type, spawn_W, spawn_h, life, rate, density, scale_start, scale_end
 	fbl_set_emitter_particle_shape(emitter2id, FBL_NORMAL_RECT, 0, 0, 3, 10);
-	fbl_set_emitter_xy(emitter2id, 500, 200);
+	fbl_set_emitter_xy(emitter2id, 400, 10);
 	fbl_set_emitter_vel_xy(emitter2id, 0, 1.0, true);	// crash if you call this with < 1.0 on either param using FLOWER
 	fbl_set_emitter_color(emitter2id, 30, 30, 200, 255, true);
 	//fbl_set_emitter_color(emitter2id, rand() % 255, rand() % 255, rand() % 255, 255, true);
 	//fbl_set_emitter_color(emitter2id, rand() % 255, rand() % 255, rand() % 255, 0, false);
 
 	int emitter3id = fbl_create_emitter(200);
-	fbl_set_emitter_params(emitter3id, FBL_EMITTER_RAIN, 300, 10, 100, 5, 5, 1.0, 1.0);	// id, type, spawn_W, spawn_h, life, rate, density, scale_start, scale_end
+	fbl_set_emitter_params(emitter3id, FBL_EMITTER_RAIN, 400, 10, 100, 5, 5, 1.0, 1.0);	// id, type, spawn_W, spawn_h, life, rate, density, scale_start, scale_end
 	fbl_set_emitter_particle_shape(emitter3id, FBL_NORMAL_RECT, 0, 0, 3, 10);
-	fbl_set_emitter_xy(emitter3id, 500, 200);
+	fbl_set_emitter_xy(emitter3id, 400, 10);
 	fbl_set_emitter_vel_xy(emitter3id, 0, 1.5, true);	// crash if you call this with < 1.0 on either param using FLOWER
 	fbl_set_emitter_color(emitter3id, 100, 100, 255, 255, true);
 

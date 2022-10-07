@@ -569,10 +569,8 @@ int update_particle_logic(int tag, void* emit, void* dummy)
 void engine_update_all_particles()
 {
 
-	DLWalk(fbl_emitter_list, update_particle_logic, NULL);
 	DLWalk(fbl_emitter_list, emit_particle, NULL);
-
-	// SDL_Delay(10); // maybe use small delay here if running on a thread (not on emscripten though!)
+	DLWalk(fbl_emitter_list, update_particle_logic, NULL);
 
 }
 
