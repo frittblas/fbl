@@ -258,6 +258,8 @@ Also for emscripten (easy) and Android (medium :)
 small stuffs:
 Take a look at should_continue thing, debug it. maybe come up with alternative. Time the gameloop etc. lazyfoo also.
 
+add the new particle functions to Lua.
+
 }
 
 
