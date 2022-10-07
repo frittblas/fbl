@@ -159,7 +159,7 @@ bool Disk::exportBin(ScenEdit& editor, std::string filename) {
     char* new_path = engine_get_platform_asset_path(filename.c_str());
 
     // change filename to text version *.scn
-    int len = strlen(new_path);
+    size_t len = strlen(new_path);
     new_path[len - 1] = 'n';
 
     // read the file to buf using RWops (note that you have to save the map before exporting)

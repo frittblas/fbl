@@ -1279,7 +1279,8 @@ int render_sprite(int tag, void *sprite, void *dummy)
 					}
 
 
-					/* set blend modes and colors and alpha (benchmark this! update: switching blendmodes is kinda slow the rest very fast */
+					/* set blend modes and colors and alpha (benchmark this! update: switching blendmodes is kinda slow the rest very fast.
+						If your are using different blendmodes on many different sprites, sort the sprites by blendmode after you create them */
 
 					SDL_SetTextureBlendMode(fbl_texture, spr->blendmode);
 					SDL_SetTextureAlphaMod(fbl_texture, spr->color.a);

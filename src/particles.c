@@ -32,6 +32,8 @@ float _lerp(float a, float b, float amount);
 extern FBL_ENGINE fbl_engine;
 extern FBL_CAMERA fbl_camera;
 
+extern SDL_Texture* fbl_texture;
+
 DLLIST* fbl_emitter_list = NULL;
 
 unsigned int current_emitter = 0;
@@ -597,39 +599,73 @@ int  render_particles(int tag, void* emit, void* dummy)
 	if (emitter->active)
 	{
 
-		SDL_SetRenderDrawBlendMode(fbl_engine.renderer, SDL_BLENDMODE_ADD);
-
 		if (!emitter->fix_to_screen) {
 			cam_x = fbl_camera.x;
 			cam_y = fbl_camera.y;
 		}
 
-		for (i = 0; i < emitter->num_particles; i++)
-		{
+		switch (emitter->shape) {
 
-			if (emitter->particle[i].life > 0)
-			{
+			case FBL_NORMAL_RECT :
 
-				tmp_rect.x = (int)emitter->particle[i].x - cam_x;
-				tmp_rect.y = (int)emitter->particle[i].y - cam_y;
+				SDL_SetRenderDrawBlendMode(fbl_engine.renderer, SDL_BLENDMODE_ADD);
 
-				// if prim (with images, scale in the  drawing op)
-				tmp_rect.w = (int)(emitter->img_rect.w * emitter->particle[i].scale);
-				tmp_rect.h = (int)(emitter->img_rect.h * emitter->particle[i].scale);
-
-				/* culling */
-
-				if (tmp_rect.x > -tmp_rect.w && tmp_rect.x < (int)fbl_engine.w &&
-					tmp_rect.y > -tmp_rect.h && tmp_rect.y < (int)fbl_engine.h)
+				for (i = 0; i < emitter->num_particles; i++)
 				{
 
-					SDL_SetRenderDrawColor(fbl_engine.renderer, emitter->particle[i].color.r, emitter->particle[i].color.g, emitter->particle[i].color.b, emitter->particle[i].color.a);
-					SDL_RenderFillRect(fbl_engine.renderer, &tmp_rect);
-				
+					if (emitter->particle[i].life > 0)
+					{
+
+						tmp_rect.x = (int)emitter->particle[i].x - cam_x;
+						tmp_rect.y = (int)emitter->particle[i].y - cam_y;
+
+						// if prim (with images, scale in the  drawing op)
+						tmp_rect.w = (int)(emitter->img_rect.w * emitter->particle[i].scale);
+						tmp_rect.h = (int)(emitter->img_rect.h * emitter->particle[i].scale);
+
+						/* culling */
+
+						//if (tmp_rect.x > -tmp_rect.w && tmp_rect.x < (int)fbl_engine.w &&
+							//tmp_rect.y > -tmp_rect.h && tmp_rect.y < (int)fbl_engine.h)
+						//{
+
+							SDL_SetRenderDrawColor(fbl_engine.renderer, emitter->particle[i].color.r, emitter->particle[i].color.g, emitter->particle[i].color.b, emitter->particle[i].color.a);
+							SDL_RenderFillRect(fbl_engine.renderer, &tmp_rect);
+
+						//}
+
+					}
+
 				}
+				break;
 
+			case FBL_NO_PRIM :
 
-			}
+				SDL_SetTextureBlendMode(fbl_texture, SDL_BLENDMODE_ADD);
+
+				for (i = 0; i < emitter->num_particles; i++)
+				{
+
+					if (emitter->particle[i].life > 0)
+					{
+
+						tmp_rect.x = (int)emitter->particle[i].x - cam_x;
+						tmp_rect.y = (int)emitter->particle[i].y - cam_y;
+
+						// if prim (with images, scale in the  drawing op)
+						tmp_rect.w = (int)(emitter->img_rect.w * emitter->particle[i].scale);
+						tmp_rect.h = (int)(emitter->img_rect.h * emitter->particle[i].scale);
+
+						SDL_SetTextureAlphaMod(fbl_texture, emitter->particle[i].color.a);
+						SDL_SetTextureColorMod(fbl_texture, emitter->particle[i].color.r, emitter->particle[i].color.g, emitter->particle[i].color.b);
+
+						SDL_RenderCopyEx(fbl_engine.renderer, fbl_texture, &emitter->img_rect,
+							&tmp_rect, emitter->particle[i].rotation, NULL, SDL_FLIP_NONE);
+
+					}
+
+				}
+				break;
 
 		}
 

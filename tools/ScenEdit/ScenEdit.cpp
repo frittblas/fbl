@@ -439,8 +439,8 @@ void ScenEdit::addTile() {
 		fbl_set_sprite_animation(tile[index]->id, tile[index]->animated, tile[index]->textureX, tile[index]->textureY,
 			tileSize, tileSize, tile[index]->animFrames, tile[index]->animSpeed, true);
 
-		std::cout << "Added sprite at X: " << tileSettings.x / tileSize << ", Y: " << tileSettings.y / tileSize << std::endl;
-		std::cout << "Number of tiles: " << fbl_get_num_sprites() - 1 << std::endl; // -1 because of the select sprite
+		std::cout << "Added sprite at X: " << tileSettings.x / tileSize << ", Y: " << tileSettings.y / tileSize <<
+					 " Number of tiles: " << fbl_get_num_sprites() - 1 << std::endl; // -1 because of the select sprite
 
 	}
 

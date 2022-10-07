@@ -876,6 +876,8 @@ void setup_demo_7()
 
 	fbl_create_emitter(500);	// create emitter with 500 particles
 	fbl_set_emitter_xy(0, 200, 200);
+	fbl_set_emitter_color(0, 220, 220, 220, 255, true);
+	fbl_set_emitter_color(0, 0, 255, 0, 0, false);
 	fbl_fix_emitter_to_screen(0, true);
 
 	int emitter2id = fbl_create_emitter(200);
@@ -893,6 +895,12 @@ void setup_demo_7()
 	fbl_set_emitter_xy(emitter3id, 400, 10);
 	fbl_set_emitter_vel_xy(emitter3id, 0, 1.5, true);	// crash if you call this with < 1.0 on either param using FLOWER
 	fbl_set_emitter_color(emitter3id, 100, 100, 255, 255, true);
+
+
+	int img_emitter = fbl_create_emitter(200);	// create emitter with 500 particles
+	fbl_set_emitter_params(img_emitter, FBL_EMITTER_FLOWER, 10, 10, 100, 1, 3, 0.3, 1.5);	// id, type, spawn_W, spawn_h, life, rate, density, scale_start, scale_end
+	fbl_set_emitter_particle_shape(img_emitter, FBL_NO_PRIM, 448, 128, 64, 64);		// use particle image instead of prim
+	fbl_set_emitter_xy(img_emitter, 500, 200);
 
 
 	flag = 1;

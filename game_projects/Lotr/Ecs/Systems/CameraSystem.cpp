@@ -100,7 +100,7 @@ void CameraSystem::Update(Coordinator& ecs) {
 		if (cam.y > Game::LogicalResH) cam.y = Game::LogicalResH;
 
 		// finally set the fbl camera
-		fbl_set_camera_xy(cam.x, cam.y);
+		fbl_set_camera_xy((int)cam.x, (int)cam.y);
 
 	}
 

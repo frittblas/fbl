@@ -273,10 +273,12 @@ typedef struct {
 
 	float scale;
 
+	float rotation;	// not currently used
+
 	SDL_Color color;
 	Uint8 alpha;
 
-	int life;
+	Uint16 life;
 
 }PARTICLE;
 
