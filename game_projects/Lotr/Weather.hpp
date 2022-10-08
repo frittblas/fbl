@@ -31,12 +31,13 @@ class Weather {
 public:
 
     std::vector<Cloud*> mCloud; // list of clouds
+    uint32_t rainLayerId[3];
 
     Weather();
     ~Weather();
 
     void tick(Game& g);
     void initClouds(int num);
-    void initRain();
+    void initRain(uint8_t amount, uint8_t alpha);   // amount of 1 = max
 
 };

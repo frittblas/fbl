@@ -137,5 +137,6 @@ void Game::loadLevel() {
 void Game::unLoadLevel() {
 
 	mMap->resetMap(0, 0);
+	fbl_destroy_all_emitters();
 
 }
