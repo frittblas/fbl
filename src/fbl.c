@@ -294,7 +294,7 @@ void normal_loop_handler()
 
 		SDL_SetRenderDrawColor(fbl_engine.renderer, fbl_clear_color.r, fbl_clear_color.g, fbl_clear_color.b, fbl_clear_color.a);
 		SDL_RenderClear(fbl_engine.renderer);
-
+				
 		engine_render_all_sprites();
 		engine_render_all_prims();
 		engine_render_all_particles();

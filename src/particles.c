@@ -469,6 +469,7 @@ int emit_particle(int tag, void* emit, void* dummy)
 						}
 
 						emitter->particle[i].scale = emitter->scale_start;
+						emitter->particle[i].rotation = 0.0;
 						emitter->particle[i].color = emitter->color_start;
 						emitter->particle[i].life = emitter->life_total;	// give it life (activate particle)
 
@@ -547,6 +548,8 @@ int update_particle_logic(int tag, void* emit, void* dummy)
 
 						emitter->particle[i].x += emitter->particle[i].vel_x;
 						emitter->particle[i].y += emitter->particle[i].vel_y;
+
+						emitter->particle[i].color.a = (Uint8)_lerp((float)emitter->color_start.a, (float)emitter->color_end.a, (float)emitter->particle[i].life / (float)emitter->life_total);
 
 						emitter->particle[i].life--;
 
