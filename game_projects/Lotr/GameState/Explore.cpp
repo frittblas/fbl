@@ -51,8 +51,7 @@ void Explore::tick(Game& g) {
 
 	g.mWeather->tick(g);
 
-	int num = std::rand() / ((RAND_MAX + 1u) / 50); // random numbers from 0-49
-	if (num == 0)
+	if(fbl_get_raw_frames_count() % 60 == 0)
 		std::cout << "Tick explore!" << std::endl;
 
 }

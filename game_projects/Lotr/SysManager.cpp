@@ -54,30 +54,30 @@ void SysManager::setupEcs(Coordinator *mEcs) {
 	mDialogueTrigSystem = mEcs->RegisterSystem<DialogueTrigSystem>();
 
 	// set up what components the systems require
-	Signature sig;
-	sig.set(mEcs->GetComponentType<Position>());
-	sig.set(mEcs->GetComponentType<Sprite>());
-	mEcs->SetSystemSignature<SpriteSystem>(sig);
+	Signature sign;
+	sign.set(mEcs->GetComponentType<Position>());
+	sign.set(mEcs->GetComponentType<Sprite>());
+	mEcs->SetSystemSignature<SpriteSystem>(sign);
 
-	sig.reset();
-	sig.set(mEcs->GetComponentType<Position>());
-	sig.set(mEcs->GetComponentType<Path>());
-	mEcs->SetSystemSignature<PathSystem>(sig);
+	sign.reset();
+	sign.set(mEcs->GetComponentType<Position>());
+	sign.set(mEcs->GetComponentType<Path>());
+	mEcs->SetSystemSignature<PathSystem>(sign);
 
-	sig.reset();
-	sig.set(mEcs->GetComponentType<Position>());
-	sig.set(mEcs->GetComponentType<Path>());
-	sig.set(mEcs->GetComponentType<MouseCtrl>());
-	mEcs->SetSystemSignature<MouseCtrlSystem>(sig);
+	sign.reset();
+	sign.set(mEcs->GetComponentType<Position>());
+	sign.set(mEcs->GetComponentType<Path>());
+	sign.set(mEcs->GetComponentType<MouseCtrl>());
+	mEcs->SetSystemSignature<MouseCtrlSystem>(sign);
 
-	sig.reset();
-	sig.set(mEcs->GetComponentType<Position>());
-	sig.set(mEcs->GetComponentType<Camera>());
-	mEcs->SetSystemSignature<CameraSystem>(sig);
+	sign.reset();
+	sign.set(mEcs->GetComponentType<Position>());
+	sign.set(mEcs->GetComponentType<Camera>());
+	mEcs->SetSystemSignature<CameraSystem>(sign);
 
-	sig.reset();
-	sig.set(mEcs->GetComponentType<Position>());
-	sig.set(mEcs->GetComponentType<DialogueTrigger>());
-	mEcs->SetSystemSignature<DialogueTrigSystem>(sig);
+	sign.reset();
+	sign.set(mEcs->GetComponentType<Position>());
+	sign.set(mEcs->GetComponentType<DialogueTrigger>());
+	mEcs->SetSystemSignature<DialogueTrigSystem>(sign);
 
 }

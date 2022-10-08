@@ -272,11 +272,9 @@ typedef struct {
 	float vel_y;
 
 	float scale;
-
-	float rotation;	// not currently used
+	float rotation;
 
 	SDL_Color color;
-	Uint8 alpha;
 
 	Uint16 life;
 

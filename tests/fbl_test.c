@@ -648,7 +648,7 @@ void setup_demo_4()
 	fbl_set_sprite_is_light(light2, true);
 	fbl_set_sprite_scale(light2, 3.0);
 
-	// the lights aren't visible undtil you set the fullscreen lighting tint. (create evening or night-vibe)
+	// the lights aren't visible until you set the fullscreen lighting tint. (create evening or night-vibe)
 	fbl_set_lighting_tint(true, 50, 50, 50);
 
 }
@@ -859,6 +859,8 @@ void run_demo_6()
 
 /* Demo 7 */
 
+int greeny;
+
 void setup_demo_7()
 {
 
@@ -867,38 +869,40 @@ void setup_demo_7()
 
 	fbl_load_texture("spritesheet.png");
 
-	fbl_create_sprite(0, 0, 32, 32, 0);
-	fbl_create_sprite(0, 0, 64, 64, 0);
+	fbl_create_sprite(440, 448, 72, 64, 0);
+	fbl_create_sprite(449, 448, 72, 64, 0);
 	fbl_set_sprite_xy(0, 300, 300);
-	fbl_set_sprite_xy(1, 400, 300);
+	fbl_set_sprite_xy(1, 400, 400);
 	fbl_fix_sprite_to_screen(0, true);
 
 
-	fbl_create_emitter(500);	// create emitter with 500 particles
-	fbl_set_emitter_xy(0, 200, 200);
-	fbl_set_emitter_color(0, 220, 220, 220, 255, true);
-	fbl_set_emitter_color(0, 0, 255, 0, 0, false);
-	fbl_fix_emitter_to_screen(0, true);
+	greeny = fbl_create_emitter(500);	// create green emitter with 500 particles
+	fbl_set_emitter_xy(greeny, 200, 200);
+	fbl_set_emitter_color(greeny, 220, 220, 220, 255, true);
+	fbl_set_emitter_color(greeny, 0, 255, 0, 0, false);
+	//fbl_set_emitter_params(greeny, FBL_EMITTER_FLOWER, 10, 10, 100, 1, 3, 0.1, 1.5);	// id, type, spawn_w, spawn_h, life, rate, density, scale_start, scale_end
+	//fbl_set_emitter_particle_shape(greeny, FBL_NO_PRIM, 448, 128, 64, 64);		// use particle image instead of prim
+	fbl_fix_emitter_to_screen(greeny, true);
 
-	int emitter2id = fbl_create_emitter(200);
-	fbl_set_emitter_params(emitter2id, FBL_EMITTER_RAIN, 400, 10, 100, 5, 5, 1.0, 1.0);	// id, type, spawn_W, spawn_h, life, rate, density, scale_start, scale_end
-	fbl_set_emitter_particle_shape(emitter2id, FBL_NORMAL_RECT, 0, 0, 3, 10);
-	fbl_set_emitter_xy(emitter2id, 400, 10);
-	fbl_set_emitter_vel_xy(emitter2id, 0, 1.0, true);	// crash if you call this with < 1.0 on either param using FLOWER
-	fbl_set_emitter_color(emitter2id, 30, 30, 200, 255, true);
-	//fbl_set_emitter_color(emitter2id, rand() % 255, rand() % 255, rand() % 255, 255, true);
-	//fbl_set_emitter_color(emitter2id, rand() % 255, rand() % 255, rand() % 255, 0, false);
+	int rain_layer1 = fbl_create_emitter(200);
+	fbl_set_emitter_params(rain_layer1, FBL_EMITTER_RAIN, 400, 10, 100, 5, 5, 1.0, 1.0);	// id, type, spawn_w, spawn_h, life, rate, density, scale_start, scale_end
+	fbl_set_emitter_particle_shape(rain_layer1, FBL_NO_PRIM, 35, 384, 3, 12);
+	fbl_set_emitter_xy(rain_layer1, 400, 10);
+	fbl_set_emitter_vel_xy(rain_layer1, 0, 1.0, true);	// crash if you call this with < 1.0 on either param using FLOWER
+	fbl_set_emitter_color(rain_layer1, 30, 30, 200, 255, true);
+	//fbl_set_emitter_color(rain_layer1, rand() % 255, rand() % 255, rand() % 255, 255, true);
+	//fbl_set_emitter_color(rain_layer1, rand() % 255, rand() % 255, rand() % 255, 0, false);
 
-	int emitter3id = fbl_create_emitter(200);
-	fbl_set_emitter_params(emitter3id, FBL_EMITTER_RAIN, 400, 10, 100, 5, 5, 1.0, 1.0);	// id, type, spawn_W, spawn_h, life, rate, density, scale_start, scale_end
-	fbl_set_emitter_particle_shape(emitter3id, FBL_NORMAL_RECT, 0, 0, 3, 10);
-	fbl_set_emitter_xy(emitter3id, 400, 10);
-	fbl_set_emitter_vel_xy(emitter3id, 0, 1.5, true);	// crash if you call this with < 1.0 on either param using FLOWER
-	fbl_set_emitter_color(emitter3id, 100, 100, 255, 255, true);
+	int rain_layer2 = fbl_create_emitter(200);
+	fbl_set_emitter_params(rain_layer2, FBL_EMITTER_RAIN, 400, 10, 100, 5, 5, 1.0, 1.0);	// id, type, spawn_w, spawn_h, life, rate, density, scale_start, scale_end
+	fbl_set_emitter_particle_shape(rain_layer2, FBL_NO_PRIM, 32, 384, 3, 12);
+	fbl_set_emitter_xy(rain_layer2, 400, 10);
+	fbl_set_emitter_vel_xy(rain_layer2, 0, 1.5, true);	// crash if you call this with < 1.0 on either param using FLOWER
+	fbl_set_emitter_color(rain_layer2, 100, 100, 255, 255, true);
 
 
-	int img_emitter = fbl_create_emitter(200);	// create emitter with 500 particles
-	fbl_set_emitter_params(img_emitter, FBL_EMITTER_FLOWER, 10, 10, 100, 1, 3, 0.3, 1.5);	// id, type, spawn_W, spawn_h, life, rate, density, scale_start, scale_end
+	int img_emitter = fbl_create_emitter(200);	// create emitter with 500 particles, creating a mezmerizing nebulosa :)
+	fbl_set_emitter_params(img_emitter, FBL_EMITTER_FLOWER, 10, 10, 100, 1, 3, 0.3, 1.5);	// id, type, spawn_w, spawn_h, life, rate, density, scale_start, scale_end
 	fbl_set_emitter_particle_shape(img_emitter, FBL_NO_PRIM, 448, 128, 64, 64);		// use particle image instead of prim
 	fbl_set_emitter_xy(img_emitter, 500, 200);
 
@@ -915,7 +919,7 @@ void run_demo_7()
 	//if (fbl_get_mouse_release(FBLMB_LEFT)) printf("left mouse up! %d\n", fbl_get_raw_frames_count());
 	//if (fbl_get_mouse_click(FBLMB_RIGHT)) printf("right mouse down! %d\n", fbl_get_raw_frames_count());
 
-	if (fbl_get_key_down(FBLK_A)) printf("A key down!%d\n", fbl_get_num_active_particles(0));
+	if (fbl_get_key_down(FBLK_A)) printf("A key down!%d\n", fbl_get_num_active_particles(greeny));
 	if (fbl_get_key_up(FBLK_A)) printf("A key up!%d\n", fbl_get_raw_frames_count());
 
 	//fbl_set_emitter_xy(1, fbl_get_mouse_logical_x() + fbl_get_camera_x(), fbl_get_mouse_logical_y() + fbl_get_camera_y());
