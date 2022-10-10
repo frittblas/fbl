@@ -40,19 +40,23 @@ public:
 
     };
 
-    std::vector<Cloud*> mCloud; // list of clouds
-    uint32_t rainLayerId[3];
-    bool rainOn;
-    uint8_t tint_r, tint_g, tint_b; // for time of day
-    bool lightningOn, lightningTrigger;
-    uint8_t lightningTimer;
-
     Weather();
     ~Weather();
 
     void tick(Game& g);
-    void setWeather(TimeOfDay time, uint8_t rainLevel, uint8_t numClouds, bool lightning);
+    void setWeather(TimeOfDay time, uint8_t rainLevel, uint8_t snowLevel, uint8_t numClouds, bool doLightning);
+
+private:
+
     void initClouds(uint8_t num);
     void initRain(uint8_t amount, uint8_t alpha);   // amount of 1 = max
+    void initSnow(uint8_t amount, uint8_t alpha);
+
+    std::vector<Cloud*> mCloud; // list of clouds
+    uint32_t mRainLayerId[3], mSnowLayerId[3];
+    bool mRainOn, mSnowOn;
+    uint8_t mTint_r, mTint_g, mTint_b; // for time of day
+    bool mLightningOn, mLightningTrigger;
+    uint8_t mLightningTimer;
 
 };
