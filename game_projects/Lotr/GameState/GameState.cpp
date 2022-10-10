@@ -65,7 +65,7 @@ void GameState::change(Game& g, StateType newState) {
 				unInitLuaDialog();	// also remove resources for dialogue (prims, text etc)
 				g.mChars->removePlayer(g.mEcs);	// delete the player completely
 				g.mChars->removeNpc(g.mEcs);	// also delete all npcs in the current scene
-				g.mWeather->setWeather(Weather::TimeOfDay::Day, 0, 0, false);	// timeOfDay, rainLevel, numClouds, lightningOn
+				g.mWeather->setWeather(Weather::TimeOfDay::Day, 0, 6, 0, false);	// timeOfDay, rainLevel, snowLevel, numClouds, lightningOn
 
 				fbl_lua_shutdown();	// so the dialogues gets reset
 
@@ -100,11 +100,7 @@ void GameState::change(Game& g, StateType newState) {
 				g.mSysManager->mPathSystem->Init(*g.mEcs);		// assign a unique path id to the entities with a path component
 				//g.mSysManager->mCameraSystem->Init(*g.mEcs);	// creates debug rect for camera deadzone
 
-				//g.mWeather->initClouds(200);		// add weather on top :)
-				//g.mWeather->initRain(1, 150);			// add rain (add alpha when it gets dark)
-
-				//g.mWeather->setWeather(Weather::TimeOfDay::Evening, 0, 0, true);	// timeOfDay, rainLevel, numClouds, lightningOn
-				
+				// NOTE: add light as a component				
 				int light = fbl_create_sprite(384, 0, 128, 128, 0);
 				fbl_set_sprite_is_light(light, true);
 				fbl_set_sprite_scale(light, 3.0);

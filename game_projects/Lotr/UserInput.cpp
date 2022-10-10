@@ -73,23 +73,27 @@ void UserInput::tick(Game& g) {
 
 	// test weather
 	if (fbl_get_key_down(FBLK_F1) && access == 0) {
-		g.mWeather->setWeather(Weather::TimeOfDay::Morning, 0, 150, false);
+		g.mWeather->setWeather(Weather::TimeOfDay::Morning, 0, 0, 150, false);
 		access = buttonDelay;
 	}
 	if (fbl_get_key_down(FBLK_F2) && access == 0) {
-		g.mWeather->setWeather(Weather::TimeOfDay::Day, 2, 100, false);
+		g.mWeather->setWeather(Weather::TimeOfDay::Day, 2, 0, 100, false);
 		access = buttonDelay;
 	}
 	if (fbl_get_key_down(FBLK_F3) && access == 0) {
-		g.mWeather->setWeather(Weather::TimeOfDay::Evening, 1, 150, true);
+		g.mWeather->setWeather(Weather::TimeOfDay::Evening, 1, 0, 150, true);
 		access = buttonDelay;
 	}
 	if (fbl_get_key_down(FBLK_F4) && access == 0) {
-		g.mWeather->setWeather(Weather::TimeOfDay::Late, 1, 100, true);
+		g.mWeather->setWeather(Weather::TimeOfDay::Late, 1, 0, 100, true);
 		access = buttonDelay;
 	}
 	if (fbl_get_key_down(FBLK_F5) && access == 0) {
-		g.mWeather->setWeather(Weather::TimeOfDay::Night, 1, 100, false);
+		g.mWeather->setWeather(Weather::TimeOfDay::Night, 0, 0, 10, false);
+		access = buttonDelay;
+	}
+	if (fbl_get_key_down(FBLK_F6) && access == 0) {
+		g.mWeather->setWeather(Weather::TimeOfDay::Day, 0, 6, 50, false);
 		access = buttonDelay;
 	}
 

@@ -76,6 +76,9 @@ bool Game::init() {
 
 	mSysManager->setupEcs(mEcs);
 
+	// start the snow particle effect
+	mWeather->setWeather(Weather::TimeOfDay::Day, 0, 6, 0, false);
+
 	return true;
 
 }
@@ -131,6 +134,9 @@ void Game::loadLevel() {
 					fbl_pathf_set_walkability(i, j, FBL_PATHF_UNWALKABLE);
 		}
 	}
+
+	// set weather based on level
+	mWeather->setWeather(Weather::TimeOfDay::Day, 0, 0, 0, false);
 
 }
 

@@ -90,6 +90,9 @@ int fbl_create_emitter(int num_particles)
 	fbl_emitter->scale_start = 1.0;
 	fbl_emitter->scale_end = 5.0;
 
+	fbl_emitter->angle_start = 0;
+	fbl_emitter->angle_end = 255;
+
 	fbl_emitter->vel_x_start = 2.0f;
 	fbl_emitter->vel_y_start = 2.0f;
 	fbl_emitter->vel_x_end = 2.0f;
@@ -430,6 +433,7 @@ int emit_particle(int tag, void* emit, void* dummy)
 	FBL_PARTICLE_EMITTER *emitter;
 	int i;
 	int emits;
+	float val_x_100, rand_amount;
 
 	emitter = (FBL_PARTICLE_EMITTER *)emit;
 
@@ -465,11 +469,25 @@ int emit_particle(int tag, void* emit, void* dummy)
 							case FBL_EMITTER_RAIN:
 								emitter->particle[i].vel_x = emitter->vel_x_start;
 								emitter->particle[i].vel_y = emitter->vel_y_start;
+
+								// rotation
+								emitter->particle[i].angle = 0.0;
 								break;
+							case FBL_EMITTER_SNOW:
+								val_x_100 = emitter->vel_x_start * 100;
+								rand_amount = rand() % (int)val_x_100;
+								rand_amount /= 100;
+								rand_amount -= emitter->vel_x_start / 2;
+								emitter->particle[i].vel_x = rand_amount;
+								emitter->particle[i].vel_y = emitter->vel_y_start;
+
+								// rotation
+								emitter->particle[i].angle = rand() % 255;
+								break;
+
 						}
 
 						emitter->particle[i].scale = emitter->scale_start;
-						emitter->particle[i].rotation = 0.0;
 						emitter->particle[i].color = emitter->color_start;
 						emitter->particle[i].life = emitter->life_total;	// give it life (activate particle)
 
@@ -538,7 +556,7 @@ int update_particle_logic(int tag, void* emit, void* dummy)
 
 			break;
 
-			case FBL_EMITTER_RAIN :
+			case FBL_EMITTER_RAIN:
 
 				for (i = 0; i < emitter->num_particles; i++)
 				{
@@ -558,6 +576,30 @@ int update_particle_logic(int tag, void* emit, void* dummy)
 				}
 
 			break;
+			case FBL_EMITTER_SNOW:
+
+				for (i = 0; i < emitter->num_particles; i++)
+				{
+
+					if (emitter->particle[i].life > 0)
+					{
+
+						emitter->particle[i].x += emitter->particle[i].vel_x;
+						emitter->particle[i].y += emitter->particle[i].vel_y;
+
+						// fade out
+						emitter->particle[i].color.a = (Uint8)_lerp((float)emitter->color_start.a, (float)emitter->color_end.a, (float)emitter->particle[i].life / (float)emitter->life_total);
+
+						// spin 360 degrees
+						emitter->particle[i].angle = _lerp((float)emitter->angle_start, (float)emitter->angle_end, (float)emitter->particle[i].life / (float)emitter->life_total);
+
+						emitter->particle[i].life--;
+
+					}
+
+				}
+
+				break;
 			case FBL_EMITTER_EXPLOSION:
 				// add a different particle effect here!
 			break;
@@ -663,7 +705,7 @@ int  render_particles(int tag, void* emit, void* dummy)
 						SDL_SetTextureColorMod(fbl_texture, emitter->particle[i].color.r, emitter->particle[i].color.g, emitter->particle[i].color.b);
 
 						SDL_RenderCopyEx(fbl_engine.renderer, fbl_texture, &emitter->img_rect,
-							&tmp_rect, emitter->particle[i].rotation, NULL, SDL_FLIP_NONE);
+							&tmp_rect, (double)emitter->particle[i].angle, NULL, SDL_FLIP_NONE);
 
 					}
 

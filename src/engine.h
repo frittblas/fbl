@@ -272,7 +272,7 @@ typedef struct {
 	float vel_y;
 
 	float scale;
-	float rotation;
+	uint8_t angle;
 
 	SDL_Color color;
 
@@ -295,6 +295,8 @@ typedef struct
 
 	float scale_start;
 	float scale_end;
+	uint8_t angle_start;
+	uint8_t angle_end;
 	float vel_x_start, vel_y_start;	/* starting direction and speed */
 	float vel_x_end, vel_y_end;
 	SDL_Color color_start;

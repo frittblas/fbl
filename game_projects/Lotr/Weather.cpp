@@ -17,18 +17,21 @@
 
 Weather::Weather() {
 
-	rainOn = false;
+	mRainOn = false;
+	mSnowOn = false;
 
-	for (int i = 0; i < 3; i++)
-		rainLayerId[i] = 0;
+	for (int i = 0; i < 3; i++) {
+		mRainLayerId[i] = 0;
+		mSnowLayerId[i] = 0;
+	}
 
-	tint_r = 255;
-	tint_g = 255;
-	tint_b = 255;
+	mTint_r = 255;
+	mTint_g = 255;
+	mTint_b = 255;
 
-	lightningOn = false;
-	lightningTrigger = false;
-	lightningTimer = 0;
+	mLightningOn = false;
+	mLightningTrigger = false;
+	mLightningTimer = 0;
 
 	std::cout << "Initialized Weather subsystem." << std::endl;
 
@@ -40,56 +43,57 @@ Weather::~Weather() {
 
 }
 
-void Weather::setWeather(TimeOfDay time, uint8_t rainLevel, uint8_t numClouds, bool lightning) {
+void Weather::setWeather(TimeOfDay time, uint8_t rainLevel, uint8_t snowLevel, uint8_t numClouds, bool doLightning) {
 
-	uint8_t rainAlpha = 255; // used to thin out the rain when evening/night
+	uint8_t particleAlpha = 255; // used to thin out the rain when evening/night
 
 	// set time of day
 	switch (time) {
 
 		case TimeOfDay::Morning :
-			tint_r = 220;
-			tint_g = 220;
-			tint_b = 220;
-			fbl_set_lighting_tint(true, tint_r, tint_g, tint_b);
-			rainAlpha = 160;
+			mTint_r = 220;
+			mTint_g = 220;
+			mTint_b = 220;
+			fbl_set_lighting_tint(true, mTint_r, mTint_g, mTint_b);
+			particleAlpha = 160;
 			break;
 		case TimeOfDay::Day :
-			tint_r = 255;
-			tint_g = 255;
-			tint_b = 255;
-			fbl_set_lighting_tint(false, tint_r, tint_g, tint_b);	// turned off = full brightness
-			rainAlpha = 180;
+			mTint_r = 255;
+			mTint_g = 255;
+			mTint_b = 255;
+			fbl_set_lighting_tint(false, mTint_r, mTint_g, mTint_b);	// turned off = full brightness
+			particleAlpha = 180;
 			break;
 		case TimeOfDay::Evening :
-			tint_r = 100;
-			tint_g = 100;
-			tint_b = 100;
-			fbl_set_lighting_tint(true, tint_r, tint_g, tint_b);
-			rainAlpha = 110;
+			mTint_r = 120;
+			mTint_g = 120;
+			mTint_b = 120;
+			fbl_set_lighting_tint(true, mTint_r, mTint_g, mTint_b);
+			particleAlpha = 110;
 			break;
 		case TimeOfDay::Late :
-			tint_r = 50;
-			tint_g = 50;
-			tint_b = 50;
-			fbl_set_lighting_tint(true, tint_r, tint_g, tint_b);
-			rainAlpha = 80;
+			mTint_r = 50;
+			mTint_g = 50;
+			mTint_b = 50;
+			fbl_set_lighting_tint(true, mTint_r, mTint_g, mTint_b);
+			particleAlpha = 80;
 			break;
 		case TimeOfDay::Night :
-			tint_r = 20;
-			tint_g = 20;
-			tint_b = 20;
-			fbl_set_lighting_tint(true, tint_r, tint_g, tint_b);
-			rainAlpha = 50;
+			mTint_r = 0;
+			mTint_g = 0;
+			mTint_b = 0;
+			fbl_set_lighting_tint(true, mTint_r, mTint_g, mTint_b);
+			particleAlpha = 40;
 			break;
 
 	}
 
 	initClouds(numClouds);
-	initRain(rainLevel, rainAlpha);
+	initRain(rainLevel, particleAlpha);
+	initSnow(snowLevel, particleAlpha);
 
 	// set lightning on/off
-	lightningOn = lightning;
+	mLightningOn = doLightning;
 
 }
 
@@ -155,46 +159,93 @@ void Weather::initClouds(uint8_t num) {
 
 void Weather::initRain(uint8_t amount, uint8_t alpha) {
 
-	if (rainOn) {
+	if (mRainOn) {
 
 		// delete any emitters that exists
 		for (int i = 0; i < 3; i++)
-			fbl_delete_emitter(rainLayerId[i]);
+			fbl_delete_emitter(mRainLayerId[i]);
 
-		rainOn = false;
+		mRainOn = false;
 
 	}
 
 	if (amount > 0) {
 
-		rainLayerId[0] = fbl_create_emitter(450);
-		fbl_set_emitter_params(rainLayerId[0], FBL_EMITTER_RAIN, Game::LogicalResW, 64, 150, amount, 5, 1.0, 1.0);	// id, type, spawn_w, spawn_h, life, rate, density, scale_start, scale_end
-		fbl_set_emitter_particle_shape(rainLayerId[0], FBL_NO_PRIM, 38, 384, 3, 12);
-		fbl_set_emitter_xy(rainLayerId[0], 30, -64);
-		fbl_set_emitter_vel_xy(rainLayerId[0], -0.5, 1.5, true);	// crash if you call this with < 1.0 on either param using FLOWER
-		fbl_set_emitter_color(rainLayerId[0], 30, 30, 200, alpha, true);
-		fbl_set_emitter_color(rainLayerId[0], 30, 30, 200, 30, false);
-		fbl_fix_emitter_to_screen(rainLayerId[0], true);
+		mRainLayerId[0] = fbl_create_emitter(450);
+		fbl_set_emitter_params(mRainLayerId[0], FBL_EMITTER_RAIN, Game::LogicalResW, 64, 150, amount, 5, 1.0, 1.0);	// id, type, spawn_w, spawn_h, life, rate, density, scale_start, scale_end
+		fbl_set_emitter_particle_shape(mRainLayerId[0], FBL_NO_PRIM, 38, 384, 3, 12);
+		fbl_set_emitter_xy(mRainLayerId[0], 30, -64);
+		fbl_set_emitter_vel_xy(mRainLayerId[0], -0.5, 1.5, true);	// crash if you call this with < 1.0 on either param using FLOWER
+		fbl_set_emitter_color(mRainLayerId[0], 30, 30, 200, alpha, true);
+		fbl_set_emitter_color(mRainLayerId[0], 30, 30, 200, 30, false);
+		fbl_fix_emitter_to_screen(mRainLayerId[0], true);
 
-		rainLayerId[1] = fbl_create_emitter(450);
-		fbl_set_emitter_params(rainLayerId[1], FBL_EMITTER_RAIN, Game::LogicalResW, 64, 150, amount, 5, 1.0, 1.0);
-		fbl_set_emitter_particle_shape(rainLayerId[1], FBL_NO_PRIM, 35, 384, 3, 12);
-		fbl_set_emitter_xy(rainLayerId[1], 30, -64);
-		fbl_set_emitter_vel_xy(rainLayerId[1], -0.6, 2.5, true);
-		fbl_set_emitter_color(rainLayerId[1], 30, 30, 200, alpha, true);
-		fbl_set_emitter_color(rainLayerId[1], 30, 30, 200, 30, false);
-		fbl_fix_emitter_to_screen(rainLayerId[1], true);
+		mRainLayerId[1] = fbl_create_emitter(450);
+		fbl_set_emitter_params(mRainLayerId[1], FBL_EMITTER_RAIN, Game::LogicalResW, 64, 150, amount, 5, 1.0, 1.0);
+		fbl_set_emitter_particle_shape(mRainLayerId[1], FBL_NO_PRIM, 35, 384, 3, 12);
+		fbl_set_emitter_xy(mRainLayerId[1], 30, -64);
+		fbl_set_emitter_vel_xy(mRainLayerId[1], -0.6, 2.5, true);
+		fbl_set_emitter_color(mRainLayerId[1], 30, 30, 200, alpha, true);
+		fbl_set_emitter_color(mRainLayerId[1], 30, 30, 200, 30, false);
+		fbl_fix_emitter_to_screen(mRainLayerId[1], true);
 
-		rainLayerId[2] = fbl_create_emitter(350);
-		fbl_set_emitter_params(rainLayerId[2], FBL_EMITTER_RAIN, Game::LogicalResW, 64, 110, amount, 5, 1.0, 1.0);
-		fbl_set_emitter_particle_shape(rainLayerId[2], FBL_NO_PRIM, 32, 384, 3, 12);
-		fbl_set_emitter_xy(rainLayerId[2], 30, -64);
-		fbl_set_emitter_vel_xy(rainLayerId[2], -0.7, 5.0, true);
-		fbl_set_emitter_color(rainLayerId[2], 100, 100, 255, alpha, true);
-		fbl_set_emitter_color(rainLayerId[2], 100, 100, 200, 30, false);
-		fbl_fix_emitter_to_screen(rainLayerId[2], true);
+		mRainLayerId[2] = fbl_create_emitter(350);
+		fbl_set_emitter_params(mRainLayerId[2], FBL_EMITTER_RAIN, Game::LogicalResW, 64, 110, amount, 5, 1.0, 1.0);
+		fbl_set_emitter_particle_shape(mRainLayerId[2], FBL_NO_PRIM, 32, 384, 3, 12);
+		fbl_set_emitter_xy(mRainLayerId[2], 30, -64);
+		fbl_set_emitter_vel_xy(mRainLayerId[2], -0.7, 5.0, true);
+		fbl_set_emitter_color(mRainLayerId[2], 100, 100, 255, alpha, true);
+		fbl_set_emitter_color(mRainLayerId[2], 100, 100, 200, 30, false);
+		fbl_fix_emitter_to_screen(mRainLayerId[2], true);
 
-		rainOn = true;
+		mRainOn = true;
+
+	}
+
+}
+
+void Weather::initSnow(uint8_t amount, uint8_t alpha) {
+
+	if (mSnowOn) {
+
+		// delete any emitters that exists
+		for (int i = 0; i < 3; i++)
+			fbl_delete_emitter(mSnowLayerId[i]);
+
+		mSnowOn = false;
+
+	}
+
+	if (amount > 0) {
+
+		mSnowLayerId[0] = fbl_create_emitter(300);
+		fbl_set_emitter_params(mSnowLayerId[0], FBL_EMITTER_SNOW, Game::LogicalResW, 64, 400, amount, 3, 0.4, 0.4);	// id, type, spawn_w, spawn_h, life, rate, density, scale_start, scale_end
+		fbl_set_emitter_particle_shape(mSnowLayerId[0], FBL_NO_PRIM, 416, 128, 32, 32);
+		fbl_set_emitter_xy(mSnowLayerId[0], 30, -64);
+		fbl_set_emitter_vel_xy(mSnowLayerId[0], 0.5, 0.8, true);
+		fbl_set_emitter_color(mSnowLayerId[0], 200, 200, 200, alpha, true);
+		fbl_set_emitter_color(mSnowLayerId[0], 255, 255, 255, 0, false);
+		fbl_fix_emitter_to_screen(mSnowLayerId[0], true);
+
+		mSnowLayerId[1] = fbl_create_emitter(300);
+		fbl_set_emitter_params(mSnowLayerId[1], FBL_EMITTER_SNOW, Game::LogicalResW, 64, 400, amount, 3, 0.6, 0.6);
+		fbl_set_emitter_particle_shape(mSnowLayerId[1], FBL_NO_PRIM, 416, 128, 32, 32);
+		fbl_set_emitter_xy(mSnowLayerId[1], 30, -64);
+		fbl_set_emitter_vel_xy(mSnowLayerId[1], 0.5, 1.1, true);
+		fbl_set_emitter_color(mSnowLayerId[1], 220, 220, 220, alpha, true);
+		fbl_set_emitter_color(mSnowLayerId[1], 255, 255, 255, 0, false);
+		fbl_fix_emitter_to_screen(mSnowLayerId[1], true);
+
+		mSnowLayerId[2] = fbl_create_emitter(300);
+		fbl_set_emitter_params(mSnowLayerId[2], FBL_EMITTER_SNOW, Game::LogicalResW, 64, 450, amount, 3, 0.8, 1.0);
+		fbl_set_emitter_particle_shape(mSnowLayerId[2], FBL_NO_PRIM, 416, 128, 32, 32);
+		fbl_set_emitter_xy(mSnowLayerId[2], 30, -64);
+		fbl_set_emitter_vel_xy(mSnowLayerId[2], 0.5, 1.3, true);
+		fbl_set_emitter_color(mSnowLayerId[2], 255, 255, 255, alpha, true);
+		fbl_set_emitter_color(mSnowLayerId[2], 255, 255, 255, 0, false);
+		fbl_fix_emitter_to_screen(mSnowLayerId[2], true);
+
+		mSnowOn = true;
 
 	}
 
@@ -216,46 +267,51 @@ void Weather::tick(Game& g) {
 	}
 
 	// lightning
-	if (lightningOn) {
+	if (mLightningOn) {
 
-		// lightning every 10 seconds
+		// flash about every 10 seconds
 		if (fbl_get_raw_frames_count() % 600 == 0) {
-			lightningTrigger = true;
-			lightningTimer = 20;
-			std::cout << "Lightning!" << std::endl;
+			mLightningTrigger = true;
+			mLightningTimer = 20;
+			std::cout << "Lightning! frame:" << fbl_get_raw_frames_count() <<std::endl;
 		}
 
-		if (lightningTrigger) {
+		if (mLightningTrigger) {
 
-			switch (lightningTimer) {
+			switch (mLightningTimer) {
 
 				case 20 :
-					fbl_set_lighting_tint(false, 0, 0, 0);	// turn off tint (becomes bright!)
+					fbl_set_lighting_tint(false, 0, 0, 0);	// turn off mTint (becomes bright!)
 					break;
 				case 15:
-					fbl_set_lighting_tint(true, tint_r, tint_g, tint_g);	// back to what it was
+					fbl_set_lighting_tint(true, mTint_r, mTint_g, mTint_g);	// back to what it was
 					break;
 				case 11:
-					// randomly flash again
-					if(rand() % 2 == 0)
+					// randomly flash again (2/3)
+					if(rand() % 3 > 0)
 						fbl_set_lighting_tint(false, 0, 0, 0);
 					break;
 				case 8:
-					fbl_set_lighting_tint(true, tint_r, tint_g, tint_g);
+					// randomly make 2nd flash slightly longer
+					if (rand() % 3 > 0)
+						fbl_set_lighting_tint(true, mTint_r, mTint_g, mTint_g);
+					break;
+				case 4:
+					fbl_set_lighting_tint(true, mTint_r, mTint_g, mTint_g);
 					break;
 
 			}
 
-			lightningTimer--;
-			if (lightningTimer < 1)
-				lightningTrigger = false;
+			mLightningTimer--;
+			if (mLightningTimer < 1)
+				mLightningTrigger = false;
 
 		}
 
 	}
 
-	//std::cout << "num particles1: " << fbl_get_num_active_particles(rainLayerId[0]) << std::endl;
-	//std::cout << "num particles2: " << fbl_get_num_active_particles(rainLayerId[1]) << std::endl;
-	//std::cout << "num particles3: " << fbl_get_num_active_particles(rainLayerId[2]) << std::endl;
+	//std::cout << "num particles1: " << fbl_get_num_active_particles(mSnowLayerId[0]) << std::endl;
+	//std::cout << "num particles2: " << fbl_get_num_active_particles(mSnowLayerId[1]) << std::endl;
+	//std::cout << "num particles3: " << fbl_get_num_active_particles(mSnowLayerId[2]) << std::endl;
 
 }
