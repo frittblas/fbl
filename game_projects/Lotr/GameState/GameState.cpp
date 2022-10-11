@@ -17,6 +17,7 @@
 #include "../Ecs/Systems/SpriteSystem.hpp"
 #include "../Ecs/Systems/PathSystem.hpp"
 #include "../Ecs/Systems/CameraSystem.hpp"
+#include "../Ecs/Systems/LightSystem.hpp"
 
 #include "GameState.hpp"
 #include "Title.hpp"
@@ -99,12 +100,7 @@ void GameState::change(Game& g, StateType newState) {
 				g.mSysManager->mSpriteSystem->Init(*g.mEcs);	// create sprites for all entities with a sprite component
 				g.mSysManager->mPathSystem->Init(*g.mEcs);		// assign a unique path id to the entities with a path component
 				//g.mSysManager->mCameraSystem->Init(*g.mEcs);	// creates debug rect for camera deadzone
-
-				// NOTE: add light as a component				
-				int light = fbl_create_sprite(384, 0, 128, 128, 0);
-				fbl_set_sprite_is_light(light, true);
-				fbl_set_sprite_scale(light, 3.0);
-				
+				g.mSysManager->mLightSystem->Init(*g.mEcs);		// create lights for all entities with a light component
 
 				fbl_lua_init("LotrDialogue.lua", registerFuncsToLua);	// set this up each new game, so the dialogues restart
 

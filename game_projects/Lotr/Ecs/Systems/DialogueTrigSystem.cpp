@@ -61,7 +61,7 @@ void DialogueTrigSystem::Update(Game& g) {
 
 			// check response from talk button
 			if (fbl_get_ui_elem_val(gButtonTalk)) {
-				gCurrentDialogueId = trig.dialogueId;	// set the
+				gCurrentDialogueId = trig.dialogueId;	// set the correct dialogue id
 				g.mState->change(g, GameState::StateType::Dialogue);
 			}
 

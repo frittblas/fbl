@@ -73,5 +73,15 @@ struct DialogueTrigger
 
     uint8_t dialogueId; // id of which dialogue to use in the Lua system
 
+};
+
+// light, a 2D-light surrounding an entity.
+struct Light
+{
+
+    uint16_t id;    // the light-sprite id
+    uint16_t textureX, textureY; // where on the sprite sheet is the light located?
+    uint8_t w, h;   // width and height of light
+    float scale;    // light size (scale)
 
 };
