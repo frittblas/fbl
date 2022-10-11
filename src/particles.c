@@ -465,6 +465,9 @@ int emit_particle(int tag, void* emit, void* dummy)
 								if (emitter->vel_y_start < 1.0) emitter->vel_y_start = 1.0;
 								emitter->particle[i].vel_x = ((float)(rand() % ((int)emitter->vel_x_start * 10)) / 10) - (emitter->vel_x_start / 2);
 								emitter->particle[i].vel_y = ((float)(rand() % ((int)emitter->vel_y_start * 10)) / 10) - (emitter->vel_y_start / 2);
+
+								// rotation
+								emitter->particle[i].angle = 0.0;
 								break;
 							case FBL_EMITTER_RAIN:
 								emitter->particle[i].vel_x = emitter->vel_x_start;
