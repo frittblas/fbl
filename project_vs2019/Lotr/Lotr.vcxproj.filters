@@ -147,6 +147,9 @@
     <ClCompile Include="..\..\src\network.c">
       <Filter>Source Files\fbl_src</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\game_projects\Lotr\Ecs\Systems\LightSystem.cpp">
+      <Filter>Source Files\Ecs\Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\fbl.h">
@@ -238,6 +241,9 @@
     </ClInclude>
     <ClInclude Include="..\..\game_projects\Lotr\Weather.hpp">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Lotr\Ecs\Systems\LightSystem.hpp">
+      <Filter>Source Files\Ecs\Systems</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

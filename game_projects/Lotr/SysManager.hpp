@@ -19,6 +19,7 @@ class PathSystem;
 class MouseCtrlSystem;
 class CameraSystem;
 class DialogueTrigSystem;
+class LightSystem;
 
 class Coordinator;
 
@@ -30,6 +31,7 @@ public:
     std::shared_ptr<MouseCtrlSystem> mMouseCtrlSystem;       // the mouse controller system
     std::shared_ptr<CameraSystem> mCameraSystem;             // the camera system
     std::shared_ptr<DialogueTrigSystem> mDialogueTrigSystem; // the dialogue trigger system
+    std::shared_ptr<LightSystem> mLightSystem;               // the light system
 
     SysManager();
     ~SysManager();

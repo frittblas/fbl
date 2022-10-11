@@ -46,7 +46,8 @@ void Chars::setupPlayer(Coordinator* mEcs) {
 	mEcs->AddComponent(mFrodo, MouseCtrl{ false });
 									// x  y	 damp  w  h
 	mEcs->AddComponent(mFrodo, Camera{ 0, 0, 0.05, 2, 2 });
-
+								  // id  tx  ty   w    h  scale
+	mEcs->AddComponent(mFrodo, Light{ 0, 384, 0, 128, 128, 2.0 });
 
 }
 
