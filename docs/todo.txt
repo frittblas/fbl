@@ -234,11 +234,11 @@ extern "C" {
 
 #ifdef __cplusplus
 }
-#endif
+#endif NO! it was not necessary.
 
 (add this to all fbl *.c-files, so everything can be compiled as C++ aswell as C)
 
-remove alpha-byte in particle struct, it's not needed! :) (or change to rotation or angle)
+remove alpha-byte in particle struct, it's not needed! :) (or change to rotation or angle) Done, added angle!
 
 0.99 release is very soon! Done!!
 
@@ -246,6 +246,10 @@ remove alpha-byte in particle struct, it's not needed! :) (or change to rotation
 
 
 for 1.0 {
+
+Add more functionality to the particle system:
+Particle angle, ability to use sprite instead of prim, more presets (flower, rain, snow etc). Optimise - Done! (will add stuff over time)
+Add the new particle functions (new create_emitter(), set_params() set_shape()) to Lua!, don't forget!!
 
 Big feature fbl_net:
 Use SDL_net (make it possible to fbl_net_init() without creating window?? maybe not (for server..))
@@ -257,8 +261,6 @@ Also for emscripten (easy) and Android (medium :)
 
 small stuffs:
 Take a look at should_continue thing, debug it. maybe come up with alternative. Time the gameloop etc. lazyfoo also.
-
-add the new particle functions to Lua.
 
 }
 
