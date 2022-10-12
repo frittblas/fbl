@@ -135,14 +135,11 @@ void Game::loadLevel() {
 		}
 	}
 
-	// set weather based on level
-	mWeather->setWeather(Weather::TimeOfDay::Day, 0, 0, 0, false);
-
 }
 
 void Game::unLoadLevel() {
 
-	mMap->resetMap(0, 0);
+	mMap->resetMap(0, 0);	// this calls fbl_destroy_all_sprites()
 	fbl_destroy_all_emitters();
 
 }

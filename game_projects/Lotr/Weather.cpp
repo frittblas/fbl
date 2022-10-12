@@ -221,7 +221,7 @@ void Weather::initSnow(uint8_t amount, uint8_t alpha) {
 		mSnowLayerId[0] = fbl_create_emitter(300);
 		fbl_set_emitter_params(mSnowLayerId[0], FBL_EMITTER_SNOW, Game::LogicalResW, 64, 400, amount, 3, 0.4, 0.4);	// id, type, spawn_w, spawn_h, life, rate, density, scale_start, scale_end
 		fbl_set_emitter_particle_shape(mSnowLayerId[0], FBL_NO_PRIM, 416, 128, 32, 32);
-		fbl_set_emitter_xy(mSnowLayerId[0], 30, -64);
+		fbl_set_emitter_xy(mSnowLayerId[0], 0, -64);
 		fbl_set_emitter_vel_xy(mSnowLayerId[0], 0.5, 0.8, true);
 		fbl_set_emitter_color(mSnowLayerId[0], 200, 200, 200, alpha, true);
 		fbl_set_emitter_color(mSnowLayerId[0], 255, 255, 255, 0, false);
@@ -230,7 +230,7 @@ void Weather::initSnow(uint8_t amount, uint8_t alpha) {
 		mSnowLayerId[1] = fbl_create_emitter(300);
 		fbl_set_emitter_params(mSnowLayerId[1], FBL_EMITTER_SNOW, Game::LogicalResW, 64, 400, amount, 3, 0.6, 0.6);
 		fbl_set_emitter_particle_shape(mSnowLayerId[1], FBL_NO_PRIM, 416, 128, 32, 32);
-		fbl_set_emitter_xy(mSnowLayerId[1], 30, -64);
+		fbl_set_emitter_xy(mSnowLayerId[1], 0, -64);
 		fbl_set_emitter_vel_xy(mSnowLayerId[1], 0.5, 1.1, true);
 		fbl_set_emitter_color(mSnowLayerId[1], 220, 220, 220, alpha, true);
 		fbl_set_emitter_color(mSnowLayerId[1], 255, 255, 255, 0, false);
@@ -239,7 +239,7 @@ void Weather::initSnow(uint8_t amount, uint8_t alpha) {
 		mSnowLayerId[2] = fbl_create_emitter(300);
 		fbl_set_emitter_params(mSnowLayerId[2], FBL_EMITTER_SNOW, Game::LogicalResW, 64, 450, amount, 3, 0.8, 1.0);
 		fbl_set_emitter_particle_shape(mSnowLayerId[2], FBL_NO_PRIM, 416, 128, 32, 32);
-		fbl_set_emitter_xy(mSnowLayerId[2], 30, -64);
+		fbl_set_emitter_xy(mSnowLayerId[2], 0, -64);
 		fbl_set_emitter_vel_xy(mSnowLayerId[2], 0.5, 1.3, true);
 		fbl_set_emitter_color(mSnowLayerId[2], 255, 255, 255, alpha, true);
 		fbl_set_emitter_color(mSnowLayerId[2], 255, 255, 255, 0, false);
@@ -251,10 +251,8 @@ void Weather::initSnow(uint8_t amount, uint8_t alpha) {
 
 }
 
-void Weather::tick(Game& g) {
+void Weather::tickClouds() {
 
-
-	// clouds
 	for (Cloud* curCloud : mCloud) {
 
 		curCloud->x += curCloud->speed;
@@ -266,39 +264,42 @@ void Weather::tick(Game& g) {
 
 	}
 
-	// lightning
+}
+
+void Weather::tickLightning() {
+
 	if (mLightningOn) {
 
 		// flash about every 10 seconds
 		if (fbl_get_raw_frames_count() % 600 == 0) {
 			mLightningTrigger = true;
 			mLightningTimer = 20;
-			std::cout << "Lightning! frame:" << fbl_get_raw_frames_count() <<std::endl;
+			std::cout << "Lightning! frame:" << fbl_get_raw_frames_count() << std::endl;
 		}
 
 		if (mLightningTrigger) {
 
 			switch (mLightningTimer) {
 
-				case 20 :
-					fbl_set_lighting_tint(false, 0, 0, 0);	// turn off mTint (becomes bright!)
-					break;
-				case 15:
-					fbl_set_lighting_tint(true, mTint_r, mTint_g, mTint_g);	// back to what it was
-					break;
-				case 11:
-					// randomly flash again (2/3)
-					if(rand() % 3 > 0)
-						fbl_set_lighting_tint(false, 0, 0, 0);
-					break;
-				case 8:
-					// randomly make 2nd flash slightly longer
-					if (rand() % 3 > 0)
-						fbl_set_lighting_tint(true, mTint_r, mTint_g, mTint_g);
-					break;
-				case 4:
+			case 20:
+				fbl_set_lighting_tint(false, 0, 0, 0);	// turn off mTint (becomes bright!)
+				break;
+			case 15:
+				fbl_set_lighting_tint(true, mTint_r, mTint_g, mTint_g);	// back to what it was
+				break;
+			case 11:
+				// randomly flash again (2/3)
+				if (rand() % 3 > 0)
+					fbl_set_lighting_tint(false, 0, 0, 0);
+				break;
+			case 8:
+				// randomly make 2nd flash slightly longer
+				if (rand() % 3 > 0)
 					fbl_set_lighting_tint(true, mTint_r, mTint_g, mTint_g);
-					break;
+				break;
+			case 4:
+				fbl_set_lighting_tint(true, mTint_r, mTint_g, mTint_g);
+				break;
 
 			}
 
@@ -310,8 +311,14 @@ void Weather::tick(Game& g) {
 
 	}
 
+}
+
+void Weather::tick() {
+
+
+	tickClouds();
+	tickLightning();
+
 	//std::cout << "num particles1: " << fbl_get_num_active_particles(mSnowLayerId[0]) << std::endl;
-	//std::cout << "num particles2: " << fbl_get_num_active_particles(mSnowLayerId[1]) << std::endl;
-	//std::cout << "num particles3: " << fbl_get_num_active_particles(mSnowLayerId[2]) << std::endl;
 
 }

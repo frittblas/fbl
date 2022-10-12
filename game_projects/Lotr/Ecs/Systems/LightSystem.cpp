@@ -44,7 +44,7 @@ void LightSystem::Update(Coordinator& ecs) {
 		auto& pos = ecs.GetComponent<Position>(entity);
 		auto& light = ecs.GetComponent<Light>(entity);
 
-		// update light x, y to the "parent"
+		// update light x, y to the xy of the Position component
 		fbl_set_sprite_xy(light.id, pos.x - (light.w / 2) * light.scale + 16, pos.y - (light.h / 2) * light.scale + 16);	// set the coordinates
 
 	}

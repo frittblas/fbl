@@ -43,7 +43,7 @@ public:
     Weather();
     ~Weather();
 
-    void tick(Game& g);
+    void tick();
     void setWeather(TimeOfDay time, uint8_t rainLevel, uint8_t snowLevel, uint8_t numClouds, bool doLightning);
 
 private:
@@ -51,11 +51,13 @@ private:
     void initClouds(uint8_t num);
     void initRain(uint8_t amount, uint8_t alpha);   // amount of 1 = max
     void initSnow(uint8_t amount, uint8_t alpha);
+    void tickClouds();
+    void tickLightning();
 
     std::vector<Cloud*> mCloud; // list of clouds
+    uint8_t mTint_r, mTint_g, mTint_b; // for time of day
     uint32_t mRainLayerId[3], mSnowLayerId[3];
     bool mRainOn, mSnowOn;
-    uint8_t mTint_r, mTint_g, mTint_b; // for time of day
     bool mLightningOn, mLightningTrigger;
     uint8_t mLightningTimer;
 

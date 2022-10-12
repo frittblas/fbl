@@ -31,7 +31,7 @@ Dialogue::~Dialogue() {
 
 void Dialogue::tick(Game& g) {
 
-	g.mWeather->tick(g);
+	g.mWeather->tick();
 
 	int num = std::rand() / ((RAND_MAX + 1u) / 50); // random numbers from 0-49
 	if (num == 0)

@@ -62,6 +62,7 @@ void GameState::change(Game& g, StateType newState) {
 
 			if (mState == StateType::Explore) {	// if coming from explore state
 
+				g.mWeather->setWeather(Weather::TimeOfDay::Day, 0, 0, 0, false);	// reset weather before unload level (destroys all sprites and emitters)
 				g.unLoadLevel();	// reset map if we're coming from the game
 				unInitLuaDialog();	// also remove resources for dialogue (prims, text etc)
 				g.mChars->removePlayer(g.mEcs);	// delete the player completely
@@ -101,6 +102,8 @@ void GameState::change(Game& g, StateType newState) {
 				g.mSysManager->mPathSystem->Init(*g.mEcs);		// assign a unique path id to the entities with a path component
 				//g.mSysManager->mCameraSystem->Init(*g.mEcs);	// creates debug rect for camera deadzone
 				g.mSysManager->mLightSystem->Init(*g.mEcs);		// create lights for all entities with a light component
+
+				g.mWeather->setWeather(Weather::TimeOfDay::Late, 1, 0, 100, true);
 
 				fbl_lua_init("LotrDialogue.lua", registerFuncsToLua);	// set this up each new game, so the dialogues restart
 

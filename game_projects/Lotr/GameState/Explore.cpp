@@ -51,7 +51,7 @@ void Explore::tick(Game& g) {
 	g.mSysManager->mDialogueTrigSystem->Update(g);			// update the dialogue trigger system
 	g.mSysManager->mLightSystem->Update(*g.mEcs);			// update the light system
 
-	g.mWeather->tick(g);
+	g.mWeather->tick();
 
 	if(fbl_get_raw_frames_count() % 60 == 0)
 		std::cout << "Tick explore!" << std::endl;
