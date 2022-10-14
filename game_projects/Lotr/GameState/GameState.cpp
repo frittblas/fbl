@@ -104,7 +104,7 @@ void GameState::change(Game& g, StateType newState) {
 				//g.mSysManager->mCameraSystem->Init(*g.mEcs);	// creates debug rect for camera deadzone
 				g.mSysManager->mLightSystem->Init(*g.mEcs);		// create lights for all entities with a light component
 
-				g.mWeather->setWeather(Weather::TimeOfDay::Late, 1, 0, 100, true);
+				g.mWeather->setWeather(Weather::TimeOfDay::Evening, 1, 0, 100, true);
 
 				fbl_lua_init("LotrDialogue.lua", registerFuncsToLua);	// set this up each new game, so the dialogues restart
 

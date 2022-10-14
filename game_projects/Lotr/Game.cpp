@@ -46,6 +46,8 @@ bool Game::init() {
 
 	//std::cout.setstate(std::ios_base::failbit);	// deactivate cout
 
+	// if you set 0 and 0 to the width and height, fbl will use the current desktop resolution.
+	// logical size will also be set by fbl in that case. Will hopefully be useful for mobile platforms.
 	fbl_engine_init(960, 540, 60);
 	fbl_set_render_logical_size(LogicalResW, LogicalResH);
 	fbl_set_clear_color(33, 68, 33, 255);	// forest green

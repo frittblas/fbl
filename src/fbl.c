@@ -94,12 +94,38 @@ int fbl_engine_init(int w, int h, int fps)
 	}
 
 
-	SDL_CreateWindowAndRenderer(w, h, 0, &fbl_engine.window, &fbl_engine.renderer);
+	// if you pass 0 as width and height, use the current desktop resolution
+	// Useful for mobile platforms. NOTE: test this further
+	if (w == 0 && h == 0) {
 
-	//SDL_SetRenderDrawColor(fbl_engine.renderer, 168, 230, 255, 255);
+		SDL_DisplayMode current;
 
+		if (SDL_GetCurrentDisplayMode(0, &current) != 0) {
+			fprintf(FBL_ERROR_OUT, "Error getting display mode: %s\n", SDL_GetError());
+			return 1;
+		}
+
+		if (current.w > current.h) {
+			w = current.w;
+			h = current.h;
+		}
+		else {
+			w = current.h;
+			h = current.w;
+		}
+
+		SDL_CreateWindowAndRenderer(w, h, 0, &fbl_engine.window, &fbl_engine.renderer);
+		SDL_RenderSetLogicalSize(fbl_engine.renderer, w / 2, h / 2);
+
+	}
+	else {
+		// create the window and renderer with the correct resolution
+		SDL_CreateWindowAndRenderer(w, h, 0, &fbl_engine.window, &fbl_engine.renderer);
+	}
+	
 	fbl_engine.w = w;
 	fbl_engine.h = h;
+
 
 	if (fbl_engine.window == NULL) {
 		fprintf(FBL_ERROR_OUT, "Window could not be created: %s\n", SDL_GetError());

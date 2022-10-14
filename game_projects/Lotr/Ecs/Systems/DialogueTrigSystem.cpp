@@ -51,10 +51,10 @@ void DialogueTrigSystem::Update(Game& g) {
 		auto& trig = g.mEcs->GetComponent<DialogueTrigger>(entity);
 
 		// if the player is adjacent to an Npc with a dialogue-trigger, show the talk button
-		if (pos.x == (player.x + Game::TileSize) && pos.y == player.y ||
-			pos.x == (player.x - Game::TileSize) && pos.y == player.y ||
-			pos.y == (player.y + Game::TileSize) && pos.x == player.x ||
-			pos.y == (player.y - Game::TileSize) && pos.x == player.x) {
+		if ((pos.x == (player.x + Game::TileSize) && pos.y == player.y) ||
+			(pos.x == (player.x - Game::TileSize) && pos.y == player.y) ||
+			(pos.y == (player.y + Game::TileSize) && pos.x == player.x) ||
+			(pos.y == (player.y - Game::TileSize) && pos.x == player.x)) {
 
 			triggered = true;
 			showTalkButton(true);

@@ -212,6 +212,8 @@ int lua_set_emitter_active(lua_State* lua_env);
 int lua_set_emitter_xy(lua_State* lua_env);
 int lua_set_emitter_vel_xy(lua_State* lua_env);
 int lua_set_emitter_color(lua_State* lua_env);
+int lua_set_emitter_particle_shape(lua_State* lua_env);
+int lua_set_emitter_params(lua_State* lua_env);
 int lua_fix_emitter_to_screen(lua_State* lua_env);
 int lua_get_num_active_particles(lua_State* lua_env);
 int lua_get_num_emitters(lua_State* lua_env);
@@ -554,6 +556,8 @@ void register_fbl_functions_to_lua()
 	lua_register(fbl_lua_env, "fbl_set_emitter_xy", lua_set_emitter_xy);
 	lua_register(fbl_lua_env, "fbl_set_emitter_vel_xy", lua_set_emitter_vel_xy);
 	lua_register(fbl_lua_env, "fbl_set_emitter_color", lua_set_emitter_color);
+	lua_register(fbl_lua_env, "fbl_set_emitter_particle_shape", lua_set_emitter_particle_shape);
+	lua_register(fbl_lua_env, "fbl_set_emitter_params", lua_set_emitter_params);
 	lua_register(fbl_lua_env, "fbl_fix_emitter_to_screen", lua_fix_emitter_to_screen);
 	lua_register(fbl_lua_env, "fbl_get_num_active_particles", lua_get_num_active_particles);
 	lua_register(fbl_lua_env, "fbl_get_num_emitters", lua_get_num_emitters);
@@ -2389,6 +2393,41 @@ int lua_set_emitter_color(lua_State* lua_env)
 	int start = (int)lua_tonumber(lua_env, 6);
 
 	fbl_set_emitter_color(id, r, g, b, a, start);
+
+	return 1;
+
+}
+
+int lua_set_emitter_particle_shape(lua_State* lua_env)
+{
+
+	int id = (int)lua_tonumber(lua_env, 1);
+	int shape = (int)lua_tonumber(lua_env, 2);
+	int x = (int)lua_tonumber(lua_env, 3);
+	int y = (int)lua_tonumber(lua_env, 4);
+	int w = (int)lua_tonumber(lua_env, 5);
+	int h = (int)lua_tonumber(lua_env, 6);
+
+	fbl_set_emitter_particle_shape(id, shape, x, y, w, h);
+
+	return 1;
+
+}
+
+int lua_set_emitter_params(lua_State* lua_env)
+{
+
+	int id = (int)lua_tonumber(lua_env, 1);
+	int type = (int)lua_tonumber(lua_env, 2);
+	int spawn_w = (int)lua_tonumber(lua_env, 3);
+	int spawn_h = (int)lua_tonumber(lua_env, 4);
+	int life = (int)lua_tonumber(lua_env, 5);
+	int rate = (int)lua_tonumber(lua_env, 6);
+	int density = (int)lua_tonumber(lua_env, 7);
+	float scale_start = (float)lua_tonumber(lua_env, 8);
+	float scale_end = (float)lua_tonumber(lua_env, 9);
+
+	fbl_set_emitter_params(id, type, spawn_w, spawn_h, life, rate, density, scale_start, scale_end);
 
 	return 1;
 

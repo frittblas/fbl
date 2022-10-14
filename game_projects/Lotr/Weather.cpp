@@ -72,9 +72,9 @@ void Weather::setWeather(TimeOfDay time, uint8_t rainLevel, uint8_t snowLevel, u
 			particleAlpha = 110;
 			break;
 		case TimeOfDay::Late :
-			mTint_r = 50;
-			mTint_g = 50;
-			mTint_b = 50;
+			mTint_r = 60;
+			mTint_g = 60;
+			mTint_b = 60;
 			fbl_set_lighting_tint(true, mTint_r, mTint_g, mTint_b);
 			particleAlpha = 80;
 			break;
