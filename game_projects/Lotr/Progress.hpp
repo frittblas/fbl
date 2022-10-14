@@ -4,7 +4,7 @@
 *
 *	Progress.hpp
 *
-*	Progress class header, takes care of all game progress, how far the player has come, levels, quests.
+*	Progress class header, takes care of all game progress, how far the player has come, current location, quests etc.
 *
 *	Hans Strömquist 2022
 *
@@ -17,8 +17,7 @@
 class Progress {
 
 public:
-    uint32_t room;
-    uint32_t level;
+    uint8_t mCurrentLocation;
 
     Progress();
     ~Progress();

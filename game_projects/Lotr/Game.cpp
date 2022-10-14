@@ -4,20 +4,20 @@
 *
 *	Game.cpp
 *
-*   Game class implementation, takes care of initializing the first startup and to load each level.
+*   Game class implementation, takes care of initializing the first startup, also has instances of all the subsystems.
 *
 *	Hans Strömquist 2022
 *
 */
 
 #include "../../tools/ScenEdit/ScenEdit.hpp"
-#include "../../tools/ScenEdit/Disk.hpp"
-
 #include "Ecs/Ecs.hpp"
 #include "Game.hpp"
 #include "SysManager.hpp"
+#include "SoundManager.hpp"
 #include "UserInput.hpp"
 #include "Chars.hpp"
+#include "Location.hpp"
 #include "Objects.hpp"
 #include "Weather.hpp"
 #include "Progress.hpp"
@@ -67,9 +67,11 @@ bool Game::init() {
 	mMap = gEditor;					// assign gEditor pointer to mMap, so we can avoid global state. Only use mMap after this.
 	mEcs = new Coordinator();
 	mSysManager = new SysManager();
+	mSound = new SoundManager();
 	mState = new GameState();
 	mInput = new UserInput();
 	mChars = new Chars();
+	mLocation = new Location();
 	mObjects = new Objects();
 	mWeather = new Weather();
 	mProgress = new Progress();
@@ -89,9 +91,11 @@ void Game::unInit() {
 
 	delete mMap;
 	delete mSysManager;
+	delete mSound;
 	delete mState;
 	delete mInput;
 	delete mChars;
+	delete mLocation;
 	delete mObjects;
 	delete mWeather;
 	delete mProgress;
@@ -102,44 +106,7 @@ void Game::unInit() {
 
 void Game::update() {
 
-	mInput->tick(*this);	// get user input
+	mInput->tick(*this);	// get general user input (get specific input from the different states' tick())
 	mState->tick(*this);	// update the current state
-
-}
-
-void Game::loadLevel() {
-
-	bool success = Disk::getInstance().loadMap_fbl(*mMap, "map.scn", 0); // note that this calls fbl_destroy_all_sprites()
-
-	if (success)
-		std::cout << "Loaded map!" << std::endl;
-	else
-		std::cerr << "Error loading map!" << std::endl;
-
-	// set up the map for path finding
-	for (uint32_t i = 0; i < mMap->mapWidth; i++) {
-		for (uint32_t j = 0; j < mMap->mapHeight; j++) {
-			fbl_pathf_set_walkability(i, j, FBL_PATHF_WALKABLE);
-		}
-	}
-
-	// set tiles to walkable/unwalkable
-	for (uint32_t i = 0; i < mMap->mapWidth; i++) {
-		for (uint32_t j = 0; j < mMap->mapHeight; j++) {
-
-			int index = i + mMap->mapWidth * j;
-			
-			if (mMap->tile[index] != nullptr)
-				if (mMap->tile[index]->type > 0)	// atm everything over 0 is unwalkable
-					fbl_pathf_set_walkability(i, j, FBL_PATHF_UNWALKABLE);
-		}
-	}
-
-}
-
-void Game::unLoadLevel() {
-
-	mMap->resetMap(0, 0);	// this calls fbl_destroy_all_sprites()
-	fbl_destroy_all_emitters();
 
 }

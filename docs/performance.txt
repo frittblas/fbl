@@ -1,6 +1,14 @@
-Since fbl only lets you have one spritesheet, everything is fast,
 SDL will batch in the background, and generally have one drawcall per frame
-which is really good.
+which is good. If you have alot of sprites with different blendmodes, you can sort
+the sprite list by blend mode to speed things up.
+
+The multithreading functionality speeds up things aswell.
+By calling fbl_create_threadpool() you create 4 (or any number) threads that
+handle internal functions such as animation and particles.
+You can also use the fbl_submit_task_tp() to execute any function
+you want in your game on a separate thread, freeing up the main thread.
+Check out demo 1, where it creates 100 sprites at a time (press space) on
+a new thread, while the rest of the program is really responsive.
 
 I stress tested by rendering 100 000 sprites on the screen on my
 (2012) i5-3470 and gtx 1050ti. Processor was 30% and gpu was 38 %
@@ -8,19 +16,11 @@ I could probably render 200 000 sprites, which is insane.
 On my laptop ($400 acer, i3, built in graphics) i rendered 80 000 sprites,
 cpu was 30% gpu 90%.
 
-The multithreading functionality speeds up things alot.
-By calling fbl_create_threadpool() you create 4 threads that
-handle internal functions such as animation and particles.
-You can also use the fbl_submit_task_tp() to execute any function
-you want in your game on a separate thread, freeing up the main thread.
-Check out demo 1, where it creates 1000 sprites at a time (press space) on
-a new thread, while the rest of the program is perfectly responsive.
-
 Now, primitives and UI-elements have their separate
 draw calls as well, and my implementation of the primitives is not very fast..
 Especially the filled circle is really slow.
 
-fbl_update_text() is also slow don't call every frame (maybe every 5th frame?)
+fbl_update_text() is also pretty slow don't call it every frame (maybe every 5-10th frame?)
 
 The following is slightly outdated due to direct_ref (see section after this){
 	Tips:
@@ -41,7 +41,7 @@ Top of sprite.c:
 NUM_DIRECT_REF_SPRITES 2000
 
 Means the first 2000 sprites you create will be stored internally in an array of pointers to the
-linked list counterpart, speeding up the get* and set* function massively.
+linked list counterpart, speeding up the get* and set* function alot.
 The above still holds true. Create all your moving and changing sprites first, then create the
 static, non moving (or changing in any way) ones.
 

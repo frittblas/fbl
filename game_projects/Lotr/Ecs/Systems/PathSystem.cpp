@@ -16,6 +16,9 @@
 #include "../Ecs.hpp"
 #include "../Components.hpp"
 
+#include "../../Game.hpp"
+#include "../../Location.hpp"
+
 #include "PathSystem.hpp"
 
 void PathSystem::Init(Coordinator& ecs) {
@@ -42,13 +45,15 @@ void PathSystem::Init(Coordinator& ecs) {
 
 }
 
-void PathSystem::Update(Coordinator& ecs) {
+void PathSystem::Update(Game& g) {
+
+	static bool standingStill = true;
 
 	for (auto const& entity : mEntities)
 	{
-		auto& pos = ecs.GetComponent<Position>(entity);
-		auto& path = ecs.GetComponent<Path>(entity);
-		auto& spr = ecs.GetComponent<Sprite>(entity);
+		auto& pos = g.mEcs->GetComponent<Position>(entity);
+		auto& path = g.mEcs->GetComponent<Path>(entity);
+		auto& spr = g.mEcs->GetComponent<Sprite>(entity);
 
 		// find path if newPath is true (meaning a new path has been requested)
 		if (path.newPath) {
@@ -84,6 +89,18 @@ void PathSystem::Update(Coordinator& ecs) {
 			}
 
 			//std::cout << "pathing!" << std::endl;
+
+			standingStill = false;
+
+		}
+		else if(fbl_pathf_get_path_status(path.id) == FBL_PATHF_NOT_STARTED && !standingStill){
+
+			// check if the player is oustide any bounds (in that case call change location)
+			if(pos.x == 0 || pos.x == (Game::MapW * Game::TileSize) - Game::TileSize ||
+			   pos.y == 0 || pos.y == (Game::MapH * Game::TileSize) - Game::TileSize)
+				g.mLocation->change(g.mMap, pos.x, pos.y);
+
+			standingStill = true;
 
 		}
 

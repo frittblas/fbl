@@ -14,6 +14,7 @@
 #include "../System.hpp"
 
 class Coordinator;
+class Game;
 
 class PathSystem : public System
 {
@@ -27,5 +28,5 @@ public:
     };
 
 	void Init(Coordinator& ecs);
-	void Update(Coordinator& ecs);
+	void Update(Game& g);
 };

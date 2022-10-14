@@ -26,6 +26,7 @@
 #include "Dialogue.hpp"
 
 #include "../Chars.hpp"
+#include "../Location.hpp"
 #include "../Weather.hpp"
 #include "../SysManager.hpp"
 #include "../LuaDialogue.hpp"
@@ -63,7 +64,7 @@ void GameState::change(Game& g, StateType newState) {
 			if (mState == StateType::Explore) {	// if coming from explore state
 
 				g.mWeather->setWeather(Weather::TimeOfDay::Day, 0, 0, 0, false);	// reset weather before unload level (destroys all sprites and emitters)
-				g.unLoadLevel();	// reset map if we're coming from the game
+				g.mLocation->unLoadLocation(g.mMap);
 				unInitLuaDialog();	// also remove resources for dialogue (prims, text etc)
 				g.mChars->removePlayer(g.mEcs);	// delete the player completely
 				g.mChars->removeNpc(g.mEcs);	// also delete all npcs in the current scene
@@ -93,7 +94,7 @@ void GameState::change(Game& g, StateType newState) {
 
 			if (mState == StateType::Title) {	// if coming from title (new game)
 
-				g.loadLevel();		// init first level
+				g.mLocation->loadLocation(g.mMap);
 				initLuaDialog();	// set up prims and text and ui for the dialog box.
 				g.mChars->setupPlayer(g.mEcs);	// create the player entity and add the right components
 				g.mChars->setupNpc(g);			// add all npcs based on the map file

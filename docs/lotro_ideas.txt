@@ -56,15 +56,15 @@ Add Tile flip in ScenEdit - Done!
 
 --TODO NEXT--
 
+Add animated water-"corner" (4 of them) to make lakes. Done!
+Draw characters before weather :) (now frodo is walking on the clouds). Done!
 Fix green borders on mobile. - Tried black rects, did not work.. Just draw all the green ground tiles and make the bg black (it will work)!
 Start to add sounds and music - in progress.
 Make a sound system for music, ambient sounds and sfx.
-Add animated water-"corner" (2 of them) to make lakes.
-Draw characters before weather :) (now frodo is walking on the clouds).
 
 Make nice transition between levels. Maybe a circle that shrinks. Or two filled rects that meet in the middle of the screen.
 Add some nice tiles (more grass, snow etc)
-Make a couple of
+Make a couple of nice levels that are final-ish
 Make the tile-type 0-9 be terrain. 10-19 = objects (pushable blocks, shops, secret passage etc.) 20-up NPCs
 
 Start planning the fighting system! Make new folder makes sense.

@@ -4,7 +4,7 @@
 *
 *	Progress.cpp
 *
-*	Progress class implemetation, takes care of all game progress, how far the player has come, levels, quests.
+*	Progress class implemetation, takes care of all game progress, how far the player has come, current location, quests etc.
 *
 *	Hans Strömquist 2022
 *
@@ -16,12 +16,14 @@
 
 Progress::Progress() {
 
-	room = level = 1;
+	mCurrentLocation = 0;
+
 	std::cout << "Initialized Progress subsystem." << std::endl;
+
 }
 
 Progress::~Progress() {
 
-	std::cout << "Destroyed progress subsystem." << std::endl;
+	std::cout << "Destroyed Progress subsystem." << std::endl;
 
 }
