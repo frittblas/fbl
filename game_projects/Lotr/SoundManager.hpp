@@ -21,4 +21,7 @@ public:
     SoundManager();
     ~SoundManager();
 
+    void loadSfx();
+    void loadAndPlayMusic(std::string filename);
+
 };

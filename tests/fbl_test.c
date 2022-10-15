@@ -437,7 +437,7 @@ void run_demo_2()
 
 	if (fbl_get_ui_elem_val(sound_button)) {
 		printf("ui button pressed (not function pointer)\n");
-		fbl_play_sound(ping_sound);
+		fbl_play_sound(ping_sound, 0);
 	}
 	if (fbl_get_ui_elem_val(music_button)) {
 		printf("ui button pressed (not function pointer)\n");
@@ -869,8 +869,8 @@ void setup_demo_7()
 
 	fbl_load_texture("spritesheet.png");
 
-	fbl_create_sprite(440, 448, 72, 64, 0);
-	fbl_create_sprite(449, 448, 72, 64, 0);
+	fbl_create_sprite(416, 448, 64, 64, 0);
+	fbl_create_sprite(416, 448, 64, 64, 0);
 	fbl_set_sprite_xy(0, 300, 300);
 	fbl_set_sprite_xy(1, 400, 400);
 	fbl_fix_sprite_to_screen(0, true);

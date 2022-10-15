@@ -326,7 +326,7 @@ void   fbl_destroy_all_ui_elems(void);
 
 int  fbl_load_sound(const char *sample_file);
 void fbl_delete_sound(int id);
-void fbl_play_sound(int id);
+void fbl_play_sound(int id, int loops);
 void fbl_pause_sound(int id);
 void fbl_resume_sound(int id);
 void fbl_destroy_all_sounds(void);

@@ -1907,8 +1907,9 @@ int lua_play_sound(lua_State *lua_env)
 {
 
 	int id = (int)lua_tonumber(lua_env, 1);
+	int loops = (int)lua_tonumber(lua_env, 2);
 
-	fbl_play_sound(id);
+	fbl_play_sound(id, loops);
 
 	return 1;
 

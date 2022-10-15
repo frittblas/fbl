@@ -72,7 +72,7 @@ void Location::loadLocation(ScenEdit* map) {
 
 void Location::unLoadLocation(ScenEdit* map) {
 
-	map->resetMap(0, 0);	// this calls fbl_destroy_all_sprites()
-	fbl_destroy_all_emitters();
+	map->resetMap(0, 0);			// note that this calls fbl_destroy_all_sprites()
+	fbl_destroy_all_emitters();		// deleta all emitters (rain, snow, fire etc.)
 
 }
