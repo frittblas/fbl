@@ -613,7 +613,7 @@ void setup_demo_4()
 		for (j = 0; j < fbl_pathf_get_map_h(); j++) {
 			if (fbl_pathf_get_walkability(i, j) == FBL_PATHF_UNWALKABLE) {
 
-				id = fbl_create_sprite(96, 320, 32, 32, 0);
+				id = fbl_create_sprite(0, 416, 32, 32, 0);
 				fbl_set_sprite_xy(id, i * fbl_pathf_get_tile_size(), j * fbl_pathf_get_tile_size());
 
 			}
@@ -980,7 +980,7 @@ void setup_demo_8()
 
 	for (int i = 0; i < 20; i++) {
 
-		int lol = fbl_create_sprite(96, 320, 32, 32, 0);
+		int lol = fbl_create_sprite(0, 416, 32, 32, 0);
 		fbl_set_sprite_xy(lol, rand() % 900 + 20, rand() % 500);
 		fbl_set_sprite_phys(lol, true, FBL_RECT, FBL_PHYS_KINEMATIC, true);
 

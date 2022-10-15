@@ -37,7 +37,7 @@ void Chars::setupPlayer(Coordinator* mEcs) {
 
 	// add components to the entity
 										// x  y
-	mEcs->AddComponent(mFrodo, Position{ 64, 64 });
+	mEcs->AddComponent(mFrodo, Position{ 128, 160 });
 								   // id id id id num tx ty   w   h   anim fr spd dir dirLast
 	mEcs->AddComponent(mFrodo, Sprite{ 0, 0, 0, 0, 4, 0, 224, 32, 32, true, 2, 12, 1, 1 });
 								 // id  gX gY newPath

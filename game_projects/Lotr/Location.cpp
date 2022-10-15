@@ -42,7 +42,7 @@ void Location::transition(uint8_t type) {
 
 void Location::loadLocation(ScenEdit* map) {
 
-	bool success = Disk::getInstance().loadMap_fbl(*map, "map.scn", 0); // note that this calls fbl_destroy_all_sprites()
+	bool success = Disk::getInstance().loadMap_fbl(*map, "map/01.scn", 0); // note that this calls fbl_destroy_all_sprites()
 
 	if (success)
 		std::cout << "Loaded map!" << std::endl;
