@@ -18,7 +18,7 @@ Game* gGame;	// the Game-instance, only used in this file (file scope), aaand Lu
 
 void fbl_start()
 {
-	
+
 	gGame = new Game();
 
 }

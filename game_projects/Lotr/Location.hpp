@@ -20,6 +20,17 @@ class Location {
 
 public:
 
+    enum PsgDir {
+        Up,
+        Right,
+        Left,
+        Down,
+        NumDirections
+    };
+
+    static const int numLocations = 20;             // total nr of locations
+    bool passageOpen[numLocations][NumDirections];  // keep track of which passages are open
+
     Location();
     ~Location();
 

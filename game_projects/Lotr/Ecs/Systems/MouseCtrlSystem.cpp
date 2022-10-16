@@ -60,7 +60,7 @@ void MouseCtrlSystem::Update(Coordinator& ecs) {
 			while (path.goalX % Game::TileSize != 0) path.goalX--;
 			while (path.goalY % Game::TileSize != 0) path.goalY--;
 
-			if(!(pos.x == path.goalX && pos.y == path.goalY))	// can't click on yourself
+			if(!(pos.x == path.goalX && pos.y == path.goalY))	// can't click on yourself, doesn't count
 				path.newPath = true;
 
 			mCtrl.clicked = false;

@@ -48,10 +48,12 @@ public:
     // real resolution of each device
     static const int DeviceResW = LogicalResW;
     static const int DeviceResH = LogicalResH;
-
+    
+    // map size
     static const int MapW = 60;
     static const int MapH = 34;
 
+    // tile size
     static const int TileSize = 32;
 
     Game();

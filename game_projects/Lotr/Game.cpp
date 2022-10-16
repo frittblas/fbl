@@ -54,9 +54,13 @@ bool Game::init() {
 	fbl_set_render_logical_size(DeviceResW, DeviceResH);
 	//fbl_set_clear_color(33, 68, 33, 255);	// forest green
 
+	// show device current res, comment this out.
 	int w, h;
 	fbl_get_device_res(&w, &h);
-	std::cout << "Desktop res: " << w << " x " << h << std::endl;
+	fbl_load_ttf_font("anirm.ttf", 16);
+	fbl_create_text(212, 175, 55, 255, (char*)"native res: %d x %d", w, h);
+	fbl_set_text_xy(0, 10, 20);
+
 
 	//fbl_create_threadpool();
 

@@ -116,7 +116,7 @@ void initLuaDialog() {
 	fbl_set_text_xy(gTextTalk, x, 32);
 
 	gButtonTalk = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, NULL);
-	fbl_set_ui_elem_xy(gButtonTalk, x - 32, Game::DeviceResH - 32);
+	fbl_set_ui_elem_xy(gButtonTalk, x - 32, 32);
 
 
 	// hide
