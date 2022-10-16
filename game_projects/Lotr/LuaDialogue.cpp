@@ -62,8 +62,8 @@ void registerFuncsToLua()
 void initLuaDialog() {
 
 	// set position and size of the text area
-	int x = gGame->LogicalResW / 2;
-	int y = gGame->LogicalResH / 2 + gGame->LogicalResH / 4;
+	int x = Game::DeviceResW / 2;
+	int y = Game::DeviceResH / 2 + Game::DeviceResH / 4;
 	int width = 250;
 	int height = 100;
 
@@ -113,28 +113,15 @@ void initLuaDialog() {
 	// the "Talk" text and button
 	gTextTalk = fbl_create_text(255, 255, 255, 0, (char*)"Talk");
 	fbl_set_text_align(gTextTalk, FBL_ALIGN_LEFT);
-	fbl_set_text_xy(gTextTalk, Game::LogicalResW / 2, 32);
+	fbl_set_text_xy(gTextTalk, x, 32);
 
 	gButtonTalk = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, NULL);
-	fbl_set_ui_elem_xy(gButtonTalk, Game::LogicalResW / 2 - 32, 32);
+	fbl_set_ui_elem_xy(gButtonTalk, x - 32, Game::DeviceResH - 32);
 
 
 	// hide
 	showTalkButton(false);
 	luaHideDialog(NULL);
-
-	// add black rects to the left and right of the screen to look nicer on weird resolutions (i.e mobile)
-	// Remember: FBL_NORMAL_RECT is a normal scaled rect. Move this code to a better place later
-	// NOTE: this didn't work, can't overdraw like this. It's fine for now
-	/*
-	int overDraw = 240;
-	int tmpId = fbl_create_prim(FBL_NORMAL_RECT, -overDraw, 0, overDraw, Game::LogicalResH, 0, false, true);
-	fbl_set_prim_color(tmpId, 0, 0, 0, 255);
-	fbl_fix_prim_to_screen(tmpId, true);
-	tmpId = fbl_create_prim(FBL_NORMAL_RECT, Game::LogicalResW, 0, overDraw, Game::LogicalResH, 0, false, true);
-	fbl_set_prim_color(tmpId, 0, 0, 0, 255);
-	fbl_fix_prim_to_screen(tmpId, true);
-	*/
 
 }
 

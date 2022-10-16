@@ -35,7 +35,7 @@ void Location::change(ScenEdit* map, uint32_t posX, uint32_t posY) {
 
 }
 
-void Location::transition(uint8_t type) {
+void Location::transition(uint8_t type, bool out) {
 
 
 }

@@ -204,6 +204,7 @@ void fbl_set_clear_color(int r, int g, int b, int a);
 void fbl_set_screen_wh(int w, int h);
 int  fbl_get_screen_w(void);
 int  fbl_get_screen_h(void);
+int  fbl_get_device_res(int* w, int* h);
 int  fbl_set_render_scale(float scale_x, float scale_y);
 int  fbl_set_viewport(int x, int y, int w, int h);
 int  fbl_set_render_logical_size(int x, int y);

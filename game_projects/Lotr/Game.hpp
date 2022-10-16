@@ -31,7 +31,7 @@ class Game {
 public:
     Coordinator* mEcs;	    // the Entity Component System
     SysManager* mSysManager;// keeps pointers to all systems in the Ecs.
-    SoundManager* mSound;          // 
+    SoundManager* mSound;   // The sound system :)
     ScenEdit* mMap;         // the game map, this points to gEditor
     GameState* mState;  	// current game state
     UserInput* mInput;	    // keyboard and mouse input from the user
@@ -41,8 +41,13 @@ public:
     Weather* mWeather;      // Weather system (animated clouds and rain, day/night cycle)
     Progress* mProgress;    // general game progress
 
+    // the game uses this internally
     static const int LogicalResW = 960;
     static const int LogicalResH = 540;
+
+    // real resolution of each device
+    static const int DeviceResW = LogicalResW;
+    static const int DeviceResH = LogicalResH;
 
     static const int MapW = 60;
     static const int MapH = 34;

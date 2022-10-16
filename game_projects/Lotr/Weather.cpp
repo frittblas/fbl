@@ -134,9 +134,9 @@ void Weather::initClouds(uint8_t num) {
 		Cloud* tmpCloud = new Cloud();
 
 		tmpCloud->id = id;
-		tmpCloud->x = (float)(rand() % (Game::MapW * Game::TileSize));
-		tmpCloud->y = (float)(rand() % 150 - 20);
-		tmpCloud->speed = (float)((rand() % 8) + 3) / 10;
+		tmpCloud->x = (float)(rand() % (Game::LogicalResW * 2));
+		tmpCloud->y = (float)(rand() % 140 - 20);
+		tmpCloud->speed = (float)((rand() % 6) + 3) / 10;
 		tmpCloud->scale = (float)((rand() % 10) + 10) / 10;
 		tmpCloud->alpha = rand() % 155 + 100;
 
@@ -172,7 +172,7 @@ void Weather::initRain(uint8_t amount, uint8_t alpha) {
 	if (amount > 0) {
 
 		mRainLayerId[0] = fbl_create_emitter(450);
-		fbl_set_emitter_params(mRainLayerId[0], FBL_EMITTER_RAIN, Game::LogicalResW, 64, 150, amount, 5, 1.0, 1.0);	// id, type, spawn_w, spawn_h, life, rate, density, scale_start, scale_end
+		fbl_set_emitter_params(mRainLayerId[0], FBL_EMITTER_RAIN, Game::DeviceResW, 64, 150, amount, 5, 1.0, 1.0);	// id, type, spawn_w, spawn_h, life, rate, density, scale_start, scale_end
 		fbl_set_emitter_particle_shape(mRainLayerId[0], FBL_NO_PRIM, 38, 384, 3, 12);
 		fbl_set_emitter_xy(mRainLayerId[0], 30, -64);
 		fbl_set_emitter_vel_xy(mRainLayerId[0], -0.5, 1.5, true);	// crash if you call this with < 1.0 on either param using FLOWER
@@ -181,7 +181,7 @@ void Weather::initRain(uint8_t amount, uint8_t alpha) {
 		fbl_fix_emitter_to_screen(mRainLayerId[0], true);
 
 		mRainLayerId[1] = fbl_create_emitter(450);
-		fbl_set_emitter_params(mRainLayerId[1], FBL_EMITTER_RAIN, Game::LogicalResW, 64, 150, amount, 5, 1.0, 1.0);
+		fbl_set_emitter_params(mRainLayerId[1], FBL_EMITTER_RAIN, Game::DeviceResW, 64, 150, amount, 5, 1.0, 1.0);
 		fbl_set_emitter_particle_shape(mRainLayerId[1], FBL_NO_PRIM, 35, 384, 3, 12);
 		fbl_set_emitter_xy(mRainLayerId[1], 30, -64);
 		fbl_set_emitter_vel_xy(mRainLayerId[1], -0.6, 2.5, true);
@@ -190,7 +190,7 @@ void Weather::initRain(uint8_t amount, uint8_t alpha) {
 		fbl_fix_emitter_to_screen(mRainLayerId[1], true);
 
 		mRainLayerId[2] = fbl_create_emitter(350);
-		fbl_set_emitter_params(mRainLayerId[2], FBL_EMITTER_RAIN, Game::LogicalResW, 64, 110, amount, 5, 1.0, 1.0);
+		fbl_set_emitter_params(mRainLayerId[2], FBL_EMITTER_RAIN, Game::DeviceResW, 64, 110, amount, 5, 1.0, 1.0);
 		fbl_set_emitter_particle_shape(mRainLayerId[2], FBL_NO_PRIM, 32, 384, 3, 12);
 		fbl_set_emitter_xy(mRainLayerId[2], 30, -64);
 		fbl_set_emitter_vel_xy(mRainLayerId[2], -0.7, 5.0, true);
@@ -219,7 +219,7 @@ void Weather::initSnow(uint8_t amount, uint8_t alpha) {
 	if (amount > 0) {
 
 		mSnowLayerId[0] = fbl_create_emitter(300);
-		fbl_set_emitter_params(mSnowLayerId[0], FBL_EMITTER_SNOW, Game::LogicalResW, 64, 400, amount, 3, 0.4, 0.4);	// id, type, spawn_w, spawn_h, life, rate, density, scale_start, scale_end
+		fbl_set_emitter_params(mSnowLayerId[0], FBL_EMITTER_SNOW, Game::DeviceResW, 64, 400, amount, 3, 0.4, 0.4);	// id, type, spawn_w, spawn_h, life, rate, density, scale_start, scale_end
 		fbl_set_emitter_particle_shape(mSnowLayerId[0], FBL_NO_PRIM, 416, 128, 32, 32);
 		fbl_set_emitter_xy(mSnowLayerId[0], 0, -64);
 		fbl_set_emitter_vel_xy(mSnowLayerId[0], 0.5, 0.8, true);
@@ -228,7 +228,7 @@ void Weather::initSnow(uint8_t amount, uint8_t alpha) {
 		fbl_fix_emitter_to_screen(mSnowLayerId[0], true);
 
 		mSnowLayerId[1] = fbl_create_emitter(300);
-		fbl_set_emitter_params(mSnowLayerId[1], FBL_EMITTER_SNOW, Game::LogicalResW, 64, 400, amount, 3, 0.6, 0.6);
+		fbl_set_emitter_params(mSnowLayerId[1], FBL_EMITTER_SNOW, Game::DeviceResW, 64, 400, amount, 3, 0.6, 0.6);
 		fbl_set_emitter_particle_shape(mSnowLayerId[1], FBL_NO_PRIM, 416, 128, 32, 32);
 		fbl_set_emitter_xy(mSnowLayerId[1], 0, -64);
 		fbl_set_emitter_vel_xy(mSnowLayerId[1], 0.5, 1.1, true);
@@ -237,7 +237,7 @@ void Weather::initSnow(uint8_t amount, uint8_t alpha) {
 		fbl_fix_emitter_to_screen(mSnowLayerId[1], true);
 
 		mSnowLayerId[2] = fbl_create_emitter(300);
-		fbl_set_emitter_params(mSnowLayerId[2], FBL_EMITTER_SNOW, Game::LogicalResW, 64, 450, amount, 3, 0.8, 1.0);
+		fbl_set_emitter_params(mSnowLayerId[2], FBL_EMITTER_SNOW, Game::DeviceResW, 64, 450, amount, 3, 0.8, 1.0);
 		fbl_set_emitter_particle_shape(mSnowLayerId[2], FBL_NO_PRIM, 416, 128, 32, 32);
 		fbl_set_emitter_xy(mSnowLayerId[2], 0, -64);
 		fbl_set_emitter_vel_xy(mSnowLayerId[2], 0.5, 1.3, true);
@@ -257,7 +257,7 @@ void Weather::tickClouds() {
 
 		curCloud->x += curCloud->speed;
 
-		if (curCloud->x < -200 || curCloud->x >(Game::MapW * Game::TileSize) + 50)
+		if (curCloud->x < -200 || (curCloud->x > ((Game::LogicalResW * 2) + 50)))
 			curCloud->speed = -curCloud->speed;
 
 		fbl_set_sprite_xy(curCloud->id, (int)curCloud->x, (int)curCloud->y);
