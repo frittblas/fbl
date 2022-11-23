@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.32428.217
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fbl_project", "fbl_project\fbl_project.vcxproj", "{C94DE5BF-E0E4-4397-B4A1-259E5C6001E9}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lotr", "Lotr\Lotr.vcxproj", "{EC3C5D9D-2265-45A6-A14D-B18431A409B0}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Ca2", "Ca2\Ca2.vcxproj", "{EC3C5D9D-2265-45A6-A14D-B18431A409B0}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "robot_lua_game", "robot_lua_game\robot_lua_game.vcxproj", "{C14467C4-2217-4FCB-945B-D49B0AF4FE67}"
 EndProject

@@ -197,7 +197,7 @@ Make "NAME_OF_ASSET_FOLDER" or whatever an fbl-command. So you can change it in 
 Scale Android and fullscreen pc to fill the screen! experimenting, scale works great but mouse is off. Logical doesn't work (am I using it right?)
 DONE!! works lika da charm
 
-Fix one particle to screen. (don't worry, threads will help with performance w. alot of particles :) - will fix this when making lotr!
+Fix one particle to screen. (don't worry, threads will help with performance w. alot of particles :) - will fix this when making Ca2!
 
 Make android version concat the required .lua-files then run the lua load_string(). Hmm maybe not? Or do it manually?
 Raycast collission (shape gets returned, but who's shape is it? :)
@@ -220,7 +220,7 @@ Made bat files: build-fbl-lib.bat and build-scenedit-fbl-lib.bat
 Add set_ui_elem_val to lua! Done!
 
 start SceneEdit - 95% done change kinematic to terrain (walkable/solid/water).. DONE, including terrain (tile-type)!
-start Lotro - starting now! Going well.
+start Ca2 - starting now! Going well.
 
 add fbl_log() Done! (Lua version of format, ... - stuff needs fixing!)
 

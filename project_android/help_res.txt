@@ -32,4 +32,4 @@ cd to fbl_android\fbl_project\app\jni\src\
 and paste the fbl folder there, (keeping the whole dir-structure).
 
 Edit Android.mk in that /src/-dir to suit your needs. Default
-is the lotr-project (Android_fbl.mk is fbl_test.c)
+is the Ca2-project (Android_fbl.mk is fbl_test.c)

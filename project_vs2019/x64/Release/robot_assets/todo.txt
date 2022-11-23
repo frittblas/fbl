@@ -1,8 +1,9 @@
 Proof of concept fbl-game-demo written entirely in Lua.
 
 This is considered finished as a demo.
+
 One thing that's a bit weird if that you will have to resize
-the pathfinding map to fit this game as Lotr is also using pathing.
+the pathfinding map to fit this game as the reall C++ Ca2 is also using pathing.
 
 Todo for robotgame:
 

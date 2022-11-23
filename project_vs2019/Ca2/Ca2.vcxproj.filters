@@ -1,0 +1,261 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\fbl_src">
+      <UniqueIdentifier>{dd8950bd-2280-4c12-847c-138f886e975a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\fbl_src\dl_list">
+      <UniqueIdentifier>{7497f603-6f8b-493e-aeb1-bcf7ccac9212}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\fbl_src\a_star">
+      <UniqueIdentifier>{23eefb01-7af6-48e2-b280-28e08eadd2fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ScenEdit">
+      <UniqueIdentifier>{12055255-0d74-4bb6-8084-3a95ca58e1cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Ecs">
+      <UniqueIdentifier>{5fd85cf9-c0a7-4a41-8f07-b151c8bea2df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Ecs\Systems">
+      <UniqueIdentifier>{1780e2dc-d6a5-4977-89e4-fed62dc0f9c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameState">
+      <UniqueIdentifier>{c1d0a24f-67a8-4cf8-83a8-3ddcd0c1db32}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\a_star\a_star.c">
+      <Filter>Source Files\fbl_src\a_star</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dl_list\dllist.c">
+      <Filter>Source Files\fbl_src\dl_list</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\fbl.c">
+      <Filter>Source Files\fbl_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sprite.c">
+      <Filter>Source Files\fbl_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\text.c">
+      <Filter>Source Files\fbl_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\input.c">
+      <Filter>Source Files\fbl_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\physics.c">
+      <Filter>Source Files\fbl_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\primitives.c">
+      <Filter>Source Files\fbl_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ui.c">
+      <Filter>Source Files\fbl_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\particles.c">
+      <Filter>Source Files\fbl_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sound.c">
+      <Filter>Source Files\fbl_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\pathfind.c">
+      <Filter>Source Files\fbl_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\thread.c">
+      <Filter>Source Files\fbl_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lua.c">
+      <Filter>Source Files\fbl_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tools\ScenEdit\Disk.cpp">
+      <Filter>Source Files\ScenEdit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tools\ScenEdit\ScenEdit.cpp">
+      <Filter>Source Files\ScenEdit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tools\ScenEdit\GuiFuncs.cpp">
+      <Filter>Source Files\ScenEdit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\network.c">
+      <Filter>Source Files\fbl_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game_projects\Ca2\GameState\Dialogue.cpp">
+      <Filter>Source Files\GameState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game_projects\Ca2\GameState\Explore.cpp">
+      <Filter>Source Files\GameState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game_projects\Ca2\GameState\GameState.cpp">
+      <Filter>Source Files\GameState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game_projects\Ca2\GameState\Settings.cpp">
+      <Filter>Source Files\GameState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game_projects\Ca2\GameState\Title.cpp">
+      <Filter>Source Files\GameState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\CameraSystem.cpp">
+      <Filter>Source Files\Ecs\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\DialogueTrigSystem.cpp">
+      <Filter>Source Files\Ecs\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\LightSystem.cpp">
+      <Filter>Source Files\Ecs\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\MouseCtrlSystem.cpp">
+      <Filter>Source Files\Ecs\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\PathSystem.cpp">
+      <Filter>Source Files\Ecs\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\SpriteSystem.cpp">
+      <Filter>Source Files\Ecs\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game_projects\Ca2\Ca2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game_projects\Ca2\Chars.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game_projects\Ca2\Game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game_projects\Ca2\Location.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game_projects\Ca2\LuaDialogue.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game_projects\Ca2\Objects.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game_projects\Ca2\Progress.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game_projects\Ca2\SoundManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game_projects\Ca2\SysManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game_projects\Ca2\UserInput.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game_projects\Ca2\Weather.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\fbl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\engine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\fbl.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tools\ScenEdit\Disk.hpp">
+      <Filter>Source Files\ScenEdit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tools\ScenEdit\ScenEdit.hpp">
+      <Filter>Source Files\ScenEdit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tools\ScenEdit\TileData.hpp">
+      <Filter>Source Files\ScenEdit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tools\ScenEdit\GuiFuncs.hpp">
+      <Filter>Source Files\ScenEdit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\GameState\Dialogue.hpp">
+      <Filter>Source Files\GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\GameState\Explore.hpp">
+      <Filter>Source Files\GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\GameState\GameState.hpp">
+      <Filter>Source Files\GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\GameState\IState.hpp">
+      <Filter>Source Files\GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\GameState\Settings.hpp">
+      <Filter>Source Files\GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\GameState\Title.hpp">
+      <Filter>Source Files\GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\CameraSystem.hpp">
+      <Filter>Source Files\Ecs\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\DialogueTrigSystem.hpp">
+      <Filter>Source Files\Ecs\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\LightSystem.hpp">
+      <Filter>Source Files\Ecs\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\MouseCtrlSystem.hpp">
+      <Filter>Source Files\Ecs\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\PathSystem.hpp">
+      <Filter>Source Files\Ecs\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\SpriteSystem.hpp">
+      <Filter>Source Files\Ecs\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Components.hpp">
+      <Filter>Source Files\Ecs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Ecs.hpp">
+      <Filter>Source Files\Ecs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\System.hpp">
+      <Filter>Source Files\Ecs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Types.hpp">
+      <Filter>Source Files\Ecs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\Chars.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\Game.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\Location.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\LuaDialogue.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\Objects.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\Progress.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\SoundManager.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\SysManager.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\UserInput.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\Weather.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

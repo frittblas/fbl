@@ -4,7 +4,7 @@ New in version 0.9.9 (2022-08-27):
 
 Added 2D-lights, using lightmaps and blendmodes, check out the demos!
 Added a complete tilemap editor (ScenEdit).
-Did a ton of work on the lotr-game (game_projects).
+Did a ton of work on the Ca2-game (game_projects).
 Added logical resolution so apps can adapt to different resolutions.
 Many small fixes and refactoring.
 Bugfixes, optimisations.
