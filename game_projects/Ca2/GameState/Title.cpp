@@ -22,24 +22,25 @@ int titleId, subTitleId, authorTextId, websiteTextId;	// not really needed!
 
 Title::Title() {
 
-	fbl_load_ttf_font("anirm.ttf", 48);
-	titleId = fbl_create_text(212, 175, 55, 255, (char*)"Lord of the rings");
+	fbl_load_ttf_font("font/garamond.ttf", 48);
+	titleId = fbl_create_text(212, 175, 55, 255, (char*)"Charming Alarming 2");
 	fbl_set_text_xy(titleId, Game::DeviceResW / 2, 100);
 	fbl_set_text_align(titleId, FBL_ALIGN_CENTER);
 
-	fbl_load_ttf_font("anirm.ttf", 26);
-	subTitleId = fbl_create_text(154, 33, 34, 255, (char*)"a retarded journey");
+	fbl_load_ttf_font("font/garamond.ttf", 27);
+	subTitleId = fbl_create_text(154, 33, 34, 255, (char*)"Reasonable Robots");
 	fbl_set_text_xy(subTitleId, Game::DeviceResW / 2, 200);
 	fbl_set_text_align(subTitleId, FBL_ALIGN_CENTER);
 
-	fbl_load_ttf_font("anirm.ttf", 16);
+	fbl_load_ttf_font("font/garamond.ttf", 17);
 	authorTextId = fbl_create_text(212, 175, 55, 255, (char*)"Hans Stromquist 2022");
 	fbl_set_text_xy(authorTextId, 10, Game::DeviceResH - 20);
 
 	websiteTextId = fbl_create_text(212, 175, 55, 255, (char*)"www.frittblas.se");
-	fbl_set_text_xy(websiteTextId, Game::DeviceResW - 205, Game::DeviceResH - 20);
+	fbl_set_text_xy(websiteTextId, Game::DeviceResW - 140, Game::DeviceResH - 20);
 
 	std::cout << "Started Title state." << std::endl;
+
 
 }
 
