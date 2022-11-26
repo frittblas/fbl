@@ -97,7 +97,6 @@ void GameState::change(Game& g, StateType newState) {
 
 				g.mLocation->loadLocation(g.mMap);
 				initLuaDialog();	// set up prims and text and ui for the dialog box.
-				initCollectionMenu();
 				g.mChars->setupPlayer(g.mEcs);	// create the player entity and add the right components
 				g.mChars->setupNpc(g);			// add all npcs based on the map file
 
@@ -107,6 +106,8 @@ void GameState::change(Game& g, StateType newState) {
 				g.mSysManager->mLightSystem->Init(*g.mEcs);		// create lights for all entities with a light component
 
 				g.mWeather->setWeather(Weather::TimeOfDay::Evening, 1, 0, 50, true);
+
+				initCollectionMenu();	// set up prims and text and ui for the collection-menu, sprite draw-order is important
 
 				fbl_lua_init("Ca2Dialogue.lua", registerFuncsToLua);	// set this up each new game, so the dialogues restart
 
