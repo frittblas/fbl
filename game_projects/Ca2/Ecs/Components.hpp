@@ -85,3 +85,22 @@ struct Light
     float scale;    // light size (scale)
 
 };
+
+
+/////////////////////////
+// Robot components /////
+/////////////////////////
+
+// Stats
+struct Stats
+{
+
+    std::string name;   // name
+    uint8_t level;      // the current level
+    uint8_t maxHp;      // max hp
+    uint8_t hp;         // current hp
+    uint8_t maxEnergy;  // max energy
+    uint8_t energy;     // current energy
+    uint8_t weight;     // weight
+
+};

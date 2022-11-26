@@ -27,6 +27,7 @@
 #include "RobotCollection.hpp"
 
 #include "../Chars.hpp"
+#include "../Robots.hpp"
 #include "../Location.hpp"
 #include "../Weather.hpp"
 #include "../SysManager.hpp"
@@ -69,6 +70,7 @@ void GameState::change(Game& g, StateType newState) {
 				unInitLuaDialog();	// also remove resources for dialogue (prims, text etc)
 				g.mChars->removePlayer(g.mEcs);	// delete the player completely
 				g.mChars->removeNpc(g.mEcs);	// also delete all npcs in the current scene
+				g.mRobots->removeRobots(g.mEcs); // delete all the robots
 				g.mWeather->setWeather(Weather::TimeOfDay::Day, 0, 6, 0, false);	// timeOfDay, rainLevel, snowLevel, numClouds, lightningOn
 
 				fbl_lua_shutdown();	// so the dialogues gets reset
@@ -100,10 +102,14 @@ void GameState::change(Game& g, StateType newState) {
 				g.mChars->setupPlayer(g.mEcs);	// create the player entity and add the right components
 				g.mChars->setupNpc(g);			// add all npcs based on the map file
 
+				g.mRobots->setupRobots(g.mEcs); // create the robot entities and add the basic components
+
 				g.mSysManager->mSpriteSystem->Init(*g.mEcs);	// create sprites for all entities with a sprite component
 				g.mSysManager->mPathSystem->Init(*g.mEcs);		// assign a unique path id to the entities with a path component
 				//g.mSysManager->mCameraSystem->Init(*g.mEcs);	// creates debug rect for camera deadzone
 				g.mSysManager->mLightSystem->Init(*g.mEcs);		// create lights for all entities with a light component
+
+				g.mRobots->hideRobots(g.mEcs);					// don't show the robot-sprites
 
 				g.mWeather->setWeather(Weather::TimeOfDay::Evening, 1, 0, 50, true);
 

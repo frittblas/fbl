@@ -56,8 +56,9 @@ Add Tile flip in ScenEdit - Done!
 
 --TODO NEXT--
 
+Draw you own sprites! And own ip :)... DONE!
 Add animated water-"corner" (4 of them) to make lakes. Done!
-Draw characters before weather :) (now frodo is walking on the clouds). Done!
+Draw characters before weather :) (now brodo is walking on the clouds). Done!
 Fix green borders on mobile. - Tried black rects, did not work.. Seems to work with the new logical res trick, experiment further!
 Start to add sounds and music - in progress, it's glorious.
 Make a sound system for music, ambient sounds and sfx. - in progress.

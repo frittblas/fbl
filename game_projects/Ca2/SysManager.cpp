@@ -47,6 +47,8 @@ void SysManager::setupEcs(Coordinator *mEcs) {
 	mEcs->RegisterComponent<DialogueTrigger>();
 	mEcs->RegisterComponent<Light>();
 
+	mEcs->RegisterComponent<Stats>();
+
 	// register systems
 	mSpriteSystem = mEcs->RegisterSystem<SpriteSystem>();
 	mPathSystem = mEcs->RegisterSystem<PathSystem>();

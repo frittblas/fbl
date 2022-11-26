@@ -33,9 +33,9 @@ public:
     Entity mBrodo;  // the player!
 
     // array of npc characters to talk to
-    Entity mAllChars[static_cast<int>(Name::NumChars)]; // static cast so we can use Name as int array index.
+    //Entity mAllChars[static_cast<int>(Name::NumChars)]; // static cast so we can use Name as int array index.
 
-    std::vector<Entity> mNpc;       // list of all the npcs, not fighting (in one scene at a time)
+    std::vector<Entity> mNpc;       // list of all the npcs, (in one scene at a time)
 
     Chars();
     ~Chars();

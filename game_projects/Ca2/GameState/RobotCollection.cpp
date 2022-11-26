@@ -13,7 +13,10 @@
 #include <iostream>
 
 #include "../../../src/fbl.hpp"
+#include "../Ecs/Ecs.hpp"
+#include "../Ecs/Components.hpp"
 #include "../Game.hpp"
+#include "../Robots.hpp"
 #include "../Weather.hpp"
 #include "RobotCollection.hpp"
 
@@ -42,11 +45,33 @@ RobotCollection::~RobotCollection() {
 
 }
 
+// deal with all the clicking on stats and buttons :)
+void RobotCollection::processInput(Game& g) {
+
+	if (fbl_get_ui_elem_val(fMenuButtonLeft)) {
+	
+		g.mRobots->claimRobot(Robots::RobotName::Charming);
+		auto& stat = g.mEcs->GetComponent<Stats>(g.mRobots->mOwnedRobots.at(0));
+		std::cout << "Now owning robot :) " << stat.name << std::endl;
+
+	}
+
+	if (fbl_get_ui_elem_val(fMenuButtonRight)) {
+
+		auto& spr = g.mEcs->GetComponent<Sprite>(g.mRobots->mOwnedRobots.at(0));
+		if(&spr == nullptr) std::cout << "I own nothing" << std::endl;
+		fbl_set_sprite_active(spr.id[0], true);
+
+	}
+
+}
 
 // implement the virtual tick() function
 void RobotCollection::tick(Game& g) {
 
 	g.mWeather->tick();
+	
+	processInput(g);
 
 	int num = std::rand() / ((RAND_MAX + 1u) / 50); // random numbers from 0-49
 

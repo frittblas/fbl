@@ -26,5 +26,8 @@ public:
     RobotCollection();
     ~RobotCollection();
 
+    void processInput(Game& g);
+
+
     virtual void tick(Game& g) override;
 };
