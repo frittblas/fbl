@@ -31,7 +31,7 @@ public:
         Dialogue,
         Shop,
         Fight,
-        CardCollection
+        RobotCollection
     };
 
     GameState();

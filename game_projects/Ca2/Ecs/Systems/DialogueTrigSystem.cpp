@@ -43,7 +43,7 @@ void DialogueTrigSystem::Update(Game& g) {
 	
 	bool triggered = false;
 
-	auto& player = g.mEcs->GetComponent<Position>(g.mChars->mFrodo);
+	auto& player = g.mEcs->GetComponent<Position>(g.mChars->mBrodo);
 
 	for (auto const& entity : mEntities)
 	{

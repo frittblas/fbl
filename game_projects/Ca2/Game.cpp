@@ -17,6 +17,7 @@
 #include "SoundManager.hpp"
 #include "UserInput.hpp"
 #include "Chars.hpp"
+#include "Robots.hpp"
 #include "Location.hpp"
 #include "Objects.hpp"
 #include "Weather.hpp"
@@ -84,6 +85,7 @@ bool Game::init() {
 	mState = new GameState();
 	mInput = new UserInput();
 	mChars = new Chars();
+	mRobots = new Robots();
 	mLocation = new Location();
 	mObjects = new Objects();
 	mWeather = new Weather();

@@ -33,27 +33,27 @@ Chars::~Chars() {
 void Chars::setupPlayer(Coordinator* mEcs) {
 
 	// create the player entity
-	mFrodo = mEcs->CreateEntity();
+	mBrodo = mEcs->CreateEntity();
 
 	// add components to the entity
 										// x  y
-	mEcs->AddComponent(mFrodo, Position{ 128, 160 });
+	mEcs->AddComponent(mBrodo, Position{ 128, 160 });
 								   // id id id id num tx ty   w   h   anim fr spd dir dirLast
-	mEcs->AddComponent(mFrodo, Sprite{ 0, 0, 0, 0, 4, 0, 224, 32, 32, true, 2, 12, 1, 1 });
+	mEcs->AddComponent(mBrodo, Sprite{ 0, 0, 0, 0, 4, 0, 224, 32, 32, true, 2, 12, 1, 1 });
 								 // id  gX gY newPath
-	mEcs->AddComponent(mFrodo, Path{ 0, 0, 0, false });
+	mEcs->AddComponent(mBrodo, Path{ 0, 0, 0, false });
 									  // clicked
-	mEcs->AddComponent(mFrodo, MouseCtrl{ false });
+	mEcs->AddComponent(mBrodo, MouseCtrl{ false });
 									// x  y	 damp  w  h
-	mEcs->AddComponent(mFrodo, Camera{ 0, 0, 0.05, 2, 2 });
+	mEcs->AddComponent(mBrodo, Camera{ 0, 0, 0.05, 2, 2 });
 								  // id  tx  ty   w    h  scale
-	mEcs->AddComponent(mFrodo, Light{ 0, 384, 0, 128, 128, 2.0 });
+	mEcs->AddComponent(mBrodo, Light{ 0, 384, 0, 128, 128, 2.0 });
 
 }
 
 void Chars::removePlayer(Coordinator* mEcs) {
 
-	mEcs->DestroyEntity(mFrodo);
+	mEcs->DestroyEntity(mBrodo);
 	
 }
 

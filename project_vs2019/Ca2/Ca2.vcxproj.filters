@@ -156,6 +156,12 @@
     <ClCompile Include="..\..\game_projects\Ca2\Weather.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\game_projects\Ca2\GameState\RobotCollection.cpp">
+      <Filter>Source Files\GameState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game_projects\Ca2\Robots.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\fbl.h">
@@ -255,6 +261,12 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\game_projects\Ca2\Weather.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\GameState\RobotCollection.hpp">
+      <Filter>Source Files\GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\Robots.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

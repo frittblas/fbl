@@ -21,6 +21,7 @@ class ScenEdit;
 class GameState;
 class UserInput;
 class Chars;
+class Robots;
 class Location;
 class Objects;
 class Weather;
@@ -36,6 +37,7 @@ public:
     GameState* mState;  	// current game state
     UserInput* mInput;	    // keyboard and mouse input from the user
     Chars* mChars;          // all the characters in the game, including the player.
+    Robots* mRobots;        // all the robots in the game.
     Location* mLocation;    // Locations (levels) in the game, loading, transitions etc.
     Objects* mObjects;      // all the game objects (movable blocks, shops etc)
     Weather* mWeather;      // Weather system (animated clouds and rain, day/night cycle)

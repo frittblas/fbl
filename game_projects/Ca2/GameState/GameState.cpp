@@ -24,6 +24,7 @@
 #include "Settings.hpp"
 #include "Explore.hpp"
 #include "Dialogue.hpp"
+#include "RobotCollection.hpp"
 
 #include "../Chars.hpp"
 #include "../Location.hpp"
@@ -96,6 +97,7 @@ void GameState::change(Game& g, StateType newState) {
 
 				g.mLocation->loadLocation(g.mMap);
 				initLuaDialog();	// set up prims and text and ui for the dialog box.
+				initCollectionMenu();
 				g.mChars->setupPlayer(g.mEcs);	// create the player entity and add the right components
 				g.mChars->setupNpc(g);			// add all npcs based on the map file
 
@@ -126,7 +128,8 @@ void GameState::change(Game& g, StateType newState) {
 		case StateType::Fight:
 			break;
 
-		case StateType::CardCollection:
+		case StateType::RobotCollection:
+			mCurrentStateInstance = new RobotCollection();
 			break;
 
 	}

@@ -51,6 +51,10 @@ void UserInput::tick(Game& g) {
 		g.mState->change(g, GameState::StateType::Dialogue);
 		access = buttonDelay;
 	}
+	if (fbl_get_key_down(FBLK_5) && access == 0) {
+		g.mState->change(g, GameState::StateType::RobotCollection);
+		access = buttonDelay;
+	}
 
 	// for android, temporary :)
 	if (fbl_get_mouse_release(FBLMB_LEFT) && access == 0 && g.mState->get() == GameState::StateType::Title) {
