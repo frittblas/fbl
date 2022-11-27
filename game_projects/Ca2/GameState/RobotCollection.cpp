@@ -30,6 +30,7 @@ int fMenuName, fMenuLevel, fMenuXp, fMenuHp, fMenuSpeed;
 int fMenuDiag, fMenuEnergy, fMenuWeight;
 int fMenuSlotNr[4], fMenuSlot[4];
 
+int firstLoop;	// replace this
 
 // RobotCollection-class implementation
 
@@ -38,6 +39,7 @@ RobotCollection::RobotCollection() {
 
 	mCurrentRobotPage = 0;
 	showCollectionMenu();
+	firstLoop = 0;
 
 	std::cout << "Started RobotCollection state." << std::endl;
 
@@ -69,7 +71,7 @@ void RobotCollection::cyclePages(Game& g, int dir) {
 
 	// update the page
 	g.mRobots->hideRobots(g.mEcs);
-	g.mRobots->showRobot(g.mEcs, mCurrentRobotPage);
+	g.mRobots->showRobotInMenu(g.mEcs, mCurrentRobotPage);
 
 	fbl_update_text(fMenuName, 255, 255, 255, 0, (char*)sta.name.c_str());
 	fbl_update_text(fMenuLevel, 255, 255, 255, 0, "Level:  %d  (xp: %d / %d)", sta.level, sta.xp, sta.nextLv);
@@ -111,6 +113,13 @@ void RobotCollection::tick(Game& g) {
 
 	if (num == 0)
 		std::cout << "Tick RobotCollection!" << std::endl;
+
+	// bad solution
+	if (firstLoop == 0) {
+		cyclePages(g, 0);
+		firstLoop = 1;
+	}
+
 
 }
 

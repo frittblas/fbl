@@ -121,7 +121,7 @@ void Robots::hideRobots(Coordinator* mEcs) {
 
 }
 
-void Robots::showRobot(Coordinator* mEcs, int nameIndex) {
+void Robots::showRobotInMenu(Coordinator* mEcs, int nameIndex) {
 
 	int x = Game::DeviceResW / 2 + 185;
 	int y = Game::DeviceResH / 2 - 140;
@@ -134,6 +134,32 @@ void Robots::showRobot(Coordinator* mEcs, int nameIndex) {
 
 	fbl_set_sprite_xy(spr.id[0], x, y);
 	fbl_set_sprite_active(spr.id[0], true);
+	fbl_fix_sprite_to_screen(spr.id[0], true);
+
+}
+
+void Robots::showRobotInRace(Coordinator* mEcs, int nameIndex, int position) {
+
+	int x, y;
+
+	switch (position) {
+
+		case 1:
+			x = Game::LogicalResW / 2 + 185;;
+			y = Game::LogicalResW / 2 - 40;
+			break;
+
+	}
+
+	auto& pos = mEcs->GetComponent<Position>(mOwnedRobots[nameIndex]);
+	auto& spr = mEcs->GetComponent<Sprite>(mOwnedRobots[nameIndex]);
+
+	pos.x = x;
+	pos.y = y;
+
+	fbl_set_sprite_xy(spr.id[0], x, y);
+	fbl_set_sprite_active(spr.id[0], true);
+	fbl_fix_sprite_to_screen(spr.id[0], false);
 
 }
 

@@ -43,7 +43,8 @@ public:
     void setupRobots(Coordinator* mEcs);
     void removeRobots(Coordinator* mEcs);
     void hideRobots(Coordinator* mEcs);
-    void showRobot(Coordinator* mEcs, int nameIndex);
+    void showRobotInMenu(Coordinator* mEcs, int nameIndex);
+    void showRobotInRace(Coordinator* mEcs, int nameIndex, int position);
     void claimRobot(Name name);    // call this to "own" a robot
 
 };
