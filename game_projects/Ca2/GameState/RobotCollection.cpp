@@ -20,11 +20,15 @@
 #include "../Weather.hpp"
 #include "RobotCollection.hpp"
 
+
 // id's for the collection-menu items
 int fMenuBgSquareId, fMenuBgOutlineId;
 int fMenuDividerLine;
-int fMenuRobotDescr, fMenuItemsDescr;
 int fMenuButtonLeft, fMenuButtonRight;
+int fMenuRobotDescr, fMenuItemsDescr;
+int fMenuName, fMenuLevel, fMenuXp, fMenuHp, fMenuSpeed;
+int fMenuDiag, fMenuEnergy, fMenuWeight;
+int fMenuSlot[4];
 
 
 // RobotCollection-class implementation
@@ -50,17 +54,13 @@ void RobotCollection::processInput(Game& g) {
 
 	if (fbl_get_ui_elem_val(fMenuButtonLeft)) {
 	
-		g.mRobots->claimRobot(Robots::RobotName::Charming);
-		auto& stat = g.mEcs->GetComponent<Stats>(g.mRobots->mOwnedRobots.at(0));
-		std::cout << "Now owning robot :) " << stat.name << std::endl;
+
 
 	}
 
 	if (fbl_get_ui_elem_val(fMenuButtonRight)) {
 
-		auto& spr = g.mEcs->GetComponent<Sprite>(g.mRobots->mOwnedRobots.at(0));
-		if(&spr == nullptr) std::cout << "I own nothing" << std::endl;
-		fbl_set_sprite_active(spr.id[0], true);
+
 
 	}
 
@@ -99,6 +99,7 @@ void initCollectionMenu() {
 	fMenuBgSquareId = fbl_create_sprite(32, 480, 20, 10, 0);
 	fbl_set_sprite_xy(fMenuBgSquareId, x - width, y - height);
 	fbl_set_sprite_scale(fMenuBgSquareId, 40);
+	fbl_set_sprite_layer(fMenuBgSquareId, 3);
 	fbl_fix_sprite_to_screen(fMenuBgSquareId, true);
 
 	// create the white outline
@@ -123,11 +124,39 @@ void initCollectionMenu() {
 	fbl_set_text_xy(fMenuItemsDescr, x - 200, y - 170);
 
 
+	fMenuName = fbl_create_text(255, 255, 255, 0, (char*)"Default name");
+	fbl_set_text_align(fMenuName, FBL_ALIGN_CENTER);
+	fbl_set_text_xy(fMenuName, x + 200, y - 80);
+
+	fbl_load_ttf_font("font/garamond.ttf", 18);
+
+	// stats
+	fMenuLevel = fbl_create_text(255, 255, 255, 0, (char*)"Level:  %d  (xp: %d / %d)", 1, 0, 4);
+	fbl_set_text_align(fMenuLevel, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(fMenuLevel, x + 100, y - 30);
+	fMenuHp = fbl_create_text(255, 255, 255, 0, (char*)"Hp:  %d", 10);
+	fbl_set_text_align(fMenuHp, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(fMenuHp, x + 100, y);
+	fMenuSpeed = fbl_create_text(255, 255, 255, 0, (char*)"Speed:  %d", 1);
+	fbl_set_text_align(fMenuSpeed, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(fMenuSpeed, x + 100, y + 30);
+	fMenuDiag = fbl_create_text(255, 255, 255, 0, (char*)"Diagonals:  %s", "Yes");
+	fbl_set_text_align(fMenuDiag, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(fMenuDiag, x + 100, y + 60);
+	fMenuEnergy = fbl_create_text(255, 255, 255, 0, (char*)"Energy:  %d / %d", 5, 10);
+	fbl_set_text_align(fMenuEnergy, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(fMenuEnergy, x + 100, y + 90);
+
+	// slots
+	fMenuSlot[0] = fbl_create_prim(FBL_RECT, x, y, 32, 32, 0, false, false);
+	fbl_set_prim_color(fMenuSlot[0], 255, 255, 255, 255);
+	fbl_fix_prim_to_screen(fMenuSlot[0], true);
+
 	// next/previous robot arrows
 	fMenuButtonLeft = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 128, 32, 32, 32, NULL);
-	fbl_set_ui_elem_xy(fMenuButtonLeft, x + 50, y - 130);
+	fbl_set_ui_elem_xy(fMenuButtonLeft, x + 50, y - 125);
 	fMenuButtonRight = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 128, 0, 32, 32, NULL);
-	fbl_set_ui_elem_xy(fMenuButtonRight, x + 350, y - 130);
+	fbl_set_ui_elem_xy(fMenuButtonRight, x + 350, y - 125);
 
 
 	// hide
@@ -145,6 +174,15 @@ void showCollectionMenu() {
 	fbl_set_text_active(fMenuRobotDescr, true);
 	fbl_set_text_active(fMenuItemsDescr, true);
 
+	fbl_set_text_active(fMenuName, true);
+	fbl_set_text_active(fMenuLevel, true);
+	fbl_set_text_active(fMenuXp, true);
+	fbl_set_text_active(fMenuHp, true);
+	fbl_set_text_active(fMenuSpeed, true);
+	fbl_set_text_active(fMenuDiag, true);
+	fbl_set_text_active(fMenuEnergy, true);
+	fbl_set_text_active(fMenuWeight, true);
+
 	fbl_set_ui_elem_active(fMenuButtonLeft, true);
 	fbl_set_ui_elem_active(fMenuButtonRight, true);
 
@@ -159,6 +197,15 @@ void hideCollectionMenu() {
 
 	fbl_set_text_active(fMenuRobotDescr, false);
 	fbl_set_text_active(fMenuItemsDescr, false);
+
+	fbl_set_text_active(fMenuName, false);
+	fbl_set_text_active(fMenuLevel, false);
+	fbl_set_text_active(fMenuXp, false);
+	fbl_set_text_active(fMenuHp, false);
+	fbl_set_text_active(fMenuSpeed, false);
+	fbl_set_text_active(fMenuDiag, false);
+	fbl_set_text_active(fMenuEnergy, false);
+	fbl_set_text_active(fMenuWeight, false);
 
 	fbl_set_ui_elem_active(fMenuButtonLeft, false);
 	fbl_set_ui_elem_active(fMenuButtonRight, false);

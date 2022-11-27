@@ -33,68 +33,120 @@ Robots::~Robots() {
 void Robots::setupRobots(Coordinator* mEcs) {
 
 	Entity tmpRobot;
-	int i = 0;
+
+	// init to unassigned
+	for (int i = 0; i < NumRobots; i++) {
+		mAllRobots[i] = Unassigned;
+		mOwnedRobots[i] = Unassigned;
+	}
 
 	// create all the robot entities
-	tmpRobot = mEcs->CreateEntity();
+	for (int i = 0; i < NumRobots; i++) {
 
+		tmpRobot = mEcs->CreateEntity();
 
-	// add components to the entity
-										  // x  y
-	mEcs->AddComponent(tmpRobot, Position{ 400, 200 });
-									 // id id id id num tx ty   w   h   anim fr spd dir dirLast
-	mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 4, 0, 96, 32, 32, false, 0, 0, 0, 0 });
-								   // id gX gY newPath
-	mEcs->AddComponent(tmpRobot, Path{ 0, 0, 0, false });
-										// name            lv mxHp hp mxNrg nrg weight
-	mEcs->AddComponent(tmpRobot, Stats{ "Charming Alarming", 1, 10, 10, 20, 20, 7});
+		// add components to the entity
+											  // x  y
+		mEcs->AddComponent(tmpRobot, Position{ 400, 200 });
+										// id gX gY newPath
+		mEcs->AddComponent(tmpRobot, Path{ 0, 0, 0, false });
 
-	mAllRobots.push_back(tmpRobot);
+		switch (i) {
+
+			case Charmy :
+												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
+				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 0, 96, 32, 32, false, 0, 0, 0, 0, 4 });	// robots are on layer 4
+												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight
+				mEcs->AddComponent(tmpRobot, Stats{ "Charmy", 1, 0, 4, 10, 10, 10, true, 20, 20, 7 });
+				break;
+			case Alarmy :
+												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
+				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 32, 96, 32, 32, true, 2, 12, 0, 0, 4 });
+												   // name   lv xp next mxHp hp speed diag mxNrg nrg weight
+				mEcs->AddComponent(tmpRobot, Stats{ "Alarmy", 1, 0, 4, 10, 10, 10, true, 20, 19, 17 });
+				break;
+			case Boingy :
+												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
+				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 96, 96, 32, 32, true, 2, 12, 0, 0, 4 });
+												   // name   lv xp next mxHp hp speed diag mxNrg nrg weight
+				mEcs->AddComponent(tmpRobot, Stats{ "Boingy", 2, 0, 4, 11, 9, 10, true, 20, 20, 7 });
+				break;
+
+		}
+
+		// add the entity to the array containing all robots
+		mAllRobots[i] = tmpRobot;
+
+	}
+
+	claimRobot(Charmy);
+	claimRobot(Alarmy);
+	claimRobot(Boingy);
 
 }
 
 void Robots::removeRobots(Coordinator* mEcs) {
 
 	for (Entity e : mAllRobots) {
-		mEcs->DestroyEntity(e);
-		std::cout << "Robot removed." << std::endl;
+		if (e != Unassigned) {
+			mEcs->DestroyEntity(e);
+			std::cout << "Robot removed from All-list." << std::endl;
+		}
 	}
 
-	for (Entity e : mOwnedRobots) {
-		mEcs->DestroyEntity(e);
-		std::cout << "Robot removed." << std::endl;
+	for (int i = 0; i < NumRobots; i++) {
+		if (mOwnedRobots[i] != Unassigned) {
+			mEcs->DestroyEntity(mOwnedRobots[i]);
+			std::cout << "Robot removed from Owned-list." << std::endl;
+		}
 	}
-
-	mAllRobots.clear();
-	mOwnedRobots.clear();
 
 }
 
 void Robots::hideRobots(Coordinator* mEcs) {
 
 	for (Entity e : mAllRobots) {
-		auto& spr = mEcs->GetComponent<Sprite>(e);
-		fbl_set_sprite_active(spr.id[0], false);	// don't show the sprite (robots don't have different direction sprites)
+		if (e != Unassigned) {
+			auto& spr = mEcs->GetComponent<Sprite>(e);
+			fbl_set_sprite_active(spr.id[0], false);	// don't show the sprite (robots don't have different direction sprites)
+		}
 	}
 
 	for (Entity e : mOwnedRobots) {
-		auto& spr = mEcs->GetComponent<Sprite>(e);
-		fbl_set_sprite_active(spr.id[0], false);
+		if (e != Unassigned) {
+			auto& spr = mEcs->GetComponent<Sprite>(e);
+			fbl_set_sprite_active(spr.id[0], false);
+		}
 	}
 
 }
 
-void Robots::claimRobot(RobotName name) {
+void Robots::showRobot(Coordinator* mEcs, Name name) {
 
-	Entity tmpRobot;
+	int x = Game::DeviceResW / 2 + 185;
+	int y = Game::DeviceResH / 2 - 140;
+
+	auto& pos = mEcs->GetComponent<Position>(mOwnedRobots[name]);
+	auto& spr = mEcs->GetComponent<Sprite>(mOwnedRobots[name]);
+
+	pos.x = x;
+	pos.y = y;
+
+	fbl_set_sprite_xy(spr.id[0], x, y);
+	fbl_set_sprite_active(spr.id[0], true);
+
+}
+
+void Robots::claimRobot(Name name) {
 
 	// remove entity from the "All" list and put it in the "Owned" list
 
-	tmpRobot = mAllRobots.at(static_cast<int>(name));
-	if(tmpRobot != Unassigned)
-		mOwnedRobots.push_back(tmpRobot);
+	if (mAllRobots[name] != Unassigned) {
+	
+		mOwnedRobots[name] = mAllRobots[name];
+		mAllRobots[name] = Unassigned;
 
-	mAllRobots.at(static_cast<int>(name)) = Unassigned;
+	}
 
 	for (Entity e : mOwnedRobots) std::cout << e << std::endl;
 

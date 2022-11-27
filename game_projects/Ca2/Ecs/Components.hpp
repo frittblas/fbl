@@ -36,6 +36,7 @@ struct Sprite
     bool animated;  // is animated or not
     uint8_t frames, speed; // how many animation frames, and anim speed
     uint8_t dir, dirLast;    // facing direction, and last frame dir
+    uint8_t layer;  // which layer (for draw order)
 
 };
 
@@ -97,8 +98,12 @@ struct Stats
 
     std::string name;   // name
     uint8_t level;      // the current level
+    uint16_t xp;        // experience points
+    uint16_t nextLv;    // limit for next level
     uint8_t maxHp;      // max hp
     uint8_t hp;         // current hp
+    uint8_t speed;      // speed
+    bool diag;          // can go diagonal?
     uint8_t maxEnergy;  // max energy
     uint8_t energy;     // current energy
     uint8_t weight;     // weight

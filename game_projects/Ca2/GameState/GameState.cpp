@@ -109,15 +109,19 @@ void GameState::change(Game& g, StateType newState) {
 				//g.mSysManager->mCameraSystem->Init(*g.mEcs);	// creates debug rect for camera deadzone
 				g.mSysManager->mLightSystem->Init(*g.mEcs);		// create lights for all entities with a light component
 
-				g.mRobots->hideRobots(g.mEcs);					// don't show the robot-sprites
-
 				g.mWeather->setWeather(Weather::TimeOfDay::Evening, 1, 0, 50, true);
 
 				initCollectionMenu();	// set up prims and text and ui for the collection-menu, sprite draw-order is important
 
 				fbl_lua_init("Ca2Dialogue.lua", registerFuncsToLua);	// set this up each new game, so the dialogues restart
 
+
+
+				fbl_sort_sprites(FBL_SORT_BY_LAYER);
+
 			}
+
+			g.mRobots->hideRobots(g.mEcs);	// don't show the robot-sprites in explore mode
 
 			mCurrentStateInstance = new Explore();
 
@@ -136,6 +140,7 @@ void GameState::change(Game& g, StateType newState) {
 			break;
 
 		case StateType::RobotCollection:
+			g.mRobots->showRobot(g.mEcs, Robots::Name::Alarmy);
 			mCurrentStateInstance = new RobotCollection();
 			break;
 

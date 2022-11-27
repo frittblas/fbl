@@ -32,6 +32,9 @@ void SpriteSystem::Init(Coordinator& ecs) {
 			if (spr.animated)	// turn on animation if it's requested
 				fbl_set_sprite_animation(spr.id[i], true, spr.textureX + (i * (spr.w * spr.frames)), spr.textureY, spr.w, spr.h, spr.frames, spr.speed, true);
 			
+			// set layer
+			fbl_set_sprite_layer(spr.id[i], spr.layer);
+
 			// deactivate all sprites
 			fbl_set_sprite_active(spr.id[i], false);
 			

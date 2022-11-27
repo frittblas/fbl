@@ -22,18 +22,20 @@ class Robots {
 
 public:
 
-    // Now we have to use static_cast, see below
-    enum class RobotName {
-        Charming,
-        Chompy,
-		Dancy,
+
+    enum Name {
+        Charmy,
+        Alarmy,
+		Boingy,
         NumRobots
     };
 
-    const int Unassigned = 1000000;     // used for empty slots in the mAllRobots vector.
+    const uint32_t Unassigned = 9999; // used for empty slots in the robot-arrays.
 
-    std::vector<Entity> mAllRobots;     // list of all the robots
-    std::vector<Entity> mOwnedRobots;   // list of all the robots in your collection
+    Entity mAllRobots[NumRobots];     // all the robots
+    Entity mOwnedRobots[NumRobots];   // all the robots in your collection
+
+    Entity team[3];        // the robots you're currently using
 
     Robots();
     ~Robots();
@@ -41,6 +43,7 @@ public:
     void setupRobots(Coordinator* mEcs);
     void removeRobots(Coordinator* mEcs);
     void hideRobots(Coordinator* mEcs);
-    void claimRobot(RobotName name);    // call this to "own" a robot
+    void showRobot(Coordinator* mEcs, Name name);
+    void claimRobot(Name name);    // call this to "own" a robot
 
 };
