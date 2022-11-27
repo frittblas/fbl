@@ -51,37 +51,50 @@ RobotCollection::~RobotCollection() {
 
 }
 
+void RobotCollection::cyclePages(Game& g, int dir) {
+
+	// find next owned robot
+	for (;;) {
+		mCurrentRobotPage += dir;
+		if (mCurrentRobotPage > g.mRobots->NumRobots - 1)
+			mCurrentRobotPage = 0;
+		if (mCurrentRobotPage < 0)
+			mCurrentRobotPage = g.mRobots->NumRobots - 1;
+		if (g.mRobots->mOwnedRobots[mCurrentRobotPage] != g.mRobots->Unassigned)
+			break;
+	}
+
+	// get stats component
+	auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mOwnedRobots[mCurrentRobotPage]);
+
+	// update the page
+	g.mRobots->hideRobots(g.mEcs);
+	g.mRobots->showRobot(g.mEcs, mCurrentRobotPage);
+
+	fbl_update_text(fMenuName, 255, 255, 255, 0, (char*)sta.name.c_str());
+	fbl_update_text(fMenuLevel, 255, 255, 255, 0, "Level:  %d  (xp: %d / %d)", sta.level, sta.xp, sta.nextLv);
+	fbl_update_text(fMenuHp, 255, 255, 255, 0, "Hp:  %d", sta.hp);
+	fbl_update_text(fMenuSpeed, 255, 255, 255, 0, "Speed:  %d", sta.speed);
+	fbl_update_text(fMenuDiag, 255, 255, 255, 0, "Diagonals:  %s", sta.diag ? "Yes" : "No");
+	fbl_update_text(fMenuSpeed, 255, 255, 255, 0, "Energy:  %d / %d", sta.energy, sta.maxEnergy);
+
+	std::cout << mCurrentRobotPage << std::endl;
+	std::cout << sta.name << std::endl;
+
+}
+
 // deal with all the clicking on stats and buttons :)
 void RobotCollection::processInput(Game& g) {
 
 	if (fbl_get_ui_elem_val(fMenuButtonLeft)) {
 	
-
+		cyclePages(g, -1);
 
 	}
 
 	if (fbl_get_ui_elem_val(fMenuButtonRight)) {
 
-		/*
-		// find out how many robots you own
-		int count = 0;
-		for (int i = 0; i < g.mRobots->NumRobots; i++)
-			if (g.mRobots->mOwnedRobots[i] != g.mRobots->Unassigned)
-				count++;
-		std::cout << count << std::endl;
-
-		
-		if (mCurrentRobotPage > count)
-			mCurrentRobotPage = 0;
-		*/
-		mCurrentRobotPage++;
-		// find next owned robot
-		while (g.mRobots->mOwnedRobots[mCurrentRobotPage % g.mRobots->NumRobots] != g.mRobots->Unassigned)
-			mCurrentRobotPage++;
-
-		auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mOwnedRobots[mCurrentRobotPage % g.mRobots->NumRobots]);
-
-		std::cout << sta.name << std::endl;
+		cyclePages(g, 1);
 
 	}
 
@@ -154,33 +167,33 @@ void initCollectionMenu() {
 	// stats
 	fMenuLevel = fbl_create_text(255, 255, 255, 0, (char*)"Level:  %d  (xp: %d / %d)", 1, 0, 4);
 	fbl_set_text_align(fMenuLevel, FBL_ALIGN_LEFT);
-	fbl_set_text_xy(fMenuLevel, x + 120, y - 30);
+	fbl_set_text_xy(fMenuLevel, x + 140, y - 30);
 	fMenuHp = fbl_create_text(255, 255, 255, 0, (char*)"Hp:  %d", 10);
 	fbl_set_text_align(fMenuHp, FBL_ALIGN_LEFT);
-	fbl_set_text_xy(fMenuHp, x + 120, y);
+	fbl_set_text_xy(fMenuHp, x + 140, y);
 	fMenuSpeed = fbl_create_text(255, 255, 255, 0, (char*)"Speed:  %d", 1);
 	fbl_set_text_align(fMenuSpeed, FBL_ALIGN_LEFT);
-	fbl_set_text_xy(fMenuSpeed, x + 120, y + 30);
+	fbl_set_text_xy(fMenuSpeed, x + 140, y + 30);
 	fMenuDiag = fbl_create_text(255, 255, 255, 0, (char*)"Diagonals:  %s", "Yes");
 	fbl_set_text_align(fMenuDiag, FBL_ALIGN_LEFT);
-	fbl_set_text_xy(fMenuDiag, x + 120, y + 60);
+	fbl_set_text_xy(fMenuDiag, x + 140, y + 60);
 	fMenuEnergy = fbl_create_text(255, 255, 255, 0, (char*)"Energy:  %d / %d", 5, 10);
 	fbl_set_text_align(fMenuEnergy, FBL_ALIGN_LEFT);
-	fbl_set_text_xy(fMenuEnergy, x + 120, y + 90);
+	fbl_set_text_xy(fMenuEnergy, x + 140, y + 90);
 
 	// slot numbers
 	fMenuSlotNr[0] = fbl_create_text(255, 255, 255, 0, (char*)"1");
 	fbl_set_text_align(fMenuSlotNr[0], FBL_ALIGN_LEFT);
-	fbl_set_text_xy(fMenuSlotNr[0], x + 50, y - 20);
+	fbl_set_text_xy(fMenuSlotNr[0], x + 47, y - 50);
 	fMenuSlotNr[1] = fbl_create_text(255, 255, 255, 0, (char*)"2");
 	fbl_set_text_align(fMenuSlotNr[1], FBL_ALIGN_LEFT);
-	fbl_set_text_xy(fMenuSlotNr[1], x + 350, y - 20);
+	fbl_set_text_xy(fMenuSlotNr[1], x + 347, y - 50);
 	fMenuSlotNr[2] = fbl_create_text(255, 255, 255, 0, (char*)"3");
 	fbl_set_text_align(fMenuSlotNr[2], FBL_ALIGN_LEFT);
-	fbl_set_text_xy(fMenuSlotNr[2], x + 50, y + 110);
+	fbl_set_text_xy(fMenuSlotNr[2], x + 47, y + 80);
 	fMenuSlotNr[3] = fbl_create_text(255, 255, 255, 0, (char*)"4");
 	fbl_set_text_align(fMenuSlotNr[3], FBL_ALIGN_LEFT);
-	fbl_set_text_xy(fMenuSlotNr[3], x + 350, y + 110);
+	fbl_set_text_xy(fMenuSlotNr[3], x + 347, y + 80);
 
 	// slots
 	fMenuSlot[0] = fbl_create_prim(FBL_RECT, x + 50, y - 20, 16, 16, 0, false, false);
@@ -220,12 +233,12 @@ void showCollectionMenu() {
 
 	fbl_set_text_active(fMenuName, true);
 	fbl_set_text_active(fMenuLevel, true);
-	fbl_set_text_active(fMenuXp, true);
+	//fbl_set_text_active(fMenuXp, true);
 	fbl_set_text_active(fMenuHp, true);
 	fbl_set_text_active(fMenuSpeed, true);
 	fbl_set_text_active(fMenuDiag, true);
 	fbl_set_text_active(fMenuEnergy, true);
-	fbl_set_text_active(fMenuWeight, true);
+	//fbl_set_text_active(fMenuWeight, true);
 
 	for (int i = 0; i < 4; i++) {
 		fbl_set_text_active(fMenuSlotNr[i], true);
@@ -234,6 +247,7 @@ void showCollectionMenu() {
 
 	fbl_set_ui_elem_active(fMenuButtonLeft, true);
 	fbl_set_ui_elem_active(fMenuButtonRight, true);
+
 
 }
 
@@ -249,12 +263,12 @@ void hideCollectionMenu() {
 
 	fbl_set_text_active(fMenuName, false);
 	fbl_set_text_active(fMenuLevel, false);
-	fbl_set_text_active(fMenuXp, false);
+	//fbl_set_text_active(fMenuXp, false);
 	fbl_set_text_active(fMenuHp, false);
 	fbl_set_text_active(fMenuSpeed, false);
 	fbl_set_text_active(fMenuDiag, false);
 	fbl_set_text_active(fMenuEnergy, false);
-	fbl_set_text_active(fMenuWeight, false);
+	//fbl_set_text_active(fMenuWeight, false);
 
 	for (int i = 0; i < 4; i++) {
 		fbl_set_text_active(fMenuSlotNr[i], false);

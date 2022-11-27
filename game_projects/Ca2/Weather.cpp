@@ -155,6 +155,8 @@ void Weather::initClouds(uint8_t num) {
 
 	}
 
+	fbl_sort_sprites(FBL_SORT_BY_LAYER); // NOTE: keep this here?
+
 }
 
 void Weather::initRain(uint8_t amount, uint8_t alpha) {

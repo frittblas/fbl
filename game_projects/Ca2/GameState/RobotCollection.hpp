@@ -27,7 +27,7 @@ public:
     ~RobotCollection();
 
     void processInput(Game& g);
-
+    void cyclePages(Game& g, int dir);
 
     virtual void tick(Game& g) override;
 

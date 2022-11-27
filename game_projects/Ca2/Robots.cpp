@@ -121,13 +121,13 @@ void Robots::hideRobots(Coordinator* mEcs) {
 
 }
 
-void Robots::showRobot(Coordinator* mEcs, Name name) {
+void Robots::showRobot(Coordinator* mEcs, int nameIndex) {
 
 	int x = Game::DeviceResW / 2 + 185;
 	int y = Game::DeviceResH / 2 - 140;
 
-	auto& pos = mEcs->GetComponent<Position>(mOwnedRobots[name]);
-	auto& spr = mEcs->GetComponent<Sprite>(mOwnedRobots[name]);
+	auto& pos = mEcs->GetComponent<Position>(mOwnedRobots[nameIndex]);
+	auto& spr = mEcs->GetComponent<Sprite>(mOwnedRobots[nameIndex]);
 
 	pos.x = x;
 	pos.y = y;
