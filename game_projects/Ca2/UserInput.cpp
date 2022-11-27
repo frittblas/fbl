@@ -63,8 +63,9 @@ void UserInput::tick(Game& g) {
 	}
 
 
-	if (fbl_get_key_down(FBLK_ESCAPE))
+	if (fbl_get_key_down(FBLK_ESCAPE)) {
 		fbl_engine_quit();
+	}
 
 	if (fbl_get_key_down(FBLK_F9)) {
 		fbl_set_window_mode(0);	// windowed

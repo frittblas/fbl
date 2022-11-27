@@ -140,7 +140,7 @@ void GameState::change(Game& g, StateType newState) {
 			break;
 
 		case StateType::RobotCollection:
-			g.mRobots->showRobot(g.mEcs, Robots::Name::Alarmy);
+			g.mRobots->showRobot(g.mEcs, Robots::Name::Charmy);
 			mCurrentStateInstance = new RobotCollection();
 			break;
 

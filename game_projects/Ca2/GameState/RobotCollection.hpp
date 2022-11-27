@@ -30,4 +30,8 @@ public:
 
 
     virtual void tick(Game& g) override;
+
+private:
+    int mCurrentRobotPage;
+
 };

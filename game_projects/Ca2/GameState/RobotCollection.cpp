@@ -28,13 +28,15 @@ int fMenuButtonLeft, fMenuButtonRight;
 int fMenuRobotDescr, fMenuItemsDescr;
 int fMenuName, fMenuLevel, fMenuXp, fMenuHp, fMenuSpeed;
 int fMenuDiag, fMenuEnergy, fMenuWeight;
-int fMenuSlot[4];
+int fMenuSlotNr[4], fMenuSlot[4];
 
 
 // RobotCollection-class implementation
 
 RobotCollection::RobotCollection() {
 
+
+	mCurrentRobotPage = 0;
 	showCollectionMenu();
 
 	std::cout << "Started RobotCollection state." << std::endl;
@@ -43,7 +45,7 @@ RobotCollection::RobotCollection() {
 
 RobotCollection::~RobotCollection() {
 
-	hideCollectionMenu();
+	hideCollectionMenu();	// NOTE: if you press ESC in the collection state, the set active fails.
 
 	std::cout << "Destroyed RobotCollection state." << std::endl;
 
@@ -60,7 +62,26 @@ void RobotCollection::processInput(Game& g) {
 
 	if (fbl_get_ui_elem_val(fMenuButtonRight)) {
 
+		/*
+		// find out how many robots you own
+		int count = 0;
+		for (int i = 0; i < g.mRobots->NumRobots; i++)
+			if (g.mRobots->mOwnedRobots[i] != g.mRobots->Unassigned)
+				count++;
+		std::cout << count << std::endl;
 
+		
+		if (mCurrentRobotPage > count)
+			mCurrentRobotPage = 0;
+		*/
+		mCurrentRobotPage++;
+		// find next owned robot
+		while (g.mRobots->mOwnedRobots[mCurrentRobotPage % g.mRobots->NumRobots] != g.mRobots->Unassigned)
+			mCurrentRobotPage++;
+
+		auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mOwnedRobots[mCurrentRobotPage % g.mRobots->NumRobots]);
+
+		std::cout << sta.name << std::endl;
 
 	}
 
@@ -133,24 +154,47 @@ void initCollectionMenu() {
 	// stats
 	fMenuLevel = fbl_create_text(255, 255, 255, 0, (char*)"Level:  %d  (xp: %d / %d)", 1, 0, 4);
 	fbl_set_text_align(fMenuLevel, FBL_ALIGN_LEFT);
-	fbl_set_text_xy(fMenuLevel, x + 100, y - 30);
+	fbl_set_text_xy(fMenuLevel, x + 120, y - 30);
 	fMenuHp = fbl_create_text(255, 255, 255, 0, (char*)"Hp:  %d", 10);
 	fbl_set_text_align(fMenuHp, FBL_ALIGN_LEFT);
-	fbl_set_text_xy(fMenuHp, x + 100, y);
+	fbl_set_text_xy(fMenuHp, x + 120, y);
 	fMenuSpeed = fbl_create_text(255, 255, 255, 0, (char*)"Speed:  %d", 1);
 	fbl_set_text_align(fMenuSpeed, FBL_ALIGN_LEFT);
-	fbl_set_text_xy(fMenuSpeed, x + 100, y + 30);
+	fbl_set_text_xy(fMenuSpeed, x + 120, y + 30);
 	fMenuDiag = fbl_create_text(255, 255, 255, 0, (char*)"Diagonals:  %s", "Yes");
 	fbl_set_text_align(fMenuDiag, FBL_ALIGN_LEFT);
-	fbl_set_text_xy(fMenuDiag, x + 100, y + 60);
+	fbl_set_text_xy(fMenuDiag, x + 120, y + 60);
 	fMenuEnergy = fbl_create_text(255, 255, 255, 0, (char*)"Energy:  %d / %d", 5, 10);
 	fbl_set_text_align(fMenuEnergy, FBL_ALIGN_LEFT);
-	fbl_set_text_xy(fMenuEnergy, x + 100, y + 90);
+	fbl_set_text_xy(fMenuEnergy, x + 120, y + 90);
+
+	// slot numbers
+	fMenuSlotNr[0] = fbl_create_text(255, 255, 255, 0, (char*)"1");
+	fbl_set_text_align(fMenuSlotNr[0], FBL_ALIGN_LEFT);
+	fbl_set_text_xy(fMenuSlotNr[0], x + 50, y - 20);
+	fMenuSlotNr[1] = fbl_create_text(255, 255, 255, 0, (char*)"2");
+	fbl_set_text_align(fMenuSlotNr[1], FBL_ALIGN_LEFT);
+	fbl_set_text_xy(fMenuSlotNr[1], x + 350, y - 20);
+	fMenuSlotNr[2] = fbl_create_text(255, 255, 255, 0, (char*)"3");
+	fbl_set_text_align(fMenuSlotNr[2], FBL_ALIGN_LEFT);
+	fbl_set_text_xy(fMenuSlotNr[2], x + 50, y + 110);
+	fMenuSlotNr[3] = fbl_create_text(255, 255, 255, 0, (char*)"4");
+	fbl_set_text_align(fMenuSlotNr[3], FBL_ALIGN_LEFT);
+	fbl_set_text_xy(fMenuSlotNr[3], x + 350, y + 110);
 
 	// slots
-	fMenuSlot[0] = fbl_create_prim(FBL_RECT, x, y, 32, 32, 0, false, false);
-	fbl_set_prim_color(fMenuSlot[0], 255, 255, 255, 255);
+	fMenuSlot[0] = fbl_create_prim(FBL_RECT, x + 50, y - 20, 16, 16, 0, false, false);
+	fbl_set_prim_color(fMenuSlot[0], 0, 255, 0, 255);
 	fbl_fix_prim_to_screen(fMenuSlot[0], true);
+	fMenuSlot[1] = fbl_create_prim(FBL_RECT, x + 350, y - 20, 16, 16, 0, false, false);
+	fbl_set_prim_color(fMenuSlot[1], 255, 0, 0, 255);
+	fbl_fix_prim_to_screen(fMenuSlot[1], true);
+	fMenuSlot[2] = fbl_create_prim(FBL_RECT, x + 50, y + 110, 16, 16, 0, false, false);
+	fbl_set_prim_color(fMenuSlot[2], 255, 0, 0, 255);
+	fbl_fix_prim_to_screen(fMenuSlot[2], true);
+	fMenuSlot[3] = fbl_create_prim(FBL_RECT, x + 350, y + 110, 16, 16, 0, false, false);
+	fbl_set_prim_color(fMenuSlot[3], 255, 0, 0, 255);
+	fbl_fix_prim_to_screen(fMenuSlot[3], true);
 
 	// next/previous robot arrows
 	fMenuButtonLeft = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 128, 32, 32, 32, NULL);
@@ -183,6 +227,11 @@ void showCollectionMenu() {
 	fbl_set_text_active(fMenuEnergy, true);
 	fbl_set_text_active(fMenuWeight, true);
 
+	for (int i = 0; i < 4; i++) {
+		fbl_set_text_active(fMenuSlotNr[i], true);
+		fbl_set_prim_active(fMenuSlot[i], true);
+	}
+
 	fbl_set_ui_elem_active(fMenuButtonLeft, true);
 	fbl_set_ui_elem_active(fMenuButtonRight, true);
 
@@ -206,6 +255,11 @@ void hideCollectionMenu() {
 	fbl_set_text_active(fMenuDiag, false);
 	fbl_set_text_active(fMenuEnergy, false);
 	fbl_set_text_active(fMenuWeight, false);
+
+	for (int i = 0; i < 4; i++) {
+		fbl_set_text_active(fMenuSlotNr[i], false);
+		fbl_set_prim_active(fMenuSlot[i], false);
+	}
 
 	fbl_set_ui_elem_active(fMenuButtonLeft, false);
 	fbl_set_ui_elem_active(fMenuButtonRight, false);
