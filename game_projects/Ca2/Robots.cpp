@@ -55,21 +55,21 @@ void Robots::setupRobots(Coordinator* mEcs) {
 
 			case Charmy :
 												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
-				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 0, 96, 32, 32, false, 0, 0, 0, 0, 4 });	// robots are on layer 4
+				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 0, 96, 32, 32, false, 0, 0, 0, 0, 5 });	// robots are on layer 4
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight
-				mEcs->AddComponent(tmpRobot, Stats{ "Charmy", 1, 0, 4, 10, 10, 10, true, 20, 20, 7 });
+				mEcs->AddComponent(tmpRobot, Stats{ "Charmy", 1, 0, 4, 10, 10, 10, true, 20, 20, 7, 0, 0, 0, 0, 0, 0 });
 				break;
 			case Alarmy :
 												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
-				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 32, 96, 32, 32, true, 2, 12, 0, 0, 4 });
+				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 32, 96, 32, 32, true, 2, 12, 0, 0, 5 });
 												   // name   lv xp next mxHp hp speed diag mxNrg nrg weight
-				mEcs->AddComponent(tmpRobot, Stats{ "Alarmy", 1, 0, 4, 10, 10, 10, true, 20, 19, 17 });
+				mEcs->AddComponent(tmpRobot, Stats{ "Alarmy", 1, 0, 4, 10, 10, 10, true, 20, 19, 17, 0, 0, 0, 0, 0, 0 });
 				break;
 			case Boingy :
 												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
-				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 96, 96, 32, 32, true, 2, 12, 0, 0, 4 });
+				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 96, 96, 32, 32, true, 2, 12, 0, 0, 5 });
 												   // name   lv xp next mxHp hp speed diag mxNrg nrg weight
-				mEcs->AddComponent(tmpRobot, Stats{ "Boingy", 2, 0, 4, 11, 9, 10, true, 20, 20, 7 });
+				mEcs->AddComponent(tmpRobot, Stats{ "Boingy", 2, 0, 4, 11, 9, 10, true, 20, 20, 7, 0, 0, 0, 0, 0, 0 });
 				break;
 
 		}
@@ -174,6 +174,6 @@ void Robots::claimRobot(Name name) {
 
 	}
 
-	for (Entity e : mOwnedRobots) std::cout << e << std::endl;
+	for (Entity e : mOwnedRobots) std::cout << "Owned robot entity-id: " << e << std::endl;
 
 }

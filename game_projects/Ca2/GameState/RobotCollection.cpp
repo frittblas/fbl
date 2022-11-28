@@ -133,7 +133,7 @@ void initCollectionMenu() {
 	fMenuBgSquareId = fbl_create_sprite(32, 480, 20, 10, 0);
 	fbl_set_sprite_xy(fMenuBgSquareId, x - width, y - height);
 	fbl_set_sprite_scale(fMenuBgSquareId, 40);
-	fbl_set_sprite_layer(fMenuBgSquareId, 3);
+	fbl_set_sprite_layer(fMenuBgSquareId, 4);
 	fbl_fix_sprite_to_screen(fMenuBgSquareId, true);
 
 	// create the white outline

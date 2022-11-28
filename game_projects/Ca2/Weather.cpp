@@ -146,6 +146,8 @@ void Weather::initClouds(uint8_t num) {
 		fbl_set_sprite_xy(tmpCloud->id, (int)tmpCloud->x, (int)tmpCloud->y);
 		fbl_set_sprite_scale(tmpCloud->id, tmpCloud->scale);
 		fbl_set_sprite_alpha(tmpCloud->id, tmpCloud->alpha);
+		fbl_set_sprite_layer(tmpCloud->id, 3);
+
 
 		// randomly flip clouds horizontally
 		if (rand() % 2 == 0)
