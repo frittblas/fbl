@@ -30,7 +30,6 @@ int fMenuName, fMenuLevel, fMenuXp, fMenuHp, fMenuSpeed;
 int fMenuDiag, fMenuEnergy, fMenuWeight;
 int fMenuSlotNr[4], fMenuSlot[4];
 
-int firstLoop;	// replace this
 
 // RobotCollection-class implementation
 
@@ -39,7 +38,6 @@ RobotCollection::RobotCollection() {
 
 	mCurrentRobotPage = 0;
 	showCollectionMenu();
-	firstLoop = 0;
 
 	std::cout << "Started RobotCollection state." << std::endl;
 
@@ -113,13 +111,6 @@ void RobotCollection::tick(Game& g) {
 
 	if (num == 0)
 		std::cout << "Tick RobotCollection!" << std::endl;
-
-	// bad solution
-	if (firstLoop == 0) {
-		cyclePages(g, 0);
-		firstLoop = 1;
-	}
-
 
 }
 

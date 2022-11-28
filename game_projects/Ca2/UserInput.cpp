@@ -55,6 +55,10 @@ void UserInput::tick(Game& g) {
 		g.mState->change(g, GameState::StateType::RobotCollection);
 		access = buttonDelay;
 	}
+	if (fbl_get_key_down(FBLK_6) && access == 0) {
+		g.mState->change(g, GameState::StateType::Race);
+		access = buttonDelay;
+	}
 
 	// for android, temporary :)
 	if (fbl_get_mouse_release(FBLMB_LEFT) && access == 0 && g.mState->get() == GameState::StateType::Title) {
@@ -63,8 +67,13 @@ void UserInput::tick(Game& g) {
 	}
 
 
-	if (fbl_get_key_down(FBLK_ESCAPE)) {
-		fbl_engine_quit();
+	if (fbl_get_key_down(FBLK_ESCAPE) && access == 0) {
+		if (g.mState->get() == GameState::StateType::RobotCollection) {
+			g.mState->change(g, GameState::StateType::Explore);
+			access = buttonDelay;
+		}
+		else
+			fbl_engine_quit();
 	}
 
 	if (fbl_get_key_down(FBLK_F9)) {

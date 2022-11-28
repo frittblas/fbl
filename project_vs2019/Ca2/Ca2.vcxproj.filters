@@ -34,6 +34,12 @@
     <Filter Include="Source Files\GameState">
       <UniqueIdentifier>{c1d0a24f-67a8-4cf8-83a8-3ddcd0c1db32}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Ecs\Systems\Race">
+      <UniqueIdentifier>{34a5e28f-0aaf-436b-9426-63ef49f36f32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameState\Race">
+      <UniqueIdentifier>{84db84dc-e601-4027-93fa-831299a14d69}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\a_star\a_star.c">
@@ -162,6 +168,12 @@
     <ClCompile Include="..\..\game_projects\Ca2\Robots.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\Race\LaserSystem.cpp">
+      <Filter>Source Files\Ecs\Systems\Race</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game_projects\Ca2\GameState\Race\Race.cpp">
+      <Filter>Source Files\GameState\Race</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\fbl.h">
@@ -268,6 +280,12 @@
     </ClInclude>
     <ClInclude Include="..\..\game_projects\Ca2\Robots.hpp">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\Race\LaserSystem.hpp">
+      <Filter>Source Files\Ecs\Systems\Race</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\GameState\Race\Race.hpp">
+      <Filter>Source Files\GameState\Race</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

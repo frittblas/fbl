@@ -142,11 +142,13 @@
     <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\LightSystem.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\MouseCtrlSystem.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\PathSystem.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\Race\LaserSystem.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\SpriteSystem.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\Game.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\GameState\Dialogue.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\GameState\Explore.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\GameState\GameState.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\GameState\Race\Race.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\GameState\RobotCollection.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\GameState\Settings.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\GameState\Title.cpp" />
@@ -188,6 +190,7 @@
     <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\LightSystem.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\MouseCtrlSystem.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\PathSystem.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\Race\LaserSystem.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\SpriteSystem.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\Ecs\Types.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\Game.hpp" />
@@ -195,6 +198,7 @@
     <ClInclude Include="..\..\game_projects\Ca2\GameState\Explore.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\GameState\GameState.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\GameState\IState.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\GameState\Race\Race.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\GameState\RobotCollection.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\GameState\Settings.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\GameState\Title.hpp" />

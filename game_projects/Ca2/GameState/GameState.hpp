@@ -30,7 +30,7 @@ public:
         Explore,
         Dialogue,
         Shop,
-        Fight,
+        Race,
         RobotCollection
     };
 

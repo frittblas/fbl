@@ -207,7 +207,6 @@ int luaHideDialog(lua_State* lua_env) {
 	fbl_set_prim_active(fDiaBgOutlineId, false);
 
 	fbl_set_text_active(fDiaText1Id, false);
-	printf("text1: %d", fDiaText1Id);
 	fbl_set_text_active(fDiaText2Id, false);
 	fbl_set_text_active(fDiaText3Id, false);
 

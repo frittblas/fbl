@@ -25,6 +25,7 @@
 #include "Explore.hpp"
 #include "Dialogue.hpp"
 #include "RobotCollection.hpp"
+#include "Race/Race.hpp"
 
 #include "../Chars.hpp"
 #include "../Robots.hpp"
@@ -67,6 +68,8 @@ void GameState::change(Game& g, StateType newState) {
 
 				g.mWeather->setWeather(Weather::TimeOfDay::Day, 0, 0, 0, false);	// reset weather before unload level (destroys all sprites and emitters)
 				g.mLocation->unLoadLocation(g.mMap);
+				//fbl_set_sprite_active(758, true);
+				//fbl_set_sprite_xy(758, 200, 200); // 0-ground tiles, 1-player, 2-secret psg, 3-gray bg, 4-robot (clouds should be 3 and bg robots after.)
 				unInitLuaDialog();	// also remove resources for dialogue (prims, text etc)
 				g.mChars->removePlayer(g.mEcs);	// delete the player completely
 				g.mChars->removeNpc(g.mEcs);	// also delete all npcs in the current scene
@@ -136,12 +139,15 @@ void GameState::change(Game& g, StateType newState) {
 		case StateType::Shop:
 			break;
 
-		case StateType::Fight:
+		case StateType::Race:
+			mCurrentStateInstance = new Race();
 			break;
 
 		case StateType::RobotCollection:
 			g.mRobots->showRobotInMenu(g.mEcs, Robots::Name::Charmy);
-			mCurrentStateInstance = new RobotCollection();
+			RobotCollection* rc = new RobotCollection();
+			rc->cyclePages(g, 0);	// call this to update the robot stats in the menu
+			mCurrentStateInstance = rc;
 			break;
 
 	}
