@@ -340,6 +340,7 @@ void   fbl_set_prim_angle(int id, double angle);
 double fbl_get_prim_angle(int id);
 void   fbl_fix_prim_to_screen(int id, bool fix);
 bool   fbl_get_prim_collision(int id_1, int id_2);
+void   fbl_get_ray_hit_sprite(int id, int *hit_id, int *x, int *y);
 void   fbl_set_prim_phys(int id, bool on, int body_type, bool can_rotate);
 void   fbl_set_prim_active(int id, bool active);
 bool   fbl_get_prim_active(int id);

@@ -487,7 +487,7 @@ void setup_demo_3()
 
 	for (i = 1; i < 50; i++) {
 
-		lol = fbl_create_sprite(32, 480, 32, 32, 0);
+		lol = fbl_create_sprite(96, 448, 32, 32, 0);
 		fbl_set_sprite_xy(lol, rand() % 600 + 20, rand() % 300);
 		if (lol < 5)
 			fbl_set_sprite_phys(lol, true, FBL_RECT, FBL_PHYS_KINEMATIC, true);
@@ -1017,6 +1017,12 @@ void run_demo_8()
 		if (angle > 360) angle = 0;
 
 		double tmp = angle;
+
+		int id, x, y;
+		fbl_get_ray_hit_sprite(0, &id, &x, &y);
+		if (id != -1)
+			printf("Ray 0 hit sprite: %d at x: %d, y: %d\n", id, x, y);
+		
 
 		for (int i = 0; i < num_rays; i++)
 		{

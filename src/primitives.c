@@ -13,10 +13,6 @@
 #include "engine.h"
 
 
-/* check sprite version for info */
-
-#define NUM_DIRECT_REF_PRIMS 2000
-
 /* functions only used by primitives.c */
 
 int destroy_prim_phys(int tag, void *prim, void *dummy);
@@ -36,6 +32,7 @@ extern FBL_CAMERA fbl_camera;
 DLLIST *fbl_prim_list = NULL;
 
 DLLIST* direct_prim_ref[NUM_DIRECT_REF_PRIMS] = {NULL};
+extern DLLIST* direct_sprite_ref[NUM_DIRECT_REF_SPRITES];	/* used by translate_phys_prim() */
 
 unsigned int current_prim = 0;
 
@@ -110,6 +107,11 @@ int fbl_create_prim(uint8_t type, int x, int y, int w, int h, int r, bool thick,
 
 
 	fbl_prim->physics_on = false;
+
+	fbl_prim->phys_shape = NULL;
+	fbl_prim->segInfo.point.x = 0;
+	fbl_prim->segInfo.point.y = 0;
+	fbl_prim->ray_hit_id = -1;
 
 
 	if (fbl_prim->type == FBL_TRI || fbl_prim->type == FBL_RECT) translate_shape(fbl_prim);
@@ -420,6 +422,34 @@ bool fbl_get_prim_collision(int id_1, int id_2)
 }
 
 /*
+ * Check if a ray-prim has hit something (returns id of the sprite that was hit)
+ * Also returns where the sprite was hit (x, y)
+ */
+void fbl_get_ray_hit_sprite(int id, int *hit_id, int *x, int *y)
+{
+
+
+	FBL_PRIM* prim = NULL;
+	DLLIST* item = get_prim_item_at_id(id);
+
+	if (item != NULL)
+	{
+
+		prim = ((FBL_PRIM*)item->Object);
+
+		*hit_id = prim->ray_hit_id;
+		*x = (int)prim->segInfo.point.x;
+		*y = (int)prim->segInfo.point.y;
+
+
+	}
+#ifdef FBL_DEBUG
+	else fprintf(FBL_ERROR_OUT, "Tried to get ray hit id for primitive %d, that does not exist!\n", id);
+#endif
+
+}
+
+/*
  * Activate physics on a prim. Will get correct shape. Lines will get static thingy.
  */
 void fbl_set_prim_phys(int id, bool on, int body_type, bool can_rotate)
@@ -665,10 +695,26 @@ int translate_phys_prim(int tag, void *prim, void *dummy)
 	{
 
 		// check the return value of this (cpShape *) to get what you collided with
-		if (engine_ray_collided(&p->dest_rect, p->radius, &p->segInfo))
+		cpShape *collided_shape = engine_ray_collided(&p->dest_rect, p->radius, &p->segInfo);
+		if (collided_shape)
 		{
 
-			cpVect point = p->segInfo.point;	// the point of colission
+			//cpVect point = p->segInfo.point;	// the point of colission
+
+			// maybe make this work with more than
+
+			FBL_SPRITE* spr;
+			for (int i = 0; i < fbl_get_num_sprites(); i++) {
+				if (i > (NUM_DIRECT_REF_SPRITES - 1)) break;	// only works with direct ref atm
+				spr = ((FBL_SPRITE*)direct_sprite_ref[i]->Object);
+				if (spr->phys_shape == collided_shape) {
+					//printf("id : %d\n", direct_sprite_ref[i]->Tag);
+					//cpVect point = p->segInfo.point;	// the point of colission
+					//printf("X = %f         Y = %f\n", point.x, point.y);
+					p->ray_hit_id = direct_sprite_ref[i]->Tag;
+				}
+			}
+
 
 			// check out Query.c in the chipmunk demo for more information
 			//ChipmunkDemoPrintString("Segment Query: Dist(%f) Normal(%5.2f, %5.2f)", segInfo.alpha * cpvdist(start, end), n.x, n.y);
@@ -677,6 +723,8 @@ int translate_phys_prim(int tag, void *prim, void *dummy)
 				//printf("X = %f         Y = %f\n", point.x, point.y);
 
 		}
+		else p->ray_hit_id = -1;	// if it's -1 it didn't hit anything
+		//else printf("NULL");
 
 	}
 

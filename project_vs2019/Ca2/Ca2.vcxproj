@@ -148,6 +148,7 @@
     <ClCompile Include="..\..\game_projects\Ca2\GameState\Dialogue.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\GameState\Explore.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\GameState\GameState.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\GameState\Race\Maze.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\GameState\Race\Race.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\GameState\RobotCollection.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\GameState\Settings.cpp" />
@@ -198,6 +199,7 @@
     <ClInclude Include="..\..\game_projects\Ca2\GameState\Explore.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\GameState\GameState.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\GameState\IState.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\GameState\Race\Maze.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\GameState\Race\Race.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\GameState\RobotCollection.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\GameState\Settings.hpp" />

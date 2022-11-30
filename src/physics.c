@@ -137,6 +137,7 @@ cpShape *engine_phys_add_shape(cpBody *body, int type, int x, int y, int w, int 
 		break;
 		case FBL_RECT :
 			shape = cpSpaceAddShape(fbl_phys_space, cpBoxShapeNew(body, (float)w, (float)h, (float)r));
+			//cpShapeSetSensor(shape, true);
 		break;
 		case FBL_CIRCLE :
 			shape = cpSpaceAddShape(fbl_phys_space, cpCircleShapeNew(body, (float)r, cpvzero));

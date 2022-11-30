@@ -57,8 +57,15 @@
 
 #define FBL_VERSION "0.9.9"
 
-/* engine struct */
 
+/* This is how many sprites that use direct reference (the first 2000-3000 or whatever sprites gets stored in an array)
+   for fast access (very useful for setting ang getting values every frame (fbl_set_sprite*())) */
+
+#define NUM_DIRECT_REF_SPRITES 3000
+/* same with prims */
+#define NUM_DIRECT_REF_PRIMS 2000
+
+/* engine struct */
 
 typedef struct
 {
@@ -205,6 +212,7 @@ typedef struct
 	/* for raycast*/
 
 	cpSegmentQueryInfo segInfo;
+	int ray_hit_id;
 
 
 }FBL_PRIM;

@@ -13,12 +13,6 @@
 #include "engine.h"
 
 
-/* This is how many sprites that use direct reference (the first 1000 or whatever sprites gets stored in an array)
-   for super fast access (very useful for setting ang getting values every frame (fbl_set_sprite*())) */
-
-#define NUM_DIRECT_REF_SPRITES 2000
-
-
  /* functions only used by sprite.c */
 
 int cmp_layer(void *a, void *b);

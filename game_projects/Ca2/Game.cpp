@@ -110,6 +110,7 @@ void Game::unInit() {
 	delete mState;
 	delete mInput;
 	delete mChars;
+	delete mRobots;
 	delete mLocation;
 	delete mObjects;
 	delete mWeather;

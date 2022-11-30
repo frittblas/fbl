@@ -68,7 +68,7 @@ Add coins randomly in the maze to be picked up, adds extra strategy.
 Also add traps. Fewer traps than coins.
 
 Small things:
-Remove the printf in fbl when soring sprites (update_refs?) Done!
+Remove the printf in fbl when sorting sprites (update_refs?) Done!
 
 Use particle effects as much as possible. :) camera shake? yes?
 

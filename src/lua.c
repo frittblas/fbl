@@ -110,6 +110,7 @@ int lua_set_prim_angle(lua_State *lua_env);
 int lua_get_prim_angle(lua_State *lua_env);
 int lua_fix_prim_to_screen(lua_State *lua_env);
 int lua_get_prim_collision(lua_State *lua_env);
+int lua_get_ray_hit_sprite(lua_State* lua_env);
 int lua_set_prim_phys(lua_State *lua_env);
 int lua_set_prim_active(lua_State *lua_env);
 int lua_get_prim_active(lua_State *lua_env);
@@ -449,6 +450,7 @@ void register_fbl_functions_to_lua()
 	lua_register(fbl_lua_env, "fbl_get_prim_angle", lua_get_prim_angle);
 	lua_register(fbl_lua_env, "fbl_fix_prim_to_screen", lua_fix_prim_to_screen);
 	lua_register(fbl_lua_env, "fbl_get_prim_collision", lua_get_prim_collision);
+	lua_register(fbl_lua_env, "fbl_get_ray_hit_sprite", fbl_get_ray_hit_sprite);
 	lua_register(fbl_lua_env, "fbl_set_prim_phys", lua_set_prim_phys);
 	lua_register(fbl_lua_env, "fbl_set_prim_active", lua_set_prim_active);
 	lua_register(fbl_lua_env, "fbl_get_prim_active", lua_get_prim_active);
@@ -1501,6 +1503,22 @@ int lua_get_prim_collision(lua_State *lua_env)
 
 	return 1;
 
+}
+
+int lua_get_ray_hit_sprite(lua_State* lua_env)
+{
+
+	int id = (int)lua_tonumber(lua_env, 1);
+
+	int hit_id, x, y;
+
+	fbl_get_ray_hit_sprite(id, &hit_id, &x, &y);
+
+	lua_pushnumber(lua_env, (lua_Number)hit_id);
+	lua_pushnumber(lua_env, (lua_Number)x);
+	lua_pushnumber(lua_env, (lua_Number)y);
+
+	return 3;
 }
 
 int lua_set_prim_phys(lua_State *lua_env)

@@ -71,13 +71,12 @@ Make the tile-type 0-9 be terrain. 10-19 = objects (pushable blocks, shops, secr
 
 Small bug: If you click Talk, after the conversation the player will path to the Talk button coords :)
 
-Start planning the fighting system! Make new folder makes sense.
+Start planning the racing system! Make new folder makes sense. - done.
 Maybe add more detailed folder structure.
 Add #ifdef cplusplus in the html5 section of emscripten build to build easier.
 
 Other stuff:
-Add Cards and deck, think about a good solution.
-Ecs? probably! or oop..
+Player can find skills in chests, called programs. Passive or active skills.
 
 
 robot collection menu! - almost done!
@@ -86,3 +85,13 @@ the actual game (race) - started!
 Team of 3 robots to compete?
 Random and ready made levels?
 passive and active skills.
+
+Sprite layers are:
+Ground tiles (grass and blocks): 0
+Player: 1
+Tunnel tiles (player goes under): 2
+Clouds: 3
+Gray collectionMenu BG: 4
+Robots: 5
+
+Come up with a solution for the collectionMenu being susceptible to time of day :)
