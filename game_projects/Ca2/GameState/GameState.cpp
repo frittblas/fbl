@@ -66,11 +66,11 @@ void GameState::change(Game& g, StateType newState) {
 
 			if (mState == StateType::Explore) {	// if coming from explore state
 
-				g.mWeather->setWeather(Weather::TimeOfDay::Day, 0, 0, 0, false);	// reset weather before unload level (destroys all sprites and emitters)
+				g.mWeather->setWeather(Weather::TimeOfDay::Day, 0, 0, 0, false);	// reset weather before unload level (destroys cloud-sprites and emitters)
 				g.mLocation->unLoadLocation(g.mMap);
 				//fbl_set_sprite_active(758, true);
 				//fbl_set_sprite_xy(758, 200, 200); // 0-ground tiles, 1-player, 2-secret psg, 3-gray bg, 4-robot (clouds should be 3 and bg robots after.)
-				unInitLuaDialog();	// also remove resources for dialogue (prims, text etc)
+				unInitLuaDialog();	// also remove resources for dialogue (ALL prims, text and ui)
 				g.mChars->removePlayer(g.mEcs);	// delete the player completely
 				g.mChars->removeNpc(g.mEcs);	// also delete all npcs in the current scene
 				g.mRobots->removeRobots(g.mEcs); // delete all the robots
@@ -118,14 +118,23 @@ void GameState::change(Game& g, StateType newState) {
 
 				fbl_lua_init("Ca2Dialogue.lua", registerFuncsToLua);	// set this up each new game, so the dialogues restart
 
+			}
 
+			if (mState == StateType::Race) {	// if coming from a race
 
-				fbl_sort_sprites(FBL_SORT_BY_LAYER);
+				g.mLocation->loadLocation(g.mMap);
+				initLuaDialog();	// set up prims and text and ui for the dialog box.
+				g.mSysManager->mSpriteSystem->Init(*g.mEcs);	// create sprites for all entities with a sprite component
+				g.mSysManager->mLightSystem->Init(*g.mEcs);		// create lights for all entities with a light component
+
+				g.mWeather->setWeather(Weather::TimeOfDay::Evening, 1, 0, 50, true);
+
+				initCollectionMenu();	// set up prims and text and ui for the collection-menu, sprite draw-order is important
 
 			}
 
 			g.mRobots->hideRobots(g.mEcs);	// don't show the robot-sprites in explore mode
-
+			fbl_sort_sprites(FBL_SORT_BY_LAYER);
 			mCurrentStateInstance = new Explore();
 
 			break;
@@ -140,6 +149,9 @@ void GameState::change(Game& g, StateType newState) {
 			break;
 
 		case StateType::Race:
+			g.mWeather->setWeather(Weather::TimeOfDay::Day, 0, 0, 0, false);	// reset weather before the race (destroys cloud-sprites and emitters)
+			g.mLocation->unLoadLocation(g.mMap);	// this destroys ALL sprites
+			unInitLuaDialog();	// also remove resources for dialogue (ALL prims, text and ui)
 			mCurrentStateInstance = new Race();
 			break;
 

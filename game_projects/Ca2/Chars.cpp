@@ -82,6 +82,8 @@ void Chars::setupNpc(Game& g) {
 							uint8_t dialogueId = g.mMap->tile[index]->type - NpcOffset;
 							g.mEcs->AddComponent(id, Position{ x, y });
 							g.mEcs->AddComponent(id, DialogueTrigger{ dialogueId });
+														// id  tx  ty   w    h  scale
+							g.mEcs->AddComponent(id, Light{ 0, 384, 0, 128, 128, 2.0 });
 							std::cout << "Npc added." << std::endl;
 							break;
 

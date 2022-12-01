@@ -13,6 +13,7 @@
 #pragma once
 
 #include "../IState.hpp"
+#include "Maze.hpp"
 
 class Game;
 
@@ -23,5 +24,8 @@ public:
     ~Race();
 
     virtual void tick(Game& g) override;
+
+private:
+    Maze *mMaze;
 
 };
