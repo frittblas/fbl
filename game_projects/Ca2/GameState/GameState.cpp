@@ -152,13 +152,22 @@ void GameState::change(Game& g, StateType newState) {
 			g.mWeather->setWeather(Weather::TimeOfDay::Day, 0, 0, 0, false);	// reset weather before the race (destroys cloud-sprites and emitters)
 			g.mLocation->unLoadLocation(g.mMap);	// this destroys ALL sprites
 			unInitLuaDialog();	// also remove resources for dialogue (ALL prims, text and ui)
-			mCurrentStateInstance = new Race();
+			g.mSysManager->mSpriteSystem->Init(*g.mEcs);	// create sprites for all entities with a sprite component'
+			g.mRobots->hideRobots(g.mEcs);
+			g.mChars->hidePlayer(g.mEcs);
+
+			{
+				Race* race = new Race();
+				race->assignRobots(g);
+
+				mCurrentStateInstance = race;
+			}
 			break;
 
 		case StateType::RobotCollection:
 			g.mRobots->showRobotInMenu(g.mEcs, Robots::Name::Charmy);
 			RobotCollection* rc = new RobotCollection();
-			rc->cyclePages(g, 0);	// call this to update the robot stats in the menu
+			rc->cyclePages(g, 0);	// call this to update the first robots stats in the menu
 			mCurrentStateInstance = rc;
 			break;
 

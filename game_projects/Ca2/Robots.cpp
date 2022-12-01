@@ -38,6 +38,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 	for (int i = 0; i < NumRobots; i++) {
 		mAllRobots[i] = Unassigned;
 		mOwnedRobots[i] = Unassigned;
+		mRacingRobots[i] = Unassigned;
 	}
 
 	// create all the robot entities
@@ -145,7 +146,7 @@ void Robots::showRobotInRace(Coordinator* mEcs, int nameIndex, int position) {
 	switch (position) {
 
 		case 1:
-			x = Game::LogicalResW / 2 + 185;;
+			x = Game::LogicalResW / 2 + 185;
 			y = Game::LogicalResW / 2 - 40;
 			break;
 

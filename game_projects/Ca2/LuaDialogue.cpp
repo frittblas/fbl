@@ -22,7 +22,7 @@ extern "C" {
 	extern lua_State* fbl_lua_env;
 }
 
-// game instance
+// game instance (only externed here)
 extern Game* gGame;
 
 // id's for the dialog-box f for filescope

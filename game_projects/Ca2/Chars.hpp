@@ -42,6 +42,7 @@ public:
 
     void setupPlayer(Coordinator* mEcs);
     void removePlayer(Coordinator* mEcs);
+    void hidePlayer(Coordinator* mEcs);
 
     void setupNpc(Game& g);
     void removeNpc(Coordinator* mEcs);

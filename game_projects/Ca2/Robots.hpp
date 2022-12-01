@@ -34,8 +34,9 @@ public:
 
     Entity mAllRobots[NumRobots];     // all the robots
     Entity mOwnedRobots[NumRobots];   // all the robots in your collection
+    Entity mRacingRobots[NumRobots];  // all the robots in a race at once
 
-    Entity team[3];        // the robots you're currently using
+    Entity mTeam[3];        // the robots you're currently using
 
     Robots();
     ~Robots();

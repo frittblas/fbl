@@ -22,8 +22,8 @@ public:
     static const int MazeSizeX = 30;
     static const int MazeSizeY = 17;
 
-    void setup_pick_start();
-    void pick_start_position();
+    void setupPickStart();
+    void pickStartPosition();
 
     // void find_paths()
     void resetMaze();

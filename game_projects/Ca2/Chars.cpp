@@ -57,6 +57,15 @@ void Chars::removePlayer(Coordinator* mEcs) {
 	
 }
 
+void Chars::hidePlayer(Coordinator* mEcs) {
+
+	auto& spr = mEcs->GetComponent<Sprite>(mBrodo);
+
+	for(int i = 0; i < 4; i++)
+		fbl_set_sprite_active(spr.id[i], false);
+
+}
+
 void Chars::setupNpc(Game& g) {
 
 	// Npc characters start at tile->type == 10

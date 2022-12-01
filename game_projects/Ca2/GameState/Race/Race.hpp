@@ -23,9 +23,12 @@ public:
     Race();
     ~Race();
 
+    void assignRobots(Game& g);
+
     virtual void tick(Game& g) override;
 
 private:
     Maze *mMaze;
+    uint8_t mNumRacers;
 
 };

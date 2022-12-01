@@ -24,6 +24,7 @@
 #include "../../Ecs/Systems/LightSystem.hpp"
 
 #include "../../Weather.hpp"
+#include "../../Robots.hpp"
 
 #include "Race.hpp"
 
@@ -32,6 +33,7 @@
 Race::Race() {
 
 	mMaze = new Maze();
+	fbl_sort_sprites(FBL_SORT_BY_LAYER);
 
 	std::cout << "Started Race state." << std::endl;
 
@@ -42,6 +44,19 @@ Race::~Race() {
 	delete mMaze;
 
 	std::cout << "Destroyed Race state." << std::endl;
+
+}
+
+void Race::assignRobots(Game& g) {
+
+	// for now just assign the robots we have (should be assigned fom teams and loop to find != Unassigned from mAll)
+
+	g.mRobots->mRacingRobots[0] = g.mRobots->mOwnedRobots[Robots::Charmy];
+
+	g.mRobots->mRacingRobots[1] = g.mRobots->mOwnedRobots[Robots::Alarmy];
+	g.mRobots->mRacingRobots[2] = g.mRobots->mOwnedRobots[Robots::Boingy];
+
+	g.mRobots->showRobotInRace(g.mEcs, Robots::Charmy, 1);
 
 }
 
