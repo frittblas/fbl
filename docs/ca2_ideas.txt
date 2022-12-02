@@ -80,7 +80,7 @@ Player can find skills in chests, called programs. Passive or active skills.
 
 
 robot collection menu! - almost done!
-the actual game (race) - started!
+the actual game (race) - on the way :)
 
 Team of 3 robots to compete?
 Random and ready made levels?
@@ -95,3 +95,10 @@ Gray collectionMenu BG: 4
 Robots: 5
 
 Come up with a solution for the collectionMenu being susceptible to time of day :)
+
+MAYBE looks like a good idea to remove path component of the robots in explore mode :)
+at least if you use mousectrl on one of the robots, and hop between race and explore.
+
+Next:
+Add pick start, randomize rest.
+Add laser.

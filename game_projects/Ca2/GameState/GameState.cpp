@@ -101,7 +101,7 @@ void GameState::change(Game& g, StateType newState) {
 			}
 
 			g.mRobots->hideRobots(g.mEcs);	// don't show the robot-sprites in explore mode (or in beginning of race)
-			fbl_sort_sprites(FBL_SORT_BY_LAYER);
+			fbl_sort_sprites(FBL_SORT_BY_LAYER); // layers : Ground tiles 0, Player 1, Tunnel tiles(pl. goes under) 2, Clouds 3, Gray colMenu BG 4, Robots 5
 			mCurrentStateInstance = new Explore();
 
 			break;
@@ -203,7 +203,7 @@ void GameState::raceToExplore(Game& g) {
 	g.mEcs->AddComponent(g.mChars->mBrodo, Path{ 0, 0, 0, false, 2.0, FBL_PATHF_USE_DIAG, 1 });
 
 	// temporarily remove mousectrl component from a robot
-	g.mEcs->RemoveComponent<MouseCtrl>(g.mRobots->mRacingRobots[0]);
+	//g.mEcs->RemoveComponent<MouseCtrl>(g.mRobots->mRacingRobots[0]);
 
 	g.mWeather->setWeather(Weather::TimeOfDay::Evening, 1, 0, 50, true);
 

@@ -75,7 +75,7 @@ void Race::assignRobots(Game& g) {
 
 	// add mousectrl to a robot IF it has the skill!!!! (just testing now)
 															  // clicked
-	g.mEcs->AddComponent(g.mRobots->mRacingRobots[0], MouseCtrl{ false });
+	//g.mEcs->AddComponent(g.mRobots->mRacingRobots[0], MouseCtrl{ false });
 
 }
 
