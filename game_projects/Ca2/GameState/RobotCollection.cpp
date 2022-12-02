@@ -72,11 +72,11 @@ void RobotCollection::cyclePages(Game& g, int dir) {
 	g.mRobots->showRobotInMenu(g.mEcs, mCurrentRobotPage);
 
 	fbl_update_text(fMenuName, 255, 255, 255, 0, (char*)sta.name.c_str());
-	fbl_update_text(fMenuLevel, 255, 255, 255, 0, "Level:  %d  (xp: %d / %d)", sta.level, sta.xp, sta.nextLv);
-	fbl_update_text(fMenuHp, 255, 255, 255, 0, "Hp:  %d", sta.hp);
-	fbl_update_text(fMenuSpeed, 255, 255, 255, 0, "Speed:  %d", sta.speed);
-	fbl_update_text(fMenuDiag, 255, 255, 255, 0, "Diagonals:  %s", sta.diag ? "Yes" : "No");
-	fbl_update_text(fMenuSpeed, 255, 255, 255, 0, "Energy:  %d / %d", sta.energy, sta.maxEnergy);
+	fbl_update_text(fMenuLevel, 255, 255, 255, 0, (char*)"Level:  %d  (xp: %d / %d)", sta.level, sta.xp, sta.nextLv);
+	fbl_update_text(fMenuHp, 255, 255, 255, 0, (char*)"Hp:  %d", sta.hp);
+	fbl_update_text(fMenuSpeed, 255, 255, 255, 0, (char*)"Speed:  %d", sta.speed);
+	fbl_update_text(fMenuDiag, 255, 255, 255, 0, (char*)"Diagonals:  %s", sta.diag ? "Yes" : "No");
+	fbl_update_text(fMenuSpeed, 255, 255, 255, 0, (char*)"Energy:  %d / %d", sta.energy, sta.maxEnergy);
 
 	std::cout << mCurrentRobotPage << std::endl;
 	std::cout << sta.name << std::endl;

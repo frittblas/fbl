@@ -450,7 +450,7 @@ void register_fbl_functions_to_lua()
 	lua_register(fbl_lua_env, "fbl_get_prim_angle", lua_get_prim_angle);
 	lua_register(fbl_lua_env, "fbl_fix_prim_to_screen", lua_fix_prim_to_screen);
 	lua_register(fbl_lua_env, "fbl_get_prim_collision", lua_get_prim_collision);
-	lua_register(fbl_lua_env, "fbl_get_ray_hit_sprite", fbl_get_ray_hit_sprite);
+	lua_register(fbl_lua_env, "fbl_get_ray_hit_sprite", lua_get_ray_hit_sprite);
 	lua_register(fbl_lua_env, "fbl_set_prim_phys", lua_set_prim_phys);
 	lua_register(fbl_lua_env, "fbl_set_prim_active", lua_set_prim_active);
 	lua_register(fbl_lua_env, "fbl_get_prim_active", lua_get_prim_active);
