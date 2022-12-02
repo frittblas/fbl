@@ -15,7 +15,7 @@
 #include <vector>
 #include "Ecs/Types.hpp"
 
-class Game;
+
 class Coordinator;
 
 class Robots {

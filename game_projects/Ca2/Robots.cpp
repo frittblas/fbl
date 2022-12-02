@@ -49,8 +49,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 		// add components to the entity
 											  // x  y
 		mEcs->AddComponent(tmpRobot, Position{ 400, 200 });
-										// id gX gY newPath
-		mEcs->AddComponent(tmpRobot, Path{ 0, 0, 0, false });
+
 
 		switch (i) {
 
@@ -58,28 +57,35 @@ void Robots::setupRobots(Coordinator* mEcs) {
 												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 0, 96, 32, 32, false, 0, 0, 0, 0, 5 });	// robots are on layer 4
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight activeSlot[4] passiveSlot[2]
-				mEcs->AddComponent(tmpRobot, Stats{ "Charmy", 1, 0, 4, 10, 10, 10, true, 20, 20, 7, 0, 0, 0, 0, 0, 0 });
+				mEcs->AddComponent(tmpRobot, Stats{ "Charmy", 1, 0, 4, 10, 10, 12, true, 20, 20, 7, 0, 0, 0, 0, 0, 0 });
 				break;
 			case Alarmy :
 												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 32, 96, 32, 32, true, 2, 12, 0, 0, 5 });
-												   // name   lv xp next mxHp hp speed diag mxNrg nrg weight activeSlot[4] passiveSlot[2]
-				mEcs->AddComponent(tmpRobot, Stats{ "Alarmy", 1, 0, 4, 10, 10, 10, true, 20, 19, 17, 0, 0, 0, 0, 0, 0 });
+												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight activeSlot[4] passiveSlot[2]
+				mEcs->AddComponent(tmpRobot, Stats{ "Alarmy", 1, 0, 4, 10, 10, 6, true, 20, 19, 17, 0, 0, 0, 0, 0, 0 });
 				break;
 			case Boingy :
 												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 96, 96, 32, 32, true, 2, 12, 0, 0, 5 });
-												   // name   lv xp next mxHp hp speed diag mxNrg nrg weight activeSlot[4] passiveSlot[2]
-				mEcs->AddComponent(tmpRobot, Stats{ "Boingy", 2, 0, 4, 11, 9, 10, true, 20, 20, 7, 0, 0, 0, 0, 0, 0 });
+												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight activeSlot[4] passiveSlot[2]
+				mEcs->AddComponent(tmpRobot, Stats{ "Boingy", 2, 0, 4, 11, 9, 13, false, 20, 20, 7, 0, 0, 0, 0, 0, 0 });
 				break;
 			case Chompy:
 												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 160, 96, 32, 32, true, 3, 12, 0, 0, 5 });
-													// name   lv xp next mxHp hp speed diag mxNrg nrg weight activeSlot[4] passiveSlot[2]
-				mEcs->AddComponent(tmpRobot, Stats{ "Chompy", 2, 0, 4, 11, 9, 10, true, 20, 20, 7, 0, 0, 0, 0, 0, 0 });
+												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight activeSlot[4] passiveSlot[2]
+				mEcs->AddComponent(tmpRobot, Stats{ "Chompy", 2, 0, 4, 11, 9, 7, true, 20, 20, 7, 0, 0, 0, 0, 0, 0 });
 				break;
 
 		}
+
+		auto& sta = mEcs->GetComponent<Stats>(tmpRobot);
+		float speed = (float)sta.speed / 10;
+		uint8_t diag = sta.diag == true ? FBL_PATHF_USE_DIAG : FBL_PATHF_NO_DIAG;
+
+										// id gX gY newPath speed diag pixelsPerFrame
+		mEcs->AddComponent(tmpRobot, Path{ 0, 0, 0, false, speed, diag, 10 });
 
 		// add the entity to the array containing all robots
 		mAllRobots[i] = tmpRobot;

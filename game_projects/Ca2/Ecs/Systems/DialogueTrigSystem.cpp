@@ -44,6 +44,7 @@ void DialogueTrigSystem::Update(Game& g) {
 	bool triggered = false;
 
 	auto& player = g.mEcs->GetComponent<Position>(g.mChars->mBrodo);
+	auto& path = g.mEcs->GetComponent<Path>(g.mChars->mBrodo);
 
 	for (auto const& entity : mEntities)
 	{
@@ -63,6 +64,9 @@ void DialogueTrigSystem::Update(Game& g) {
 			if (fbl_get_ui_elem_val(gButtonTalk)) {
 				gCurrentDialogueId = trig.dialogueId;	// set the correct dialogue id
 				g.mState->change(g, GameState::StateType::Dialogue);
+				fbl_pathf_set_path_status(0, FBL_PATHF_NOT_STARTED);	// this seems to work
+				path.newPath = false;									// in combination with this :)
+
 			}
 
 		}

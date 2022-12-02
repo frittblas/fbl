@@ -26,6 +26,7 @@ public:
     static const int MazeSizeY = 17;
 
     void initMaze(Game& g, int density, int numRacers);
+    void exitMaze();
 
     //void setupPickStart();
     //void pickStartPosition();
@@ -44,5 +45,8 @@ private:
 
     int pathId[Robots::NumRobots] = {};
     int startPos[Robots::NumRobots][2] = {};
+    uint8_t diag[Robots::NumRobots] = {};
+
+    int mNumRacers;
 
 };

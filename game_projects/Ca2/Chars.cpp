@@ -40,8 +40,8 @@ void Chars::setupPlayer(Coordinator* mEcs) {
 	mEcs->AddComponent(mBrodo, Position{ 128, 160 });
 								   // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 	mEcs->AddComponent(mBrodo, Sprite{ 0, 0, 0, 0, 4, 0, 224, 32, 32, true, 2, 12, 1, 1, 1 });
-								 // id  gX gY newPath
-	mEcs->AddComponent(mBrodo, Path{ 0, 0, 0, false });
+								 // id  gX gY newPath speed diag pixelsPerFrame
+	mEcs->AddComponent(mBrodo, Path{ 0, 0, 0, false, 2.0, FBL_PATHF_USE_DIAG, 1 });
 									  // clicked
 	mEcs->AddComponent(mBrodo, MouseCtrl{ false });
 									// x  y	 damp  w  h
@@ -86,8 +86,8 @@ void Chars::setupNpc(Game& g) {
 
 							int id = g.mEcs->CreateEntity();
 							g.mChars->mNpc.push_back(id);
-							uint16_t x = g.mMap->tile[index]->x;
-							uint16_t y = g.mMap->tile[index]->y;
+							float x = g.mMap->tile[index]->x;
+							float y = g.mMap->tile[index]->y;
 							uint8_t dialogueId = g.mMap->tile[index]->type - NpcOffset;
 							g.mEcs->AddComponent(id, Position{ x, y });
 							g.mEcs->AddComponent(id, DialogueTrigger{ dialogueId });

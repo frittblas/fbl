@@ -47,7 +47,6 @@ void PathSystem::Init(Coordinator& ecs) {
 
 void PathSystem::Update(Game& g) {
 
-	static bool standingStill = true;
 
 	for (auto const& entity : mEntities)
 	{
@@ -58,7 +57,7 @@ void PathSystem::Update(Game& g) {
 		// find path if newPath is true (meaning a new path has been requested)
 		if (path.newPath) {
 
-			fbl_pathf_set_path_status(path.id, fbl_pathf_find_path(path.id, pos.x, pos.y, path.goalX, path.goalY, FBL_PATHF_USE_DIAG));
+			fbl_pathf_set_path_status(path.id, fbl_pathf_find_path(path.id, pos.x, pos.y, path.goalX, path.goalY, path.diag));
 			path.newPath = false;
 
 			if(fbl_pathf_get_path_status(path.id) == FBL_PATHF_FOUND)
@@ -69,38 +68,29 @@ void PathSystem::Update(Game& g) {
 		// do the pathfinding only if we haven't reached the goal
 		if (fbl_pathf_get_path_status(path.id) == FBL_PATHF_FOUND) {
 
-			fbl_pathf_read_path(path.id, pos.x, pos.y, 1);
+
+			fbl_pathf_read_path(path.id, pos.x, pos.y, path.pixelsPerFrame);
+
 
 			if (pos.x > fbl_pathf_get_x_path(path.id)) {
-				pos.x -= 2;
+				pos.x -= path.speed;
 				spr.dir = Dir::Left;
 			}
 			if (pos.x < fbl_pathf_get_x_path(path.id)) {
-				pos.x += 2;
+				pos.x += path.speed;
 				spr.dir = Dir::Right;
 			}
 			if (pos.y > fbl_pathf_get_y_path(path.id)) {
-				pos.y -= 2;
+				pos.y -= path.speed;
 				spr.dir = Dir::Up;
 			}
 			if (pos.y < fbl_pathf_get_y_path(path.id)) {
-				pos.y += 2;
+				pos.y += path.speed;
 				spr.dir = Dir::Down;
 			}
 
 			//std::cout << "pathing!" << std::endl;
 
-			standingStill = false;
-
-		}
-		else if(fbl_pathf_get_path_status(path.id) == FBL_PATHF_NOT_STARTED && !standingStill){
-
-			// check if the player is oustide any bounds (in that case call change location)
-			if(pos.x == 0 || pos.x == (Game::MapW * Game::TileSize) - Game::TileSize ||
-			   pos.y == 0 || pos.y == (Game::MapH * Game::TileSize) - Game::TileSize)
-				g.mLocation->change(g.mMap, pos.x, pos.y);
-
-			standingStill = true;
 
 		}
 

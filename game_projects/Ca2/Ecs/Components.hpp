@@ -21,7 +21,7 @@
 struct Position
 {
 
-    uint16_t x, y;   // position in the world
+    float x, y;   // position in the world
 
 };
 
@@ -47,6 +47,9 @@ struct Path
     uint8_t id; // the path id from the a_star module
     uint16_t goalX, goalY;  // the coords of the current goal to reach
     bool newPath;   // is this is set to true, find a new path
+    float speed;    // how fast is the entity following the path
+    uint8_t diag;   // using diagonals or not
+    uint8_t pixelsPerFrame;     // check out the astar api
 
 };
 

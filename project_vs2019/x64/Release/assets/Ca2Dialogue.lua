@@ -26,12 +26,12 @@ Title = 0
 Demo = 1
 Settings = 2
 Tutorial = 3
-
+--
 Explore = 4
 Dialogue = 5
 Shop = 6
-Fight = 7
-CardCollection = 8
+Race = 7
+RobotCollection = 8
 
 -- number of dialogues
 NUM_DIALOGUES = 2
@@ -186,9 +186,9 @@ while true do
 		end
 	elseif iter == 4 then
 		if not g_wait_response then
-			disp_dw("You chose Green!", " ", " ", "Ok great.", "Can I go?")
+			disp_dw("You chose Green!", " ", " ", "Race.", "Race.")
 		elseif getResponse() == YES or getResponse() == NO then
-			iter = advance(Explore, 1)
+			iter = advance(Race, 1)
 		end
 	else
 		if not g_wait_response then

@@ -41,6 +41,12 @@ public:
     StateType get();
     void tick(Game& g);
 
+    void exploreToTitle(Game& g);
+    void titleToExplore(Game& g);
+    void raceToExplore(Game& g);
+    void setupRace(Game& g);
+
+
 private:
     StateType mState;   // enum holding the current state
     IState* mCurrentStateInstance;    // the actual instance of the current game state

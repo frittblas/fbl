@@ -14,6 +14,9 @@
 
 #include "../Game.hpp"
 
+#include "../Ecs/Ecs.hpp"
+#include "../Ecs/Components.hpp"
+
 #include "../Ecs/Systems/SpriteSystem.hpp"
 #include "../Ecs/Systems/PathSystem.hpp"
 #include "../Ecs/Systems/CameraSystem.hpp"
@@ -65,19 +68,7 @@ void GameState::change(Game& g, StateType newState) {
 		case StateType::Title:
 
 			if (mState == StateType::Explore) {	// if coming from explore state
-
-				g.mWeather->setWeather(Weather::TimeOfDay::Day, 0, 0, 0, false);	// reset weather before unload level (destroys cloud-sprites and emitters)
-				g.mLocation->unLoadLocation(g.mMap);
-				//fbl_set_sprite_active(758, true);
-				//fbl_set_sprite_xy(758, 200, 200); // 0-ground tiles, 1-player, 2-secret psg, 3-gray bg, 4-robot (clouds should be 3 and bg robots after.)
-				unInitLuaDialog();	// also remove resources for dialogue (ALL prims, text and ui)
-				g.mChars->removePlayer(g.mEcs);	// delete the player completely
-				g.mChars->removeNpc(g.mEcs);	// also delete all npcs in the current scene
-				g.mRobots->removeRobots(g.mEcs); // delete all the robots
-				g.mWeather->setWeather(Weather::TimeOfDay::Day, 0, 6, 0, false);	// timeOfDay, rainLevel, snowLevel, numClouds, lightningOn
-
-				fbl_lua_shutdown();	// so the dialogues gets reset
-
+				exploreToTitle(g);
 			}
 
 			mCurrentStateInstance = new Title();
@@ -99,47 +90,27 @@ void GameState::change(Game& g, StateType newState) {
 		case StateType::Explore:
 
 			if (mState == StateType::Title) {	// if coming from title (new game)
-
-				g.mLocation->loadLocation(g.mMap);
-				initLuaDialog();	// set up prims and text and ui for the dialog box.
-				g.mChars->setupPlayer(g.mEcs);	// create the player entity and add the right components
-				g.mChars->setupNpc(g);			// add all npcs based on the map file
-
-				g.mRobots->setupRobots(g.mEcs); // create the robot entities and add the basic components
-
-				g.mSysManager->mSpriteSystem->Init(*g.mEcs);	// create sprites for all entities with a sprite component
-				g.mSysManager->mPathSystem->Init(*g.mEcs);		// assign a unique path id to the entities with a path component
-				//g.mSysManager->mCameraSystem->Init(*g.mEcs);	// creates debug rect for camera deadzone
-				g.mSysManager->mLightSystem->Init(*g.mEcs);		// create lights for all entities with a light component
-
-				g.mWeather->setWeather(Weather::TimeOfDay::Evening, 1, 0, 50, true);
-
-				initCollectionMenu();	// set up prims and text and ui for the collection-menu, sprite draw-order is important
-
-				fbl_lua_init("Ca2Dialogue.lua", registerFuncsToLua);	// set this up each new game, so the dialogues restart
-
+				titleToExplore(g);
+			}
+			else if (mState == StateType::Race) {	// if coming from a race
+				raceToExplore(g);
+			}
+			else if (mState == StateType::Dialogue) {	// if coming from dialogue
+				// add path component back
+				//g.mEcs->AddComponent(g.mChars->mBrodo, Path{ 0, 0, 0, false, 2.0, FBL_PATHF_USE_DIAG, 1 });
 			}
 
-			if (mState == StateType::Race) {	// if coming from a race
-
-				g.mLocation->loadLocation(g.mMap);
-				initLuaDialog();	// set up prims and text and ui for the dialog box.
-				g.mSysManager->mSpriteSystem->Init(*g.mEcs);	// create sprites for all entities with a sprite component
-				g.mSysManager->mLightSystem->Init(*g.mEcs);		// create lights for all entities with a light component
-
-				g.mWeather->setWeather(Weather::TimeOfDay::Evening, 1, 0, 50, true);
-
-				initCollectionMenu();	// set up prims and text and ui for the collection-menu, sprite draw-order is important
-
-			}
-
-			g.mRobots->hideRobots(g.mEcs);	// don't show the robot-sprites in explore mode
+			g.mRobots->hideRobots(g.mEcs);	// don't show the robot-sprites in explore mode (or in beginning of race)
 			fbl_sort_sprites(FBL_SORT_BY_LAYER);
 			mCurrentStateInstance = new Explore();
 
 			break;
 
 		case StateType::Dialogue:
+
+
+			// temporarily remove component from the player
+			//g.mEcs->RemoveComponent<Path>(g.mChars->mBrodo);
 
 			mCurrentStateInstance = new Dialogue();
 
@@ -149,19 +120,15 @@ void GameState::change(Game& g, StateType newState) {
 			break;
 
 		case StateType::Race:
-			g.mWeather->setWeather(Weather::TimeOfDay::Day, 0, 0, 0, false);	// reset weather before the race (destroys cloud-sprites and emitters)
-			g.mLocation->unLoadLocation(g.mMap);	// this destroys ALL sprites
-			unInitLuaDialog();	// also remove resources for dialogue (ALL prims, text and ui)
-			g.mSysManager->mSpriteSystem->Init(*g.mEcs);	// create sprites for all entities with a sprite component
-			g.mRobots->hideRobots(g.mEcs);
-			g.mChars->hidePlayer(g.mEcs);
+
+			setupRace(g);
 
 			{
 				Race* race = new Race();
 				race->assignRobots(g);
-
 				mCurrentStateInstance = race;
 			}
+
 			break;
 
 		case StateType::RobotCollection:
@@ -186,5 +153,75 @@ GameState::StateType GameState::get() {
 void GameState::tick(Game& g) {
 
 	mCurrentStateInstance->tick(g);
+
+}
+
+void GameState::exploreToTitle(Game& g) {
+
+	g.mWeather->setWeather(Weather::TimeOfDay::Day, 0, 0, 0, false);	// reset weather before unload level (destroys cloud-sprites and emitters)
+	g.mLocation->unLoadLocation(g.mMap);
+	unInitLuaDialog();	// also remove resources for dialogue (ALL prims, text and ui)
+	g.mChars->removePlayer(g.mEcs);	// delete the player completely
+	g.mChars->removeNpc(g.mEcs);	// also delete all npcs in the current scene
+	g.mRobots->removeRobots(g.mEcs); // delete all the robots
+	g.mWeather->setWeather(Weather::TimeOfDay::Day, 0, 6, 0, false);	// timeOfDay, rainLevel, snowLevel, numClouds, lightningOn
+	fbl_lua_shutdown();	// so the dialogues gets reset
+
+}
+
+void GameState::titleToExplore(Game& g) {
+
+	g.mLocation->loadLocation(g.mMap);
+	initLuaDialog();	// set up prims and text and ui for the dialog box.
+	g.mChars->setupPlayer(g.mEcs);	// create the player entity and add the right components
+	g.mChars->setupNpc(g);			// add all npcs based on the map file
+
+	g.mRobots->setupRobots(g.mEcs); // create the robot entities and add the basic components
+
+	g.mSysManager->mSpriteSystem->Init(*g.mEcs);	// create sprites for all entities with a sprite component
+	g.mSysManager->mPathSystem->Init(*g.mEcs);		// assign a unique path id to the entities with a path component
+	//g.mSysManager->mCameraSystem->Init(*g.mEcs);	// creates debug rect for camera deadzone
+	g.mSysManager->mLightSystem->Init(*g.mEcs);		// create lights for all entities with a light component
+
+	g.mWeather->setWeather(Weather::TimeOfDay::Evening, 1, 0, 50, true);
+
+	initCollectionMenu();	// set up prims and text and ui for the collection-menu, sprite draw-order is important
+
+	fbl_lua_init("Ca2Dialogue.lua", registerFuncsToLua);	// set this up each new game, so the dialogues restart
+
+}
+
+void GameState::raceToExplore(Game& g) {
+
+	g.mLocation->loadLocation(g.mMap);
+	initLuaDialog();	// set up prims and text and ui for the dialog box.
+	g.mSysManager->mSpriteSystem->Init(*g.mEcs);	// create sprites for all entities with a sprite component
+	g.mSysManager->mLightSystem->Init(*g.mEcs);		// create lights for all entities with a light component
+
+	// add mouse ctrl component back to the player
+	//g.mEcs->AddComponent(g.mChars->mBrodo, MouseCtrl{ false });
+	g.mEcs->AddComponent(g.mChars->mBrodo, Path{ 0, 0, 0, false, 2.0, FBL_PATHF_USE_DIAG, 1 });
+
+	// temporarily remove mousectrl component from a robot
+	g.mEcs->RemoveComponent<MouseCtrl>(g.mRobots->mRacingRobots[0]);
+
+	g.mWeather->setWeather(Weather::TimeOfDay::Evening, 1, 0, 50, true);
+
+	initCollectionMenu();	// set up prims and text and ui for the collection-menu, sprite draw-order is important
+
+}
+
+void GameState::setupRace(Game& g) {
+
+	g.mWeather->setWeather(Weather::TimeOfDay::Day, 0, 0, 0, false);	// reset weather before the race (destroys cloud-sprites and emitters)
+	g.mLocation->unLoadLocation(g.mMap);	// this destroys ALL sprites
+	unInitLuaDialog();	// also remove resources for dialogue (ALL prims, text and ui)
+	g.mSysManager->mSpriteSystem->Init(*g.mEcs);	// create sprites for all entities with a sprite component
+	g.mRobots->hideRobots(g.mEcs);
+
+	// temporarily remove component from the player
+	g.mEcs->RemoveComponent<Path>(g.mChars->mBrodo);
+
+	g.mChars->hidePlayer(g.mEcs);
 
 }

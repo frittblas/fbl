@@ -40,6 +40,14 @@ void SpriteSystem::Init(Coordinator& ecs) {
 			
 		}
 
+		if (spr.num == 1) {
+
+			spr.id[1] = spr.id[0];
+			spr.id[2] = spr.id[0];
+			spr.id[3] = spr.id[0];
+
+		}
+
 		// turn on the one facing the current direction
 		fbl_set_sprite_active(spr.id[spr.dir], true);
 

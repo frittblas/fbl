@@ -23,6 +23,7 @@
 #include "../../Ecs/Systems/CameraSystem.hpp"
 #include "../../Ecs/Systems/LightSystem.hpp"
 
+#include "../../Chars.hpp"
 #include "../../Weather.hpp"
 #include "../../Robots.hpp"
 
@@ -34,11 +35,15 @@ Race::Race() {
 
 	mMaze = new Maze();
 
+	fbl_set_camera_xy(0, 0);
+
 	std::cout << "Started Race state." << std::endl;
 
 }
 
 Race::~Race() {
+
+	mMaze->exitMaze();
 
 	delete mMaze;
 
@@ -47,6 +52,7 @@ Race::~Race() {
 }
 
 void Race::assignRobots(Game& g) {
+
 
 	// for now just assign the robots we have (should be assigned fom teams and loop to find != Unassigned from mAll)
 
@@ -63,17 +69,21 @@ void Race::assignRobots(Game& g) {
 
 	mNumRacers = 4;
 
-	mMaze->initMaze(g, 40, mNumRacers);
+	mMaze->initMaze(g, 30, mNumRacers);
 
 	fbl_sort_sprites(FBL_SORT_BY_LAYER);
+
+	// add mousectrl to a robot IF it has the skill!!!! (just testing now)
+															  // clicked
+	g.mEcs->AddComponent(g.mRobots->mRacingRobots[0], MouseCtrl{ false });
 
 }
 
 void Race::tick(Game& g) {
 
-	//g.mSysManager->mSpriteSystem->Update(*g.mEcs);			// update the sprite system
-	//g.mSysManager->mPathSystem->Update(g);					// update the path system, note the g as argument
-	//g.mSysManager->mMouseCtrlSystem->Update(*g.mEcs);		// update the mouse control system
+	g.mSysManager->mSpriteSystem->Update(*g.mEcs);			// update the sprite system
+	g.mSysManager->mPathSystem->Update(g);					// update the path system, note the g as argument
+	g.mSysManager->mMouseCtrlSystem->Update(*g.mEcs);		// update the mouse control system
 	//g.mSysManager->mCameraSystem->Update(*g.mEcs);			// update the camera system
 
 	//g.mSysManager->mLightSystem->Update(*g.mEcs);			// update the light system
