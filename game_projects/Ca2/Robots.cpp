@@ -57,20 +57,26 @@ void Robots::setupRobots(Coordinator* mEcs) {
 			case Charmy :
 												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 0, 96, 32, 32, false, 0, 0, 0, 0, 5 });	// robots are on layer 4
-												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight
+												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight activeSlot[4] passiveSlot[2]
 				mEcs->AddComponent(tmpRobot, Stats{ "Charmy", 1, 0, 4, 10, 10, 10, true, 20, 20, 7, 0, 0, 0, 0, 0, 0 });
 				break;
 			case Alarmy :
 												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 32, 96, 32, 32, true, 2, 12, 0, 0, 5 });
-												   // name   lv xp next mxHp hp speed diag mxNrg nrg weight
+												   // name   lv xp next mxHp hp speed diag mxNrg nrg weight activeSlot[4] passiveSlot[2]
 				mEcs->AddComponent(tmpRobot, Stats{ "Alarmy", 1, 0, 4, 10, 10, 10, true, 20, 19, 17, 0, 0, 0, 0, 0, 0 });
 				break;
 			case Boingy :
 												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 96, 96, 32, 32, true, 2, 12, 0, 0, 5 });
-												   // name   lv xp next mxHp hp speed diag mxNrg nrg weight
+												   // name   lv xp next mxHp hp speed diag mxNrg nrg weight activeSlot[4] passiveSlot[2]
 				mEcs->AddComponent(tmpRobot, Stats{ "Boingy", 2, 0, 4, 11, 9, 10, true, 20, 20, 7, 0, 0, 0, 0, 0, 0 });
+				break;
+			case Chompy:
+												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
+				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 160, 96, 32, 32, true, 3, 12, 0, 0, 5 });
+													// name   lv xp next mxHp hp speed diag mxNrg nrg weight activeSlot[4] passiveSlot[2]
+				mEcs->AddComponent(tmpRobot, Stats{ "Chompy", 2, 0, 4, 11, 9, 10, true, 20, 20, 7, 0, 0, 0, 0, 0, 0 });
 				break;
 
 		}
@@ -83,6 +89,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 	claimRobot(Charmy);
 	claimRobot(Alarmy);
 	claimRobot(Boingy);
+	claimRobot(Chompy);
 
 }
 
@@ -146,8 +153,20 @@ void Robots::showRobotInRace(Coordinator* mEcs, int nameIndex, int position) {
 	switch (position) {
 
 		case 1:
-			x = Game::LogicalResW / 2 + 185;
-			y = Game::LogicalResW / 2 - 40;
+			x = Game::TileSize * 3;
+			y = 0;
+			break;
+		case 2:
+			x = Game::LogicalResW - Game::TileSize * 4;
+			y = 0;
+			break;
+		case 3:
+			x = Game::TileSize * 3;
+			y = Game::TileSize * 16;
+			break;
+		case 4:
+			x = Game::LogicalResW - Game::TileSize * 4;
+			y = Game::TileSize * 16;
 			break;
 
 	}
@@ -164,14 +183,14 @@ void Robots::showRobotInRace(Coordinator* mEcs, int nameIndex, int position) {
 
 }
 
-void Robots::claimRobot(Name name) {
+void Robots::claimRobot(int nameIndex) {
 
 	// remove entity from the "All" list and put it in the "Owned" list
 
-	if (mAllRobots[name] != Unassigned) {
+	if (mAllRobots[nameIndex] != Unassigned) {
 	
-		mOwnedRobots[name] = mAllRobots[name];
-		mAllRobots[name] = Unassigned;
+		mOwnedRobots[nameIndex] = mAllRobots[nameIndex];
+		mAllRobots[nameIndex] = Unassigned;
 
 	}
 

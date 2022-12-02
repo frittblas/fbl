@@ -27,6 +27,7 @@ public:
         Charmy,
         Alarmy,
 		Boingy,
+        Chompy,
         NumRobots
     };
 
@@ -46,6 +47,6 @@ public:
     void hideRobots(Coordinator* mEcs);
     void showRobotInMenu(Coordinator* mEcs, int nameIndex);
     void showRobotInRace(Coordinator* mEcs, int nameIndex, int position);
-    void claimRobot(Name name);    // call this to "own" a robot
+    void claimRobot(int nameIndex);    // call this to "own" a robot
 
 };

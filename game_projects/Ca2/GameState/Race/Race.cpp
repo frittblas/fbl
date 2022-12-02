@@ -33,7 +33,6 @@
 Race::Race() {
 
 	mMaze = new Maze();
-	fbl_sort_sprites(FBL_SORT_BY_LAYER);
 
 	std::cout << "Started Race state." << std::endl;
 
@@ -55,8 +54,18 @@ void Race::assignRobots(Game& g) {
 
 	g.mRobots->mRacingRobots[1] = g.mRobots->mOwnedRobots[Robots::Alarmy];
 	g.mRobots->mRacingRobots[2] = g.mRobots->mOwnedRobots[Robots::Boingy];
+	g.mRobots->mRacingRobots[3] = g.mRobots->mOwnedRobots[Robots::Chompy];
 
 	g.mRobots->showRobotInRace(g.mEcs, Robots::Charmy, 1);
+	g.mRobots->showRobotInRace(g.mEcs, Robots::Alarmy, 2);
+	g.mRobots->showRobotInRace(g.mEcs, Robots::Boingy, 3);
+	g.mRobots->showRobotInRace(g.mEcs, Robots::Chompy, 4);
+
+	mNumRacers = 4;
+
+	mMaze->initMaze(g, 40, mNumRacers);
+
+	fbl_sort_sprites(FBL_SORT_BY_LAYER);
 
 }
 

@@ -12,6 +12,9 @@
 
 #pragma once
 
+#include "../../Robots.hpp"
+
+class Game;
 
 class Maze {
 
@@ -22,19 +25,24 @@ public:
     static const int MazeSizeX = 30;
     static const int MazeSizeY = 17;
 
-    void setupPickStart();
-    void pickStartPosition();
+    void initMaze(Game& g, int density, int numRacers);
 
-    // void find_paths()
+    //void setupPickStart();
+    //void pickStartPosition();
+
     void resetMaze();
     void randomizeMaze(int density);
     void populateMaze();
     void addBorder();
-    // void bool maze_has_all_paths()
+    bool mazeHasAllPaths(int numRacers);
+
     // assign_paths()
 
 
 private:
     uint8_t mMazeMap[MazeSizeX][MazeSizeY];
+
+    int pathId[Robots::NumRobots] = {};
+    int startPos[Robots::NumRobots][2] = {};
 
 };

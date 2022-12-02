@@ -152,7 +152,7 @@ void GameState::change(Game& g, StateType newState) {
 			g.mWeather->setWeather(Weather::TimeOfDay::Day, 0, 0, 0, false);	// reset weather before the race (destroys cloud-sprites and emitters)
 			g.mLocation->unLoadLocation(g.mMap);	// this destroys ALL sprites
 			unInitLuaDialog();	// also remove resources for dialogue (ALL prims, text and ui)
-			g.mSysManager->mSpriteSystem->Init(*g.mEcs);	// create sprites for all entities with a sprite component'
+			g.mSysManager->mSpriteSystem->Init(*g.mEcs);	// create sprites for all entities with a sprite component
 			g.mRobots->hideRobots(g.mEcs);
 			g.mChars->hidePlayer(g.mEcs);
 

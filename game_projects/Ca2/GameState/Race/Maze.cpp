@@ -21,11 +21,6 @@
 
 Maze::Maze() {
 
-	resetMaze();
-	randomizeMaze(40);
-	populateMaze();
-	addBorder();
-	fbl_set_clear_color(50, 50, 50, 0);
 
 	std::cout << "Maze constructor." << std::endl;
 
@@ -239,108 +234,62 @@ function pick_start_position()
 
 end
 
-
-function find_paths()
-
-	local tries = 0 -- number of brute force tries
-	local i
-	
-	for i = 0, NUM_ROBOTS do
-		fbl_pathf_set_path_status(i, 0)
-	end
-	
-	-- the robots starting coordinates
-	g_robot[PLAYER][R_X] = 0
-	g_robot[PLAYER][R_Y] = 0
-	g_robot[SPINKY][R_X] = (MAP_SIZE_X - 1) * TILE_SIZE
-	g_robot[SPINKY][R_Y] = 0
-	g_robot[DIETER][R_X] = 0
-	g_robot[DIETER][R_Y] = (MAP_SIZE_Y - 1) * TILE_SIZE
-	g_robot[KARIN][R_X]  = (MAP_SIZE_X - 1) * TILE_SIZE
-	g_robot[KARIN][R_Y]  = (MAP_SIZE_Y - 1) * TILE_SIZE
-
-	local USE_DIAG = FBL_PATHF_NO_DIAG -- 0
-
-	repeat
-		
-		reset_maze()
-		randomize_maze(40)
-
-		fbl_pathf_set_path_status(0, fbl_pathf_find_path(0, g_robot[PLAYER][R_X], g_robot[PLAYER][R_Y], TARGET_X, TARGET_Y, USE_DIAG))
-		fbl_pathf_set_path_status(1, fbl_pathf_find_path(1, g_robot[SPINKY][R_X], g_robot[SPINKY][R_Y], TARGET_X, TARGET_Y, USE_DIAG))
-		fbl_pathf_set_path_status(2, fbl_pathf_find_path(2, g_robot[DIETER][R_X], g_robot[DIETER][R_Y], TARGET_X, TARGET_Y, USE_DIAG))
-		fbl_pathf_set_path_status(3, fbl_pathf_find_path(3, g_robot[KARIN][R_X], g_robot[KARIN][R_Y], TARGET_X, TARGET_Y, USE_DIAG))
-		
-		tries = tries + 1
-		
-	until maze_has_all_paths()
-	
-	-- set relevant tiles to walkable
-	
-	fbl_pathf_set_walkability(g_robot[PLAYER][R_X] / TILE_SIZE, g_robot[PLAYER][R_Y] / TILE_SIZE, FBL_PATHF_WALKABLE)
-	fbl_pathf_set_walkability(g_robot[SPINKY][R_X] / TILE_SIZE, g_robot[SPINKY][R_Y] / TILE_SIZE, FBL_PATHF_WALKABLE)
-	fbl_pathf_set_walkability(g_robot[DIETER][R_X] / TILE_SIZE, g_robot[DIETER][R_Y] / TILE_SIZE, FBL_PATHF_WALKABLE)
-	fbl_pathf_set_walkability(g_robot[KARIN][R_X] / TILE_SIZE, g_robot[KARIN][R_Y] / TILE_SIZE, FBL_PATHF_WALKABLE)
-	
-	fbl_pathf_set_walkability(TARGET_X / TILE_SIZE, TARGET_Y / TILE_SIZE, FBL_PATHF_WALKABLE)
-	
-	
-	-- create sprites
-	fbl_create_sprite(0, 0, 32, 32, 0)	-- player (ID 0)
-	--fbl_set_sprite_xy(PLAYER, -24, -24)
-	fbl_set_sprite_xy(PLAYER, -64, -64)
-	fbl_set_sprite_scale(PLAYER, 1.5)
-	fbl_set_sprite_layer(PLAYER, 1)
-	
-	fbl_create_sprite(0, 0, 32, 32, 0)	-- spinky (ID 1)
-	--fbl_set_sprite_xy(SPINKY, g_robot[SPINKY][R_X], 0)
-	fbl_set_sprite_xy(SPINKY, -64, -64)
-	fbl_set_sprite_animation(SPINKY, 1, 256, 0, 32, 32, 4, 14, 1)
-	fbl_set_sprite_scale(SPINKY, 1.5)
-	fbl_set_sprite_layer(SPINKY, 1)
-	--fbl_set_sprite_color(SPINKY, 200, 0, 200)
-	
-	fbl_create_sprite(0, 0, 32, 32, 0)	-- dieter (ID 2)
-	--fbl_set_sprite_xy(DIETER, 0, g_robot[DIETER][R_Y])
-	fbl_set_sprite_xy(DIETER, -64, -64)
-	fbl_set_sprite_animation(DIETER, 1, 160, 0, 32, 32, 3, 25, 1)
-	fbl_set_sprite_scale(DIETER, 1.5)
-	fbl_set_sprite_layer(DIETER, 1)
-	--fbl_set_sprite_color(DIETER, 200, 200, 0)
-	
-	fbl_create_sprite(0, 0, 32, 32, 0)	-- karin (ID 3)
-	--fbl_set_sprite_xy(KARIN, g_robot[KARIN][R_X], g_robot[KARIN][R_Y])
-	fbl_set_sprite_xy(KARIN, -64, -64)
-	fbl_set_sprite_animation(KARIN, 1, 64, 32, 32, 32, 7, 33, 1)
-	fbl_set_sprite_scale(KARIN, 1.5)
-	fbl_set_sprite_layer(KARIN, 1)
-	--fbl_set_sprite_color(KARIN, 0, 200, 200)
-	
-	
-	-- target tile
-	fbl_create_sprite(0, 2 * TILE_SIZE, 32, 32, 0)	-- ID 4
-	fbl_set_sprite_xy(4, TARGET_X, TARGET_Y)
-	
-	populate_maze()
-	
-	fbl_sort_sprites(FBL_SORT_BY_LAYER)	-- NOTE: remove the print statement in fbl update sprite refs (sprite.c)
-
---[[
-	print(fbl_get_num_sprites())
-	
-	
-	print(fbl_pathf_get_path_status(0))
-	print(fbl_pathf_get_path_status(1))
-	print(fbl_pathf_get_path_status(2))
-	print(fbl_pathf_get_path_status(3))
-
-	print(maze_has_all_paths())
---]]
-
-	print("tries: ", tries)
-
-end
 */
+void Maze::initMaze(Game& g, int density, int numRacers) {
+
+	int tries = 0; // number of brute force tries
+
+	addBorder();
+	fbl_set_clear_color(50, 50, 50, 0);
+
+	// collect the path id's for the racing robots (used in mazeHasAllPaths())
+	for (int i = 0; i < numRacers; i++) {
+		auto& sta = g.mEcs->GetComponent<Path>(g.mRobots->mRacingRobots[i]);
+		auto& pos = g.mEcs->GetComponent<Position>(g.mRobots->mRacingRobots[i]);
+		pathId[i] = sta.id;
+		startPos[i][0] = pos.x;
+		startPos[i][1] = pos.y;
+	}
+
+
+	for (int i = 1; i <= numRacers; i++)
+		fbl_pathf_set_path_status(i, FBL_PATHF_NOT_STARTED);
+
+	int useDiag = FBL_PATHF_NO_DIAG;
+	int targetX = 15 * Game::TileSize;
+	int targetY = 8 * Game::TileSize;
+
+	do {
+
+		resetMaze();
+		randomizeMaze(density);
+
+		for (int i = 0; i < numRacers; i++)
+			fbl_pathf_set_path_status(pathId[i], fbl_pathf_find_path(pathId[i], startPos[i][0], startPos[i][1], targetX, targetY, useDiag));
+
+
+		tries++;
+	}
+	while (!mazeHasAllPaths(numRacers));
+
+		// set relevant tiles to walkable
+	for (int i = 0; i < numRacers; i++)
+		fbl_pathf_set_walkability(startPos[i][0] / Game::TileSize, startPos[i][1] / Game::TileSize, FBL_PATHF_WALKABLE);
+
+	fbl_pathf_set_walkability(targetX / Game::TileSize, targetY / Game::TileSize, FBL_PATHF_WALKABLE);
+
+	// create all the sprites at correct locations
+	populateMaze();
+
+		
+	for (int i = 0; i < numRacers; i++)
+		std::cout << "Path status: " << fbl_pathf_get_path_status(pathId[i]) << std::endl;
+		
+	std::cout << "has all paths: " << mazeHasAllPaths(numRacers) << std::endl;
+
+	std::cout << "Tries: " << tries << std::endl;
+
+}
 
 void Maze::resetMaze() {
 
@@ -352,15 +301,6 @@ void Maze::resetMaze() {
 		}
 	}
 
-	// add a row of unwalkable tiles at the very bottom, one step below screen (not visible)
-	for (int i = 0; i < MazeSizeX; i++)
-		fbl_pathf_set_walkability(i, MazeSizeY, FBL_PATHF_UNWALKABLE);
-
-	// and two columns left and right of the maze
-	for (int j = 0; j < MazeSizeY; j++)
-		fbl_pathf_set_walkability(2, j, FBL_PATHF_UNWALKABLE);
-	for (int j = 0; j < MazeSizeY; j++)
-		fbl_pathf_set_walkability(27, j, FBL_PATHF_UNWALKABLE);
 }
 
 
@@ -419,22 +359,39 @@ void Maze::addBorder() {
 
 	}
 
+	// add a row of unwalkable tiles at the very bottom, one step below screen (not visible)
+	for (int i = 0; i < MazeSizeX; i++)
+		fbl_pathf_set_walkability(i, MazeSizeY, FBL_PATHF_UNWALKABLE);
+
+	// and two columns left and right of the maze
+	for (int j = 0; j < MazeSizeY; j++)
+		fbl_pathf_set_walkability(2, j, FBL_PATHF_UNWALKABLE);
+	for (int j = 0; j < MazeSizeY; j++)
+		fbl_pathf_set_walkability(27, j, FBL_PATHF_UNWALKABLE);
+
 }
 
-/*
-function maze_has_all_paths()
 
-	if  fbl_pathf_get_path_status(0) == FBL_PATHF_FOUND and
-		fbl_pathf_get_path_status(1) == FBL_PATHF_FOUND and
-		fbl_pathf_get_path_status(2) == FBL_PATHF_FOUND and
-		fbl_pathf_get_path_status(3)  == FBL_PATHF_FOUND then
-		return true
+bool Maze::mazeHasAllPaths(int numRacers) {
+
+	for (int i = 0; i < numRacers; i++) {
+		if (fbl_pathf_get_path_status(pathId[i]) != FBL_PATHF_FOUND)
+			return false;
+	}
+
+	return true;
+
+	/*
+	if (fbl_pathf_get_path_status(0) == FBL_PATHF_FOUND &&
+		fbl_pathf_get_path_status(1) == FBL_PATHF_FOUND &&
+		fbl_pathf_get_path_status(2) == FBL_PATHF_FOUND &&
+		fbl_pathf_get_path_status(3) == FBL_PATHF_FOUND)
+		return true;
 	else
-		return false
-	end
+		return false; */
 
-end
-
+}
+/*
 function assign_paths()
 
 	-- randomize paths, then assign g_picked_position to the player and position everything
