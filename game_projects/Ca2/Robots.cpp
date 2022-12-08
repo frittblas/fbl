@@ -182,7 +182,7 @@ void Robots::showRobotInMenu(Coordinator* mEcs, int nameIndex) {
 
 }
 
-void Robots::showRobotInRace(Coordinator* mEcs, int nameIndex, int position) {
+void Robots::showRobotInRace(Coordinator* mEcs, Entity robot, int position) {
 
 	int x, y;
 
@@ -207,8 +207,8 @@ void Robots::showRobotInRace(Coordinator* mEcs, int nameIndex, int position) {
 
 	}
 
-	auto& pos = mEcs->GetComponent<Position>(mOwnedRobots[nameIndex]);
-	auto& spr = mEcs->GetComponent<Sprite>(mOwnedRobots[nameIndex]);
+	auto& pos = mEcs->GetComponent<Position>(robot);
+	auto& spr = mEcs->GetComponent<Sprite>(robot);
 
 	pos.x = x;
 	pos.y = y;

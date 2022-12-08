@@ -208,6 +208,16 @@ void Maze::initMaze(Game& g, int density, int numRacers) {
 	addBorder();
 	fbl_set_clear_color(50, 50, 50, 0);
 
+	// set up starting positions (make this part of showRobotInRace()?)
+	mStartPos[0][0] = Game::TileSize * 3;
+	mStartPos[0][1] = 0;
+	mStartPos[1][0] = Game::LogicalResW - Game::TileSize * 4;
+	mStartPos[1][1] = 0;
+	mStartPos[2][0] = Game::TileSize * 3;
+	mStartPos[2][1] = Game::TileSize * 16;
+	mStartPos[3][0] = Game::LogicalResW - Game::TileSize * 4;;
+	mStartPos[3][1] = Game::TileSize * 16;
+
 	int targetX = 15 * Game::TileSize;
 	int targetY = 8 * Game::TileSize;
 
@@ -236,8 +246,8 @@ void Maze::initMaze(Game& g, int density, int numRacers) {
 		resetMaze();
 		randomizeMaze(density);
 
-		for (int i = 0; i < numRacers; i++)
-			fbl_pathf_set_path_status(mPathId[i], fbl_pathf_find_path(mPathId[i], mStartPos[i][0], mStartPos[i][1], targetX, targetY, mUseDiag[i]));
+		for (int i = 0; i < cMaxRacers; i++)
+			fbl_pathf_set_path_status(i, fbl_pathf_find_path(i, mStartPos[i][0], mStartPos[i][1], targetX, targetY, true));
 
 		tries++;
 
@@ -246,11 +256,11 @@ void Maze::initMaze(Game& g, int density, int numRacers) {
 
 
 	// make robots not move at first
-	for (int i = 0; i < mNumRacers; i++) fbl_pathf_set_path_status(mPathId[i], FBL_PATHF_NOT_STARTED);
+	stopPathing();
 
 
 	// set relevant tiles to walkable
-	for (int i = 0; i < numRacers; i++)
+	for (int i = 0; i < cMaxRacers; i++)
 		fbl_pathf_set_walkability(mStartPos[i][0] / Game::TileSize, mStartPos[i][1] / Game::TileSize, FBL_PATHF_WALKABLE);
 
 	fbl_pathf_set_walkability(targetX / Game::TileSize, targetY / Game::TileSize, FBL_PATHF_WALKABLE);
@@ -270,7 +280,7 @@ void Maze::initMaze(Game& g, int density, int numRacers) {
 
 }
 
-void Maze::exitMaze() {
+void Maze::stopPathing() {
 
 	for (int i = 0; i < mNumRacers; i++)
 		fbl_pathf_set_path_status(mPathId[i], FBL_PATHF_NOT_STARTED);
@@ -352,8 +362,8 @@ void Maze::addBorder() {
 
 bool Maze::mazeHasAllPaths(int numRacers) {
 
-	for (int i = 0; i < numRacers; i++) {
-		if (fbl_pathf_get_path_status(mPathId[i]) != FBL_PATHF_FOUND)
+	for (int i = 0; i < cMaxRacers; i++) {
+		if (fbl_pathf_get_path_status(i) != FBL_PATHF_FOUND)
 			return false;
 	}
 
@@ -366,88 +376,44 @@ void Maze::assignPaths(Game& g) {
 
 	// randomize paths, then assign mPickedPosition to the player and position everything
 
-	int arr[] = { mPathId[0], mPathId[1], mPathId[2], mPathId[3] };	// create ordered array with path id's as values
-
-	std::cout << "before: " << std::endl;
-	for (int i = 0; i < 4; i++)
-		std::cout << "arr[i]: " << arr[i] << std::endl;
-
-
+	int arr[] = { 0, 1, 2, 3 };	// create ordered array with starting positions
+	
 	// shuffle the array using the Fisher-Yates algorithm
-	for (int i = mNumRacers - 1; i > 0; i--) {
-
+	for (int i = cMaxRacers - 1; i > 0; i--) {
 		int j = rand() % (i + 1);
-
 		int temp = arr[i];
 		arr[i] = arr[j];
 		arr[j] = temp;
 	}
-
-	std::cout << "efter: " << std::endl;
-	for (int i = 0; i < 4; i++)
-		std::cout << "arr[i]: " << arr[i] << std::endl;
-
-	// set new random path id's
-	for (int i = 0; i < mNumRacers; i++) {
-		mPathId[i] = arr[i];
-	}
-
-	/*
-
-	// assign unique random path id's to the robots
-	for (int i = 0; i < mNumRacers; i++) {
-		auto& path = g.mEcs->GetComponent<Path>(g.mRobots->mRacingRobots[i]);
-		mPathId[i] = path.id;
-
-		path.goalX = targetX;
-		path.goalY = targetY;
-		path.newPath = false;
-
-	}
 	
-
-
-	// find the robot who has the picked path, and swap it with the players path(even if it's the player)
-	for (int i = 0; i < mNumRacers; i++) {
-
-		if(g_robot[i][R_PATH] == mPickedPosition) {	// found it
-
+	// find if a robot has the picked path, swap it with the players path (even if it's the player)
+	for (int i = 0; i < cMaxRacers; i++) {
+		if(arr[i] == mPickedPosition) {	// found it
 			// swap
-			g_robot[i][R_PATH] = g_robot[PLAYER][R_PATH]
-			g_robot[PLAYER][R_PATH] = mPickedPosition
-
+			arr[i] = arr[0];
+			arr[0] = mPickedPosition;
 			break;	// break loop
-
 		}
-
 	}
-	*/
-	/*
 
-		// set new coordinates for the robots
-		for(int i = 0; i < mNumRacers; i++) {
+	// place robots	at the new random locations
+	for (int i = 0; i < mNumRacers; i++)
+		g.mRobots->showRobotInRace(g.mEcs, g.mRobots->mRacingRobots[i], arr[i]);
 
-			if g_robot[i][R_PATH] == 0 then
-				g_robot[i][R_X] = 0
-				g_robot[i][R_Y] = 0
-				elseif g_robot[i][R_PATH] == 1 then
-				g_robot[i][R_X] = (cMazeSizeX - 1) * Game::TileSize
-				g_robot[i][R_Y] = 0
-				elseif g_robot[i][R_PATH] == 2 then
-				g_robot[i][R_X] = 0
-				g_robot[i][R_Y] = (cMazeSizeY - 1) * Game::TileSize
-				elseif g_robot[i][R_PATH] == 3 then
-				g_robot[i][R_X] = (cMazeSizeX - 1) * Game::TileSize
-				g_robot[i][R_Y] = (cMazeSizeY - 1) * Game::TileSize
-				end
+	int targetX = 15 * Game::TileSize;
+	int targetY = 8 * Game::TileSize;
 
-		}*/
+	for (int i = 0; i < mNumRacers; i++) {
+		auto& pos = g.mEcs->GetComponent<Position>(g.mRobots->mRacingRobots[i]);
+		mStartPos[i][0] = pos.x;
+		mStartPos[i][1] = pos.y;
+	}
 
-		// place robots	
-		g.mRobots->showRobotInRace(g.mEcs, Robots::Charmy, 0);
-		g.mRobots->showRobotInRace(g.mEcs, Robots::Alarmy, 1);
-		g.mRobots->showRobotInRace(g.mEcs, Robots::Boingy, 2);
-		g.mRobots->showRobotInRace(g.mEcs, Robots::Chompy, 3);
-		
+	// finally find paths for the new locations (will find immediately, maze is already in place (maze is a place))
+	for (int i = 0; i < mNumRacers; i++)
+		fbl_pathf_set_path_status(mPathId[i], fbl_pathf_find_path(mPathId[i], mStartPos[i][0], mStartPos[i][1], targetX, targetY, mUseDiag[i]));
+
+	// don't start immediately
+	stopPathing();
 	
 }

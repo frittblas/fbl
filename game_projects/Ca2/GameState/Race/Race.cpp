@@ -43,7 +43,7 @@ Race::Race() {
 
 Race::~Race() {
 
-	mMaze->exitMaze();
+	mMaze->stopPathing();	// not necessary as the path components get removed
 
 	delete mMaze;
 
@@ -61,19 +61,19 @@ void Race::assignRobots(Game& g) {
 	g.mRobots->mRacingRobots[2] = g.mRobots->mOwnedRobots[Robots::Boingy];
 	g.mRobots->mRacingRobots[3] = g.mRobots->mOwnedRobots[Robots::Chompy];
 
+	// set one of the robots as your team-member
+	g.mRobots->mTeam[0] = g.mRobots->mOwnedRobots[Robots::Charmy];
+
+	mNumRacers = 4;
+	g.mRobots->mNumRacers = mNumRacers;		// this is needed when you remove path component on the racers.
+
 	// first show the robots so they get the correct position
-	g.mRobots->showRobotInRace(g.mEcs, Robots::Charmy, 0);
-	g.mRobots->showRobotInRace(g.mEcs, Robots::Alarmy, 1);
-	g.mRobots->showRobotInRace(g.mEcs, Robots::Boingy, 2);
-	g.mRobots->showRobotInRace(g.mEcs, Robots::Chompy, 3);
+	for (int i = 0; i < mNumRacers; i++)
+		g.mRobots->showRobotInRace(g.mEcs, g.mRobots->mRacingRobots[i], i);
 
 	// then hide them again (will show up after the pick countdown)
 	g.mRobots->hideRobots(g.mEcs);
 
-
-	mNumRacers = 4;
-
-	g.mRobots->mNumRacers = mNumRacers;		// this is needed when you remove path component on the racers.
 
 	// add path components to the racing robots (these are removed after the race.)
 	for (int i = 0; i < mNumRacers; i++) {

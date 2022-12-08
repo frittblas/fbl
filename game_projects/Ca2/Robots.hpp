@@ -51,7 +51,7 @@ public:
     void removeRobots(Coordinator* mEcs);
     void hideRobots(Coordinator* mEcs);
     void showRobotInMenu(Coordinator* mEcs, int nameIndex);
-    void showRobotInRace(Coordinator* mEcs, int nameIndex, int position);
+    void showRobotInRace(Coordinator* mEcs, Entity robot, int position);
     void claimRobot(int nameIndex);    // call this to "own" a robot
 
 };

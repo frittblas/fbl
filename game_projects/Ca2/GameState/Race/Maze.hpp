@@ -25,20 +25,18 @@ public:
     static const int cMazeSizeX = 30;
     static const int cMazeSizeY = 17;
 
+    static const int cMaxRacers = 4;
+
     void tick(Game& g);
-
-    void initMaze(Game& g, int density, int numRacers);
-    void exitMaze();
-
     void setupPickStart();
     void pickStartPosition(Game& g);
-
+    void initMaze(Game& g, int density, int numRacers);
+    void stopPathing();
     void resetMaze();
     void randomizeMaze(int density);
     void populateMaze();
     void addBorder();
     bool mazeHasAllPaths(int numRacers);
-
     void assignPaths(Game& g);
 
 
@@ -52,11 +50,11 @@ private:
 
     int mGetReadyTextId = 0;    // get ready text id
 
-    int mGetReadyTimer = 2;	    // seconds of GET READY text with black bg
-    int mTimeToPick = 3;        // seconds of actual time player has to pick corner
+    int mGetReadyTimer = 1;	    // seconds of GET READY text with black bg
+    int mTimeToPick = 2;        // seconds of actual time player has to pick corner
 
     int mPickTimer = 0;	        // timer for picking state(in seconds * 60)
-    int mPickedPosition = 0;	// stores the picked corner(1 = up left, 2 = up right, 3 down left, 4 down right)
+    int mPickedPosition = -1;	// stores the picked corner(0 = up left, 1 = up right, 2 down left, 3 down right)
 
     int mBlackBgId = 0;	        // id for black background id
     int mBlackBgFade = 255;     // bg fadout
