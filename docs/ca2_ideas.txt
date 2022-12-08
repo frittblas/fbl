@@ -69,7 +69,7 @@ Add some nice tiles (more grass, snow etc) - in progress.
 Make a couple of nice levels that are final-ish - in progress.
 Make the tile-type 0-9 be terrain. 10-19 = objects (pushable blocks, shops, secret passage etc.) 20-up NPCs
 
-Small bug: If you click Talk, after the conversation the player will path to the Talk button coords :)
+Small bug: If you click Talk, after the conversation the player will path to the Talk button coords :) FIXED!!!!!
 
 Start planning the racing system! Make new folder makes sense. - done.
 Maybe add more detailed folder structure.
@@ -101,4 +101,6 @@ at least if you use mousectrl on one of the robots, and hop between race and exp
 
 Next:
 Add pick start, randomize rest.
-Add laser.
+Add different kinds of laser.
+Add magnetic passive ability.
+Add teleport.

@@ -57,19 +57,36 @@ void Race::assignRobots(Game& g) {
 	// for now just assign the robots we have (should be assigned fom teams and loop to find != Unassigned from mAll)
 
 	g.mRobots->mRacingRobots[0] = g.mRobots->mOwnedRobots[Robots::Charmy];
-
 	g.mRobots->mRacingRobots[1] = g.mRobots->mOwnedRobots[Robots::Alarmy];
 	g.mRobots->mRacingRobots[2] = g.mRobots->mOwnedRobots[Robots::Boingy];
 	g.mRobots->mRacingRobots[3] = g.mRobots->mOwnedRobots[Robots::Chompy];
 
-	g.mRobots->showRobotInRace(g.mEcs, Robots::Charmy, 1);
-	g.mRobots->showRobotInRace(g.mEcs, Robots::Alarmy, 2);
-	g.mRobots->showRobotInRace(g.mEcs, Robots::Boingy, 3);
-	g.mRobots->showRobotInRace(g.mEcs, Robots::Chompy, 4);
+	// first show the robots so they get the correct position
+	g.mRobots->showRobotInRace(g.mEcs, Robots::Charmy, 0);
+	g.mRobots->showRobotInRace(g.mEcs, Robots::Alarmy, 1);
+	g.mRobots->showRobotInRace(g.mEcs, Robots::Boingy, 2);
+	g.mRobots->showRobotInRace(g.mEcs, Robots::Chompy, 3);
+
+	// then hide them again (will show up after the pick countdown)
+	g.mRobots->hideRobots(g.mEcs);
+
 
 	mNumRacers = 4;
 
-	mMaze->initMaze(g, 30, mNumRacers);
+	g.mRobots->mNumRacers = mNumRacers;		// this is needed when you remove path component on the racers.
+
+	// add path components to the racing robots (these are removed after the race.)
+	for (int i = 0; i < mNumRacers; i++) {
+		auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mRacingRobots[i]);
+		float speed = (float)sta.speed / 10;
+		uint8_t diag = sta.diag ? FBL_PATHF_USE_DIAG : FBL_PATHF_NO_DIAG;
+															// id gX gY newPath speed diag pixelsPerFrame
+		g.mEcs->AddComponent(g.mRobots->mRacingRobots[i], Path{ 0, 0, 0, false, speed, diag, 10 });
+	}
+
+	g.mSysManager->mPathSystem->Init(*g.mEcs);		// assign a unique path id to the entities with a path component
+
+	mMaze->initMaze(g, 35, mNumRacers);
 
 	fbl_sort_sprites(FBL_SORT_BY_LAYER);
 
@@ -77,6 +94,9 @@ void Race::assignRobots(Game& g) {
 															  // clicked
 	//g.mEcs->AddComponent(g.mRobots->mRacingRobots[0], MouseCtrl{ false });
 
+}
+
+void Race::unassignRobots(Game& g) {
 }
 
 void Race::tick(Game& g) {
@@ -90,7 +110,7 @@ void Race::tick(Game& g) {
 
 	//g.mWeather->tick();
 
-	mMaze->tick(g);
+	mMaze->tick(g);	// needed for the pick-start positions-"state" in the beginning of the race
 
 	if(fbl_get_raw_frames_count() % 60 == 0)
 		std::cout << "Tick race!" << std::endl;

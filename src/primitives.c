@@ -671,60 +671,64 @@ int translate_phys_prim(int tag, void *prim, void *dummy)
 
 	FBL_PRIM* p = (FBL_PRIM*)prim;	// p is now the current primitive to be used
 
-	if(p->physics_on && p->active && p->type != FBL_LINE)
+	if (p->active)
 	{
 
-		/* first get the physics body's position and angle */
-
-		pos = cpBodyGetPosition(p->phys_body);
-		angle = cpBodyGetAngle(p->phys_body);
-
-		/* then set it on the prim */
-
-		p->dest_rect.x = (int)pos.x;
-		p->dest_rect.y = (int)pos.y;
-
-		/* convert from radians to degrees */
-
-		p->angle = angle * 180.0 / M_PI;
-
-		if(p->type == FBL_TRI || p->type == FBL_RECT) translate_shape(p);
-
-	}
-	if (p->type == FBL_RAY)
-	{
-
-		// check the return value of this (cpShape *) to get what you collided with
-		cpShape *collided_shape = engine_ray_collided(&p->dest_rect, p->radius, &p->segInfo);
-		if (collided_shape)
+		if (p->physics_on && p->type != FBL_LINE)
 		{
 
-			//cpVect point = p->segInfo.point;	// the point of colission
+			/* first get the physics body's position and angle */
 
-			// maybe make this work with more than
+			pos = cpBodyGetPosition(p->phys_body);
+			angle = cpBodyGetAngle(p->phys_body);
 
-			FBL_SPRITE* spr;
-			for (int i = 0; i < fbl_get_num_sprites(); i++) {
-				if (i > (NUM_DIRECT_REF_SPRITES - 1)) break;	// only works with direct ref atm
-				spr = ((FBL_SPRITE*)direct_sprite_ref[i]->Object);
-				if (spr->phys_shape == collided_shape) {
-					//printf("id : %d\n", direct_sprite_ref[i]->Tag);
-					//cpVect point = p->segInfo.point;	// the point of colission
-					//printf("X = %f         Y = %f\n", point.x, point.y);
-					p->ray_hit_id = direct_sprite_ref[i]->Tag;
-				}
-			}
+			/* then set it on the prim */
 
+			p->dest_rect.x = (int)pos.x;
+			p->dest_rect.y = (int)pos.y;
 
-			// check out Query.c in the chipmunk demo for more information
-			//ChipmunkDemoPrintString("Segment Query: Dist(%f) Normal(%5.2f, %5.2f)", segInfo.alpha * cpvdist(start, end), n.x, n.y);
+			/* convert from radians to degrees */
 
-			//if (fbl_get_raw_frames_count() % 10 == 1)
-				//printf("X = %f         Y = %f\n", point.x, point.y);
+			p->angle = angle * 180.0 / M_PI;
+
+			if (p->type == FBL_TRI || p->type == FBL_RECT) translate_shape(p);
 
 		}
-		else p->ray_hit_id = -1;	// if it's -1 it didn't hit anything
-		//else printf("NULL");
+		if (p->type == FBL_RAY)
+		{
+
+			// check the return value of this (cpShape *) to get what you collided with
+			cpShape* collided_shape = engine_ray_collided(&p->dest_rect, p->radius, &p->segInfo);
+			if (collided_shape)
+			{
+
+				//cpVect point = p->segInfo.point;	// the point of colission
+
+				FBL_SPRITE* spr;
+				int num_sprites = fbl_get_num_sprites();
+				for (int i = 0; i < num_sprites; i++) {
+					if (i > (NUM_DIRECT_REF_SPRITES - 1)) break;	// only works with direct ref atm
+					spr = ((FBL_SPRITE*)direct_sprite_ref[i]->Object);
+					if (spr->phys_shape == collided_shape) {
+						//printf("id : %d\n", direct_sprite_ref[i]->Tag);
+						//cpVect point = p->segInfo.point;	// the point of colission
+						//printf("X = %f         Y = %f\n", point.x, point.y);
+						p->ray_hit_id = direct_sprite_ref[i]->Tag;
+					}
+				}
+
+
+				// check out Query.c in the chipmunk demo for more information
+				//ChipmunkDemoPrintString("Segment Query: Dist(%f) Normal(%5.2f, %5.2f)", segInfo.alpha * cpvdist(start, end), n.x, n.y);
+
+				//if (fbl_get_raw_frames_count() % 10 == 1)
+					//printf("X = %f         Y = %f\n", point.x, point.y);
+
+			}
+			else p->ray_hit_id = -1;	// if it's -1 it didn't hit anything
+			//else printf("NULL");
+
+		}
 
 	}
 

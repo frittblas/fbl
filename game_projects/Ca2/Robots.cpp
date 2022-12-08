@@ -55,7 +55,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 
 			case Charmy :
 												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
-				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 0, 96, 32, 32, false, 0, 0, 0, 0, 5 });	// robots are on layer 4
+				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 0, 96, 32, 32, false, 0, 0, 0, 0, 5 });	// robots are on layer 5
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight activeSlot[4] passiveSlot[2]
 				mEcs->AddComponent(tmpRobot, Stats{ "Charmy", 1, 0, 4, 10, 10, 12, true, 20, 20, 7, 0, 0, 0, 0, 0, 0 });
 				break;
@@ -79,14 +79,14 @@ void Robots::setupRobots(Coordinator* mEcs) {
 				break;
 
 		}
-
+		/*
 		auto& sta = mEcs->GetComponent<Stats>(tmpRobot);
 		float speed = (float)sta.speed / 10;
-		uint8_t diag = sta.diag == true ? FBL_PATHF_USE_DIAG : FBL_PATHF_NO_DIAG;
+		uint8_t diag = sta.diag ? FBL_PATHF_USE_DIAG : FBL_PATHF_NO_DIAG;
 
 										// id gX gY newPath speed diag pixelsPerFrame
 		mEcs->AddComponent(tmpRobot, Path{ 0, 0, 0, false, speed, diag, 10 });
-
+		*/
 		// add the entity to the array containing all robots
 		mAllRobots[i] = tmpRobot;
 
@@ -96,6 +96,36 @@ void Robots::setupRobots(Coordinator* mEcs) {
 	claimRobot(Alarmy);
 	claimRobot(Boingy);
 	claimRobot(Chompy);
+
+}
+
+void Robots::mapSpriteIdEntity(Coordinator* mEcs) {
+
+	// first clear the spriteId->Entity mapping
+	mSpriteIdEntityMap.clear();
+
+	// then add entries to the spriteId->Entity mapping, must be called after the sprites have been created
+	
+
+	for (Entity e : mAllRobots)
+	{
+
+		if (e != Unassigned) {
+			auto& spr = mEcs->GetComponent<Sprite>(e);
+			mSpriteIdEntityMap[spr.id[0]] = e;
+			std::cout << "SpriteId->Entity map (all): " << spr.id[0] << "->" << e << std::endl;
+		}
+	}
+
+	for (Entity e : mOwnedRobots)
+	{
+
+		if(e != Unassigned) {
+			auto& spr = mEcs->GetComponent<Sprite>(e);
+			mSpriteIdEntityMap[spr.id[0]] = e;
+			std::cout << "SpriteId->Entity map (owned): " << spr.id[0] << "->" << e << std::endl;
+		}
+	}
 
 }
 
@@ -158,19 +188,19 @@ void Robots::showRobotInRace(Coordinator* mEcs, int nameIndex, int position) {
 
 	switch (position) {
 
-		case 1:
+		case 0:
 			x = Game::TileSize * 3;
 			y = 0;
 			break;
-		case 2:
+		case 1:
 			x = Game::LogicalResW - Game::TileSize * 4;
 			y = 0;
 			break;
-		case 3:
+		case 2:
 			x = Game::TileSize * 3;
 			y = Game::TileSize * 16;
 			break;
-		case 4:
+		case 3:
 			x = Game::LogicalResW - Game::TileSize * 4;
 			y = Game::TileSize * 16;
 			break;

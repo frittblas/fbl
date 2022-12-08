@@ -31,7 +31,7 @@ public:
     void exitMaze();
 
     void setupPickStart();
-    void pickStartPosition();
+    void pickStartPosition(Game& g);
 
     void resetMaze();
     void randomizeMaze(int density);
@@ -39,7 +39,7 @@ public:
     void addBorder();
     bool mazeHasAllPaths(int numRacers);
 
-    void assignPaths();
+    void assignPaths(Game& g);
 
 
 private:
@@ -47,12 +47,13 @@ private:
     int mPathId[Robots::NumRobots] = {};        // keep robots path id's
     int mStartPos[Robots::NumRobots][2] = {};   // keep robots starting positions
     uint8_t mUseDiag[Robots::NumRobots] = {};   // keep info on wether robot can go diagonally
-    int mNumRacers;
+
+    int mNumRacers;     // his many robots in a race at once
 
     int mGetReadyTextId = 0;    // get ready text id
 
-    int mGetReadyTimer = 1;	    // seconds of GET READY text with black bg
-    int mTimeToPick = 5;        // seconds of actual time player has to pick corner
+    int mGetReadyTimer = 2;	    // seconds of GET READY text with black bg
+    int mTimeToPick = 3;        // seconds of actual time player has to pick corner
 
     int mPickTimer = 0;	        // timer for picking state(in seconds * 60)
     int mPickedPosition = 0;	// stores the picked corner(1 = up left, 2 = up right, 3 down left, 4 down right)
@@ -64,5 +65,6 @@ private:
     int mTimeBarRed = 0;        // how much red in bar
 
     int mCircleSize[3];         // for the circle effect
+    int mFirstCircleId;         // first id of the 12 circles
 
 };

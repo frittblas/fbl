@@ -191,10 +191,16 @@ void GameState::titleToExplore(Game& g) {
 
 void GameState::raceToExplore(Game& g) {
 
+	fbl_destroy_all_prims();
+	fbl_destroy_all_text_objects();
 	g.mLocation->loadLocation(g.mMap);
 	initLuaDialog();	// set up prims and text and ui for the dialog box.
 	g.mSysManager->mSpriteSystem->Init(*g.mEcs);	// create sprites for all entities with a sprite component
 	g.mSysManager->mLightSystem->Init(*g.mEcs);		// create lights for all entities with a light component
+
+	// remove the path components from the racing robots
+	for(int i = 0; i < g.mRobots->mNumRacers; i++)
+		g.mEcs->RemoveComponent<Path>(g.mRobots->mRacingRobots[i]);
 
 	// add path component back to the player
 	g.mEcs->AddComponent(g.mChars->mBrodo, Path{ 0, 0, 0, false, 2.0, FBL_PATHF_USE_DIAG, 1 });
@@ -215,6 +221,7 @@ void GameState::setupRace(Game& g) {
 	g.mLocation->unLoadLocation(g.mMap);	// this destroys ALL sprites
 	unInitLuaDialog();	// also remove resources for dialogue (ALL prims, text and ui)
 	g.mSysManager->mSpriteSystem->Init(*g.mEcs);	// create sprites for all entities with a sprite component
+	g.mRobots->mapSpriteIdEntity(g.mEcs);
 	g.mRobots->hideRobots(g.mEcs);
 
 	// temporarily remove component from the player

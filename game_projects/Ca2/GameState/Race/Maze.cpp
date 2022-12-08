@@ -34,17 +34,17 @@ Maze::~Maze() {
 void Maze::tick(Game& g) {
 
 	if (mPickTimer > 0)
-		pickStartPosition();
+		pickStartPosition(g);
 	else {
 
 		if (mPickTimer == -150) { // wait a little before starting
 			// make robots move
 			for (int i = 0; i < mNumRacers; i++) fbl_pathf_set_path_status(mPathId[i], FBL_PATHF_FOUND);
-			mPickTimer--;
 			std::cout << "Picked pos: " << mPickedPosition << std::endl;
 			std::cout << "Running!" << std::endl;
+			mPickTimer--;
 		}
-		else
+		else if(mPickTimer > -160)
 			mPickTimer--;
 
 	}
@@ -53,11 +53,8 @@ void Maze::tick(Game& g) {
 
 void Maze::setupPickStart() {
 
-	// NOTE: add Game& to all these and pass around use constants
-
-	// black bg, rect = 3
-
-	mBlackBgId = fbl_create_prim(FBL_NORMAL_RECT, 0, 0, 960, 540, 0, 0, 1);
+	// black bg
+	mBlackBgId = fbl_create_prim(FBL_NORMAL_RECT, 0, 0, Game::DeviceResW, Game::DeviceResH, 0, 0, 1);
 	fbl_set_prim_color(mBlackBgId, 0, 0, 0, 255);
 	mBlackBgFade = 255;
 
@@ -73,25 +70,25 @@ void Maze::setupPickStart() {
 	mCircleSize[1] = 30;
 	mCircleSize[2] = 55;
 
-	int TILE_SIZE = 32;
+	int xOffset = Game::TileSize / 2 + 96;
 
-	fbl_create_prim(FBL_CIRCLE, TILE_SIZE / 2, TILE_SIZE / 2, 0, 0, mCircleSize[0], true, false);
-	fbl_create_prim(FBL_CIRCLE, TILE_SIZE / 2, TILE_SIZE / 2, 0, 0, mCircleSize[1], true, false);
-	fbl_create_prim(FBL_CIRCLE, TILE_SIZE / 2, TILE_SIZE / 2, 0, 0, mCircleSize[2], true, false);
+	mFirstCircleId = fbl_create_prim(FBL_CIRCLE, xOffset, Game::TileSize / 2, 0, 0, mCircleSize[0], true, false);
+	fbl_create_prim(FBL_CIRCLE, xOffset, Game::TileSize / 2, 0, 0, mCircleSize[1], true, false);
+	fbl_create_prim(FBL_CIRCLE, xOffset, Game::TileSize / 2, 0, 0, mCircleSize[2], true, false);
 
-	fbl_create_prim(FBL_CIRCLE, fbl_get_screen_w() - TILE_SIZE / 2, TILE_SIZE / 2, 0, 0, mCircleSize[0], true, false);
-	fbl_create_prim(FBL_CIRCLE, fbl_get_screen_w() - TILE_SIZE / 2, TILE_SIZE / 2, 0, 0, mCircleSize[1], true, false);
-	fbl_create_prim(FBL_CIRCLE, fbl_get_screen_w() - TILE_SIZE / 2, TILE_SIZE / 2, 0, 0, mCircleSize[2], true, false);
+	fbl_create_prim(FBL_CIRCLE, Game::LogicalResW - xOffset, Game::TileSize / 2, 0, 0, mCircleSize[0], true, false);
+	fbl_create_prim(FBL_CIRCLE, Game::LogicalResW - xOffset, Game::TileSize / 2, 0, 0, mCircleSize[1], true, false);
+	fbl_create_prim(FBL_CIRCLE, Game::LogicalResW - xOffset, Game::TileSize / 2, 0, 0, mCircleSize[2], true, false);
 
-	fbl_create_prim(FBL_CIRCLE, TILE_SIZE / 2, cMazeSizeY * TILE_SIZE - TILE_SIZE / 2, 0, 0, mCircleSize[0], true, false);
-	fbl_create_prim(FBL_CIRCLE, TILE_SIZE / 2, cMazeSizeY * TILE_SIZE - TILE_SIZE / 2, 0, 0, mCircleSize[1], true, false);
-	fbl_create_prim(FBL_CIRCLE, TILE_SIZE / 2, cMazeSizeY * TILE_SIZE - TILE_SIZE / 2, 0, 0, mCircleSize[2], true, false);
+	fbl_create_prim(FBL_CIRCLE, xOffset, cMazeSizeY * Game::TileSize - Game::TileSize / 2, 0, 0, mCircleSize[0], true, false);
+	fbl_create_prim(FBL_CIRCLE, xOffset, cMazeSizeY * Game::TileSize - Game::TileSize / 2, 0, 0, mCircleSize[1], true, false);
+	fbl_create_prim(FBL_CIRCLE, xOffset, cMazeSizeY * Game::TileSize - Game::TileSize / 2, 0, 0, mCircleSize[2], true, false);
 
-	fbl_create_prim(FBL_CIRCLE, fbl_get_screen_w() - TILE_SIZE / 2, cMazeSizeY * TILE_SIZE - TILE_SIZE / 2, 0, 0, mCircleSize[0], true, false);
-	fbl_create_prim(FBL_CIRCLE, fbl_get_screen_w() - TILE_SIZE / 2, cMazeSizeY * TILE_SIZE - TILE_SIZE / 2, 0, 0, mCircleSize[1], true, false);
-	fbl_create_prim(FBL_CIRCLE, fbl_get_screen_w() - TILE_SIZE / 2, cMazeSizeY * TILE_SIZE - TILE_SIZE / 2, 0, 0, mCircleSize[2], true, false);
+	fbl_create_prim(FBL_CIRCLE, Game::LogicalResW - xOffset, cMazeSizeY * Game::TileSize - Game::TileSize / 2, 0, 0, mCircleSize[0], true, false);
+	fbl_create_prim(FBL_CIRCLE, Game::LogicalResW - xOffset, cMazeSizeY * Game::TileSize - Game::TileSize / 2, 0, 0, mCircleSize[1], true, false);
+	fbl_create_prim(FBL_CIRCLE, Game::LogicalResW - xOffset, cMazeSizeY * Game::TileSize - Game::TileSize / 2, 0, 0, mCircleSize[2], true, false);
 
-	mTimeBarId = fbl_create_prim(FBL_RECT, fbl_get_screen_w() / 2, (cMazeSizeY - 1) * TILE_SIZE, mTimeToPick * 60, TILE_SIZE / 2, 0, false, true);
+	mTimeBarId = fbl_create_prim(FBL_RECT, fbl_get_screen_w() / 2, (cMazeSizeY - 1) * Game::TileSize, mTimeToPick * 60, Game::TileSize / 2, 0, false, true);
 	fbl_set_prim_color(mTimeBarId, 0, 255, 0, 255);
 
 	mTimeBarRed = 0;
@@ -101,7 +98,7 @@ void Maze::setupPickStart() {
 
 }
 
-void Maze::pickStartPosition() {
+void Maze::pickStartPosition(Game& g) {
 
 	// do some nice circle effects
 
@@ -114,7 +111,7 @@ void Maze::pickStartPosition() {
 
 	}
 
-	for (int i = 1; i <= 12; i++) {	// this demands that the circle prims are created starting at id 1
+	for (int i = mFirstCircleId; i < (mFirstCircleId + 12); i++) {
 
 		if ((i + 2) % 3 == 0)
 			fbl_set_prim_size(i, 0, 0, mCircleSize[0]);
@@ -123,35 +120,34 @@ void Maze::pickStartPosition() {
 		else if (i % 3 == 0)
 			fbl_set_prim_size(i, 0, 0, mCircleSize[2]);
 
-
 	}
-
-	int TILE_SIZE = 32;
 
 
 	// handle pick selection
+	int xPickOffset = Game::TileSize * 6;
+	int yPickOffset = Game::TileSize * 3;
 
 	if (fbl_get_mouse_click(FBLMB_LEFT) > 0 && mPickTimer < mTimeToPick * 60) {	// if clicked and after GET READY phase 
 
-		if(fbl_get_mouse_x() < 96 && fbl_get_mouse_y() < 96){  // up left
-		mPickedPosition = 0;	// this is the picked corner
-		mPickTimer = -1; 		// stop the pick corner state
-		assignPaths();			// assign new paths to the robots based on the selection
+		if(fbl_get_mouse_x() < xPickOffset && fbl_get_mouse_y() < yPickOffset){  // up left
+			mPickedPosition = 0;	// this is the picked corner
+			mPickTimer = -1; 		// stop the pick corner state
+			assignPaths(g);			// assign new paths to the robots based on the selection
 		}
-		else if (fbl_get_mouse_x() > fbl_get_screen_w() - 96 && fbl_get_mouse_y() < 96) {
+		else if (fbl_get_mouse_x() > Game::LogicalResW - xPickOffset && fbl_get_mouse_y() < yPickOffset) {
 			mPickedPosition = 1;
 			mPickTimer = -1;
-			assignPaths();
+			assignPaths(g);
 		}
-		else if (fbl_get_mouse_x() < 96 && fbl_get_mouse_y() > cMazeSizeY * TILE_SIZE - 96) {
+		else if (fbl_get_mouse_x() < xPickOffset && fbl_get_mouse_y() > cMazeSizeY * Game::TileSize - yPickOffset) {
 			mPickedPosition = 2;
 			mPickTimer = -1;
-			assignPaths();
+			assignPaths(g);
 		}
-		else if (fbl_get_mouse_x() > fbl_get_screen_w() - 96 && fbl_get_mouse_y() > cMazeSizeY * TILE_SIZE - 96) {
+		else if (fbl_get_mouse_x() > Game::LogicalResW - xPickOffset && fbl_get_mouse_y() > cMazeSizeY * Game::TileSize - yPickOffset) {
 			mPickedPosition = 3;
 			mPickTimer = -1;
-			assignPaths();
+			assignPaths(g);
 		}
 
 	}
@@ -164,13 +160,13 @@ void Maze::pickStartPosition() {
 	}
 
 	if(mPickTimer == mTimeToPick * 60){
-		fbl_set_prim_active(mBlackBgId, false);	// deactivate bg, all prims get destroyed after countdown
+		fbl_set_prim_active(mBlackBgId, false);	// deactivate bg after the fadeout
 		fbl_set_text_active(mGetReadyTextId, false);
 	}
 
 	// time bar
 	if(mPickTimer < mTimeToPick * 60){
-		fbl_set_prim_size(mTimeBarId, mPickTimer, TILE_SIZE / 2, 0);
+		fbl_set_prim_size(mTimeBarId, mPickTimer, Game::TileSize / 2, 0);
 		int green_fade = mPickTimer; // 45
 		if(green_fade > 255) green_fade = 255;
 		if(green_fade < 1) green_fade = 0;
@@ -186,11 +182,15 @@ void Maze::pickStartPosition() {
 
 		if (mPickTimer == 0) {
 			mPickedPosition = rand() % 4; // if time runs out, assign a random position
-			assignPaths();
+			assignPaths(g);
 		}
 
-		fbl_destroy_all_prims();
+		for (int i = mFirstCircleId; i < (mFirstCircleId + 12); i++)
+			fbl_set_prim_active(i, false);
+
 		fbl_set_text_active(mGetReadyTextId, false);
+		fbl_set_prim_active(mBlackBgId, false);
+		fbl_set_prim_active(mTimeBarId, false);
 
 	}
 
@@ -266,6 +266,8 @@ void Maze::initMaze(Game& g, int density, int numRacers) {
 
 	std::cout << "Tries: " << tries << std::endl;
 
+	std::cout << "Num sprites: " << fbl_get_num_sprites() << std::endl;
+
 }
 
 void Maze::exitMaze() {
@@ -326,8 +328,8 @@ void Maze::addBorder() {
 			// draw a frame left and right of maze
 			if ((i >= 0 && i < 3) || (i > 26 && i < 30)) {
 
-				int id = fbl_create_sprite(64, 416, 32, 32, 0);
-				fbl_set_sprite_xy(id, i * Game::TileSize, j * Game::TileSize);
+				//int id = fbl_create_sprite(64, 416, 32, 32, 0);
+				//fbl_set_sprite_xy(id, i * Game::TileSize, j * Game::TileSize);
 
 			}
 
@@ -360,81 +362,92 @@ bool Maze::mazeHasAllPaths(int numRacers) {
 }
 
 
-void Maze::assignPaths() {}
-/*
-	-- randomize paths, then assign mPickedPosition to the player and position everything
-	
-	local list = {0, 1, 2, 3}	-- create ordered array with path id's as values
-	local i = 0
-	
---[[
-	for i = 1, #list do
-		print(list[i])
-	end
---]]
-	
-	-- shuffle the array using the Fisher-Yates algorithm
-	for i = #list, 2, -1 do
-		local j = math.random(i)
-		list[i], list[j] = list[j], list[i]
-	end
-	
---[[
-	print("efter")
-	for i = 1, #list do
-		print(list[i])
-	end
---]]
+void Maze::assignPaths(Game& g) {
 
-	-- assign unique random path id's to the robots
-	g_robot[PLAYER][R_PATH] = list[1]
-	g_robot[SPINKY][R_PATH] = list[2]
-	g_robot[DIETER][R_PATH] = list[3]
-	g_robot[KARIN][R_PATH] = list[4]
+	// randomize paths, then assign mPickedPosition to the player and position everything
+
+	int arr[] = { mPathId[0], mPathId[1], mPathId[2], mPathId[3] };	// create ordered array with path id's as values
+
+	std::cout << "before: " << std::endl;
+	for (int i = 0; i < 4; i++)
+		std::cout << "arr[i]: " << arr[i] << std::endl;
 
 
-	-- find the robot who has the picked path, and swap it with the players path (even if it's the player)
-	for i = 0, NUM_ROBOTS - 1 do
+	// shuffle the array using the Fisher-Yates algorithm
+	for (int i = mNumRacers - 1; i > 0; i--) {
+
+		int j = rand() % (i + 1);
+
+		int temp = arr[i];
+		arr[i] = arr[j];
+		arr[j] = temp;
+	}
+
+	std::cout << "efter: " << std::endl;
+	for (int i = 0; i < 4; i++)
+		std::cout << "arr[i]: " << arr[i] << std::endl;
+
+	// set new random path id's
+	for (int i = 0; i < mNumRacers; i++) {
+		mPathId[i] = arr[i];
+	}
+
+	/*
+
+	// assign unique random path id's to the robots
+	for (int i = 0; i < mNumRacers; i++) {
+		auto& path = g.mEcs->GetComponent<Path>(g.mRobots->mRacingRobots[i]);
+		mPathId[i] = path.id;
+
+		path.goalX = targetX;
+		path.goalY = targetY;
+		path.newPath = false;
+
+	}
 	
-		if g_robot[i][R_PATH] == mPickedPosition then	-- found it
-		
-			-- swap
+
+
+	// find the robot who has the picked path, and swap it with the players path(even if it's the player)
+	for (int i = 0; i < mNumRacers; i++) {
+
+		if(g_robot[i][R_PATH] == mPickedPosition) {	// found it
+
+			// swap
 			g_robot[i][R_PATH] = g_robot[PLAYER][R_PATH]
 			g_robot[PLAYER][R_PATH] = mPickedPosition
-			
-			break	-- break loop
+
+			break;	// break loop
+
+		}
+
+	}
+	*/
+	/*
+
+		// set new coordinates for the robots
+		for(int i = 0; i < mNumRacers; i++) {
+
+			if g_robot[i][R_PATH] == 0 then
+				g_robot[i][R_X] = 0
+				g_robot[i][R_Y] = 0
+				elseif g_robot[i][R_PATH] == 1 then
+				g_robot[i][R_X] = (cMazeSizeX - 1) * Game::TileSize
+				g_robot[i][R_Y] = 0
+				elseif g_robot[i][R_PATH] == 2 then
+				g_robot[i][R_X] = 0
+				g_robot[i][R_Y] = (cMazeSizeY - 1) * Game::TileSize
+				elseif g_robot[i][R_PATH] == 3 then
+				g_robot[i][R_X] = (cMazeSizeX - 1) * Game::TileSize
+				g_robot[i][R_Y] = (cMazeSizeY - 1) * Game::TileSize
+				end
+
+		}*/
+
+		// place robots	
+		g.mRobots->showRobotInRace(g.mEcs, Robots::Charmy, 0);
+		g.mRobots->showRobotInRace(g.mEcs, Robots::Alarmy, 1);
+		g.mRobots->showRobotInRace(g.mEcs, Robots::Boingy, 2);
+		g.mRobots->showRobotInRace(g.mEcs, Robots::Chompy, 3);
 		
-		end
 	
-	end
-
-
-	-- set new coordinates for the robots
-	for i = 0, NUM_ROBOTS - 1 do
-	
-		if g_robot[i][R_PATH] == 0 then
-			g_robot[i][R_X] = 0
-			g_robot[i][R_Y] = 0
-		elseif g_robot[i][R_PATH] == 1 then
-			g_robot[i][R_X] = (cMazeSizeX - 1) * TILE_SIZE
-			g_robot[i][R_Y] = 0
-		elseif g_robot[i][R_PATH] == 2 then
-			g_robot[i][R_X] = 0
-			g_robot[i][R_Y] = (cMazeSizeY - 1) * TILE_SIZE
-		elseif g_robot[i][R_PATH] == 3 then
-			g_robot[i][R_X]  = (cMazeSizeX - 1) * TILE_SIZE
-			g_robot[i][R_Y]  = (cMazeSizeY - 1) * TILE_SIZE
-		end
-	
-	end
-
-	-- place_robots (including 8 px offset)
-
-	fbl_set_sprite_xy(PLAYER, g_robot[PLAYER][R_X] - 8, g_robot[PLAYER][R_Y] - 8)
-	fbl_set_sprite_xy(SPINKY, g_robot[SPINKY][R_X] - 8, g_robot[SPINKY][R_Y] - 8)
-	fbl_set_sprite_xy(DIETER, g_robot[DIETER][R_X] - 8, g_robot[DIETER][R_Y] - 8)
-	fbl_set_sprite_xy(KARIN, g_robot[KARIN][R_X] - 8, g_robot[KARIN][R_Y] - 8)
-
-
-end
-*/
+}

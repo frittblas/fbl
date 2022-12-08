@@ -24,6 +24,7 @@ public:
     ~Race();
 
     void assignRobots(Game& g);
+    void unassignRobots(Game& g);
 
     virtual void tick(Game& g) override;
 
