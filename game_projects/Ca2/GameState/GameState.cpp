@@ -96,8 +96,6 @@ void GameState::change(Game& g, StateType newState) {
 				raceToExplore(g);
 			}
 			else if (mState == StateType::Dialogue) {	// if coming from dialogue
-				// add path component back
-				//g.mEcs->AddComponent(g.mChars->mBrodo, Path{ 0, 0, 0, false, 2.0, FBL_PATHF_USE_DIAG, 1 });
 			}
 
 			g.mRobots->hideRobots(g.mEcs);	// don't show the robot-sprites in explore mode (or in beginning of race)
@@ -132,7 +130,7 @@ void GameState::change(Game& g, StateType newState) {
 			break;
 
 		case StateType::RobotCollection:
-			g.mRobots->showRobotInMenu(g.mEcs, Robots::Name::Charmy);
+			g.mRobots->showRobotInMenu(g.mEcs, Robots::Name::Charmy);	// make the robots visible in the menu
 			RobotCollection* rc = new RobotCollection();
 			rc->cyclePages(g, 0);	// call this to update the first robots stats in the menu
 			mCurrentStateInstance = rc;
@@ -198,9 +196,9 @@ void GameState::raceToExplore(Game& g) {
 	g.mSysManager->mSpriteSystem->Init(*g.mEcs);	// create sprites for all entities with a sprite component
 	g.mSysManager->mLightSystem->Init(*g.mEcs);		// create lights for all entities with a light component
 
-	// add mouse ctrl component back to the player
-	//g.mEcs->AddComponent(g.mChars->mBrodo, MouseCtrl{ false });
+	// add path component back to the player
 	g.mEcs->AddComponent(g.mChars->mBrodo, Path{ 0, 0, 0, false, 2.0, FBL_PATHF_USE_DIAG, 1 });
+	//g.mEcs->AddComponent(g.mChars->mBrodo, MouseCtrl{ false });
 
 	// temporarily remove mousectrl component from a robot
 	//g.mEcs->RemoveComponent<MouseCtrl>(g.mRobots->mRacingRobots[0]);
@@ -221,7 +219,6 @@ void GameState::setupRace(Game& g) {
 
 	// temporarily remove component from the player
 	g.mEcs->RemoveComponent<Path>(g.mChars->mBrodo);
-
 	g.mChars->hidePlayer(g.mEcs);
 
 }

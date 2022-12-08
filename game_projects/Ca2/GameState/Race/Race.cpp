@@ -90,6 +90,8 @@ void Race::tick(Game& g) {
 
 	//g.mWeather->tick();
 
+	mMaze->tick(g);
+
 	if(fbl_get_raw_frames_count() % 60 == 0)
 		std::cout << "Tick race!" << std::endl;
 

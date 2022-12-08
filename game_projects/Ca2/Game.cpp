@@ -58,7 +58,7 @@ bool Game::init() {
 	// show device current res, comment this out.
 	int w, h;
 	fbl_get_device_res(&w, &h);
-	fbl_load_ttf_font("anirm.ttf", 16);
+	fbl_load_ttf_font("font/garamond.ttf", 16);
 	fbl_create_text(212, 175, 55, 255, (char*)"native res: %d x %d", w, h);
 	fbl_set_text_xy(0, 10, 20);
 

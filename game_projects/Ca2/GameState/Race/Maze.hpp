@@ -22,14 +22,16 @@ public:
     Maze();
     ~Maze();
 
-    static const int MazeSizeX = 30;
-    static const int MazeSizeY = 17;
+    static const int cMazeSizeX = 30;
+    static const int cMazeSizeY = 17;
+
+    void tick(Game& g);
 
     void initMaze(Game& g, int density, int numRacers);
     void exitMaze();
 
-    //void setupPickStart();
-    //void pickStartPosition();
+    void setupPickStart();
+    void pickStartPosition();
 
     void resetMaze();
     void randomizeMaze(int density);
@@ -37,16 +39,30 @@ public:
     void addBorder();
     bool mazeHasAllPaths(int numRacers);
 
-    // assign_paths()
+    void assignPaths();
 
 
 private:
-    uint8_t mMazeMap[MazeSizeX][MazeSizeY];
 
-    int pathId[Robots::NumRobots] = {};
-    int startPos[Robots::NumRobots][2] = {};
-    uint8_t diag[Robots::NumRobots] = {};
-
+    int mPathId[Robots::NumRobots] = {};        // keep robots path id's
+    int mStartPos[Robots::NumRobots][2] = {};   // keep robots starting positions
+    uint8_t mUseDiag[Robots::NumRobots] = {};   // keep info on wether robot can go diagonally
     int mNumRacers;
+
+    int mGetReadyTextId = 0;    // get ready text id
+
+    int mGetReadyTimer = 1;	    // seconds of GET READY text with black bg
+    int mTimeToPick = 5;        // seconds of actual time player has to pick corner
+
+    int mPickTimer = 0;	        // timer for picking state(in seconds * 60)
+    int mPickedPosition = 0;	// stores the picked corner(1 = up left, 2 = up right, 3 down left, 4 down right)
+
+    int mBlackBgId = 0;	        // id for black background id
+    int mBlackBgFade = 255;     // bg fadout
+
+    int mTimeBarId = 0;         // green time bar id
+    int mTimeBarRed = 0;        // how much red in bar
+
+    int mCircleSize[3];         // for the circle effect
 
 };
