@@ -27,6 +27,9 @@ public:
 
     static const int cMaxRacers = 4;
 
+    static const int cTargetX = 15 * Game::TileSize;
+    static const int cTargetY = 8 * Game::TileSize;
+
     void tick(Game& g);
     void setupPickStart();
     void pickStartPosition(Game& g);
@@ -36,7 +39,7 @@ public:
     void randomizeMaze(int density);
     void populateMaze();
     void addBorder();
-    bool mazeHasAllPaths(int numRacers);
+    bool mazeHasAllPaths();
     void assignPaths(Game& g);
 
 

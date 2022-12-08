@@ -218,9 +218,6 @@ void Maze::initMaze(Game& g, int density, int numRacers) {
 	mStartPos[3][0] = Game::LogicalResW - Game::TileSize * 4;;
 	mStartPos[3][1] = Game::TileSize * 16;
 
-	int targetX = 15 * Game::TileSize;
-	int targetY = 8 * Game::TileSize;
-
 	// collect the path id's and stuff for the racing robots
 	for (int i = 0; i < numRacers; i++) {
 		auto& path = g.mEcs->GetComponent<Path>(g.mRobots->mRacingRobots[i]);
@@ -230,8 +227,8 @@ void Maze::initMaze(Game& g, int density, int numRacers) {
 		mStartPos[i][1] = pos.y;
 		mUseDiag[i] = path.diag;
 
-		path.goalX = targetX;
-		path.goalY = targetY;
+		path.goalX = cTargetX;
+		path.goalY = cTargetY;
 		path.newPath = false;
 
 	}
@@ -247,12 +244,12 @@ void Maze::initMaze(Game& g, int density, int numRacers) {
 		randomizeMaze(density);
 
 		for (int i = 0; i < cMaxRacers; i++)
-			fbl_pathf_set_path_status(i, fbl_pathf_find_path(i, mStartPos[i][0], mStartPos[i][1], targetX, targetY, true));
+			fbl_pathf_set_path_status(i, fbl_pathf_find_path(i, mStartPos[i][0], mStartPos[i][1], cTargetX, cTargetY, true));
 
 		tries++;
 
 	}
-	while (!mazeHasAllPaths(numRacers));
+	while (!mazeHasAllPaths());
 
 
 	// make robots not move at first
@@ -263,7 +260,7 @@ void Maze::initMaze(Game& g, int density, int numRacers) {
 	for (int i = 0; i < cMaxRacers; i++)
 		fbl_pathf_set_walkability(mStartPos[i][0] / Game::TileSize, mStartPos[i][1] / Game::TileSize, FBL_PATHF_WALKABLE);
 
-	fbl_pathf_set_walkability(targetX / Game::TileSize, targetY / Game::TileSize, FBL_PATHF_WALKABLE);
+	fbl_pathf_set_walkability(cTargetX / Game::TileSize, cTargetY / Game::TileSize, FBL_PATHF_WALKABLE);
 
 	// create all the sprites at correct locations
 	populateMaze();
@@ -272,7 +269,7 @@ void Maze::initMaze(Game& g, int density, int numRacers) {
 	for (int i = 0; i < numRacers; i++)
 		std::cout << "Path status: " << fbl_pathf_get_path_status(mPathId[i]) << std::endl;
 		
-	std::cout << "has all paths: " << mazeHasAllPaths(numRacers) << std::endl;
+	std::cout << "has all paths: " << mazeHasAllPaths() << std::endl;
 
 	std::cout << "Tries: " << tries << std::endl;
 
@@ -360,7 +357,7 @@ void Maze::addBorder() {
 }
 
 
-bool Maze::mazeHasAllPaths(int numRacers) {
+bool Maze::mazeHasAllPaths() {
 
 	for (int i = 0; i < cMaxRacers; i++) {
 		if (fbl_pathf_get_path_status(i) != FBL_PATHF_FOUND)
@@ -400,9 +397,6 @@ void Maze::assignPaths(Game& g) {
 	for (int i = 0; i < mNumRacers; i++)
 		g.mRobots->showRobotInRace(g.mEcs, g.mRobots->mRacingRobots[i], arr[i]);
 
-	int targetX = 15 * Game::TileSize;
-	int targetY = 8 * Game::TileSize;
-
 	for (int i = 0; i < mNumRacers; i++) {
 		auto& pos = g.mEcs->GetComponent<Position>(g.mRobots->mRacingRobots[i]);
 		mStartPos[i][0] = pos.x;
@@ -411,7 +405,7 @@ void Maze::assignPaths(Game& g) {
 
 	// finally find paths for the new locations (will find immediately, maze is already in place (maze is a place))
 	for (int i = 0; i < mNumRacers; i++)
-		fbl_pathf_set_path_status(mPathId[i], fbl_pathf_find_path(mPathId[i], mStartPos[i][0], mStartPos[i][1], targetX, targetY, mUseDiag[i]));
+		fbl_pathf_set_path_status(mPathId[i], fbl_pathf_find_path(mPathId[i], mStartPos[i][0], mStartPos[i][1], cTargetX, cTargetY, mUseDiag[i]));
 
 	// don't start immediately
 	stopPathing();

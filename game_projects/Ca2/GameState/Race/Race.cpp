@@ -82,6 +82,10 @@ void Race::assignRobots(Game& g) {
 		uint8_t diag = sta.diag ? FBL_PATHF_USE_DIAG : FBL_PATHF_NO_DIAG;
 															// id gX gY newPath speed diag pixelsPerFrame
 		g.mEcs->AddComponent(g.mRobots->mRacingRobots[i], Path{ 0, 0, 0, false, speed, diag, 10 });
+
+		// add mousectrl to a robot IF it has the skill!!!! (just testing now)
+				    												  // clicked
+		//g.mEcs->AddComponent(g.mRobots->mRacingRobots[0], MouseCtrl{ false });
 	}
 
 	g.mSysManager->mPathSystem->Init(*g.mEcs);		// assign a unique path id to the entities with a path component
@@ -89,10 +93,6 @@ void Race::assignRobots(Game& g) {
 	mMaze->initMaze(g, 35, mNumRacers);
 
 	fbl_sort_sprites(FBL_SORT_BY_LAYER);
-
-	// add mousectrl to a robot IF it has the skill!!!! (just testing now)
-															  // clicked
-	//g.mEcs->AddComponent(g.mRobots->mRacingRobots[0], MouseCtrl{ false });
 
 }
 
