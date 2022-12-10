@@ -44,6 +44,7 @@ Race::Race() {
 Race::~Race() {
 
 	mMaze->stopPathing();	// not necessary as the path components get removed
+	fbl_set_sprite_align(FBL_SPRITE_ALIGN_UP_LEFT);	// in explore mode sprites are drawn from the top left
 
 	delete mMaze;
 
@@ -90,7 +91,7 @@ void Race::assignRobots(Game& g) {
 
 	g.mSysManager->mPathSystem->Init(*g.mEcs);		// assign a unique path id to the entities with a path component
 
-	mMaze->initMaze(g, 35, mNumRacers);
+	mMaze->initMaze(g, 5, mNumRacers);
 
 	fbl_sort_sprites(FBL_SORT_BY_LAYER);
 

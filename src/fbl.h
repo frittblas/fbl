@@ -447,6 +447,7 @@ int  fbl_pathf_read_path_y(int path_id, int path_location);
 
 int  fbl_phys_init(void);
 void fbl_phys_shutdown(void);
+void fbl_phys_set_gravity(int x, int y);
 
 
 /* particles */

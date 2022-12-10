@@ -215,6 +215,7 @@ void Robots::showRobotInRace(Coordinator* mEcs, Entity robot, int position) {
 
 	fbl_set_sprite_xy(spr.id[0], x, y);
 	fbl_set_sprite_active(spr.id[0], true);
+	fbl_set_sprite_phys(spr.id[0], true, FBL_RECT, FBL_PHYS_DYNAMIC, false);
 	fbl_fix_sprite_to_screen(spr.id[0], false);
 
 }

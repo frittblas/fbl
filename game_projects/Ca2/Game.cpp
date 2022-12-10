@@ -64,7 +64,8 @@ bool Game::init() {
 
 
 	//fbl_create_threadpool();
-
+	fbl_phys_init();
+	fbl_phys_set_gravity(0, 0);
 
 	// init pathfinding
 	if (fbl_pathf_init() == FBL_PATHF_OUT_OF_MEM) {

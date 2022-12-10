@@ -66,9 +66,18 @@ void fbl_phys_shutdown()
 
 	}
 
-
 }
 
+/*
+ *  set gravity
+ */
+void fbl_phys_set_gravity(int x, int y)
+{
+
+	fbl_phys_gravity = cpv(x, y);
+	cpSpaceSetGravity(fbl_phys_space, fbl_phys_gravity);
+
+}
 
 /*
  *  Step through physics.

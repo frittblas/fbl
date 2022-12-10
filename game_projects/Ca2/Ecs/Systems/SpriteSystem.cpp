@@ -40,12 +40,11 @@ void SpriteSystem::Init(Coordinator& ecs) {
 			
 		}
 
+		// for components with only one sprite use the [0]
 		if (spr.num == 1) {
-
 			spr.id[1] = spr.id[0];
 			spr.id[2] = spr.id[0];
 			spr.id[3] = spr.id[0];
-
 		}
 
 		// turn on the one facing the current direction
@@ -65,22 +64,25 @@ void SpriteSystem::Update(Coordinator& ecs) {
 		auto& spr = ecs.GetComponent<Sprite>(entity);
 
 		// update sprite direction only if it's different from last frame
-		if (spr.dir != spr.dirLast) {
+		if (entity == 0) {	// 0 == brodo :)
+			if (spr.dir != spr.dirLast) {
 
-			// first set all sprites to inactive
-			for(int i = 0; i < spr.num; i++)
-				fbl_set_sprite_active(spr.id[i], false);
+				// first set all sprites to inactive
+				for (int i = 0; i < spr.num; i++)
+					fbl_set_sprite_active(spr.id[i], false);
 
-			// then turn on the sprite facing the current dir
-			fbl_set_sprite_active(spr.id[spr.dir], true);
+				// then turn on the sprite facing the current dir
+				fbl_set_sprite_active(spr.id[spr.dir], true);
 
-			spr.dirLast = spr.dir;	// update the last frame dir to current dir
+				spr.dirLast = spr.dir;	// update the last frame dir to current dir
 
-			std::cout << "Changed dir!" << std::endl;
+				std::cout << "Changed dir!" << std::endl;
 
+			}
+			fbl_set_sprite_xy(spr.id[spr.dir], pos.x, pos.y);
 		}
-
-		fbl_set_sprite_xy(spr.id[spr.dir], pos.x, pos.y);
+		else
+			fbl_set_sprite_xy(spr.id[0], pos.x + 16, pos.y + 16);	// robots get drawn from center in the race
 
 	}
 

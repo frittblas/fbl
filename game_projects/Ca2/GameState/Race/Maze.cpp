@@ -17,6 +17,8 @@
 #include "../../Game.hpp"
 #include "Maze.hpp"
 
+int ray;
+
 // Maze-class implementation
 
 Maze::Maze() {
@@ -47,6 +49,22 @@ void Maze::tick(Game& g) {
 		else if(mPickTimer > -160)
 			mPickTimer--;
 
+	}
+
+	static int x_offset = 300;
+	static int y_offset = 100;
+
+	fbl_set_prim_xy(ray, fbl_get_mouse_logical_x(), fbl_get_mouse_logical_y());
+	fbl_set_prim_size(ray, fbl_get_mouse_logical_x() - x_offset, fbl_get_mouse_logical_y() - y_offset, 0);
+	int id, x, y;
+	fbl_get_ray_hit_sprite(ray, &id, &x, &y);
+	if (id != -1) {
+
+		//printf("Ray 0 hit sprite: %d at x: %d, y: %d\n", id, x, y);
+
+		if (g.mRobots->mSpriteIdEntityMap[id] == g.mRobots->mRacingRobots[0]) {
+			printf("KILLED CHARMING ALARNING :)");
+		}
 	}
 
 }
@@ -129,26 +147,28 @@ void Maze::pickStartPosition(Game& g) {
 
 	if (fbl_get_mouse_click(FBLMB_LEFT) > 0 && mPickTimer < mTimeToPick * 60) {	// if clicked and after GET READY phase 
 
-		if(fbl_get_mouse_x() < xPickOffset && fbl_get_mouse_y() < yPickOffset){  // up left
+		if(fbl_get_mouse_logical_x() < xPickOffset && fbl_get_mouse_logical_y() < yPickOffset){  // up left
 			mPickedPosition = 0;	// this is the picked corner
 			mPickTimer = -1; 		// stop the pick corner state
 			assignPaths(g);			// assign new paths to the robots based on the selection
 		}
-		else if (fbl_get_mouse_x() > Game::LogicalResW - xPickOffset && fbl_get_mouse_y() < yPickOffset) {
+		else if (fbl_get_mouse_logical_x() > Game::LogicalResW - xPickOffset && fbl_get_mouse_logical_y() < yPickOffset) {
 			mPickedPosition = 1;
 			mPickTimer = -1;
 			assignPaths(g);
 		}
-		else if (fbl_get_mouse_x() < xPickOffset && fbl_get_mouse_y() > cMazeSizeY * Game::TileSize - yPickOffset) {
+		else if (fbl_get_mouse_logical_x() < xPickOffset && fbl_get_mouse_logical_y() > cMazeSizeY * Game::TileSize - yPickOffset) {
 			mPickedPosition = 2;
 			mPickTimer = -1;
 			assignPaths(g);
 		}
-		else if (fbl_get_mouse_x() > Game::LogicalResW - xPickOffset && fbl_get_mouse_y() > cMazeSizeY * Game::TileSize - yPickOffset) {
+		else if (fbl_get_mouse_logical_x() > Game::LogicalResW - xPickOffset && fbl_get_mouse_logical_y() > cMazeSizeY * Game::TileSize - yPickOffset) {
 			mPickedPosition = 3;
 			mPickTimer = -1;
 			assignPaths(g);
 		}
+
+		std::cout << "mouse xy: " << fbl_get_mouse_logical_x() << ", " << fbl_get_mouse_logical_y() << std::endl;
 
 	}
 
@@ -200,6 +220,8 @@ void Maze::pickStartPosition(Game& g) {
 void Maze::initMaze(Game& g, int density, int numRacers) {
 
 	int tries = 0; // number of brute force tries
+
+	fbl_set_sprite_align(FBL_SPRITE_ALIGN_CENTER);	// in the race, sprites are drawn from the center bc. of physics :)
 
 	setupPickStart();
 
@@ -275,6 +297,9 @@ void Maze::initMaze(Game& g, int density, int numRacers) {
 
 	std::cout << "Num sprites: " << fbl_get_num_sprites() << std::endl;
 
+	// test ray
+	ray = fbl_create_prim(FBL_RAY, 30, 100, 330, 100, 0, true, false);
+
 }
 
 void Maze::stopPathing() {
@@ -315,7 +340,8 @@ void Maze::populateMaze() {
 			if (fbl_pathf_get_walkability(i, j) == FBL_PATHF_UNWALKABLE) {
 
 				int id = fbl_create_sprite(32, 416, 32, 32, 0);
-				fbl_set_sprite_xy(id, i * Game::TileSize, j * Game::TileSize);
+				fbl_set_sprite_xy(id, i * Game::TileSize + 16, j * Game::TileSize + 16);	// these get draw from the center
+				fbl_set_sprite_phys(id, true, FBL_RECT, FBL_PHYS_KINEMATIC, false);
 
 			}
 
@@ -359,10 +385,9 @@ void Maze::addBorder() {
 
 bool Maze::mazeHasAllPaths() {
 
-	for (int i = 0; i < cMaxRacers; i++) {
+	for (int i = 0; i < cMaxRacers; i++)
 		if (fbl_pathf_get_path_status(i) != FBL_PATHF_FOUND)
 			return false;
-	}
 
 	return true;
 

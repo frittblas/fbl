@@ -204,6 +204,7 @@ int lua_pathf_read_path_y(lua_State *lua_env);
 
 int lua_phys_init(lua_State *lua_env);
 int lua_phys_shutdown(lua_State *lua_env);
+int lua_phys_set_gravity(lua_State* lua_env);
 
 
 /* particles */
@@ -550,6 +551,7 @@ void register_fbl_functions_to_lua()
 
 	lua_register(fbl_lua_env, "fbl_phys_init", lua_phys_init);
 	lua_register(fbl_lua_env, "fbl_phys_shutdown", lua_phys_shutdown);
+	lua_register(fbl_lua_env, "fbl_phys_set_gravity", lua_phys_set_gravity);
 
 
 	/* particles */
@@ -2332,10 +2334,23 @@ int lua_phys_init(lua_State *lua_env)
 	return 1;
 
 }
+
 int lua_phys_shutdown(lua_State *lua_env)
 {
 
 	fbl_phys_shutdown();
+
+	return 1;
+
+}
+
+int lua_phys_set_gravity(lua_State* lua_env)
+{
+
+	int x = (int)lua_tonumber(lua_env, 1);
+	int y = (int)lua_tonumber(lua_env, 2);
+
+	fbl_phys_set_gravity(x, y);
 
 	return 1;
 
@@ -2347,16 +2362,7 @@ int lua_phys_shutdown(lua_State *lua_env)
 int lua_create_emitter(lua_State *lua_env)
 {
 
-	//int w = (int)lua_tonumber(lua_env, 1);
-	//int h = (int)lua_tonumber(lua_env, 2);
-
 	int num = (int)lua_tonumber(lua_env, 1);
-
-	//int life = (int)lua_tonumber(lua_env, 4);
-	//int rate = (int)lua_tonumber(lua_env, 5);
-	//int density = (int)lua_tonumber(lua_env, 6);
-	//float scale_start = (float)lua_tonumber(lua_env, 7);
-	//float scale_end = (float)lua_tonumber(lua_env, 8);
 
 	fbl_create_emitter(num);
 

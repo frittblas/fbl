@@ -54,7 +54,7 @@ private:
     int mGetReadyTextId = 0;    // get ready text id
 
     int mGetReadyTimer = 1;	    // seconds of GET READY text with black bg
-    int mTimeToPick = 2;        // seconds of actual time player has to pick corner
+    int mTimeToPick = 6;        // seconds of actual time player has to pick corner
 
     int mPickTimer = 0;	        // timer for picking state(in seconds * 60)
     int mPickedPosition = -1;	// stores the picked corner(0 = up left, 1 = up right, 2 down left, 3 down right)
