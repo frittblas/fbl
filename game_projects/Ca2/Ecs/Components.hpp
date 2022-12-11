@@ -95,7 +95,7 @@ struct Light
 // Robot components /////
 /////////////////////////
 
-// Stats
+// Robot stats
 struct Stats
 {
 
@@ -112,5 +112,17 @@ struct Stats
     uint8_t weight;         // weight
     uint8_t activeSlot[4];  // active skills (like weapons, for the buttons to the left and right)
     uint8_t passiveSlot[2]; // passive skills (like magnetic, diagonal etc.)
+
+};
+
+// laser (consists of a ray (and line) and particle system)
+struct Laser
+{
+
+    uint16_t rayId;
+    uint16_t particleId;
+    uint16_t type;
+    uint16_t length;
+    uint8_t damage;
 
 };
