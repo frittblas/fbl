@@ -14,12 +14,16 @@
 
 #include <iostream>
 
+// general
 class SpriteSystem;
 class PathSystem;
 class MouseCtrlSystem;
 class CameraSystem;
 class DialogueTrigSystem;
 class LightSystem;
+
+// robot specific
+class LaserSystem;
 
 class Coordinator;
 
@@ -32,6 +36,7 @@ public:
     std::shared_ptr<CameraSystem> mCameraSystem;             // the camera system
     std::shared_ptr<DialogueTrigSystem> mDialogueTrigSystem; // the dialogue trigger system
     std::shared_ptr<LightSystem> mLightSystem;               // the light system
+    std::shared_ptr<LaserSystem> mLaserSystem;               // the laser system
 
     SysManager();
     ~SysManager();

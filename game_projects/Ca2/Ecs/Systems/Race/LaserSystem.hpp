@@ -14,10 +14,11 @@
 #include "../../System.hpp"
 
 class Coordinator;
+class Game;
 
 class LaserSystem : public System
 {
 public:
 	void Init(Coordinator& ecs);
-	void Update(Coordinator& ecs);
+	void Update(Game& g);
 };

@@ -13,12 +13,17 @@
 #include "Ecs/Ecs.hpp"
 #include "Ecs/Components.hpp"
 #include "SysManager.hpp"
+
+// general
 #include "Ecs/Systems/SpriteSystem.hpp"
 #include "Ecs/Systems/PathSystem.hpp"
 #include "Ecs/Systems/MouseCtrlSystem.hpp"
 #include "Ecs/Systems/CameraSystem.hpp"
 #include "Ecs/Systems/DialogueTrigSystem.hpp"
 #include "Ecs/Systems/LightSystem.hpp"
+
+// raobot specific
+#include "Ecs/Systems/Race/LaserSystem.hpp"
 
 // SysManager-class implementation
 
@@ -47,7 +52,9 @@ void SysManager::setupEcs(Coordinator *mEcs) {
 	mEcs->RegisterComponent<DialogueTrigger>();
 	mEcs->RegisterComponent<Light>();
 
+	// robot specific
 	mEcs->RegisterComponent<Stats>();
+	mEcs->RegisterComponent<Laser>();
 
 	// register systems
 	mSpriteSystem = mEcs->RegisterSystem<SpriteSystem>();
@@ -56,6 +63,9 @@ void SysManager::setupEcs(Coordinator *mEcs) {
 	mCameraSystem = mEcs->RegisterSystem<CameraSystem>();
 	mDialogueTrigSystem = mEcs->RegisterSystem<DialogueTrigSystem>();
 	mLightSystem = mEcs->RegisterSystem<LightSystem>();
+
+	// robot specific
+	mLaserSystem = mEcs->RegisterSystem<LaserSystem>();
 
 	// set up what components the systems require
 	Signature sign;
@@ -88,5 +98,12 @@ void SysManager::setupEcs(Coordinator *mEcs) {
 	sign.set(mEcs->GetComponentType<Position>());
 	sign.set(mEcs->GetComponentType<Light>());
 	mEcs->SetSystemSignature<LightSystem>(sign);
+
+	// robot specific
+	sign.reset();
+	sign.set(mEcs->GetComponentType<Position>());
+	sign.set(mEcs->GetComponentType<Stats>());
+	sign.set(mEcs->GetComponentType<Laser>());
+	mEcs->SetSystemSignature<LaserSystem>(sign);
 
 }

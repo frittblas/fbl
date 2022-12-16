@@ -62,7 +62,7 @@ void Maze::tick(Game& g) {
 
 		//printf("Ray 0 hit sprite: %d at x: %d, y: %d\n", id, x, y);
 
-		if (g.mRobots->mSpriteIdEntityMap[id] == g.mRobots->mRacingRobots[0]) {
+		if (g.mRobots->mSpriteIdToEntityMap[id] == g.mRobots->mRacingRobots[0]) {
 			printf("KILLED CHARMING ALARNING :)");
 		}
 	}

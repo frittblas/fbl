@@ -177,6 +177,9 @@
     <ClCompile Include="..\..\game_projects\Ca2\GameState\Race\Maze.cpp">
       <Filter>Source Files\GameState\Race</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\game_projects\Ca2\Addons.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\fbl.h">
@@ -292,6 +295,9 @@
     </ClInclude>
     <ClInclude Include="..\..\game_projects\Ca2\GameState\Race\Maze.hpp">
       <Filter>Source Files\GameState\Race</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\Addons.hpp">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

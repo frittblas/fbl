@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include <vector>
+//#include <vector>
 #include "Ecs/Types.hpp"
 
 
@@ -41,13 +41,13 @@ public:
 
     int mNumRacers;         // his many robots in a race at once (this gets the value from the sam variable in Maze.hpp)
 
-    std::unordered_map<uint16_t, Entity> mSpriteIdEntityMap; // map spriteId to an entity, used after fbl_ray_hit_sprite()
+    std::unordered_map<uint16_t, Entity> mSpriteIdToEntityMap; // map spriteId to an entity, used after fbl_ray_hit_sprite()
 
     Robots();
     ~Robots();
 
     void setupRobots(Coordinator* mEcs);
-    void mapSpriteIdEntity(Coordinator* mEcs);
+    void mapSpriteIdToEntity(Coordinator* mEcs);
     void removeRobots(Coordinator* mEcs);
     void hideRobots(Coordinator* mEcs);
     void showRobotInMenu(Coordinator* mEcs, int nameIndex);

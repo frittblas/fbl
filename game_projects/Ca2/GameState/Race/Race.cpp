@@ -23,6 +23,8 @@
 #include "../../Ecs/Systems/CameraSystem.hpp"
 #include "../../Ecs/Systems/LightSystem.hpp"
 
+#include "../../Ecs/Systems/Race/LaserSystem.hpp"
+
 #include "../../Chars.hpp"
 #include "../../Weather.hpp"
 #include "../../Robots.hpp"
@@ -108,6 +110,8 @@ void Race::tick(Game& g) {
 	//g.mSysManager->mCameraSystem->Update(*g.mEcs);			// update the camera system
 
 	//g.mSysManager->mLightSystem->Update(*g.mEcs);			// update the light system
+	
+	g.mSysManager->mLaserSystem->Update(g);					// update the laser system
 
 	//g.mWeather->tick();
 

@@ -115,14 +115,31 @@ struct Stats
 
 };
 
-// laser (consists of a ray (and line) and particle system)
+// Addons have this component
+struct Addon {
+
+    uint8_t type;   // might be unnecessary
+    uint8_t rarity; // rariity of the addon (common, rare, etc.)
+    bool passive;   // passive addon or active?
+
+    // hmm how to solve this?
+    // should the addons have 2 components or one
+    // should the robots use the actual
+
+    // I think addons should have: addon component, sprite component aand laser component?? think about that
+
+
+};
+
+// laser (consists of a ray (line) and particle system)
 struct Laser
 {
 
-    uint16_t rayId;
-    uint16_t particleId;
-    uint16_t type;
-    uint16_t length;
-    uint8_t damage;
+    uint16_t rayId;         // id for the ray prim
+    uint16_t particleId;    // id for the particle emitter
+    uint16_t type;          // laser type (red, white, green, blue)
+    uint16_t length;        // length of the beam
+    uint8_t dir;            // in what direction are you firing? can be 0 = front, 1 = back, 2 = left, 3 = right
+    uint8_t damage;         // damage dealt per frame
 
 };

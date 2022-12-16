@@ -10,11 +10,12 @@
 *
 */
 
-#include "../../tools/ScenEdit/ScenEdit.hpp"
+#include "../../src/fbl.hpp"
 #include "Ecs/Ecs.hpp"
 #include "Ecs/Components.hpp"
 #include "Game.hpp"
 #include "Robots.hpp"
+#include "Addons.hpp"
 
 // Robots-class implementation
 
@@ -58,6 +59,8 @@ void Robots::setupRobots(Coordinator* mEcs) {
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 0, 96, 32, 32, false, 0, 0, 0, 0, 5 });	// robots are on layer 5
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight activeSlot[4] passiveSlot[2]
 				mEcs->AddComponent(tmpRobot, Stats{ "Charmy", 1, 0, 4, 10, 10, 12, true, 20, 20, 7, 0, 0, 0, 0, 0, 0 });
+												// id id			type		  len          dir	      dmg
+				mEcs->AddComponent(tmpRobot, Laser{ 0, 0, Addons::Type::LaserRed, 200, Addons::Dir::Front, 1 });
 				break;
 			case Alarmy :
 												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
@@ -99,10 +102,10 @@ void Robots::setupRobots(Coordinator* mEcs) {
 
 }
 
-void Robots::mapSpriteIdEntity(Coordinator* mEcs) {
+void Robots::mapSpriteIdToEntity(Coordinator* mEcs) {
 
 	// first clear the spriteId->Entity mapping
-	mSpriteIdEntityMap.clear();
+	mSpriteIdToEntityMap.clear();
 
 	// then add entries to the spriteId->Entity mapping, must be called after the sprites have been created
 	
@@ -112,7 +115,7 @@ void Robots::mapSpriteIdEntity(Coordinator* mEcs) {
 
 		if (e != Unassigned) {
 			auto& spr = mEcs->GetComponent<Sprite>(e);
-			mSpriteIdEntityMap[spr.id[0]] = e;
+			mSpriteIdToEntityMap[spr.id[0]] = e;
 			std::cout << "SpriteId->Entity map (all): " << spr.id[0] << "->" << e << std::endl;
 		}
 	}
@@ -122,7 +125,7 @@ void Robots::mapSpriteIdEntity(Coordinator* mEcs) {
 
 		if(e != Unassigned) {
 			auto& spr = mEcs->GetComponent<Sprite>(e);
-			mSpriteIdEntityMap[spr.id[0]] = e;
+			mSpriteIdToEntityMap[spr.id[0]] = e;
 			std::cout << "SpriteId->Entity map (owned): " << spr.id[0] << "->" << e << std::endl;
 		}
 	}

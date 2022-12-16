@@ -14,7 +14,7 @@
 #include "../../src/fbl.hpp"
 #include "Game.hpp"
 
-Game* gGame;	// the Game-instance, only used in this file (file scope), aaand LuaDialogue.cpp, and RobotCollection.cpp sorry :)
+Game* gGame;	// the Game-instance, only used in this file (file scope), aaand LuaDialogue.cpp sorry :)
 
 void fbl_start()
 {
