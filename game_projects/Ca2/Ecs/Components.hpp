@@ -139,7 +139,8 @@ struct Laser
     uint16_t particleId;    // id for the particle emitter
     uint16_t type;          // laser type (red, white, green, blue)
     uint16_t length;        // length of the beam
-    uint8_t dir;            // in what direction are you firing? can be 0 = front, 1 = back, 2 = left, 3 = right
+    uint8_t dir;            // in what direction are you firing? can be 0 = up, 1 = right, 2 = left, 3 = down
     uint8_t damage;         // damage dealt per frame
+    bool    firing;         // are you firing atm?
 
 };

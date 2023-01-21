@@ -33,10 +33,10 @@ public:
     };
 
     enum Dir {
-        Front,
-        Back,
+        Up,
+        Right,
         Left,
-        Right
+        Down
     };
 
     Entity mAllAddons[NumAddons];         // all the addons

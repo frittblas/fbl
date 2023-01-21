@@ -237,7 +237,7 @@ void Maze::initMaze(Game& g, int density, int numRacers) {
 	mStartPos[1][1] = 0;
 	mStartPos[2][0] = Game::TileSize * 3;
 	mStartPos[2][1] = Game::TileSize * 16;
-	mStartPos[3][0] = Game::LogicalResW - Game::TileSize * 4;;
+	mStartPos[3][0] = Game::LogicalResW - Game::TileSize * 4;
 	mStartPos[3][1] = Game::TileSize * 16;
 
 	// collect the path id's and stuff for the racing robots
@@ -259,7 +259,7 @@ void Maze::initMaze(Game& g, int density, int numRacers) {
 	for (int i = 0; i < numRacers; i++)
 		fbl_pathf_set_path_status(mPathId[i], FBL_PATHF_NOT_STARTED);
 
-	// brute force maze creation :) (with a density below 40 it's reasonable, 35 is really good.)
+	// brute force maze creation :) (with a density below 40 it's reasonable, 35 is really good (fast).)
 	do {
 
 		resetMaze();
@@ -340,7 +340,7 @@ void Maze::populateMaze() {
 			if (fbl_pathf_get_walkability(i, j) == FBL_PATHF_UNWALKABLE) {
 
 				int id = fbl_create_sprite(32, 416, 32, 32, 0);
-				fbl_set_sprite_xy(id, i * Game::TileSize + 16, j * Game::TileSize + 16);	// these get draw from the center
+				fbl_set_sprite_xy(id, i * Game::TileSize + 16, j * Game::TileSize + 16);	// these get drawn from the center
 				fbl_set_sprite_phys(id, true, FBL_RECT, FBL_PHYS_KINEMATIC, false);
 
 			}
@@ -360,10 +360,12 @@ void Maze::addBorder() {
 
 			// draw a frame left and right of maze
 			if ((i >= 0 && i < 3) || (i > 26 && i < 30)) {
-
-				//int id = fbl_create_sprite(64, 416, 32, 32, 0);
-				//fbl_set_sprite_xy(id, i * Game::TileSize, j * Game::TileSize);
-
+				
+				int id = fbl_create_sprite(64, 416, 32, 32, 0);
+				fbl_set_sprite_xy(id, i * Game::TileSize + 16, j * Game::TileSize + 16);
+				if(i == 2 || i == 27)
+					fbl_set_sprite_phys(id, true, FBL_RECT, FBL_PHYS_KINEMATIC, false);
+					
 			}
 
 		}

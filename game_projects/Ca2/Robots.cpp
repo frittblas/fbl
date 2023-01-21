@@ -58,9 +58,9 @@ void Robots::setupRobots(Coordinator* mEcs) {
 												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 0, 96, 32, 32, false, 0, 0, 0, 0, 5 });	// robots are on layer 5
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight activeSlot[4] passiveSlot[2]
-				mEcs->AddComponent(tmpRobot, Stats{ "Charmy", 1, 0, 4, 10, 10, 12, true, 20, 20, 7, 0, 0, 0, 0, 0, 0 });
-												// id id			type		  len          dir	      dmg
-				mEcs->AddComponent(tmpRobot, Laser{ 0, 0, Addons::Type::LaserRed, 200, Addons::Dir::Front, 1 });
+				mEcs->AddComponent(tmpRobot, Stats{ "Charmy", 1, 0, 4, 10, 10, 2, true, 20, 20, 7, 0, 0, 0, 0, 0, 0 });
+												// rid pid			type		  len          dir	    dmg   firing
+				mEcs->AddComponent(tmpRobot, Laser{ 0, 0, Addons::Type::LaserRed, 800, Addons::Dir::Up, 1, false });
 				break;
 			case Alarmy :
 												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
@@ -218,7 +218,7 @@ void Robots::showRobotInRace(Coordinator* mEcs, Entity robot, int position) {
 
 	fbl_set_sprite_xy(spr.id[0], x, y);
 	fbl_set_sprite_active(spr.id[0], true);
-	fbl_set_sprite_phys(spr.id[0], true, FBL_RECT, FBL_PHYS_DYNAMIC, false);
+	fbl_set_sprite_phys(spr.id[0], true, FBL_RECT_PHYS, FBL_PHYS_DYNAMIC, false);
 	fbl_fix_sprite_to_screen(spr.id[0], false);
 
 }

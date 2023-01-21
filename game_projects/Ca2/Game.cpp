@@ -53,7 +53,8 @@ bool Game::init() {
 
 	fbl_engine_init(DeviceResW, DeviceResH, 60);
 	fbl_set_render_logical_size(DeviceResW, DeviceResH);
-	fbl_set_clear_color(33, 68, 33, 255);	// forest green
+	//fbl_set_clear_color(33, 68, 33, 255);	// forest green
+	fbl_set_clear_color(35, 128, 45, 255);	// light forest green
 
 	// show device current res, comment this out.
 	int w, h;

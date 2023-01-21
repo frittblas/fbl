@@ -875,6 +875,11 @@ void fbl_set_sprite_phys(int id, bool on, int type, int body_type, bool can_rota
 						sprite->phys_shape = engine_phys_add_shape(sprite->phys_body, FBL_CIRCLE, 0, 0, 0, 0, sprite->radius);
                         //sprite->shape = FBL_CIRCLE;
 					break;
+					case FBL_RECT_PHYS:
+						sprite->phys_body = engine_phys_add_body(FBL_RECT, 1.0, sprite->dest_rect.w - 5, sprite->dest_rect.h - 5, 0, body_type, can_rotate);
+						sprite->phys_shape = engine_phys_add_shape(sprite->phys_body, FBL_RECT, 2, 2, sprite->dest_rect.w - 5, sprite->dest_rect.h - 5, 0);
+						//sprite->shape = FBL_RECT_PHYS;
+					break;
 
 				}
 			

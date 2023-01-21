@@ -50,6 +50,8 @@ Race::~Race() {
 
 	delete mMaze;
 
+	fbl_destroy_all_emitters();
+
 	std::cout << "Destroyed Race state." << std::endl;
 
 }
@@ -93,7 +95,7 @@ void Race::assignRobots(Game& g) {
 
 	g.mSysManager->mPathSystem->Init(*g.mEcs);		// assign a unique path id to the entities with a path component
 
-	mMaze->initMaze(g, 5, mNumRacers);
+	mMaze->initMaze(g, 35, mNumRacers);
 
 	fbl_sort_sprites(FBL_SORT_BY_LAYER);
 

@@ -167,7 +167,8 @@ enum FBL_PRIM_TYPES
 	FBL_RAY, /* raycasting */
 
 	FBL_NORMAL_RECT, /* rectfill drawn from top left without X2 size */
-	FBL_NO_PRIM		/* no prim can be used by the particle emitter so it uses sprite instead of prim */
+	FBL_NO_PRIM,	 /* no prim can be used by the particle emitter so it uses sprite instead of prim */
+	FBL_RECT_PHYS	 /* only to be used when creating physics-sprites (slightly smaller hitbox, 2px each direction) */
 
 };
 

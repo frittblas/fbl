@@ -45,7 +45,7 @@ RobotCollection::RobotCollection() {
 
 RobotCollection::~RobotCollection() {
 
-	hideCollectionMenu();	// NOTE: if you press ESC in the collection state, the set active fails.
+	hideCollectionMenu();	// NOTE: if you press ESC in the collection state, the set active fails. (is this up to date? (don't think so :)))
 
 	std::cout << "Destroyed RobotCollection state." << std::endl;
 

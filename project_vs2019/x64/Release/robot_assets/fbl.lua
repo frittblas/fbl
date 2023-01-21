@@ -123,14 +123,19 @@ FBL_WINDOW_FULLSCREEN_DESKTOP = 4097
 
 -- FBL_PRIM_TYPES
 
-	FBL_POINT	= 0
-	FBL_LINE	= 1
-	FBL_TRI		= 2
-	FBL_RECT	= 3
-	--FBL_PENTA,  /* not impl. yet */
-	--FBL_HEXA,   /* not impl. yet */
-	FBL_CIRCLE	= 6
-	FBL_RAY		= 7
+	FBL_POINT,
+	FBL_LINE,
+	FBL_TRI,
+	FBL_RECT,
+	FBL_PENTA,  /* not impl. yet */
+	FBL_HEXA,   /* not impl. yet */
+	FBL_CIRCLE,
+
+	FBL_RAY, /* raycasting */
+
+	FBL_NORMAL_RECT, /* rectfill drawn from top left without X2 size */
+	FBL_NO_PRIM,	 /* no prim can be used by the particle emitter so it uses sprite instead of prim */
+	FBL_RECT_PHYS	 /* only to be used when creating physics-sprites (slightly smaller hitbox, 2px each direction) */
 
 
 -- FBL_TEXT_ALIGN
