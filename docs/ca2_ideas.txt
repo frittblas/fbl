@@ -149,7 +149,7 @@ Charming alarming fakes becoming self aware to plead to the player.
 The player believes the robot an start questioning himself.
 
 BUGS:
-1. If you go back from explore mode to the title (press 1) and start the game again, the character sprite doesn't move!
+1. If you go back from explore mode to the title (press 1) and start the game again, the character sprite doesn't move! - FIXED!
 
 2. If you create an emitter before the first weather-call in Game.cpp, the fbl_set_lighting_tint() doesn't work!
 Really  weird, probably something simple.

@@ -64,7 +64,8 @@ void SpriteSystem::Update(Coordinator& ecs) {
 		auto& spr = ecs.GetComponent<Sprite>(entity);
 
 		// update sprite direction only if it's different from last frame
-		if (entity == 0) {	// 0 == brodo :)
+		// if spr.num > 1 (player for instance) take care of directions etc. otherwise (1 sprite for robots), draw offset sprite
+		if (spr.num > 1) {
 			if (spr.dir != spr.dirLast) {
 
 				// first set all sprites to inactive

@@ -158,6 +158,7 @@ void GameState::tick(Game& g) {
 
 void GameState::exploreToTitle(Game& g) {
 
+	//fbl_destroy_all_emitters();
 	g.mWeather->setWeather(Weather::TimeOfDay::Day, 0, 0, 0, false);	// reset weather before unload level (destroys cloud-sprites and emitters)
 	g.mLocation->unLoadLocation(g.mMap);
 	unInitLuaDialog();	// also remove resources for dialogue (ALL prims, text and ui)
@@ -171,6 +172,7 @@ void GameState::exploreToTitle(Game& g) {
 
 void GameState::titleToExplore(Game& g) {
 
+	//fbl_destroy_all_emitters();
 	g.mLocation->loadLocation(g.mMap);
 	initLuaDialog();	// set up prims and text and ui for the dialog box.
 	g.mChars->setupPlayer(g.mEcs);	// create the player entity and add the right components
@@ -188,6 +190,8 @@ void GameState::titleToExplore(Game& g) {
 	initCollectionMenu();	// set up prims and text and ui for the collection-menu, sprite draw-order is important
 
 	fbl_lua_init("Ca2Dialogue.lua", registerFuncsToLua);	// set this up each new game, so the dialogues restart
+
+	std::cout << "player id: " << g.mChars->mBrodo << std::endl;
 
 }
 
@@ -227,7 +231,7 @@ void GameState::setupRace(Game& g) {
 	g.mRobots->mapSpriteIdToEntity(g.mEcs);
 	g.mRobots->hideRobots(g.mEcs);
 
-	// temporarily remove component from the player
+	// temporarily remove path component from the player
 	g.mEcs->RemoveComponent<Path>(g.mChars->mBrodo);
 	g.mChars->hidePlayer(g.mEcs);
 

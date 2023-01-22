@@ -437,8 +437,8 @@ int emit_particle(int tag, void* emit, void* dummy)
 
 	emitter = (FBL_PARTICLE_EMITTER *)emit;
 
-	//if (emitter->active)
-	//{
+	if (emitter->active)
+	{
 
 		if (fbl_engine.current_frame % emitter->emit_rate == 0)
 		{
@@ -504,7 +504,7 @@ int emit_particle(int tag, void* emit, void* dummy)
 
 		}
 
-	//}
+	}
 
 	return 0;
 

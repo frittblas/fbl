@@ -35,9 +35,11 @@ void LaserSystem::Init(Coordinator& ecs) {
 		fbl_set_prim_active(las.rayId, false);
 
 		// create the particles
-		las.particleId = fbl_create_emitter(30);
-		fbl_set_emitter_params(las.particleId, FBL_EMITTER_FLOWER, 2, 2, 60, 1, 3, 0.2, 1.0);
+		las.particleId = fbl_create_emitter(200);
+		fbl_set_emitter_params(las.particleId, FBL_EMITTER_FLOWER, 2, 2, 55, 1, 1, 0.2, 0.8);
 		fbl_set_emitter_particle_shape(las.particleId, FBL_NO_PRIM, 448, 128, 64, 64);	// use particle image instead of prim
+		fbl_set_emitter_color(las.particleId, 120, 120, 120, 200, true);
+		fbl_set_emitter_color(las.particleId, 0, 0, 0, 0, false);
 		// only activate when you use the laser (create smoke where the laser hits)
 		fbl_set_emitter_active(las.particleId, false);
 	}
