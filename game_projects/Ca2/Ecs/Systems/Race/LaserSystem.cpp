@@ -70,7 +70,12 @@ void LaserSystem::Update(Game& g) {
 
 				case Addons::Dir::Up :
 					fbl_set_prim_xy(las.rayId, pos.x + Game::TileSize / 2, pos.y + 1);
-					fbl_set_prim_size(las.rayId, pos.x + Game::TileSize / 2, pos.y - las.length, 0);
+
+					// can't draw ray with minus coordinates
+					if(pos.y - las.length < 0)
+						fbl_set_prim_size(las.rayId, pos.x + Game::TileSize / 2, 0, 0);
+					else
+						fbl_set_prim_size(las.rayId, pos.x + Game::TileSize / 2, pos.y - las.length, 0);
 					break;
 
 				case Addons::Dir::Right :
@@ -80,7 +85,12 @@ void LaserSystem::Update(Game& g) {
 
 				case Addons::Dir::Left :
 					fbl_set_prim_xy(las.rayId, pos.x + 1, pos.y + Game::TileSize / 2);
-					fbl_set_prim_size(las.rayId, pos.x - las.length, pos.y + Game::TileSize / 2, 0);
+
+					// can't draw ray with minus coordinates
+					if (pos.x - las.length < 0)
+						fbl_set_prim_size(las.rayId, 0, pos.y + Game::TileSize / 2, 0);
+					else
+						fbl_set_prim_size(las.rayId, pos.x - las.length, pos.y + Game::TileSize / 2, 0);
 					break;
 
 				case Addons::Dir::Down :

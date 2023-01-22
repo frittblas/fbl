@@ -105,7 +105,7 @@ Done - I removed the path components, only use 4 (max) now.
 
 Next:
 Add pick start, randomize rest.	- done.
-Add different kinds of laser.
+Add different kinds of laser (note that each robot can only have one laser-type each).
 Some kind of meaningful powerup that the robots can pick up (also added during the race).
 Add different ways to control the robot: a button that makes robot path back home.
 Normally it will maybe pick up three powerups, then go to the middle, then back home.
@@ -147,3 +147,10 @@ Story idea:
 Charming alarming is taken to the scrapyard (e-waste) without knowing about it,
 Charming alarming fakes becoming self aware to plead to the player.
 The player believes the robot an start questioning himself.
+
+BUGS:
+1. If you go back from explore mode to the title (press 1) and start the game again, the character sprite doesn't move!
+
+2. If you create an emitter before the first weather-call in Game.cpp, the fbl_set_lighting_tint() doesn't work!
+Really  weird, probably something simple.
+

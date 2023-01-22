@@ -437,8 +437,8 @@ int emit_particle(int tag, void* emit, void* dummy)
 
 	emitter = (FBL_PARTICLE_EMITTER *)emit;
 
-	if (emitter->active)
-	{
+	//if (emitter->active)
+	//{
 
 		if (fbl_engine.current_frame % emitter->emit_rate == 0)
 		{
@@ -504,7 +504,7 @@ int emit_particle(int tag, void* emit, void* dummy)
 
 		}
 
-	}
+	//}
 
 	return 0;
 
@@ -520,8 +520,8 @@ int update_particle_logic(int tag, void* emit, void* dummy)
 	emitter = (FBL_PARTICLE_EMITTER*)emit;
 
 
-	if (emitter->active)
-	{
+	//if (emitter->active)
+	//{
 
 		switch (emitter->type)
 		{
@@ -606,10 +606,13 @@ int update_particle_logic(int tag, void* emit, void* dummy)
 			case FBL_EMITTER_EXPLOSION:
 				// add a different particle effect here!
 			break;
+			case FBL_EMITTER_SMOKE:
+				// and here!
+				break;
 
 		}
 
-	}
+	//}
 
     
     return 0;
@@ -644,8 +647,8 @@ int  render_particles(int tag, void* emit, void* dummy)
 
 	emitter = (FBL_PARTICLE_EMITTER*)emit;
 
-	if (emitter->active)
-	{
+	//if (emitter->active)
+	//{
 
 		if (!emitter->fix_to_screen) {
 			cam_x = fbl_camera.x;
@@ -717,7 +720,7 @@ int  render_particles(int tag, void* emit, void* dummy)
 
 		}
 
-	}
+	//}
 
 	return 0;
 
