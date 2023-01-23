@@ -59,8 +59,8 @@ void Robots::setupRobots(Coordinator* mEcs) {
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 0, 96, 32, 32, false, 0, 0, 0, 0, 5 });	// robots are on layer 5
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight activeSlot[4] passiveSlot[2]
 				mEcs->AddComponent(tmpRobot, Stats{ "Charmy", 1, 0, 4, 10, 10, 2, true, 20, 20, 7, 0, 0, 0, 0, 0, 0 });
-												// rid pid			type		  len          dir	    dmg   firing
-				mEcs->AddComponent(tmpRobot, Laser{ 0, 0, Addons::Type::LaserRed, 800, Addons::Dir::Left, 1, false });
+												// rid pid len        dir	    dmg lv  isFiring
+				mEcs->AddComponent(tmpRobot, Laser{ 0, 0, 800, Addons::Dir::Left, 1, 1, false });
 				break;
 			case Alarmy :
 												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer

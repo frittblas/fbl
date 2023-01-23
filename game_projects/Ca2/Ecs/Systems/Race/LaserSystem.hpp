@@ -21,4 +21,6 @@ class LaserSystem : public System
 public:
 	void Init(Coordinator& ecs);
 	void Update(Game& g);
+
+	void setDirection(Position& pos, Laser& las);
 };

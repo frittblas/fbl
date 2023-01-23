@@ -56,51 +56,17 @@ void LaserSystem::Update(Game& g) {
 		auto& sta = g.mEcs->GetComponent<Stats>(entity);
 		auto& las = g.mEcs->GetComponent<Laser>(entity);
 
-		if(fbl_get_key_down(FBLK_Z)) las.firing = true;
-		if (fbl_get_key_up(FBLK_Z)) las.firing = false;
+
+		if(fbl_get_key_down(FBLK_Z)) las.isFiring = true;
+		if (fbl_get_key_up(FBLK_Z)) las.isFiring = false;
 
 		// only fire if (bool)firing is true
 
-		if (las.firing) {
+		if (las.isFiring) {
 
 			fbl_set_prim_active(las.rayId, true);	// show the ray
 
-
-			// set laser direction (the robots have slightly smaller physics hitbox, makes things easier to manage (ray colissions))
-
-			switch (las.dir) {
-
-				case Addons::Dir::Up :
-					fbl_set_prim_xy(las.rayId, pos.x + Game::TileSize / 2, pos.y + 1);
-
-					// can't draw ray with minus coordinates
-					if(pos.y - las.length < 0)
-						fbl_set_prim_size(las.rayId, pos.x + Game::TileSize / 2, 0, 0);
-					else
-						fbl_set_prim_size(las.rayId, pos.x + Game::TileSize / 2, pos.y - las.length, 0);
-					break;
-
-				case Addons::Dir::Right :
-					fbl_set_prim_xy(las.rayId, pos.x + Game::TileSize - 1, pos.y + Game::TileSize / 2);
-					fbl_set_prim_size(las.rayId, pos.x + las.length, pos.y + Game::TileSize / 2, 0);
-					break;
-
-				case Addons::Dir::Left :
-					fbl_set_prim_xy(las.rayId, pos.x + 1, pos.y + Game::TileSize / 2);
-
-					// can't draw ray with minus coordinates
-					if (pos.x - las.length < 0)
-						fbl_set_prim_size(las.rayId, 0, pos.y + Game::TileSize / 2, 0);
-					else
-						fbl_set_prim_size(las.rayId, pos.x - las.length, pos.y + Game::TileSize / 2, 0);
-					break;
-
-				case Addons::Dir::Down :
-					fbl_set_prim_xy(las.rayId, pos.x + Game::TileSize / 2, pos.y + Game::TileSize - 1);
-					fbl_set_prim_size(las.rayId, pos.x + Game::TileSize / 2, pos.y + las.length, 0);
-					break;
-
-			}
+			setDirection(pos, las);
 
 			// some ray hit detection
 			int id, x, y;
@@ -109,7 +75,7 @@ void LaserSystem::Update(Game& g) {
 			if (id != -1) {
 
 				fbl_set_emitter_active(las.particleId, true);	// only turn the particles on if the ray hit something
-				std::cout << "id hit = " << id << std::endl;
+				//std::cout << "id hit = " << id << std::endl;
 
 				//printf("Ray 0 hit sprite: %d at x: %d, y: %d\n", id, x, y);
 
@@ -130,6 +96,47 @@ void LaserSystem::Update(Game& g) {
 			fbl_set_emitter_active(las.particleId, false);
 		}
 
+
+	}
+
+}
+
+
+void LaserSystem::setDirection(Position& pos, Laser& las) {
+
+	// set laser direction (the robots have slightly smaller physics hitbox, makes things easier to manage (ray colissions))
+
+	switch (las.dir) {
+
+	case Addons::Dir::Up:
+		fbl_set_prim_xy(las.rayId, pos.x + Game::TileSize / 2, pos.y + 1);
+
+		// can't draw ray with minus coordinates
+		if (pos.y - las.length < 0)
+			fbl_set_prim_size(las.rayId, pos.x + Game::TileSize / 2, 0, 0);
+		else
+			fbl_set_prim_size(las.rayId, pos.x + Game::TileSize / 2, pos.y - las.length, 0);
+		break;
+
+	case Addons::Dir::Right:
+		fbl_set_prim_xy(las.rayId, pos.x + Game::TileSize - 1, pos.y + Game::TileSize / 2);
+		fbl_set_prim_size(las.rayId, pos.x + las.length, pos.y + Game::TileSize / 2, 0);
+		break;
+
+	case Addons::Dir::Left:
+		fbl_set_prim_xy(las.rayId, pos.x + 1, pos.y + Game::TileSize / 2);
+
+		// can't draw ray with minus coordinates
+		if (pos.x - las.length < 0)
+			fbl_set_prim_size(las.rayId, 0, pos.y + Game::TileSize / 2, 0);
+		else
+			fbl_set_prim_size(las.rayId, pos.x - las.length, pos.y + Game::TileSize / 2, 0);
+		break;
+
+	case Addons::Dir::Down:
+		fbl_set_prim_xy(las.rayId, pos.x + Game::TileSize / 2, pos.y + Game::TileSize - 1);
+		fbl_set_prim_size(las.rayId, pos.x + Game::TileSize / 2, pos.y + las.length, 0);
+		break;
 
 	}
 

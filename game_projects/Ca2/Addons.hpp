@@ -24,10 +24,7 @@ public:
 
     enum Type {
 
-        LaserRed,
-        LaserGreen,
-        LaserBlue,
-        LaserWhite,
+        Laser,
         NumAddons
 
     };

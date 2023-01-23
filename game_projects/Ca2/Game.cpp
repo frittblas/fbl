@@ -95,9 +95,6 @@ bool Game::init() {
 
 	mSysManager->setupEcs(mEcs);
 
-	//int id = fbl_create_emitter(100);
-	//fbl_set_emitter_active(id, false);	// dummy emitter
-
 	// start the snow particle effect
 	mWeather->setWeather(Weather::TimeOfDay::Day, 0, 6, 0, false);
 

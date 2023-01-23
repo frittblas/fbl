@@ -105,7 +105,7 @@ Done - I removed the path components, only use 4 (max) now.
 
 Next:
 Add pick start, randomize rest.	- done.
-Add different kinds of laser (note that each robot can only have one laser-type each).
+Add different kinds of laser (note that each robot can only equip one of each addon).
 Some kind of meaningful powerup that the robots can pick up (also added during the race).
 Add different ways to control the robot: a button that makes robot path back home.
 Normally it will maybe pick up three powerups, then go to the middle, then back home.
@@ -144,7 +144,7 @@ Make everything as solid and reasonable as possible programming wise.
 Take time to refactor and think about best solutions.
 
 Story idea:
-Charming alarming is taken to the scrapyard (e-waste) without knowing about it,
+Charming alarming is taken to the scrapyard (e-waste) without knowing about it, but finds out.
 Charming alarming fakes becoming self aware to plead to the player.
 The player believes the robot an start questioning himself.
 

@@ -119,7 +119,7 @@ struct Stats
 struct Addon {
 
     uint8_t type;   // might be unnecessary
-    uint8_t rarity; // rariity of the addon (common, rare, etc.)
+    uint8_t rarity; // rarity of the addon (common, rare, etc.)
     bool passive;   // passive addon or active?
 
     // hmm how to solve this?
@@ -131,16 +131,26 @@ struct Addon {
 
 };
 
+// AutoAim (consists of a invisible ray (line) and dir)
+struct AutoAim
+{
+
+    uint16_t rayId;         // id for the ray prim
+    uint16_t length;        // length of the ray
+    int8_t   hasShotDir;    // do you have somebody in the crosshairs? In that case, which direction (-1 = no shot)
+
+};
+
 // laser (consists of a ray (line) and particle system)
 struct Laser
 {
 
     uint16_t rayId;         // id for the ray prim
     uint16_t particleId;    // id for the particle emitter
-    uint16_t type;          // laser type (red, white, green, blue)
     uint16_t length;        // length of the beam
-    uint8_t dir;            // in what direction are you firing? can be 0 = up, 1 = right, 2 = left, 3 = down
-    uint8_t damage;         // damage dealt per frame
-    bool    firing;         // are you firing atm?
+    uint8_t  dir;            // in what direction are you firing? can be 0 = up, 1 = right, 2 = left, 3 = down
+    uint8_t  damage;         // damage dealt per frame
+    uint8_t  level;          // you can level up the laser.
+    bool     isFiring;       // are you firing atm?
 
 };
