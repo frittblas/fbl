@@ -138,8 +138,11 @@ struct AutoAim
 
     uint16_t rayId;         // id for the ray prim
     uint16_t length;        // length of the ray
-    int8_t   dir;           // which direction is beng checked
+    uint8_t  dir;           // which direction is beng checked
+    uint8_t  intervalMax;   // checking for this many frames in each dir
+    uint8_t  intervalCur;   // keep track of interval ticking
     bool     hasTarget;     // do you have somebody in the crosshairs?
+    bool     active;        // is auto aim active? Cpu robots have this on, player can choose
 
 };
 
@@ -150,9 +153,9 @@ struct Laser
     uint16_t rayId;         // id for the ray prim
     uint16_t particleId;    // id for the particle emitter
     uint16_t length;        // length of the beam
-    uint8_t  dir;            // in what direction are you firing? can be 0 = up, 1 = right, 2 = left, 3 = down
-    uint8_t  damage;         // damage dealt per frame
-    uint8_t  level;          // you can level up the laser.
-    bool     isFiring;       // are you firing atm?
+    uint8_t  dir;           // in what direction are you firing? can be 0 = up, 1 = right, 2 = left, 3 = down
+    uint8_t  damage;        // damage dealt per frame
+    uint8_t  level;         // you can level up the laser.
+    bool     isFiring;      // are you firing atm?
 
 };

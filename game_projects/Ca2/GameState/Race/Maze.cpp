@@ -17,7 +17,6 @@
 #include "../../Game.hpp"
 #include "Maze.hpp"
 
-int ray;
 
 // Maze-class implementation
 
@@ -43,28 +42,12 @@ void Maze::tick(Game& g) {
 			// make robots move
 			for (int i = 0; i < mNumRacers; i++) fbl_pathf_set_path_status(mPathId[i], FBL_PATHF_FOUND);
 			std::cout << "Picked pos: " << mPickedPosition << std::endl;
-			std::cout << "Running!" << std::endl;
+			std::cout << "Running! Num sprites: " << fbl_get_num_sprites() << std::endl;
 			mPickTimer--;
 		}
 		else if(mPickTimer > -160)
 			mPickTimer--;
 
-	}
-
-	static int x_offset = 300;
-	static int y_offset = 100;
-
-	fbl_set_prim_xy(ray, fbl_get_mouse_logical_x(), fbl_get_mouse_logical_y());
-	fbl_set_prim_size(ray, fbl_get_mouse_logical_x() - x_offset, fbl_get_mouse_logical_y() - y_offset, 0);
-	int id, x, y;
-	fbl_get_ray_hit_sprite(ray, &id, &x, &y);
-	if (id != -1) {
-
-		//printf("Ray 0 hit sprite: %d at x: %d, y: %d\n", id, x, y);
-
-		if (g.mRobots->mSpriteIdToEntityMap[id] == g.mRobots->mRacingRobots[0]) {
-			printf("KILLED CHARMING ALARNING :)");
-		}
 	}
 
 }
@@ -259,7 +242,7 @@ void Maze::initMaze(Game& g, int density, int numRacers) {
 	for (int i = 0; i < numRacers; i++)
 		fbl_pathf_set_path_status(mPathId[i], FBL_PATHF_NOT_STARTED);
 
-	// brute force maze creation :) (with a density below 40 it's reasonable, 35 is really good (fast).)
+	// brute force maze creation :) (with a density below 40 it's reasonable, 35 and below is really good (fast).)
 	do {
 
 		resetMaze();
@@ -297,8 +280,6 @@ void Maze::initMaze(Game& g, int density, int numRacers) {
 
 	std::cout << "Num sprites: " << fbl_get_num_sprites() << std::endl;
 
-	// test ray
-	ray = fbl_create_prim(FBL_RAY, 30, 100, 330, 100, 0, true, false);
 
 }
 

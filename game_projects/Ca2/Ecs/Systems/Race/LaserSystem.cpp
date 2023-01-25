@@ -54,14 +54,21 @@ void LaserSystem::Update(Game& g) {
 	{
 		auto& pos = g.mEcs->GetComponent<Position>(entity);
 		auto& sta = g.mEcs->GetComponent<Stats>(entity);
+		auto& aut = g.mEcs->GetComponent<AutoAim>(entity);
 		auto& las = g.mEcs->GetComponent<Laser>(entity);
 
+		// get info from autoAim component if there is a target (and if auto-aim is active)
+		if (aut.active) {
 
-		if(fbl_get_key_down(FBLK_Z)) las.isFiring = true;
-		if (fbl_get_key_up(FBLK_Z)) las.isFiring = false;
+			if (aut.hasTarget) {
+				las.isFiring = true;
+				las.dir = aut.dir;
+			}
+			else las.isFiring = false;
+
+		}
 
 		// only fire if (bool)firing is true
-
 		if (las.isFiring) {
 
 			fbl_set_prim_active(las.rayId, true);	// show the ray
@@ -73,7 +80,7 @@ void LaserSystem::Update(Game& g) {
 			fbl_get_ray_hit_sprite(las.rayId, &id, &x, &y);
 			fbl_set_emitter_xy(las.particleId, x, y);	// position the particles where the ray hit
 
-			if (id != -1) {	// this could be "if (id < 5) instead, or something (only check robots)
+			if (id != -1) {	// do the following if the laser didn't miss completely (didn't even hit a rock)
 
 				fbl_set_emitter_active(las.particleId, true);	// only turn the particles on if the ray hit something
 				std::cout << "id hit = " << id << std::endl;

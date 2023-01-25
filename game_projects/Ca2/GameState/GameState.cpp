@@ -101,7 +101,7 @@ void GameState::change(Game& g, StateType newState) {
 			else if (mState == StateType::Dialogue) {	// if coming from dialogue
 			}
 
-			g.mRobots->hideRobots(g.mEcs);	// don't show the robot-sprites in explore mode (or in beginning of race)
+			g.mRobots->hideRobots(g.mEcs);		 // don't show the robot-sprites in explore mode (or in beginning of race)
 			fbl_sort_sprites(FBL_SORT_BY_LAYER); // layers : Ground tiles 0, Player 1, Tunnel tiles(pl. goes under) 2, Clouds 3, Gray colMenu BG 4, Robots 5
 			mCurrentStateInstance = new Explore();
 
@@ -175,7 +175,7 @@ void GameState::titleToExplore(Game& g) {
 
 	//fbl_destroy_all_emitters();
 	g.mLocation->loadLocation(g.mMap);
-	initLuaDialog();	// set up prims and text and ui for the dialog box.
+	initLuaDialog();				// set up prims and text and ui for the dialog box.
 	g.mChars->setupPlayer(g.mEcs);	// create the player entity and add the right components
 	g.mChars->setupNpc(g);			// add all npcs based on the map file
 

@@ -59,8 +59,8 @@ void Robots::setupRobots(Coordinator* mEcs) {
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 0, 96, 32, 32, false, 0, 0, 0, 0, 5 });	// robots are on layer 5
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight activeSlot[4] passiveSlot[2]
 				mEcs->AddComponent(tmpRobot, Stats{ "Charmy", 1, 0, 4, 10, 10, 8, true, 20, 20, 7, 0, 0, 0, 0, 0, 0 });
-												//   rid len dir  hasTarget
-				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, false });
+												//  rid len dir ivalM ivalC hasTarg autoAim
+				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, false });
 												// rid pid len        dir	    dmg lv  isFiring
 				mEcs->AddComponent(tmpRobot, Laser{ 0, 0, 800, Addons::Dir::Up, 1, 1, false });
 				break;
@@ -69,18 +69,30 @@ void Robots::setupRobots(Coordinator* mEcs) {
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 32, 96, 32, 32, true, 2, 12, 0, 0, 5 });
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight activeSlot[4] passiveSlot[2]
 				mEcs->AddComponent(tmpRobot, Stats{ "Alarmy", 1, 0, 4, 10, 10, 6, true, 20, 19, 17, 0, 0, 0, 0, 0, 0 });
+												//  rid len dir ivalM ivalC hasTarg autoAim
+				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, true });
+												// rid pid len        dir	  dmg lv isFiring
+				mEcs->AddComponent(tmpRobot, Laser{ 0, 0, 800, Addons::Dir::Up, 1, 1, false });
 				break;
 			case Boingy :
 												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 96, 96, 32, 32, true, 2, 12, 0, 0, 5 });
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight activeSlot[4] passiveSlot[2]
-				mEcs->AddComponent(tmpRobot, Stats{ "Boingy", 2, 0, 4, 11, 9, 13, false, 20, 20, 7, 0, 0, 0, 0, 0, 0 });
+				mEcs->AddComponent(tmpRobot, Stats{ "Boingy", 2, 0, 4, 11, 9, 4, false, 20, 20, 7, 0, 0, 0, 0, 0, 0 });
+												//  rid len dir ivalM ivalC hasTarg autoAim
+				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, true });
+												// rid pid len        dir	  dmg lv isFiring
+				mEcs->AddComponent(tmpRobot, Laser{ 0, 0, 800, Addons::Dir::Up, 1, 1, false });
 				break;
 			case Chompy:
 												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 160, 96, 32, 32, true, 3, 12, 0, 0, 5 });
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight activeSlot[4] passiveSlot[2]
-				mEcs->AddComponent(tmpRobot, Stats{ "Chompy", 2, 0, 4, 11, 9, 7, true, 20, 20, 7, 0, 0, 0, 0, 0, 0 });
+				mEcs->AddComponent(tmpRobot, Stats{ "Chompy", 2, 0, 4, 11, 9, 5, true, 20, 20, 7, 0, 0, 0, 0, 0, 0 });
+												//  rid len dir ivalM ivalC hasTarg autoAim
+				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, true });
+												// rid pid len        dir	  dmg lv isFiring
+				mEcs->AddComponent(tmpRobot, Laser{ 0, 0, 800, Addons::Dir::Up, 1, 1, false });
 				break;
 
 		}

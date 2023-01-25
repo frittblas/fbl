@@ -96,7 +96,9 @@ void Race::assignRobots(Game& g) {
 
 	g.mSysManager->mPathSystem->Init(*g.mEcs);		// assign a unique path id to the entities with a path component
 
-	mMaze->initMaze(g, 5, mNumRacers);
+	std::cout << "THE NEXT SPRITE ID IS : " << fbl_create_sprite(0, 0, 1, 1, 0) << std::endl;
+
+	mMaze->initMaze(g, 35, mNumRacers);
 
 	fbl_sort_sprites(FBL_SORT_BY_LAYER);
 
@@ -120,6 +122,11 @@ void Race::tick(Game& g) {
 	//g.mWeather->tick();
 
 	mMaze->tick(g);	// needed for the pick-start positions-"state" in the beginning of the race
+
+	// for testing
+	auto& las = g.mEcs->GetComponent<Laser>(g.mRobots->mRacingRobots[0]);
+	if (fbl_get_key_down(FBLK_Z)) las.isFiring = true;
+	if (fbl_get_key_up(FBLK_Z)) las.isFiring = false;
 
 	if(fbl_get_raw_frames_count() % 60 == 0)
 		std::cout << "Tick race!" << std::endl;
