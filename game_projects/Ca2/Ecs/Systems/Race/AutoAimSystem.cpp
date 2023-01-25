@@ -4,7 +4,7 @@
 *
 *	AutoAim.cpp
 *
-*	The auto aim system. Raycasting an invisible ray in all directions looking for targets.
+*	The auto aim system. Raycasting an invisible ray in all directions (one at a time) looking for targets.
 *
 *
 *	Hans Strömquist 2023
@@ -26,13 +26,16 @@ void AutoAimSystem::Init(Coordinator& ecs) {
 
 	for (auto const& entity : mEntities)
 	{
+
 		auto& pos = ecs.GetComponent<Position>(entity);
 		auto& sta = ecs.GetComponent<Stats>(entity);
 		auto& aim = ecs.GetComponent<AutoAim>(entity);
 
 		// create the ray with 0 length
 		aim.rayId = fbl_create_prim(FBL_RAY, 0, 0, 0, 0, 0, true, false);
-		fbl_set_prim_color(aim.rayId, 0, 200, 0, 50);
+		fbl_set_prim_color(aim.rayId, 0, 200, 0, 100);
+		fbl_set_prim_active(aim.rayId, true);	// show the ray
+
 	}
 
 	std::cout << "AutoAim component system initialized!" << std::endl;
@@ -40,33 +43,48 @@ void AutoAimSystem::Init(Coordinator& ecs) {
 }
 
 void AutoAimSystem::Update(Game& g) {
-	
+
 	for (auto const& entity : mEntities)
 	{
 		auto& pos = g.mEcs->GetComponent<Position>(entity);
 		auto& sta = g.mEcs->GetComponent<Stats>(entity);
 		auto& aim = g.mEcs->GetComponent<AutoAim>(entity);
 
-		fbl_set_prim_active(aim.rayId, true);	// show the ray
-
+		// set the ray to point in current direction (aim.dir)
 		setDirection(pos, aim);
 
 		// some ray hit detection
 		int id, x, y;
 		fbl_get_ray_hit_sprite(aim.rayId, &id, &x, &y);
 
-		if (id != -1) {
+		if (id != -1) {	// this could be "if (id < 5) instead, or something (only check robots)
 
+			aim.hasTarget = false;	// assume that a robot has not been seen
 
 			// check if a ray has hit a robot
 			for (int i = 0; i < g.mRobots->mNumRacers; i++)
 				if (g.mRobots->mSpriteIdToEntityMap[id] == g.mRobots->mRacingRobots[i]) {
 					auto& targetSta = g.mEcs->GetComponent<Stats>(g.mRobots->mSpriteIdToEntityMap[id]);
-					std::cout << sta.name << " killed " << targetSta.name << std::endl;
+					std::cout << sta.name << " saw " << targetSta.name << std::endl;
+
+					
+					// check to see if you saw yourself :)
+					if(entity == g.mRobots->mSpriteIdToEntityMap[id])
+						std::cout << "Handled saw myself in theory!" << std::endl;
+						
+
+					aim.hasTarget = true;
+					break;	// no need to check the other robots after a hit
 				}
+				
 
 		}
 
+		// if no target was found in that direction, change direction (loop through directions continously)
+		if (!aim.hasTarget) {
+			aim.dir++;
+			if (aim.dir > 3) aim.dir = 0;
+		}
 
 	}
 
@@ -76,7 +94,7 @@ void AutoAimSystem::Update(Game& g) {
 void AutoAimSystem::setDirection(Position& pos, AutoAim& aim) {
 
 
-	switch (aim.hasShotDir) {
+	switch (aim.dir) {
 
 		case Addons::Dir::Up:
 			fbl_set_prim_xy(aim.rayId, pos.x + Game::TileSize / 2, pos.y + 1);

@@ -72,10 +72,11 @@ void LaserSystem::Update(Game& g) {
 			int id, x, y;
 			fbl_get_ray_hit_sprite(las.rayId, &id, &x, &y);
 			fbl_set_emitter_xy(las.particleId, x, y);	// position the particles where the ray hit
-			if (id != -1) {
+
+			if (id != -1) {	// this could be "if (id < 5) instead, or something (only check robots)
 
 				fbl_set_emitter_active(las.particleId, true);	// only turn the particles on if the ray hit something
-				//std::cout << "id hit = " << id << std::endl;
+				std::cout << "id hit = " << id << std::endl;
 
 				//printf("Ray 0 hit sprite: %d at x: %d, y: %d\n", id, x, y);
 
@@ -84,6 +85,7 @@ void LaserSystem::Update(Game& g) {
 					if (g.mRobots->mSpriteIdToEntityMap[id] == g.mRobots->mRacingRobots[i]) {
 						auto& targetSta = g.mEcs->GetComponent<Stats>(g.mRobots->mSpriteIdToEntityMap[id]);
 						std::cout << sta.name << " killed " << targetSta.name << std::endl;
+						break;	// no need to check the other robots after a hit
 					}
 
 			}

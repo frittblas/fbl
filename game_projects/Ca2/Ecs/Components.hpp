@@ -95,6 +95,23 @@ struct Light
 // Robot components /////
 /////////////////////////
 
+// Addons have this component
+struct Addon {
+
+    uint8_t type;   // might be unnecessary
+    uint8_t rarity; // rarity of the addon (common, rare, etc.)
+    bool passive;   // passive addon or active?
+
+    // hmm how to solve this?
+    // should the addons have 2 components or one
+    // should the robots use the actual
+
+    // I think addons should have: addon component, sprite component aand laser component?? think about that
+
+
+};
+
+
 // Robot stats
 struct Stats
 {
@@ -115,29 +132,14 @@ struct Stats
 
 };
 
-// Addons have this component
-struct Addon {
-
-    uint8_t type;   // might be unnecessary
-    uint8_t rarity; // rarity of the addon (common, rare, etc.)
-    bool passive;   // passive addon or active?
-
-    // hmm how to solve this?
-    // should the addons have 2 components or one
-    // should the robots use the actual
-
-    // I think addons should have: addon component, sprite component aand laser component?? think about that
-
-
-};
-
 // AutoAim (consists of a invisible ray (line) and dir)
 struct AutoAim
 {
 
     uint16_t rayId;         // id for the ray prim
     uint16_t length;        // length of the ray
-    int8_t   hasShotDir;    // do you have somebody in the crosshairs? In that case, which direction (-1 = no shot)
+    int8_t   dir;           // which direction is beng checked
+    bool     hasTarget;     // do you have somebody in the crosshairs?
 
 };
 

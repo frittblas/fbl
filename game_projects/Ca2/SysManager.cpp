@@ -22,7 +22,8 @@
 #include "Ecs/Systems/DialogueTrigSystem.hpp"
 #include "Ecs/Systems/LightSystem.hpp"
 
-// raobot specific
+// robot specific
+#include "Ecs/Systems/Race/AutoAimSystem.hpp"
 #include "Ecs/Systems/Race/LaserSystem.hpp"
 
 // SysManager-class implementation
@@ -54,6 +55,7 @@ void SysManager::setupEcs(Coordinator *mEcs) {
 
 	// robot specific
 	mEcs->RegisterComponent<Stats>();
+	mEcs->RegisterComponent<AutoAim>();
 	mEcs->RegisterComponent<Laser>();
 
 	// register systems
@@ -65,6 +67,7 @@ void SysManager::setupEcs(Coordinator *mEcs) {
 	mLightSystem = mEcs->RegisterSystem<LightSystem>();
 
 	// robot specific
+	mAutoAimSystem = mEcs->RegisterSystem<AutoAimSystem>();
 	mLaserSystem = mEcs->RegisterSystem<LaserSystem>();
 
 	// set up what components the systems require
@@ -100,6 +103,12 @@ void SysManager::setupEcs(Coordinator *mEcs) {
 	mEcs->SetSystemSignature<LightSystem>(sign);
 
 	// robot specific
+	sign.reset();
+	sign.set(mEcs->GetComponentType<Position>());
+	sign.set(mEcs->GetComponentType<Stats>());
+	sign.set(mEcs->GetComponentType<AutoAim>());
+	mEcs->SetSystemSignature<AutoAimSystem>(sign);
+
 	sign.reset();
 	sign.set(mEcs->GetComponentType<Position>());
 	sign.set(mEcs->GetComponentType<Stats>());

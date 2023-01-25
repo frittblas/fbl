@@ -24,6 +24,7 @@ public:
 
     enum Type {
 
+        AutoAim,
         Laser,
         NumAddons
 

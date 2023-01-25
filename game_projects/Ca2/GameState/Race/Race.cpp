@@ -23,6 +23,7 @@
 #include "../../Ecs/Systems/CameraSystem.hpp"
 #include "../../Ecs/Systems/LightSystem.hpp"
 
+#include "../../Ecs/Systems/Race/AutoAimSystem.hpp"
 #include "../../Ecs/Systems/Race/LaserSystem.hpp"
 
 #include "../../Chars.hpp"
@@ -95,7 +96,7 @@ void Race::assignRobots(Game& g) {
 
 	g.mSysManager->mPathSystem->Init(*g.mEcs);		// assign a unique path id to the entities with a path component
 
-	mMaze->initMaze(g, 35, mNumRacers);
+	mMaze->initMaze(g, 5, mNumRacers);
 
 	fbl_sort_sprites(FBL_SORT_BY_LAYER);
 
@@ -113,8 +114,8 @@ void Race::tick(Game& g) {
 
 	//g.mSysManager->mLightSystem->Update(*g.mEcs);			// update the light system
 	
-	g.mSysManager->mLaserSystem->Update(g);					// update the laser system
-	g.mSysManager->mLaserSystem->Update(g);					// update the laser system
+	g.mSysManager->mAutoAimSystem->Update(g);				// update the AutoAim system
+	g.mSysManager->mLaserSystem->Update(g);					// update the Laser system
 
 	//g.mWeather->tick();
 

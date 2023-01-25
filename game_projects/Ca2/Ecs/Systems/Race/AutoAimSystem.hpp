@@ -4,7 +4,7 @@
 *
 *	AutoAim.hpp
 *
-*	The auto aim system header.
+*	The auto aim system header. Raycasting an invisible ray in all directions (one at a time) looking for targets.
 *
 *	Hans Strömquist 2023
 *

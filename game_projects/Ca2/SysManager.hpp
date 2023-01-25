@@ -23,6 +23,8 @@ class DialogueTrigSystem;
 class LightSystem;
 
 // robot specific
+// Stats does not have it's own system YET!
+class AutoAimSystem;
 class LaserSystem;
 
 class Coordinator;
@@ -36,11 +38,13 @@ public:
     std::shared_ptr<CameraSystem> mCameraSystem;             // the camera system
     std::shared_ptr<DialogueTrigSystem> mDialogueTrigSystem; // the dialogue trigger system
     std::shared_ptr<LightSystem> mLightSystem;               // the light system
+
+    std::shared_ptr<AutoAimSystem> mAutoAimSystem;           // the auto aim system
     std::shared_ptr<LaserSystem> mLaserSystem;               // the laser system
 
     SysManager();
     ~SysManager();
 
-    void setupEcs(Coordinator* mEcs);    // register componets and systems
+    void setupEcs(Coordinator* mEcs);                        // register componets and systems
 
 };

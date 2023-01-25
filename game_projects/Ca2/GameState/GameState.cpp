@@ -22,6 +22,7 @@
 #include "../Ecs/Systems/CameraSystem.hpp"
 #include "../Ecs/Systems/LightSystem.hpp"
 
+#include "../Ecs/Systems/Race/AutoAimSystem.hpp"
 #include "../Ecs/Systems/Race/LaserSystem.hpp"
 
 #include "GameState.hpp"
@@ -224,10 +225,11 @@ void GameState::raceToExplore(Game& g) {
 void GameState::setupRace(Game& g) {
 
 	g.mWeather->setWeather(Weather::TimeOfDay::Day, 0, 0, 0, false);	// reset weather before the race (destroys cloud-sprites and emitters)
-	g.mLocation->unLoadLocation(g.mMap);	// this destroys ALL sprites
-	unInitLuaDialog();	// also remove resources for dialogue (ALL prims, text and ui)
+	g.mLocation->unLoadLocation(g.mMap);			// this destroys ALL sprites
+	unInitLuaDialog();								// also remove resources for dialogue (ALL prims, text and ui)
 	g.mSysManager->mSpriteSystem->Init(*g.mEcs);	// create sprites for all entities with a sprite component
-	g.mSysManager->mLaserSystem->Init(*g.mEcs);		// create rays and particles all entities with a laser component.
+	g.mSysManager->mAutoAimSystem->Init(*g.mEcs);	// create rays for entities with AutoAim  component.
+	g.mSysManager->mLaserSystem->Init(*g.mEcs);		// create rays and particles for all entities with a Laser component.
 	g.mRobots->mapSpriteIdToEntity(g.mEcs);
 	g.mRobots->hideRobots(g.mEcs);
 
