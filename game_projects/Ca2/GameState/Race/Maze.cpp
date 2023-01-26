@@ -61,7 +61,7 @@ void Maze::setupPickStart() {
 
 	// get ready text
 	fbl_load_ttf_font("font/garamond.ttf", 48);
-	mGetReadyTextId = fbl_create_text(255, 69, 0, 255, "GET READY!");
+	mGetReadyTextId = fbl_create_text(255, 69, 0, 255, (char*)"GET READY!");
 	fbl_set_text_align(mGetReadyTextId, FBL_ALIGN_CENTER);
 	fbl_set_text_xy(mGetReadyTextId, fbl_get_screen_w() / 2, fbl_get_screen_h() / 3);
 

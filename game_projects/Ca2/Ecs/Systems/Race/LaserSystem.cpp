@@ -100,7 +100,7 @@ void LaserSystem::Update(Game& g) {
 
 		}
 		else {
-			// turn these of if !firing, it's ok to call every frame
+			// turn these off if !firing, it's ok to call every frame
 			fbl_set_prim_active(las.rayId, false);
 			fbl_set_emitter_active(las.particleId, false);
 		}

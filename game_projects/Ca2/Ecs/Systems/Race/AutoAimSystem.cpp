@@ -61,7 +61,7 @@ void AutoAimSystem::Update(Game& g) {
 			int id, x, y;
 			fbl_get_ray_hit_sprite(aim.rayId, &id, &x, &y);
 
-			if (id >= 4 && id <= g.mRobots->NumRobots + 3) {// only check further if the sprite id that was hit, is a robot. (first 4 sprites is brodo :))
+			if (id >= 4 && id <= g.mRobots->NumRobots + 4) {// only check further if the sprite id that was hit, is a robot. (first 4 sprites is brodo :))
 
 				// check if a ray has hit a robot
 				for (int i = 0; i < g.mRobots->mNumRacers; i++)
