@@ -237,4 +237,7 @@ void GameState::setupRace(Game& g) {
 	g.mEcs->RemoveComponent<Path>(g.mChars->mBrodo);
 	g.mChars->hidePlayer(g.mEcs);
 
+	//g.mSysManager->mLightSystem->Init(*g.mEcs);		// create lights for all entities with a light component
+	//g.mWeather->setWeather(Weather::TimeOfDay::Evening, 0, 0, 0, false);
+
 }

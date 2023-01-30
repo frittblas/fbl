@@ -35,9 +35,8 @@ struct Sprite
     uint8_t w, h;   // width and height of sprite
     bool animated;  // is animated or not
     uint8_t frames, speed; // how many animation frames, and anim speed
-    uint8_t dir, dirLast;    // facing direction, and last frame dir
-    uint8_t layer;  // which layer (for draw order)
-
+    uint8_t dir, dirLast;  // facing direction, and last frame dir
+    uint8_t layer;         // which layer (for draw order)
 };
 
 // the path finding component
@@ -98,15 +97,14 @@ struct Light
 // Addons have this component
 struct Addon {
 
-    uint8_t type;   // might be unnecessary
+    // Addons have: Addon component, sprite component.
+
+    uint8_t type;   // examples: Laser, AutoAim etc
+    uint8_t level;  // Addons can level up (max 3?)
     uint8_t rarity; // rarity of the addon (common, rare, etc.)
     bool passive;   // passive addon or active?
-
-    // hmm how to solve this?
-    // should the addons have 2 components or one
-    // should the robots use the actual
-
-    // I think addons should have: addon component, sprite component aand laser component?? think about that
+    bool equipped;  // is is equipped on one of your robots?
+    uint8_t price;  // how much to buy (sells for half)
 
 
 };

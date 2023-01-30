@@ -20,7 +20,8 @@ MouseControl
 Camera
 DialogTrig
 Light
-Laser on the way.
+AutoAim
+Laser
 
 Todo:
 Register components and systems in sysManager class. Done!
@@ -41,7 +42,7 @@ Maybe add damping even in corners? Yes maybe later.
 New file, like LuaDialogue that exposes some new functions to be called
 from lua, like: StartDialogue() that sets a variable that you can pick up in Lua.
 Also some cutscene stuff maybe. And give items. High level gameplay things.
-Set up text and font stuff (and dialogs, ui) in C++. Then do dialogue with coroutines. On the way!
+Set up text and font stuff (and dialogs, ui) in C++. Then do dialogue with coroutines. Done!
 Trigger system to start dialogues! 95 % Done!
 
 Added LuaDialogue.cpp but vc doesn't like the extern lua_State variable! Fix it!
@@ -75,10 +76,34 @@ Small bug: If you click Talk, after the conversation the player will path to the
 Start planning the racing system! Make new folder makes sense. - done.
 Maybe add more detailed folder structure.
 Add #ifdef cplusplus in the html5 section of emscripten build to build easier.
-Add a save system online and leaderboards online.
+Add a save system online and leaderboards online. {
+
+Regarding save/load game: Maybe keep track of everything in Progress.cpp, every time something happens:
+- you claim a new robot
+- a robot levels up
+- a robot gets a new component (addon position etc)
+- player reans cash etc.
+
+Think about this a bit.
+
+Keep simple:
+
+What location are you at?
+How much money?
+Which robots do you own, what levels are they?
+What addons do you own? What levels are they?
+
+Maybe limit the times/places you can save. At the beginning of a new location? That way, the dialogues
+will be intact.
+
+}
 
 Other stuff:
-Player can find skills in chests (or buy), called programs. Passive or active skills.
+Player can find skills in chests (or buy), called Addons. Passive or active skills.
+
+Cool thing:
+Make a "dungeon" with never ending races, player sets up a team of 3 robots with strategic addons, can't repair.
+Just go as far as you can.
 
 
 robot collection menu! - almost done!
@@ -94,7 +119,9 @@ Player: 1
 Tunnel tiles (player goes under): 2
 Clouds: 3
 Gray collectionMenu BG: 4
-Robots: 5
+Addons: 5 (not done)
+Powerups: 6 (coins and such, not done)
+Robots: 7 (on top)
 
 Come up with a solution for the collectionMenu being susceptible to time of day :)
 Maybe just draw a BIG bg sprite (scaled) before drawing the menu and turn off weather.. (<-this)
@@ -105,15 +132,18 @@ Done - I removed the path components, only use 4 (max) now.
 
 Next:
 Add pick start, randomize rest.	- done.
-Add laser (note that each robot can only equip one of each addon).
-Add auto-aim (used by Cpu's and optionally the player)
+Add laser (note that each robot can only equip one of each addon). - Done!
+Add auto-aim (used by Cpu's and optionally the player) - Done!
 Some kind of meaningful powerup that the robots can pick up (also added during the race).
 Add different ways to control the robot: a button that makes robot path back home.
 Normally it will maybe pick up three powerups, then go to the middle, then back home.
 So the a.i will look for power-ups, path there, get new path and so on.
 Add mines.
+Add homing missile (using pathfinding continously to find the target)
 Add magnetic passive ability.
+Add diagonals passive ability? (or maybe this is robot specific)
 Add teleport.
+Add ability to slow down time (as long as you hold button)
 
 Add tweening.
 Add camera shake.

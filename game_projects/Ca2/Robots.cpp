@@ -63,6 +63,8 @@ void Robots::setupRobots(Coordinator* mEcs) {
 				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, false });
 												// rid pid len        dir	    dmg lv  isFiring
 				mEcs->AddComponent(tmpRobot, Laser{ 0, 0, 800, Addons::Dir::Up, 1, 1, false });
+											  // id  tx  ty   w    h  scale
+				//mEcs->AddComponent(tmpRobot, Light{ 0, 384, 0, 128, 128, 2.0 });
 				break;
 			case Alarmy :
 												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
@@ -96,14 +98,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 				break;
 
 		}
-		/*
-		auto& sta = mEcs->GetComponent<Stats>(tmpRobot);
-		float speed = (float)sta.speed / 10;
-		uint8_t diag = sta.diag ? FBL_PATHF_USE_DIAG : FBL_PATHF_NO_DIAG;
 
-										// id gX gY newPath speed diag pixelsPerFrame
-		mEcs->AddComponent(tmpRobot, Path{ 0, 0, 0, false, speed, diag, 10 });
-		*/
 		// add the entity to the array containing all robots
 		mAllRobots[i] = tmpRobot;
 
