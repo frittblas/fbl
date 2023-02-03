@@ -97,15 +97,13 @@ struct Light
 // Addons have this component
 struct Addon {
 
-    // Addons have: Addon component, sprite component.
-
     uint8_t type;   // examples: Laser, AutoAim etc
+    uint16_t uiId;  // id for the button
     uint8_t level;  // Addons can level up (max 3?)
     uint8_t rarity; // rarity of the addon (common, rare, etc.)
     bool passive;   // passive addon or active?
     bool equipped;  // is is equipped on one of your robots?
     uint8_t price;  // how much to buy (sells for half)
-
 
 };
 

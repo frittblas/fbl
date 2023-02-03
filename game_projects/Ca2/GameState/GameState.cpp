@@ -35,6 +35,7 @@
 
 #include "../Chars.hpp"
 #include "../Robots.hpp"
+#include "../Addons.hpp"
 #include "../Location.hpp"
 #include "../Weather.hpp"
 #include "../SysManager.hpp"
@@ -102,6 +103,7 @@ void GameState::change(Game& g, StateType newState) {
 			}
 
 			g.mRobots->hideRobots(g.mEcs);		 // don't show the robot-sprites in explore mode (or in beginning of race)
+			g.mAddons->hideAddons(g.mEcs);
 			fbl_sort_sprites(FBL_SORT_BY_LAYER); // layers : Ground tiles 0, Player 1, Tunnel tiles(pl. goes under) 2, Clouds 3, Gray colMenu BG 4, Robots 5
 			mCurrentStateInstance = new Explore();
 
@@ -134,6 +136,7 @@ void GameState::change(Game& g, StateType newState) {
 
 		case StateType::RobotCollection:
 			g.mRobots->showRobotInMenu(g.mEcs, Robots::Name::Charmy);	// make the robots visible in the menu
+			g.mAddons->showAddonsInMenu(g.mEcs);
 			RobotCollection* rc = new RobotCollection();
 			rc->cyclePages(g, 0);	// call this to update the first robots stats in the menu
 			mCurrentStateInstance = rc;
@@ -163,9 +166,10 @@ void GameState::exploreToTitle(Game& g) {
 	g.mWeather->setWeather(Weather::TimeOfDay::Day, 0, 0, 0, false);	// reset weather before unload level (destroys cloud-sprites and emitters)
 	g.mLocation->unLoadLocation(g.mMap);
 	unInitLuaDialog();	// also remove resources for dialogue (ALL prims, text and ui)
-	g.mChars->removePlayer(g.mEcs);	// delete the player completely
-	g.mChars->removeNpc(g.mEcs);	// also delete all npcs in the current scene
+	g.mChars->removePlayer(g.mEcs);	 // delete the player completely
+	g.mChars->removeNpc(g.mEcs);	 // also delete all npcs in the current scene
 	g.mRobots->removeRobots(g.mEcs); // delete all the robots
+	g.mAddons->removeAddons(g.mEcs); // delete all addons
 	g.mWeather->setWeather(Weather::TimeOfDay::Day, 0, 6, 0, false);	// timeOfDay, rainLevel, snowLevel, numClouds, lightningOn
 	fbl_lua_shutdown();	// so the dialogues gets reset
 
@@ -180,6 +184,7 @@ void GameState::titleToExplore(Game& g) {
 	g.mChars->setupNpc(g);			// add all npcs based on the map file
 
 	g.mRobots->setupRobots(g.mEcs); // create the robot entities and add the basic components
+	g.mAddons->setupAddons(g.mEcs); // create the addon entities
 
 	g.mSysManager->mSpriteSystem->Init(*g.mEcs);	// create sprites for all entities with a sprite component
 	g.mSysManager->mPathSystem->Init(*g.mEcs);		// assign a unique path id to the entities with a path component
@@ -219,6 +224,8 @@ void GameState::raceToExplore(Game& g) {
 	g.mWeather->setWeather(Weather::TimeOfDay::Evening, 1, 0, 50, true);
 
 	initCollectionMenu();	// set up prims and text and ui for the collection-menu, sprite draw-order is important
+
+	// NOTE: init the Addon UI her aswell
 
 }
 

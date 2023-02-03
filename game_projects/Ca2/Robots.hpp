@@ -22,7 +22,6 @@ class Robots {
 
 public:
 
-
     enum Name {
         Charmy,
         Alarmy,
@@ -47,7 +46,7 @@ public:
     ~Robots();
 
     void setupRobots(Coordinator* mEcs);
-    void mapSpriteIdToEntity(Coordinator* mEcs);
+    void mapSpriteIdToEntity(Coordinator* mEcs);    // used by the laser hitdetection (raycasting)
     void removeRobots(Coordinator* mEcs);
     void hideRobots(Coordinator* mEcs);
     void showRobotInMenu(Coordinator* mEcs, int nameIndex);

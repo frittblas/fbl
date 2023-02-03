@@ -26,7 +26,7 @@ public:
         Demo,
         Settings,
         Tutorial,
-        // these share resources
+        // these share resources (except race)
         Explore,
         Dialogue,
         Shop,

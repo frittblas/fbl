@@ -54,6 +54,7 @@ void SysManager::setupEcs(Coordinator *mEcs) {
 	mEcs->RegisterComponent<Light>();
 
 	// robot specific
+	mEcs->RegisterComponent<Addon>();
 	mEcs->RegisterComponent<Stats>();
 	mEcs->RegisterComponent<AutoAim>();
 	mEcs->RegisterComponent<Laser>();

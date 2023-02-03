@@ -81,8 +81,8 @@ Add a save system online and leaderboards online. {
 Regarding save/load game: Maybe keep track of everything in Progress.cpp, every time something happens:
 - you claim a new robot
 - a robot levels up
-- a robot gets a new component (addon position etc)
-- player reans cash etc.
+- a robot gets a new component (addon, position etc)
+- player earns cash etc.
 
 Think about this a bit.
 
@@ -119,9 +119,10 @@ Player: 1
 Tunnel tiles (player goes under): 2
 Clouds: 3
 Gray collectionMenu BG: 4
-Addons: 5 (not done)
 Powerups: 6 (coins and such, not done)
 Robots: 7 (on top)
+
+Addons are UI elements (buttons), will always be rendered on top of everything.
 
 Come up with a solution for the collectionMenu being susceptible to time of day :)
 Maybe just draw a BIG bg sprite (scaled) before drawing the menu and turn off weather.. (<-this)
@@ -138,6 +139,7 @@ Some kind of meaningful powerup that the robots can pick up (also added during t
 Add different ways to control the robot: a button that makes robot path back home.
 Normally it will maybe pick up three powerups, then go to the middle, then back home.
 So the a.i will look for power-ups, path there, get new path and so on.
+Add shield.
 Add mines.
 Add homing missile (using pathfinding continously to find the target)
 Add magnetic passive ability.
@@ -179,6 +181,14 @@ Charming alarming is taken to the scrapyard (e-waste) without knowing about it, 
 Charming alarming fakes becoming self aware to plead to the player.
 The player believes the robot an start questioning himself.
 
+
+-----------------------------------------------------------------
+
+NEXT THING TO DO:
+
+1. Make addons work in robot-collection (drag-and-drop?) aand in the race (correct addon as buttons)
+
+2. Start writing a long dialogue thing with Charming Alarming (and a nice scene, black borders up and down)
 
 
 BUGS:

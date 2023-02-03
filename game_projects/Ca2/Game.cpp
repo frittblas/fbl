@@ -18,6 +18,7 @@
 #include "UserInput.hpp"
 #include "Chars.hpp"
 #include "Robots.hpp"
+#include "Addons.hpp"
 #include "Location.hpp"
 #include "Objects.hpp"
 #include "Weather.hpp"
@@ -88,6 +89,7 @@ bool Game::init() {
 	mInput = new UserInput();
 	mChars = new Chars();
 	mRobots = new Robots();
+	mAddons = new Addons();
 	mLocation = new Location();
 	mObjects = new Objects();
 	mWeather = new Weather();
@@ -106,6 +108,7 @@ void Game::unInit() {
 
 	mMap->resetMap(0, 0);	// free tile-mem
 
+	delete mEcs;
 	delete mMap;
 	delete mSysManager;
 	delete mSound;
@@ -113,6 +116,7 @@ void Game::unInit() {
 	delete mInput;
 	delete mChars;
 	delete mRobots;
+	delete mAddons;
 	delete mLocation;
 	delete mObjects;
 	delete mWeather;
