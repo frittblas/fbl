@@ -23,12 +23,14 @@
 
 // id's for the collection-menu items
 int fMenuBgSquareId, fMenuBgOutlineId;
-int fMenuDividerLine;
+int fMenuDividerLine, fSmallMenuDividerLine;
 int fMenuButtonLeft, fMenuButtonRight;
 int fMenuRobotDescr, fMenuItemsDescr;
 int fMenuName, fMenuLevel, fMenuXp, fMenuHp, fMenuSpeed;
 int fMenuDiag, fMenuEnergy, fMenuWeight;
 int fMenuSlotNr[4], fMenuSlot[4];
+int fMenuItemGrid[17];	// 10x5 grid, 17 lines
+int fMenuItemInfoLine;
 
 
 // RobotCollection-class implementation
@@ -216,6 +218,25 @@ void initCollectionMenu() {
 	fbl_set_ui_elem_xy(fMenuButtonRight, x + 350, y - 125);
 
 
+	// the grid to the left 10x5, 17 lines (11 + 6)
+	x = 105;
+	y = 132;
+	for (int i = 0; i < 11; i++) {
+		fMenuItemGrid[i] = fbl_create_prim(FBL_LINE, x, y, x, y + 180, 0, false, false);
+		fbl_set_prim_color(fMenuItemGrid[i], 255, 255, 255, 255);
+		x += 35;
+	}
+	x = 105;
+	y = 132;
+	for (int i = 11; i < 17; i++) {
+		fMenuItemGrid[i] = fbl_create_prim(FBL_LINE, x, y, x + 350, y, 0, false, false);
+		fbl_set_prim_color(fMenuItemGrid[i], 255, 255, 255, 255);
+		y += 36;
+	}
+
+	fMenuItemInfoLine = fbl_create_prim(FBL_LINE, 80, 340, 480, 340, 0, false, false);
+	fbl_set_prim_color(fMenuItemInfoLine, 255, 255, 255, 255);
+
 	// hide
 	hideCollectionMenu();
 
@@ -248,6 +269,12 @@ void showCollectionMenu() {
 	fbl_set_ui_elem_active(fMenuButtonLeft, true);
 	fbl_set_ui_elem_active(fMenuButtonRight, true);
 
+	// grid
+	for (int i = 0; i < 17; i++) {
+		fbl_set_prim_active(fMenuItemGrid[i], true);
+	}
+
+	fbl_set_prim_active(fMenuItemInfoLine, true);
 
 }
 
@@ -277,5 +304,12 @@ void hideCollectionMenu() {
 
 	fbl_set_ui_elem_active(fMenuButtonLeft, false);
 	fbl_set_ui_elem_active(fMenuButtonRight, false);
+
+	// grid
+	for (int i = 0; i < 17; i++) {
+		fbl_set_prim_active(fMenuItemGrid[i], false);
+	}
+
+	fbl_set_prim_active(fMenuItemInfoLine, false);
 
 }

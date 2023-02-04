@@ -34,7 +34,6 @@ Addons::~Addons() {
 void Addons::setupAddons(Coordinator* mEcs) {
 
 	Entity tmpAddon;
-	uint16_t tmpUiId;
 
 	// init to unassigned
 	for (int i = 0; i < NumAddons; i++) {
@@ -49,21 +48,18 @@ void Addons::setupAddons(Coordinator* mEcs) {
 		// create the addon entity
 		tmpAddon = mEcs->CreateEntity();
 
-		// create the button
-		tmpUiId = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 64, 32, 32, NULL);
-
 		// add Addon-component with correct params to the entity
 		switch (i) {
 
 		case AutoAim:
-											 // type  uiId lv rrty psv eqp price
-			mEcs->AddComponent(tmpAddon, Addon{ AutoAim, tmpUiId, 1, 1, true, false, 19});
+											 // type  uiId tx ty lv rrty psv eqp price
+			mEcs->AddComponent(tmpAddon, Addon{ AutoAim, 0, 0, 96, 1, 1, true, false, 19});
 
 			break;
 
 		case Laser:
-											// type uiId lv rrty psv eqp price
-			mEcs->AddComponent(tmpAddon, Addon{ Laser, tmpUiId, 1, 2, false, false, 20 });
+											// type uiId tx ty lv rrty psv eqp price
+			mEcs->AddComponent(tmpAddon, Addon{ Laser, 0, 0, 64, 1, 2, false, false, 20 });
 
 			break;
 
@@ -78,6 +74,25 @@ void Addons::setupAddons(Coordinator* mEcs) {
 
 }
 
+void Addons::initAddons(Coordinator* mEcs) {
+
+	// create the ui elements for the addons (buttons)
+
+	for (Entity e : mAllAddons) {
+		if (e != Unassigned) {
+			auto& add = mEcs->GetComponent<Addon>(e);
+			add.uiId = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, add.tx, add.ty, Game::TileSize, Game::TileSize, NULL);
+		}
+	}
+
+	for (Entity e : mOwnedAddons) {
+		if (e != Unassigned) {
+			auto& add = mEcs->GetComponent<Addon>(e);
+			add.uiId = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, add.tx, add.ty, Game::TileSize, Game::TileSize, NULL);
+		}
+	}
+
+}
 
 void Addons::removeAddons(Coordinator* mEcs) {
 
@@ -117,8 +132,8 @@ void Addons::hideAddons(Coordinator* mEcs) {
 
 void Addons::showAddonsInMenu(Coordinator* mEcs) {
 
-	int x = 100;
-	int y = Game::DeviceResH / 2 - 120;
+	int x = 123;
+	int y = 150;
 
 
 	for (Entity e : mOwnedAddons) {

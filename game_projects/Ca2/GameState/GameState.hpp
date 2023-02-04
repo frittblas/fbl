@@ -26,11 +26,11 @@ public:
         Demo,
         Settings,
         Tutorial,
-        // these share resources (except race)
+        Race,
+        // these share resources
         Explore,
         Dialogue,
         Shop,
-        Race,
         RobotCollection
     };
 

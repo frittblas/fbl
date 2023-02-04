@@ -26,11 +26,11 @@ Title = 0
 Demo = 1
 Settings = 2
 Tutorial = 3
+Race = 4
 --
-Explore = 4
-Dialogue = 5
-Shop = 6
-Race = 7
+Explore = 5
+Dialogue = 6
+Shop = 7
 RobotCollection = 8
 
 -- number of dialogues
