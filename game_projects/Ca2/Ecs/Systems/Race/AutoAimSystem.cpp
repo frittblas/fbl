@@ -67,7 +67,7 @@ void AutoAimSystem::Update(Game& g) {
 				for (int i = 0; i < g.mRobots->mNumRacers; i++)
 					if (g.mRobots->mSpriteIdToEntityMap[id] == g.mRobots->mRacingRobots[i]) {
 						auto& targetSta = g.mEcs->GetComponent<Stats>(g.mRobots->mSpriteIdToEntityMap[id]);
-						std::cout << sta.name << " saw " << targetSta.name << std::endl;
+						//std::cout << sta.name << " saw " << targetSta.name << std::endl;
 
 						// check to see if you saw yourself :)
 						if (entity == g.mRobots->mSpriteIdToEntityMap[id]) {

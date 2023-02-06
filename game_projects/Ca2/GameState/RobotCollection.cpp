@@ -22,7 +22,7 @@
 
 
 // id's for the collection-menu items
-int fMenuBgSquareId, fMenuBgOutlineId;
+int fMenuBgSquareId, fMenuBgOutlineId, fMenuRobotBgSquareId;
 int fMenuDividerLine, fSmallMenuDividerLine;
 int fMenuButtonLeft, fMenuButtonRight;
 int fMenuRobotDescr, fMenuItemsDescr;
@@ -138,6 +138,13 @@ void initCollectionMenu() {
 	fbl_set_sprite_layer(fMenuBgSquareId, 4);
 	fbl_fix_sprite_to_screen(fMenuBgSquareId, true);
 
+	// white robot-bg
+	fMenuRobotBgSquareId = fbl_create_sprite(448, 192, 64, 64, 0);
+	fbl_set_sprite_xy(fMenuRobotBgSquareId, x + 168, y - 155);
+	fbl_set_sprite_layer(fMenuRobotBgSquareId, 5);
+	fbl_fix_sprite_to_screen(fMenuRobotBgSquareId, true);
+	fbl_set_sprite_is_light(fMenuRobotBgSquareId, true);
+
 	// create the white outline
 	fMenuBgOutlineId = fbl_create_prim(FBL_RECT, x, y, width, height, 0, false, false);
 	fbl_set_prim_color(fMenuBgOutlineId, 255, 255, 255, 255);
@@ -223,14 +230,14 @@ void initCollectionMenu() {
 	y = 132;
 	for (int i = 0; i < 11; i++) {
 		fMenuItemGrid[i] = fbl_create_prim(FBL_LINE, x, y, x, y + 180, 0, false, false);
-		fbl_set_prim_color(fMenuItemGrid[i], 255, 255, 255, 255);
+		fbl_set_prim_color(fMenuItemGrid[i], 150, 150, 150, 255);
 		x += 35;
 	}
 	x = 105;
 	y = 132;
 	for (int i = 11; i < 17; i++) {
 		fMenuItemGrid[i] = fbl_create_prim(FBL_LINE, x, y, x + 350, y, 0, false, false);
-		fbl_set_prim_color(fMenuItemGrid[i], 255, 255, 255, 255);
+		fbl_set_prim_color(fMenuItemGrid[i], 150, 150, 150, 255);
 		y += 36;
 	}
 
@@ -245,6 +252,7 @@ void initCollectionMenu() {
 void showCollectionMenu() {
 
 	fbl_set_sprite_active(fMenuBgSquareId, true);
+	fbl_set_sprite_active(fMenuRobotBgSquareId, true);
 	fbl_set_prim_active(fMenuBgOutlineId, true);
 
 	fbl_set_prim_active(fMenuDividerLine, true);
@@ -281,6 +289,7 @@ void showCollectionMenu() {
 void hideCollectionMenu() {
 
 	fbl_set_sprite_active(fMenuBgSquareId, false);
+	fbl_set_sprite_active(fMenuRobotBgSquareId, false);
 	fbl_set_prim_active(fMenuBgOutlineId, false);
 
 	fbl_set_prim_active(fMenuDividerLine, false);

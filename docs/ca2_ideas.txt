@@ -119,6 +119,7 @@ Player: 1
 Tunnel tiles (player goes under): 2
 Clouds: 3
 Gray collectionMenu BG: 4
+White RobotBg BG: 5
 Powerups: 6 (coins and such, not done)
 Robots: 7 (on top)
 
@@ -149,7 +150,7 @@ Add ability to slow down time (as long as you hold button)
 
 Add tweening.
 Add camera shake.
-Add darkness/light to the race.
+Add darkness/light to the race. Done!
 Add button to bring up RobotCollection.
 Add button to start ongoing conversation with charming alarming, black bg, ridicolous conversation.
 Sometimes charming alarming does not want to talk (when no progress has been made.)
