@@ -97,14 +97,15 @@ struct Light
 // Addons have this component
 struct Addon {
 
-    uint8_t type;    // examples: Laser, AutoAim etc
-    uint16_t uiId;   // id for the button
-    uint16_t tx, ty; // where on the ui texture is the button?
-    uint8_t level;   // Addons can level up (max 3?)
-    uint8_t rarity;  // rarity of the addon (common, rare, etc.)
-    bool passive;    // passive addon or active?
-    bool equipped;   // is is equipped on one of your robots?
-    uint8_t price;   // how much to buy (sells for half)
+    uint8_t type;     // examples: Laser, AutoAim etc
+    std::string name; // name
+    uint16_t uiId;    // id for the button
+    uint16_t tx, ty;  // where on the ui texture is the button?
+    uint8_t level;    // Addons can level up (max 3?)
+    uint8_t rarity;   // rarity of the addon (common, rare, etc.)
+    bool passive;     // passive addon or active?
+    bool equipped;    // is is equipped on one of your robots?
+    uint8_t price;    // how much to buy (sells for half)
 
 };
 

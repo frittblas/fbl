@@ -16,6 +16,7 @@
 #include "../Ecs/Ecs.hpp"
 #include "../Ecs/Components.hpp"
 #include "../Game.hpp"
+#include "../Addons.hpp"
 #include "../Robots.hpp"
 #include "../Weather.hpp"
 #include "RobotCollection.hpp"
@@ -31,6 +32,11 @@ int fMenuDiag, fMenuEnergy, fMenuWeight;
 int fMenuSlotNr[4], fMenuSlot[4];
 int fMenuItemGrid[17];	// 10x5 grid, 17 lines
 int fMenuItemInfoLine;
+int fAddonName, fAddonLevel, fAddonRarity, fAddonPassive, fAddonEquipped, fAddonPrice;
+
+// currectly and last selected addon
+int selectedAddon = -1;
+int lastSelectedAddon = -1;
 
 
 // RobotCollection-class implementation
@@ -85,20 +91,66 @@ void RobotCollection::cyclePages(Game& g, int dir) {
 
 }
 
+void RobotCollection::updateAddonInfo(Game& g) {
+
+
+	// get s component
+	if (selectedAddon != -1) {
+		auto& add = g.mEcs->GetComponent<Addon>(selectedAddon);
+
+		fbl_update_text(fAddonName, 255, 255, 255, 0, (char*)"Name: %s", add.name.c_str());
+		fbl_update_text(fAddonLevel, 255, 255, 255, 0, (char*)"Level:  %d", add.level);
+		fbl_update_text(fAddonRarity, 255, 255, 255, 0, (char*)"Rarity:  %d", add.rarity);
+		fbl_update_text(fAddonPassive, 255, 255, 255, 0, (char*)"Type: %s", add.passive ? "Passive" : "Active");
+		fbl_update_text(fAddonEquipped, 255, 255, 255, 0, (char*)"Equipped:  %s", add.equipped ? "Yes" : "No");
+		fbl_update_text(fAddonPrice, 255, 255, 255, 0, (char*)"Price:  %d", add.price);
+
+	}
+
+}
+
 // deal with all the clicking on stats and buttons :)
 void RobotCollection::processInput(Game& g) {
 
 	if (fbl_get_ui_elem_val(fMenuButtonLeft)) {
 	
-		cyclePages(g, -1);
+		cyclePages(g, -1);	// cycle back
 
 	}
 
 	if (fbl_get_ui_elem_val(fMenuButtonRight)) {
 
-		cyclePages(g, 1);
+		cyclePages(g, 1);	// cycle forward
 
 	}
+
+
+	// try drag & drop, maybe :)
+
+	//auto& add = g.mEcs->GetComponent<Addon>(g.mAddons->mOwnedAddons[0]);
+
+	for (int i = 0; i < g.mAddons->NumAddons; i++) {	// loop through all buttons every frame checking if on was pressed
+
+		auto& add = g.mEcs->GetComponent<Addon>(g.mAddons->mOwnedAddons[i]);	// get the component of each button
+
+		if (fbl_get_ui_elem_val(add.uiId) > 0) {	// if the current button was pressed..
+
+			if (selectedAddon != g.mAddons->mOwnedAddons[i]) {	// do the following only if the pressed button is a new one
+
+				selectedAddon = g.mAddons->mOwnedAddons[i];		// set the selectedAddon to the current entity
+
+				if (lastSelectedAddon == -1)
+					lastSelectedAddon = selectedAddon;
+				else fbl_set_ui_elem_val(lastSelectedAddon, 0);
+
+				updateAddonInfo(g);
+
+			}
+
+		}
+
+	}
+	
 
 }
 
@@ -251,6 +303,27 @@ void initCollectionMenu() {
 	fMenuItemInfoLine = fbl_create_prim(FBL_LINE, 80, 340, 480, 340, 0, false, false);
 	fbl_set_prim_color(fMenuItemInfoLine, 255, 255, 255, 255);
 
+	// addon stats
+	fAddonName = fbl_create_text(255, 255, 255, 0, (char*)"Name:");
+	fbl_set_text_align(fAddonName, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(fAddonName, 105, 370);
+	fAddonLevel = fbl_create_text(255, 255, 255, 0, (char*)"Level:");
+	fbl_set_text_align(fAddonLevel, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(fAddonLevel, 105, 405);
+	fAddonRarity = fbl_create_text(255, 255, 255, 0, (char*)"Rarity:");
+	fbl_set_text_align(fAddonRarity, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(fAddonRarity, 105, 440);
+	fAddonPassive = fbl_create_text(255, 255, 255, 0, (char*)"Type:");
+	fbl_set_text_align(fAddonPassive, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(fAddonPassive, 300, 370);
+	fAddonEquipped = fbl_create_text(255, 255, 255, 0, (char*)"Equipped:");
+	fbl_set_text_align(fAddonEquipped, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(fAddonEquipped, 300, 405);
+	fAddonPrice = fbl_create_text(255, 255, 255, 0, (char*)"Price:");
+	fbl_set_text_align(fAddonPrice, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(fAddonPrice, 300, 440);
+
+
 	// hide
 	hideCollectionMenu();
 
@@ -291,6 +364,16 @@ void showCollectionMenu() {
 
 	fbl_set_prim_active(fMenuItemInfoLine, true);
 
+	// addon stats
+
+	fbl_set_text_active(fAddonName, true);
+	fbl_set_text_active(fAddonLevel, true);
+	fbl_set_text_active(fAddonRarity, true);
+	fbl_set_text_active(fAddonPassive, true);
+	fbl_set_text_active(fAddonEquipped, true);
+	fbl_set_text_active(fAddonPrice, true);
+
+
 }
 
 void hideCollectionMenu() {
@@ -327,5 +410,12 @@ void hideCollectionMenu() {
 	}
 
 	fbl_set_prim_active(fMenuItemInfoLine, false);
+
+	fbl_set_text_active(fAddonName, false);
+	fbl_set_text_active(fAddonLevel, false);
+	fbl_set_text_active(fAddonRarity, false);
+	fbl_set_text_active(fAddonPassive, false);
+	fbl_set_text_active(fAddonEquipped, false);
+	fbl_set_text_active(fAddonPrice, false);
 
 }

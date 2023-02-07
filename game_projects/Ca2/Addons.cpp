@@ -52,14 +52,14 @@ void Addons::setupAddons(Coordinator* mEcs) {
 		switch (i) {
 
 		case AutoAim:
-											 // type  uiId tx ty lv rrty psv eqp price
-			mEcs->AddComponent(tmpAddon, Addon{ AutoAim, 0, 0, 96, 1, 1, true, false, 19});
+											   // type      name   uiId tx ty lv rrty psv  eqp  price
+			mEcs->AddComponent(tmpAddon, Addon{ AutoAim, "Auto Aim", 0, 0, 96, 1, 1, true, false, 19});
 
 			break;
 
 		case Laser:
-											// type uiId tx ty lv rrty psv eqp price
-			mEcs->AddComponent(tmpAddon, Addon{ Laser, 0, 0, 64, 1, 2, false, false, 20 });
+											 // type    name   uiId tx ty lv rrty psv  eqp  price
+			mEcs->AddComponent(tmpAddon, Addon{ Laser, "Laser", 0, 0, 64, 1, 2, false, false, 20 });
 
 			break;
 
@@ -70,6 +70,7 @@ void Addons::setupAddons(Coordinator* mEcs) {
 
 	}
 
+	claimAddon(AutoAim);
 	claimAddon(Laser);
 
 }
@@ -141,6 +142,11 @@ void Addons::showAddonsInMenu(Coordinator* mEcs) {
 			auto& add = mEcs->GetComponent<Addon>(e);
 			fbl_set_ui_elem_xy(add.uiId, x, y);
 			fbl_set_ui_elem_active(add.uiId, true);
+			x += 35;
+			if (x > 440) {	// if one row is filled continue on the next row
+				x = 123;
+				y += 36;
+			}
 		}
 
 	}
