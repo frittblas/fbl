@@ -149,7 +149,7 @@ Add teleport.
 Add ability to slow down time (as long as you hold button)
 
 Add tweening.
-Add camera shake.
+Add camera shake. Done!
 Add darkness/light to the race. Done!
 Add button to bring up RobotCollection.
 Add button to start ongoing conversation with charming alarming, black bg, ridicolous conversation.

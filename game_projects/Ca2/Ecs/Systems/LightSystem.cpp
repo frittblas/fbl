@@ -17,6 +17,9 @@
 #include "../Ecs.hpp"
 #include "../Components.hpp"
 
+#include "../../Game.hpp"
+#include "../../GameState/GameState.hpp"
+
 #include "LightSystem.hpp"
 
 void LightSystem::Init(Coordinator& ecs) {
@@ -37,15 +40,19 @@ void LightSystem::Init(Coordinator& ecs) {
 	
 }
 
-void LightSystem::Update(Coordinator& ecs) {
+void LightSystem::Update(Game& g) {
 	
 	for (auto const& entity : mEntities)
 	{
-		auto& pos = ecs.GetComponent<Position>(entity);
-		auto& light = ecs.GetComponent<Light>(entity);
+		auto& pos = g.mEcs->GetComponent<Position>(entity);
+		auto& light = g.mEcs->GetComponent<Light>(entity);
 
-		// update light x, y to the xy of the Position component
-		fbl_set_sprite_xy(light.id, pos.x - (light.w / 2) * light.scale + 16, pos.y - (light.h / 2) * light.scale + 16);	// set the coordinates
+		// update light x, y to the xy of the Position component, different pos depending on gameState
+
+		if(g.mState->get() == GameState::StateType::Explore)
+			fbl_set_sprite_xy(light.id, pos.x - (light.w / 2) * light.scale + 16, pos.y - (light.h / 2) * light.scale + 16);	// set the coordinates
+		else if (g.mState->get() == GameState::StateType::Race)
+			fbl_set_sprite_xy(light.id, pos.x + 16, pos.y + 16);
 
 	}
 

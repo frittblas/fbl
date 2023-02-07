@@ -124,11 +124,13 @@ void initLuaDialog() {
 
 }
 
-void destroyPrimsTextUi() {
+void destroyAllGfx() {
 
+	fbl_destroy_all_sprites();
 	fbl_destroy_all_prims();
 	fbl_destroy_all_text_objects();
 	fbl_destroy_all_ui_elems();
+	fbl_destroy_all_emitters();
 
 }
 

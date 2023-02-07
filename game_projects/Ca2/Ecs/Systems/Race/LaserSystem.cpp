@@ -82,7 +82,8 @@ void LaserSystem::Update(Game& g) {
 
 			if (id != -1) {	// do the following if the laser didn't miss completely (didn't even hit a rock)
 
-				fbl_set_emitter_active(las.particleId, true);	// only turn the particles on if the ray hit something
+				if(x > 5 && y > 5)	// avoid having the particles spawn at x == 0 and y == 0
+					fbl_set_emitter_active(las.particleId, true);	// only turn the particles on if the ray hit something
 				std::cout << "id hit = " << id << std::endl;
 
 				//printf("Ray 0 hit sprite: %d at x: %d, y: %d\n", id, x, y);

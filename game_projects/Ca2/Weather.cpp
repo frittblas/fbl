@@ -104,7 +104,7 @@ void Weather::initClouds(uint8_t num) {
 	for (Cloud* curCloud : mCloud) {
 
 		if (curCloud != nullptr) {
-			fbl_delete_sprite(curCloud->id);
+			//fbl_delete_sprite(curCloud->id);
 			delete curCloud;
 		}
 
@@ -166,8 +166,8 @@ void Weather::initRain(uint8_t amount, uint8_t alpha) {
 	if (mRainOn) {
 
 		// delete any emitters that exists
-		for (int i = 0; i < 3; i++)
-			fbl_delete_emitter(mRainLayerId[i]);
+		//for (int i = 0; i < 3; i++)
+			//fbl_delete_emitter(mRainLayerId[i]);
 
 		mRainOn = false;
 
@@ -213,8 +213,8 @@ void Weather::initSnow(uint8_t amount, uint8_t alpha) {
 	if (mSnowOn) {
 
 		// delete any emitters that exists
-		for (int i = 0; i < 3; i++)
-			fbl_delete_emitter(mSnowLayerId[i]);
+		//for (int i = 0; i < 3; i++)
+			//fbl_delete_emitter(mSnowLayerId[i]);
 
 		mSnowOn = false;
 

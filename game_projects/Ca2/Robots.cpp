@@ -64,7 +64,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 												// rid pid len        dir	    dmg lv  isFiring
 				mEcs->AddComponent(tmpRobot, Laser{ 0, 0, 800, Addons::Dir::Up, 1, 1, false });
 											  // id  tx  ty   w    h  scale
-				//mEcs->AddComponent(tmpRobot, Light{ 0, 384, 0, 128, 128, 2.0 });
+				mEcs->AddComponent(tmpRobot, Light{ 0, 384, 0, 128, 128, 2.0 });
 				break;
 			case Alarmy :
 												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
@@ -75,6 +75,8 @@ void Robots::setupRobots(Coordinator* mEcs) {
 				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, true });
 												// rid pid len        dir	  dmg lv isFiring
 				mEcs->AddComponent(tmpRobot, Laser{ 0, 0, 800, Addons::Dir::Up, 1, 1, false });
+												// id  tx  ty   w    h  scale
+				mEcs->AddComponent(tmpRobot, Light{ 0, 384, 0, 128, 128, 2.0 });
 				break;
 			case Boingy :
 												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
@@ -85,6 +87,8 @@ void Robots::setupRobots(Coordinator* mEcs) {
 				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, true });
 												// rid pid len        dir	  dmg lv isFiring
 				mEcs->AddComponent(tmpRobot, Laser{ 0, 0, 800, Addons::Dir::Up, 1, 1, false });
+												// id  tx  ty   w    h  scale
+				mEcs->AddComponent(tmpRobot, Light{ 0, 384, 0, 128, 128, 2.0 });
 				break;
 			case Chompy:
 												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
@@ -95,6 +99,8 @@ void Robots::setupRobots(Coordinator* mEcs) {
 				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, true });
 												// rid pid len        dir	  dmg lv isFiring
 				mEcs->AddComponent(tmpRobot, Laser{ 0, 0, 800, Addons::Dir::Up, 1, 1, false });
+												// id  tx  ty   w    h  scale
+				mEcs->AddComponent(tmpRobot, Light{ 0, 384, 0, 128, 128, 2.0 });
 				break;
 
 		}
@@ -164,14 +170,18 @@ void Robots::hideRobots(Coordinator* mEcs) {
 	for (Entity e : mAllRobots) {
 		if (e != Unassigned) {
 			auto& spr = mEcs->GetComponent<Sprite>(e);
+			auto& light = mEcs->GetComponent<Light>(e);
 			fbl_set_sprite_active(spr.id[0], false);	// don't show the sprite (robots don't have different direction sprites)
+			fbl_set_sprite_active(light.id, false);		// also hide the light
 		}
 	}
 
 	for (Entity e : mOwnedRobots) {
 		if (e != Unassigned) {
 			auto& spr = mEcs->GetComponent<Sprite>(e);
+			auto& light = mEcs->GetComponent<Light>(e);
 			fbl_set_sprite_active(spr.id[0], false);
+			fbl_set_sprite_active(light.id, false);		// also hide the light
 		}
 	}
 
@@ -221,6 +231,7 @@ void Robots::showRobotInRace(Coordinator* mEcs, Entity robot, int position) {
 
 	auto& pos = mEcs->GetComponent<Position>(robot);
 	auto& spr = mEcs->GetComponent<Sprite>(robot);
+	auto& light = mEcs->GetComponent<Light>(robot);
 
 	pos.x = x;
 	pos.y = y;
@@ -229,6 +240,8 @@ void Robots::showRobotInRace(Coordinator* mEcs, Entity robot, int position) {
 	fbl_set_sprite_active(spr.id[0], true);
 	fbl_set_sprite_phys(spr.id[0], true, FBL_RECT_PHYS, FBL_PHYS_DYNAMIC, false);
 	fbl_fix_sprite_to_screen(spr.id[0], false);
+
+	fbl_set_sprite_active(light.id, true);		// also show the light
 
 }
 

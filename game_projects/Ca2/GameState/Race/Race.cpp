@@ -142,7 +142,7 @@ void Race::tick(Game& g) {
 	g.mSysManager->mMouseCtrlSystem->Update(*g.mEcs);		// update the mouse control system
 	//g.mSysManager->mCameraSystem->Update(*g.mEcs);		// update the camera system
 
-	//g.mSysManager->mLightSystem->Update(*g.mEcs);			// update the light system
+	g.mSysManager->mLightSystem->Update(g);					// update the light system
 	
 	g.mSysManager->mAutoAimSystem->Update(g);				// update the AutoAim system
 	g.mSysManager->mLaserSystem->Update(g);					// update the Laser system

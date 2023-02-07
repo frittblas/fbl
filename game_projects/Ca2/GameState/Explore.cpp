@@ -49,7 +49,7 @@ void Explore::tick(Game& g) {
 	g.mSysManager->mMouseCtrlSystem->Update(*g.mEcs);		// update the mouse control system
 	g.mSysManager->mCameraSystem->Update(*g.mEcs);			// update the camera system
 	g.mSysManager->mDialogueTrigSystem->Update(g);			// update the dialogue trigger system, note the g as argument
-	g.mSysManager->mLightSystem->Update(*g.mEcs);			// update the light system
+	g.mSysManager->mLightSystem->Update(g);					// update the light system
 
 	g.mWeather->tick();
 

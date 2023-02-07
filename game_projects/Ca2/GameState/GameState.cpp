@@ -162,10 +162,8 @@ void GameState::tick(Game& g) {
 
 void GameState::exploreToTitle(Game& g) {
 
-	//fbl_destroy_all_emitters();
-	g.mWeather->setWeather(Weather::TimeOfDay::Day, 0, 0, 0, false);	// reset weather before unload level (destroys cloud-sprites and emitters)
+	destroyAllGfx();				 // remove resources (ALL sprites, prims, text, ui and emitters)
 	g.mLocation->unLoadLocation(g.mMap);
-	destroyPrimsTextUi();			 // remove resources (ALL prims, text and ui)
 	g.mChars->removePlayer(g.mEcs);	 // delete the player completely
 	g.mChars->removeNpc(g.mEcs);	 // also delete all npcs in the current scene
 	g.mRobots->removeRobots(g.mEcs); // delete all the robots
@@ -177,7 +175,7 @@ void GameState::exploreToTitle(Game& g) {
 
 void GameState::titleToExplore(Game& g) {
 
-	//fbl_destroy_all_emitters();
+	destroyAllGfx();				// remove resources (ALL sprites, prims, text, ui and emitters)
 	g.mLocation->loadLocation(g.mMap);
 	initLuaDialog();				// set up prims and text and ui for the dialog box.
 	g.mChars->setupPlayer(g.mEcs);	// create the player entity and add the right components
@@ -204,7 +202,7 @@ void GameState::titleToExplore(Game& g) {
 
 void GameState::raceToExplore(Game& g) {
 
-	destroyPrimsTextUi();				// destroy all prims, Text and UI!
+	destroyAllGfx();					// remove resources (ALL sprites, prims, text, ui and emitters)
 	g.mLocation->loadLocation(g.mMap);	// this will destroy all sprites, then load map
 	initLuaDialog();					// set up prims and text and ui for the dialog box.
 	g.mSysManager->mSpriteSystem->Init(*g.mEcs);	// create sprites for all entities with a sprite component
@@ -231,10 +229,10 @@ void GameState::raceToExplore(Game& g) {
 
 void GameState::setupRace(Game& g) {
 
-	g.mWeather->setWeather(Weather::TimeOfDay::Day, 0, 0, 0, false);	// reset weather before the race (destroys cloud-sprites and emitters)
+	destroyAllGfx();								// remove resources (ALL sprites, prims, text, ui and emitters)
 	g.mLocation->unLoadLocation(g.mMap);			// this destroys ALL sprites
-	destroyPrimsTextUi();							// also remove resources (ALL prims, text and ui)
 	g.mSysManager->mSpriteSystem->Init(*g.mEcs);	// create sprites for all entities with a sprite component
+	g.mSysManager->mLightSystem->Init(*g.mEcs);		// create lights for all entities with a light component
 	g.mSysManager->mAutoAimSystem->Init(*g.mEcs);	// create rays for entities with AutoAim  component.
 	g.mSysManager->mLaserSystem->Init(*g.mEcs);		// create rays and particles for all entities with a Laser component.
 	g.mRobots->mapSpriteIdToEntity(g.mEcs);
@@ -244,7 +242,11 @@ void GameState::setupRace(Game& g) {
 	g.mEcs->RemoveComponent<Path>(g.mChars->mBrodo);
 	g.mChars->hidePlayer(g.mEcs);
 
-	//g.mSysManager->mLightSystem->Init(*g.mEcs);	// create lights for all entities with a light component
-	//g.mWeather->setWeather(Weather::TimeOfDay::Evening, 0, 0, 0, false);
+	// hide the player light
+	auto& light = g.mEcs->GetComponent<Light>(g.mChars->mBrodo);
+	fbl_set_sprite_active(light.id, false);
+
+
+	g.mWeather->setWeather(Weather::TimeOfDay::Evening, 0, 0, 0, false);
 
 }
