@@ -16,6 +16,7 @@
 #include "../../Ecs/Components.hpp"
 #include "../../Game.hpp"
 #include "../../SysManager.hpp"
+#include "../../Efx.hpp"
 
 #include "../../Ecs/Systems/SpriteSystem.hpp"
 #include "../../Ecs/Systems/PathSystem.hpp"
@@ -105,33 +106,7 @@ void Race::assignRobots(Game& g) {
 }
 
 void Race::unassignRobots(Game& g) {
-}
 
-void Race::shakeScreen(int intensity, int duration) {
-
-	shakeIntensity = intensity;
-	shakeDuration = duration;
-
-}
-
-void Race::tickShake() {
-
-	int x, y;
-
-	if (shakeDuration > 1) {
-		x = y = rand() % shakeIntensity;// -shakeIntensity / 2;
-		fbl_set_viewport(x, y, Game::LogicalResW, Game::LogicalResH);
-		shakeDuration--;
-
-		// gradually decrease intensity
-		if (shakeDuration % 2 == 0)
-			shakeIntensity--;
-
-	}
-	else if (shakeDuration == 1) {
-		fbl_set_viewport(0, 0, Game::LogicalResW, Game::LogicalResH);
-		shakeDuration = 0;
-	}
 
 }
 
@@ -149,11 +124,11 @@ void Race::tick(Game& g) {
 
 	//g.mWeather->tick();
 
-	tickShake();
+	Efx::getInstance().tickCameraShake();
 
 	mMaze->tick(g);	// needed for the pick-start positions-"state" in the beginning of the race
 
-	if (fbl_get_mouse_click(FBLMB_RIGHT) && shakeDuration == 0) shakeScreen(20, 40);
+	if (fbl_get_mouse_click(FBLMB_RIGHT)) Efx::getInstance().shakeCamera(20, 40);
 
 	// for testing
 	auto& las = g.mEcs->GetComponent<Laser>(g.mRobots->mRacingRobots[0]);

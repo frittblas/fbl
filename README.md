@@ -50,10 +50,10 @@ doubly linked lists.
 
 Game objects are drawn in the order they were created.
 Sprites are drawn first.
-Primitives are rendered on top of sprites.
-Particles on top of primitives.
-Text objects on top of particles and
-UI is rendered on the very top of everything.
+Particles are rendered on top of sprites.
+Primitives are then rendered on top of the particles.
+Text objects on top of primitives and
+UI is rendered at the very top of everything.
 
 The sprite list can be sorted in layers to make it easier
 to create tilemaps w layers and such.

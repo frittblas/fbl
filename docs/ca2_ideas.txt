@@ -43,7 +43,7 @@ New file, like LuaDialogue that exposes some new functions to be called
 from lua, like: StartDialogue() that sets a variable that you can pick up in Lua.
 Also some cutscene stuff maybe. And give items. High level gameplay things.
 Set up text and font stuff (and dialogs, ui) in C++. Then do dialogue with coroutines. Done!
-Trigger system to start dialogues! 95 % Done!
+Trigger system to start dialogues! - Done!
 
 Added LuaDialogue.cpp but vc doesn't like the extern lua_State variable! Fix it!
 test to put(tm): extern "C" {extern lua_State variable} in LuaDialogue.cpp. Done!!
@@ -157,7 +157,6 @@ Sometimes charming alarming does not want to talk (when no progress has been mad
 
 Maybe separate Path and RobotPath systems (esp. if the a.i gets more sophisticated).
 Maybe sprite aswell.
-Maybe rename unInitLuaDialog() to destroyAllAssets() or something.
 
 Write some catchy synth-tunes.
 
@@ -171,11 +170,6 @@ More stuff in explore mode: Shops, sokoban block pushing?, standard fetch quests
 Add more vegetable-npcs tomato-man, pear-man (done!). old man (used to race robots in the 60's)
 Add three more distinct locations (explore), like winter (snow), city etc.
 
-Think about how to implement laser and damage-dealing carefully.
-Everything from now on is extra important to be well structured.
-Most important is that the gameplay is fun, pls tweak alot.
-Make everything as solid and reasonable as possible programming wise.
-Take time to refactor and think about best solutions.
 
 Story idea:
 Charming alarming is taken to the scrapyard (e-waste) without knowing about it, but finds out.

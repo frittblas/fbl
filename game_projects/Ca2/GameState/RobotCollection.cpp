@@ -22,7 +22,7 @@
 
 
 // id's for the collection-menu items
-int fMenuBgSquareId, fMenuBgOutlineId, fMenuRobotBgSquareId;
+int fMenuBgSquareId, fMenuBgSquareId2, fMenuBgOutlineId, fMenuRobotBgSquareId;
 int fMenuDividerLine, fSmallMenuDividerLine;
 int fMenuButtonLeft, fMenuButtonRight;
 int fMenuRobotDescr, fMenuItemsDescr;
@@ -131,12 +131,19 @@ void initCollectionMenu() {
 	fbl_set_prim_color(fMenuBgSquareId, 50, 50, 50, 220);
 	fbl_fix_prim_to_screen(fMenuBgSquareId, true);
 	*/
-
+	
 	fMenuBgSquareId = fbl_create_sprite(32, 480, 20, 10, 0);
 	fbl_set_sprite_xy(fMenuBgSquareId, x - width, y - height);
 	fbl_set_sprite_scale(fMenuBgSquareId, 40);
 	fbl_set_sprite_layer(fMenuBgSquareId, 4);
 	fbl_fix_sprite_to_screen(fMenuBgSquareId, true);
+
+	// tried with prim rect, can't see robots :(
+	/*
+	fMenuBgSquareId2 = fbl_create_prim(FBL_RECT, x, y, width, height, 0, false, true);
+	fbl_set_prim_color(fMenuBgSquareId2, 50, 50, 50, 220);
+	fbl_fix_prim_to_screen(fMenuBgSquareId2, true);
+	*/
 
 	// white robot-bg
 	fMenuRobotBgSquareId = fbl_create_sprite(448, 192, 64, 64, 0);

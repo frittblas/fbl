@@ -234,8 +234,8 @@ void emscripten_loop_handler()
 		SDL_RenderClear(fbl_engine.renderer);
 
 		engine_render_all_sprites();
-		engine_render_all_prims();
 		engine_render_all_particles();
+		engine_render_all_prims();
 		engine_render_all_text_objects();
 		engine_render_all_ui_elems();
 
@@ -294,8 +294,8 @@ void normal_loop_handler()
 		SDL_RenderClear(fbl_engine.renderer);
 				
 		engine_render_all_sprites();
-		engine_render_all_prims();
 		engine_render_all_particles();
+		engine_render_all_prims();
 		engine_render_all_text_objects();
 		engine_render_all_ui_elems();
 
