@@ -26,7 +26,11 @@
 
 #include "../Weather.hpp"
 #include "../Chars.hpp"
+#include "GameState.hpp"
 #include "Explore.hpp"
+
+// this is from RobotCollection.cpp
+extern int fRobotCollectionMenuButton;
 
 // Explore-class implementation
 
@@ -52,6 +56,10 @@ void Explore::tick(Game& g) {
 	g.mSysManager->mLightSystem->Update(g);					// update the light system
 
 	g.mWeather->tick();
+
+	// almighty menu button
+	if (fbl_get_ui_elem_val(fRobotCollectionMenuButton) > 0)
+		g.mState->change(g, GameState::StateType::RobotCollection);
 
 	if(fbl_get_raw_frames_count() % 60 == 0)
 		std::cout << "Tick explore!" << std::endl;

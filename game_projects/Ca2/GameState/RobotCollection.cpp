@@ -19,6 +19,7 @@
 #include "../Addons.hpp"
 #include "../Robots.hpp"
 #include "../Weather.hpp"
+#include "GameState.hpp"
 #include "RobotCollection.hpp"
 
 
@@ -34,9 +35,12 @@ int fMenuItemGrid[17];	// 10x5 grid, 17 lines
 int fMenuItemInfoLine;
 int fAddonName, fAddonLevel, fAddonRarity, fAddonPassive, fAddonEquipped, fAddonPrice;
 
+// the menu button (always visible when in a game), externed in Explore.cpp
+int fRobotCollectionMenuButton;
+
 // currectly and last selected addon
-int selectedAddon = -1;
-int lastSelectedAddon = -1;
+int fSelectedAddon = -1;
+int fLastSelectedAddon = -1;
 
 
 // RobotCollection-class implementation
@@ -95,8 +99,8 @@ void RobotCollection::updateAddonInfo(Game& g) {
 
 
 	// get s component
-	if (selectedAddon != -1) {
-		auto& add = g.mEcs->GetComponent<Addon>(selectedAddon);
+	if (fSelectedAddon != -1) {
+		auto& add = g.mEcs->GetComponent<Addon>(fSelectedAddon);
 
 		fbl_update_text(fAddonName, 255, 255, 255, 0, (char*)"Name: %s", add.name.c_str());
 		fbl_update_text(fAddonLevel, 255, 255, 255, 0, (char*)"Level:  %d", add.level);
@@ -129,19 +133,19 @@ void RobotCollection::processInput(Game& g) {
 
 	//auto& add = g.mEcs->GetComponent<Addon>(g.mAddons->mOwnedAddons[0]);
 
-	for (int i = 0; i < g.mAddons->NumAddons; i++) {	// loop through all buttons every frame checking if on was pressed
+	for (int i = 0; i < g.mAddons->NumAddons; i++) {	// loop through all buttons every frame checking if one was pressed
 
 		auto& add = g.mEcs->GetComponent<Addon>(g.mAddons->mOwnedAddons[i]);	// get the component of each button
 
 		if (fbl_get_ui_elem_val(add.uiId) > 0) {	// if the current button was pressed..
 
-			if (selectedAddon != g.mAddons->mOwnedAddons[i]) {	// do the following only if the pressed button is a new one
+			if (fSelectedAddon != g.mAddons->mOwnedAddons[i]) {	// do the following only if the pressed button is a new one
 
-				selectedAddon = g.mAddons->mOwnedAddons[i];		// set the selectedAddon to the current entity
+				fSelectedAddon = g.mAddons->mOwnedAddons[i];		// set the selectedAddon to the current entity
 
-				if (lastSelectedAddon == -1)
-					lastSelectedAddon = selectedAddon;
-				else fbl_set_ui_elem_val(lastSelectedAddon, 0);
+				if (fLastSelectedAddon == -1)
+					fLastSelectedAddon = fSelectedAddon;
+				else fbl_set_ui_elem_val(fLastSelectedAddon, 0);
 
 				updateAddonInfo(g);
 
@@ -151,6 +155,9 @@ void RobotCollection::processInput(Game& g) {
 
 	}
 	
+	// almighty menu button
+	if(fbl_get_ui_elem_val(fRobotCollectionMenuButton) > 0)
+		g.mState->change(g, GameState::StateType::Explore);
 
 }
 
@@ -323,6 +330,10 @@ void initCollectionMenu() {
 	fbl_set_text_align(fAddonPrice, FBL_ALIGN_LEFT);
 	fbl_set_text_xy(fAddonPrice, 300, 440);
 
+
+	// the menu button
+	fRobotCollectionMenuButton = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 128, 64, 32, NULL);
+	fbl_set_ui_elem_xy(fRobotCollectionMenuButton, 40, 24);
 
 	// hide
 	hideCollectionMenu();
