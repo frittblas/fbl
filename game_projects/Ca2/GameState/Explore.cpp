@@ -30,7 +30,7 @@
 #include "Explore.hpp"
 
 // this is from RobotCollection.cpp
-extern int fRobotCollectionMenuButton;
+extern int gRobotCollectionMenuButton;
 
 // Explore-class implementation
 
@@ -46,6 +46,18 @@ Explore::~Explore() {
 
 }
 
+void Explore::processInput(Game& g) {
+
+	// the almighty menu button
+	if (fbl_get_ui_elem_val(gRobotCollectionMenuButton) > 0) {
+		g.mState->change(g, GameState::StateType::RobotCollection);
+		auto& path = g.mEcs->GetComponent<Path>(g.mChars->mBrodo);
+		fbl_pathf_set_path_status(path.id, FBL_PATHF_NOT_STARTED);	// this seems to work was 0 before
+		path.newPath = false;
+	}
+
+}
+
 void Explore::tick(Game& g) {
 
 	g.mSysManager->mSpriteSystem->Update(*g.mEcs);			// update the sprite system
@@ -57,9 +69,7 @@ void Explore::tick(Game& g) {
 
 	g.mWeather->tick();
 
-	// almighty menu button
-	if (fbl_get_ui_elem_val(fRobotCollectionMenuButton) > 0)
-		g.mState->change(g, GameState::StateType::RobotCollection);
+	processInput(g);
 
 	if(fbl_get_raw_frames_count() % 60 == 0)
 		std::cout << "Tick explore!" << std::endl;

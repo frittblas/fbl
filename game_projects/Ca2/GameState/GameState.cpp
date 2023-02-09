@@ -74,6 +74,9 @@ void GameState::change(Game& g, StateType newState) {
 			if (mState == StateType::Explore) {	// if coming from explore state
 				exploreToTitle(g);
 			}
+			if (mState == StateType::RobotCollection) {	// if coming from Robot menu
+				exploreToTitle(g);	// works, bc all resources are destroyed and that's what we want :)
+			}
 
 			mCurrentStateInstance = new Title();
 
@@ -103,8 +106,9 @@ void GameState::change(Game& g, StateType newState) {
 			}
 
 			g.mRobots->hideRobots(g.mEcs);		 // don't show the robot-sprites in explore mode (or in beginning of race)
-			g.mAddons->hideAddons(g.mEcs);
-			fbl_sort_sprites(FBL_SORT_BY_LAYER); // layers : Ground tiles 0, Player 1, Tunnel tiles(pl. goes under) 2, Clouds 3, Gray colMenu BG 4, Robots 5
+			g.mAddons->hideAddons(g.mEcs);		 // don't show addons either (ui buttons)
+			fbl_sort_sprites(FBL_SORT_BY_LAYER); // layers : Ground tiles 0, Player 1, Tunnel tiles(pl. goes under) 2, Clouds 3, Gray colMenu BG 4
+												 // layers contd. white robotBg 5, powerups 6, robots 7.
 			mCurrentStateInstance = new Explore();
 
 			break;

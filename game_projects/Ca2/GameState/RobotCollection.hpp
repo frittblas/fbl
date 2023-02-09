@@ -28,7 +28,7 @@ public:
 
     void processInput(Game& g);
     void cyclePages(Game& g, int dir);
-    void updateAddonInfo(Game& g);
+    void updateAddonInfo(Game& g, bool empty);
 
     virtual void tick(Game& g) override;
 

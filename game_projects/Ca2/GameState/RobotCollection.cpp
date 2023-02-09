@@ -22,31 +22,35 @@
 #include "GameState.hpp"
 #include "RobotCollection.hpp"
 
+const int fNumSlots = 4;	// number of passive and active slots
+const int fNumLines = 17;	// lines for the grid to the left, 10x5 grid, 17 lines
 
-// id's for the collection-menu items
-int fMenuBgSquareId, fMenuBgSquareId2, fMenuBgOutlineId, fMenuRobotBgSquareId;
+// id's for the robot collection-menu
+int fMenuBgSquareId, fMenuBgOutlineId, fMenuRobotBgSquareId;
 int fMenuDividerLine, fSmallMenuDividerLine;
 int fMenuButtonLeft, fMenuButtonRight;
-int fMenuRobotDescr, fMenuItemsDescr;
+int fMenuRobotDescr, fMenuAddonsDescr;
 int fMenuName, fMenuLevel, fMenuXp, fMenuHp, fMenuSpeed;
 int fMenuDiag, fMenuEnergy, fMenuWeight;
-int fMenuSlotNr[4], fMenuSlot[4];
-int fMenuItemGrid[17];	// 10x5 grid, 17 lines
-int fMenuItemInfoLine;
+int fMenuSlotNr[fNumSlots], fMenuSlot[fNumSlots];
+int fMenuAddonGrid[fNumLines];
+int fMenuAddonInfoLine;
 int fAddonName, fAddonLevel, fAddonRarity, fAddonPassive, fAddonEquipped, fAddonPrice;
 
 // the menu button (always visible when in a game), externed in Explore.cpp
-int fRobotCollectionMenuButton;
+int gRobotCollectionMenuButton;
 
-// currectly and last selected addon
-int fSelectedAddon = -1;
-int fLastSelectedAddon = -1;
+// currectly and last selected addon (entity id)
+int fSelectedAddon;
+int fLastSelectedAddon;
 
 
 // RobotCollection-class implementation
 
 RobotCollection::RobotCollection() {
 
+	fSelectedAddon = -1;
+	fLastSelectedAddon = -1;
 
 	mCurrentRobotPage = 0;
 	showCollectionMenu();
@@ -57,7 +61,7 @@ RobotCollection::RobotCollection() {
 
 RobotCollection::~RobotCollection() {
 
-	hideCollectionMenu();	// NOTE: if you press ESC in the collection state, the set active fails. (is this up to date? (don't think so :)))
+	hideCollectionMenu();
 
 	std::cout << "Destroyed RobotCollection state." << std::endl;
 
@@ -95,7 +99,7 @@ void RobotCollection::cyclePages(Game& g, int dir) {
 
 }
 
-void RobotCollection::updateAddonInfo(Game& g) {
+void RobotCollection::updateAddonInfo(Game& g, bool empty) {
 
 
 	// get s component
@@ -108,6 +112,17 @@ void RobotCollection::updateAddonInfo(Game& g) {
 		fbl_update_text(fAddonPassive, 255, 255, 255, 0, (char*)"Type: %s", add.passive ? "Passive" : "Active");
 		fbl_update_text(fAddonEquipped, 255, 255, 255, 0, (char*)"Equipped:  %s", add.equipped ? "Yes" : "No");
 		fbl_update_text(fAddonPrice, 255, 255, 255, 0, (char*)"Price:  %d", add.price);
+
+	}
+
+	if (empty) {	// erase all the info if empty is requested
+
+		fbl_update_text(fAddonName, 255, 255, 255, 0, (char*)"Name:");
+		fbl_update_text(fAddonLevel, 255, 255, 255, 0, (char*)"Level:");
+		fbl_update_text(fAddonRarity, 255, 255, 255, 0, (char*)"Rarity:");
+		fbl_update_text(fAddonPassive, 255, 255, 255, 0, (char*)"Type:");
+		fbl_update_text(fAddonEquipped, 255, 255, 255, 0, (char*)"Equipped:");
+		fbl_update_text(fAddonPrice, 255, 255, 255, 0, (char*)"Price:");
 
 	}
 
@@ -139,24 +154,32 @@ void RobotCollection::processInput(Game& g) {
 
 		if (fbl_get_ui_elem_val(add.uiId) > 0) {	// if the current button was pressed..
 
-			if (fSelectedAddon != g.mAddons->mOwnedAddons[i]) {	// do the following only if the pressed button is a new one
+			if (fSelectedAddon != g.mAddons->mOwnedAddons[i]) {		// do the following only if the pressed button is a new one
 
 				fSelectedAddon = g.mAddons->mOwnedAddons[i];		// set the selectedAddon to the current entity
 
 				if (fLastSelectedAddon == -1)
 					fLastSelectedAddon = fSelectedAddon;
-				else fbl_set_ui_elem_val(fLastSelectedAddon, 0);
+				else {
+					auto& add2 = g.mEcs->GetComponent<Addon>(fLastSelectedAddon);
+					fbl_set_ui_elem_val(add2.uiId, 0);
+					fLastSelectedAddon = -1;
+				}
 
-				updateAddonInfo(g);
+				updateAddonInfo(g, false);
+				std::cout << "Executed inner menu-loop" << std::endl;
 
 			}
+
 
 		}
 
 	}
+
+
 	
-	// almighty menu button
-	if(fbl_get_ui_elem_val(fRobotCollectionMenuButton) > 0)
+	// the almighty menu button (very top left)
+	if(fbl_get_ui_elem_val(gRobotCollectionMenuButton) > 0)
 		g.mState->change(g, GameState::StateType::Explore);
 
 }
@@ -185,24 +208,12 @@ void initCollectionMenu() {
 	int height = 200;
 
 	// create gray menu area
-	/*
-	fMenuBgSquareId = fbl_create_prim(FBL_RECT, x, y, width, height, 0, false, true);
-	fbl_set_prim_color(fMenuBgSquareId, 50, 50, 50, 220);
-	fbl_fix_prim_to_screen(fMenuBgSquareId, true);
-	*/
-	
 	fMenuBgSquareId = fbl_create_sprite(32, 480, 20, 10, 0);
 	fbl_set_sprite_xy(fMenuBgSquareId, x - width, y - height);
 	fbl_set_sprite_scale(fMenuBgSquareId, 40);
 	fbl_set_sprite_layer(fMenuBgSquareId, 4);
 	fbl_fix_sprite_to_screen(fMenuBgSquareId, true);
 
-	// tried with prim rect, can't see robots :(
-	/*
-	fMenuBgSquareId2 = fbl_create_prim(FBL_RECT, x, y, width, height, 0, false, true);
-	fbl_set_prim_color(fMenuBgSquareId2, 50, 50, 50, 220);
-	fbl_fix_prim_to_screen(fMenuBgSquareId2, true);
-	*/
 
 	// white robot-bg
 	fMenuRobotBgSquareId = fbl_create_sprite(448, 192, 64, 64, 0);
@@ -224,13 +235,13 @@ void initCollectionMenu() {
 
 	fbl_load_ttf_font("font/garamond.ttf", 20);
 
-	// The "Robot" and "Items" text at the top
+	// The "Robot" and "Addons" text at the top
 	fMenuRobotDescr = fbl_create_text(255, 255, 255, 0, (char*)"Robot");
 	fbl_set_text_align(fMenuRobotDescr, FBL_ALIGN_CENTER);
 	fbl_set_text_xy(fMenuRobotDescr, x + 200, y - 170);
-	fMenuItemsDescr = fbl_create_text(255, 255, 255, 0, (char*)"Items");
-	fbl_set_text_align(fMenuItemsDescr, FBL_ALIGN_CENTER);
-	fbl_set_text_xy(fMenuItemsDescr, x - 200, y - 170);
+	fMenuAddonsDescr = fbl_create_text(255, 255, 255, 0, (char*)"Addons");
+	fbl_set_text_align(fMenuAddonsDescr, FBL_ALIGN_CENTER);
+	fbl_set_text_xy(fMenuAddonsDescr, x - 200, y - 170);
 
 
 	fMenuName = fbl_create_text(255, 255, 255, 0, (char*)"Default name");
@@ -294,21 +305,25 @@ void initCollectionMenu() {
 	// the grid to the left 10x5, 17 lines (11 + 6)
 	x = 105;
 	y = 132;
-	for (int i = 0; i < 11; i++) {
-		fMenuItemGrid[i] = fbl_create_prim(FBL_LINE, x, y, x, y + 180, 0, false, false);
-		fbl_set_prim_color(fMenuItemGrid[i], 150, 150, 150, 255);
+	for (int i = 0; i < fNumLines - 6; i++) {
+		fMenuAddonGrid[i] = fbl_create_prim(FBL_LINE, x, y, x, y + 180, 0, false, false);
+		fbl_set_prim_color(fMenuAddonGrid[i], 150, 150, 150, 255);
+		fbl_fix_prim_to_screen(fMenuAddonGrid[i], true);
 		x += 35;
 	}
 	x = 105;
 	y = 132;
-	for (int i = 11; i < 17; i++) {
-		fMenuItemGrid[i] = fbl_create_prim(FBL_LINE, x, y, x + 350, y, 0, false, false);
-		fbl_set_prim_color(fMenuItemGrid[i], 150, 150, 150, 255);
+	for (int i = fNumLines - 6; i < fNumLines; i++) {
+		fMenuAddonGrid[i] = fbl_create_prim(FBL_LINE, x, y, x + 350, y, 0, false, false);
+		fbl_set_prim_color(fMenuAddonGrid[i], 150, 150, 150, 255);
+		fbl_fix_prim_to_screen(fMenuAddonGrid[i], true);
 		y += 36;
 	}
 
-	fMenuItemInfoLine = fbl_create_prim(FBL_LINE, 80, 340, 480, 340, 0, false, false);
-	fbl_set_prim_color(fMenuItemInfoLine, 255, 255, 255, 255);
+	// line separator down left
+	fMenuAddonInfoLine = fbl_create_prim(FBL_LINE, 80, 340, 480, 340, 0, false, false);
+	fbl_set_prim_color(fMenuAddonInfoLine, 255, 255, 255, 255);
+	fbl_fix_prim_to_screen(fMenuAddonInfoLine, true);
 
 	// addon stats
 	fAddonName = fbl_create_text(255, 255, 255, 0, (char*)"Name:");
@@ -332,8 +347,8 @@ void initCollectionMenu() {
 
 
 	// the menu button
-	fRobotCollectionMenuButton = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 128, 64, 32, NULL);
-	fbl_set_ui_elem_xy(fRobotCollectionMenuButton, 40, 24);
+	gRobotCollectionMenuButton = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 128, 64, 32, NULL);
+	fbl_set_ui_elem_xy(gRobotCollectionMenuButton, 40, 24);	// top left corner 8 px in
 
 	// hide
 	hideCollectionMenu();
@@ -342,15 +357,18 @@ void initCollectionMenu() {
 
 void showCollectionMenu() {
 
+	// gray bg, white robot bg, and outline
 	fbl_set_sprite_active(fMenuBgSquareId, true);
 	fbl_set_sprite_active(fMenuRobotBgSquareId, true);
 	fbl_set_prim_active(fMenuBgOutlineId, true);
 
 	fbl_set_prim_active(fMenuDividerLine, true);
 
+	// robot and addons top text
 	fbl_set_text_active(fMenuRobotDescr, true);
-	fbl_set_text_active(fMenuItemsDescr, true);
+	fbl_set_text_active(fMenuAddonsDescr, true);
 
+	// robot stats
 	fbl_set_text_active(fMenuName, true);
 	fbl_set_text_active(fMenuLevel, true);
 	//fbl_set_text_active(fMenuXp, true);
@@ -360,23 +378,23 @@ void showCollectionMenu() {
 	fbl_set_text_active(fMenuEnergy, true);
 	//fbl_set_text_active(fMenuWeight, true);
 
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < fNumSlots; i++) {
 		fbl_set_text_active(fMenuSlotNr[i], true);
 		fbl_set_prim_active(fMenuSlot[i], true);
 	}
 
+	// left right arrows
 	fbl_set_ui_elem_active(fMenuButtonLeft, true);
 	fbl_set_ui_elem_active(fMenuButtonRight, true);
 
 	// grid
-	for (int i = 0; i < 17; i++) {
-		fbl_set_prim_active(fMenuItemGrid[i], true);
+	for (int i = 0; i < fNumLines; i++) {
+		fbl_set_prim_active(fMenuAddonGrid[i], true);
 	}
 
-	fbl_set_prim_active(fMenuItemInfoLine, true);
+	fbl_set_prim_active(fMenuAddonInfoLine, true);
 
 	// addon stats
-
 	fbl_set_text_active(fAddonName, true);
 	fbl_set_text_active(fAddonLevel, true);
 	fbl_set_text_active(fAddonRarity, true);
@@ -389,15 +407,18 @@ void showCollectionMenu() {
 
 void hideCollectionMenu() {
 
+	// gray bg
 	fbl_set_sprite_active(fMenuBgSquareId, false);
 	fbl_set_sprite_active(fMenuRobotBgSquareId, false);
 	fbl_set_prim_active(fMenuBgOutlineId, false);
 
 	fbl_set_prim_active(fMenuDividerLine, false);
 
+	// robot and addons top text
 	fbl_set_text_active(fMenuRobotDescr, false);
-	fbl_set_text_active(fMenuItemsDescr, false);
+	fbl_set_text_active(fMenuAddonsDescr, false);
 
+	// robot stats
 	fbl_set_text_active(fMenuName, false);
 	fbl_set_text_active(fMenuLevel, false);
 	//fbl_set_text_active(fMenuXp, false);
@@ -407,21 +428,24 @@ void hideCollectionMenu() {
 	fbl_set_text_active(fMenuEnergy, false);
 	//fbl_set_text_active(fMenuWeight, false);
 
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < fNumSlots; i++) {
 		fbl_set_text_active(fMenuSlotNr[i], false);
 		fbl_set_prim_active(fMenuSlot[i], false);
 	}
 
+	// left right arrows
 	fbl_set_ui_elem_active(fMenuButtonLeft, false);
 	fbl_set_ui_elem_active(fMenuButtonRight, false);
 
 	// grid
-	for (int i = 0; i < 17; i++) {
-		fbl_set_prim_active(fMenuItemGrid[i], false);
+	for (int i = 0; i < fNumLines; i++) {
+		fbl_set_prim_active(fMenuAddonGrid[i], false);
 	}
 
-	fbl_set_prim_active(fMenuItemInfoLine, false);
+	// separator line
+	fbl_set_prim_active(fMenuAddonInfoLine, false);
 
+	// addon description
 	fbl_set_text_active(fAddonName, false);
 	fbl_set_text_active(fAddonLevel, false);
 	fbl_set_text_active(fAddonRarity, false);

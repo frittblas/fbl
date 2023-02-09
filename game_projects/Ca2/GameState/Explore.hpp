@@ -22,6 +22,8 @@ public:
     Explore();
     ~Explore();
 
+    void processInput(Game& g);
+
     virtual void tick(Game& g) override;
 
 };
