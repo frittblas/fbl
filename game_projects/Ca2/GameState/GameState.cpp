@@ -178,7 +178,8 @@ void GameState::exploreToTitle(Game& g) {
 	g.mChars->removeNpc(g.mEcs);	 // also delete all npcs in the current scene
 	g.mRobots->removeRobots(g.mEcs); // delete all the robots
 	g.mAddons->removeAddons(g.mEcs); // delete all addons
-	g.mWeather->setWeather(Weather::TimeOfDay::Day, 0, 6, 0, false);	// timeOfDay, rainLevel, snowLevel, numClouds, lightningOn
+	fbl_set_clear_color(11, 168, 230, 255);	// dark sky blue for the title
+	g.mWeather->setWeather(Weather::TimeOfDay::Day, 0, 14, 80, false);	// timeOfDay, rainLevel, snowLevel, numClouds, lightningOn
 	fbl_lua_shutdown();				 // so the dialogues gets reset
 
 }

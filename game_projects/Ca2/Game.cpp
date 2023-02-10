@@ -54,14 +54,15 @@ bool Game::init() {
 
 	fbl_engine_init(DeviceResW, DeviceResH, 60);
 	fbl_set_render_logical_size(DeviceResW, DeviceResH);
-	fbl_set_clear_color(33, 68, 33, 255);	// forest green
+	fbl_set_clear_color(11, 168, 230, 255);
+	//fbl_set_clear_color(33, 68, 33, 255);	// forest green
 	//fbl_set_clear_color(35, 128, 45, 255);	// light forest green
 
 	// show device current res, comment this out.
 	int w, h;
 	fbl_get_device_res(&w, &h);
 	fbl_load_ttf_font("font/garamond.ttf", 16);
-	fbl_create_text(212, 175, 55, 255, (char*)"native res: %d x %d", w, h);
+	fbl_create_text(255, 255, 255, 255, (char*)"native res: %d x %d", w, h);
 	fbl_set_text_xy(0, 10, 20);
 
 
@@ -98,7 +99,9 @@ bool Game::init() {
 	mSysManager->setupEcs(mEcs);
 
 	// start the snow particle effect
-	mWeather->setWeather(Weather::TimeOfDay::Day, 0, 6, 0, false);
+	//mWeather->setWeather(Weather::TimeOfDay::Day, 0, 6, 50, false);
+	// start nice clouds
+	mWeather->setWeather(Weather::TimeOfDay::Day, 0, 14, 80, false);
 
 	return true;
 

@@ -17,8 +17,16 @@ class Game;
 class UserInput {
 
 public:
+
+    const int buttonDelay = 30;
+    int access;
+
     UserInput();
     ~UserInput();
 
     void tick(Game& g);
+
+private:
+    bool isFullscreen;
+
 };

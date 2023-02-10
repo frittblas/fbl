@@ -689,9 +689,6 @@ void engine_process_mouse(SDL_Event *event)
 		}
 
 
-		//event->type = 0;
-		//SDL_FlushEvent(event->type);
-
 	}
 	else if (event->type == SDL_MOUSEMOTION) {
 		//printf("x=%d, y=%d, xrel=%d, yrel=%d\n", event->motion.x, event->motion.y, event->motion.xrel, event->motion.yrel);

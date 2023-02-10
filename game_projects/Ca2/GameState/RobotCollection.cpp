@@ -16,6 +16,7 @@
 #include "../Ecs/Ecs.hpp"
 #include "../Ecs/Components.hpp"
 #include "../Game.hpp"
+#include "../UserInput.hpp"
 #include "../Addons.hpp"
 #include "../Robots.hpp"
 #include "../Weather.hpp"
@@ -37,6 +38,7 @@ int fMenuActive, fMenuPassive, fMenuPassiveActive;
 int fMenuAddonGrid[fNumLines];
 int fMenuAddonInfoLine;
 int fAddonName, fAddonLevel, fAddonRarity, fAddonPassive, fAddonEquipped, fAddonPrice;
+int fSaveAndQuit, fSaveAndQuitText;
 
 // currently selected addon on the grid (as entity id)
 int fSelectedAddon;
@@ -192,6 +194,14 @@ void RobotCollection::processInput(Game& g) {
 	// the almighty menu button (very top left)
 	if (fbl_get_ui_elem_val(gRobotCollectionMenuButton) > 0)
 		g.mState->change(g, GameState::StateType::Explore);
+
+
+	// save and quit button down left
+	if (fbl_get_ui_elem_val(fSaveAndQuit) > 0) {
+		// Save game somehow :)
+		g.mState->change(g, GameState::StateType::Title);
+		g.mInput->access = g.mInput->buttonDelay * 2;	// 1 second delay
+	}
 
 }
 
@@ -351,7 +361,7 @@ void initCollectionMenu() {
 
 	// rect around passive/active text
 	fMenuPassiveActive = fbl_create_prim(FBL_RECT, x + 200, y + 155, 50, 32, 0, false, false);
-	fbl_set_prim_color(fMenuPassiveActive, 100, 100, 100, 255);
+	fbl_set_prim_color(fMenuPassiveActive, 150, 150, 150, 255);
 	fbl_fix_prim_to_screen(fMenuPassiveActive, true);
 
 	// next/previous robot arrows
@@ -408,6 +418,14 @@ void initCollectionMenu() {
 	// the menu button
 	gRobotCollectionMenuButton = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 128, 64, 32, NULL);
 	fbl_set_ui_elem_xy(gRobotCollectionMenuButton, 40, 24);	// top left corner 8 px in
+
+	// save and quit to menu
+	fSaveAndQuit = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, NULL);
+	fbl_set_ui_elem_xy(fSaveAndQuit, 123, 500);	// down left-ish
+
+	fSaveAndQuitText = fbl_create_text(255, 255, 255, 0, (char*)"Save and Quit");
+	fbl_set_text_align(fSaveAndQuitText, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(fSaveAndQuitText, 155, 500);
 
 	// hide
 	hideCollectionMenu();
@@ -468,6 +486,9 @@ void showCollectionMenu() {
 	fbl_set_text_active(fAddonEquipped, true);
 	fbl_set_text_active(fAddonPrice, true);
 
+	// save and quit
+	fbl_set_ui_elem_active(fSaveAndQuit, true);
+	fbl_set_text_active(fSaveAndQuitText, true);
 
 }
 
@@ -524,5 +545,9 @@ void hideCollectionMenu() {
 	fbl_set_text_active(fAddonPassive, false);
 	fbl_set_text_active(fAddonEquipped, false);
 	fbl_set_text_active(fAddonPrice, false);
+
+	// save and quit
+	fbl_set_ui_elem_active(fSaveAndQuit, false);
+	fbl_set_text_active(fSaveAndQuitText, false);
 
 }
