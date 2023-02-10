@@ -140,8 +140,9 @@ void Addons::showAddonsInMenu(Coordinator* mEcs) {
 	for (Entity e : mOwnedAddons) {
 		if (e != Unassigned) {
 			auto& add = mEcs->GetComponent<Addon>(e);
-			fbl_set_ui_elem_xy(add.uiId, x, y);
-			fbl_set_ui_elem_active(add.uiId, true);
+			fbl_set_ui_elem_xy(add.uiId, x, y);		// position it
+			fbl_set_ui_elem_active(add.uiId, true); // set to active
+			fbl_set_ui_elem_val(add.uiId, 0);		// uncheck it
 			x += 35;
 			if (x > 440) {	// if one row is filled continue on the next row
 				x = 123;

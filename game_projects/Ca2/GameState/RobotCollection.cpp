@@ -40,17 +40,15 @@ int fAddonName, fAddonLevel, fAddonRarity, fAddonPassive, fAddonEquipped, fAddon
 // the menu button (always visible when in a game), externed in Explore.cpp
 int gRobotCollectionMenuButton;
 
-// currectly and last selected addon (entity id)
+// currently selected addon on the grid (as entity id)
 int fSelectedAddon;
-int fLastSelectedAddon;
 
 
 // RobotCollection-class implementation
 
 RobotCollection::RobotCollection() {
 
-	fSelectedAddon = -1;
-	fLastSelectedAddon = -1;
+	fSelectedAddon = notSet;
 
 	mCurrentRobotPage = 0;
 	showCollectionMenu();
@@ -103,7 +101,7 @@ void RobotCollection::updateAddonInfo(Game& g, bool empty) {
 
 
 	// get s component
-	if (fSelectedAddon != -1) {
+	if (fSelectedAddon != notSet) {
 		auto& add = g.mEcs->GetComponent<Addon>(fSelectedAddon);
 
 		fbl_update_text(fAddonName, 255, 255, 255, 0, (char*)"Name: %s", add.name.c_str());
@@ -128,11 +126,56 @@ void RobotCollection::updateAddonInfo(Game& g, bool empty) {
 
 }
 
-// deal with all the clicking on stats and buttons :)
+void RobotCollection::processSelectAddons(Game& g) {
+
+	bool allOff = true;
+
+
+	for (int i = 0; i < g.mAddons->NumAddons; i++) {	// loop through all buttons and check if one was pressed
+
+		if (g.mAddons->mOwnedAddons[i] != g.mAddons->Unassigned) {	// only bother with addons you actually own
+
+			auto& add = g.mEcs->GetComponent<Addon>(g.mAddons->mOwnedAddons[i]);	// get the component of each button
+
+			if (fbl_get_ui_elem_val(add.uiId) > 0) {	// if the current button was pressed..
+
+				allOff = false;		// this is not true anymore bc a button is pressed
+
+				if (fSelectedAddon != g.mAddons->mOwnedAddons[i]) {		// do the following only if the pressed button is a new one
+
+					// turn off the last pressed button in favor for the new one.
+					if (fSelectedAddon != notSet) {
+						auto& add2 = g.mEcs->GetComponent<Addon>(fSelectedAddon);
+						fbl_set_ui_elem_val(add2.uiId, 0);
+					}
+
+					fSelectedAddon = g.mAddons->mOwnedAddons[i];		// set the selectedAddon to the current entity
+
+					updateAddonInfo(g, false);
+					std::cout << "Updated addon info." << std::endl;
+					std::cout << "Selected: " << fSelectedAddon << ", i: " << g.mAddons->mOwnedAddons[i] << std::endl;
+
+				}
+
+
+			}
+
+		}
+
+	}
+
+	if (allOff && fSelectedAddon != notSet) {	// if all buttons are off, show empty info
+		updateAddonInfo(g, true);
+		fSelectedAddon = notSet;
+	}
+
+}
+
+// deal with all the clicking on stats and buttons
 void RobotCollection::processInput(Game& g) {
 
 	if (fbl_get_ui_elem_val(fMenuButtonLeft)) {
-	
+
 		cyclePages(g, -1);	// cycle back
 
 	}
@@ -143,43 +186,11 @@ void RobotCollection::processInput(Game& g) {
 
 	}
 
-
-	// try drag & drop, maybe :)
-
-	//auto& add = g.mEcs->GetComponent<Addon>(g.mAddons->mOwnedAddons[0]);
-
-	for (int i = 0; i < g.mAddons->NumAddons; i++) {	// loop through all buttons every frame checking if one was pressed
-
-		auto& add = g.mEcs->GetComponent<Addon>(g.mAddons->mOwnedAddons[i]);	// get the component of each button
-
-		if (fbl_get_ui_elem_val(add.uiId) > 0) {	// if the current button was pressed..
-
-			if (fSelectedAddon != g.mAddons->mOwnedAddons[i]) {		// do the following only if the pressed button is a new one
-
-				fSelectedAddon = g.mAddons->mOwnedAddons[i];		// set the selectedAddon to the current entity
-
-				if (fLastSelectedAddon == -1)
-					fLastSelectedAddon = fSelectedAddon;
-				else {
-					auto& add2 = g.mEcs->GetComponent<Addon>(fLastSelectedAddon);
-					fbl_set_ui_elem_val(add2.uiId, 0);
-					fLastSelectedAddon = -1;
-				}
-
-				updateAddonInfo(g, false);
-				std::cout << "Executed inner menu-loop" << std::endl;
-
-			}
+	processSelectAddons(g);
 
 
-		}
-
-	}
-
-
-	
 	// the almighty menu button (very top left)
-	if(fbl_get_ui_elem_val(gRobotCollectionMenuButton) > 0)
+	if (fbl_get_ui_elem_val(gRobotCollectionMenuButton) > 0)
 		g.mState->change(g, GameState::StateType::Explore);
 
 }

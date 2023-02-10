@@ -140,9 +140,11 @@ void GameState::change(Game& g, StateType newState) {
 
 		case StateType::RobotCollection:
 			g.mRobots->showRobotInMenu(g.mEcs, Robots::Name::Charmy);	// make the robots visible in the menu
-			g.mAddons->showAddonsInMenu(g.mEcs);
+			g.mAddons->showAddonsInMenu(g.mEcs);						// same with addons
+
 			RobotCollection* rc = new RobotCollection();
-			rc->cyclePages(g, 0);	// call this to update the first robots stats in the menu
+			rc->cyclePages(g, 0);			// call this to update the first robots stats in the menu
+			rc->updateAddonInfo(g, true);	// update addon info to empty
 			mCurrentStateInstance = rc;
 			break;
 

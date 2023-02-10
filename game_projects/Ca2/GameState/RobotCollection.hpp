@@ -26,13 +26,15 @@ public:
     RobotCollection();
     ~RobotCollection();
 
-    void processInput(Game& g);
     void cyclePages(Game& g, int dir);
     void updateAddonInfo(Game& g, bool empty);
+    void processSelectAddons(Game& g);
+    void processInput(Game& g);
 
     virtual void tick(Game& g) override;
 
 private:
+    const int notSet = -2;
     int mCurrentRobotPage;
 
 };
