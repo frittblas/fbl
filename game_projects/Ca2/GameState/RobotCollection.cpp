@@ -22,7 +22,7 @@
 #include "GameState.hpp"
 #include "RobotCollection.hpp"
 
-const int fNumSlots = 4;	// number of passive and active slots
+const int fNumSlots = 6;	// number of passive and active slots
 const int fNumLines = 17;	// lines for the grid to the left, 10x5 grid, 17 lines
 
 // id's for the robot collection-menu
@@ -33,19 +33,19 @@ int fMenuRobotDescr, fMenuAddonsDescr;
 int fMenuName, fMenuLevel, fMenuXp, fMenuHp, fMenuSpeed;
 int fMenuDiag, fMenuEnergy, fMenuWeight;
 int fMenuSlotNr[fNumSlots], fMenuSlot[fNumSlots];
+int fMenuActive, fMenuPassive, fMenuPassiveActive;
 int fMenuAddonGrid[fNumLines];
 int fMenuAddonInfoLine;
 int fAddonName, fAddonLevel, fAddonRarity, fAddonPassive, fAddonEquipped, fAddonPrice;
 
-// the menu button (always visible when in a game), externed in Explore.cpp
-int gRobotCollectionMenuButton;
-
 // currently selected addon on the grid (as entity id)
 int fSelectedAddon;
 
+// the menu button (always visible when in a game), externed in Explore.cpp
+int gRobotCollectionMenuButton;
+
 
 // RobotCollection-class implementation
-
 RobotCollection::RobotCollection() {
 
 	fSelectedAddon = notSet;
@@ -101,7 +101,7 @@ void RobotCollection::updateAddonInfo(Game& g, bool empty) {
 
 
 	// get s component
-	if (fSelectedAddon != notSet) {
+	if (fSelectedAddon != notSet && !empty) {
 		auto& add = g.mEcs->GetComponent<Addon>(fSelectedAddon);
 
 		fbl_update_text(fAddonName, 255, 255, 255, 0, (char*)"Name: %s", add.name.c_str());
@@ -112,8 +112,7 @@ void RobotCollection::updateAddonInfo(Game& g, bool empty) {
 		fbl_update_text(fAddonPrice, 255, 255, 255, 0, (char*)"Price:  %d", add.price);
 
 	}
-
-	if (empty) {	// erase all the info if empty is requested
+	else if (empty) {	// erase all the info if empty is requested
 
 		fbl_update_text(fAddonName, 255, 255, 255, 0, (char*)"Name:");
 		fbl_update_text(fAddonLevel, 255, 255, 255, 0, (char*)"Level:");
@@ -167,6 +166,7 @@ void RobotCollection::processSelectAddons(Game& g) {
 	if (allOff && fSelectedAddon != notSet) {	// if all buttons are off, show empty info
 		updateAddonInfo(g, true);
 		fSelectedAddon = notSet;
+		std::cout << "All off." << std::endl;
 	}
 
 }
@@ -244,7 +244,7 @@ void initCollectionMenu() {
 	fbl_fix_prim_to_screen(fMenuDividerLine, true);
 
 
-	fbl_load_ttf_font("font/garamond.ttf", 20);
+	fbl_load_ttf_font("font/roboto.ttf", 20);
 
 	// The "Robot" and "Addons" text at the top
 	fMenuRobotDescr = fbl_create_text(255, 255, 255, 0, (char*)"Robot");
@@ -259,7 +259,7 @@ void initCollectionMenu() {
 	fbl_set_text_align(fMenuName, FBL_ALIGN_CENTER);
 	fbl_set_text_xy(fMenuName, x + 200, y - 80);
 
-	fbl_load_ttf_font("font/garamond.ttf", 18);
+	fbl_load_ttf_font("font/roboto.ttf", 18);
 
 	// stats
 	fMenuLevel = fbl_create_text(255, 255, 255, 0, (char*)"Level:  %d  (xp: %d / %d)", 1, 0, 4);
@@ -279,32 +279,61 @@ void initCollectionMenu() {
 	fbl_set_text_xy(fMenuEnergy, x + 140, y + 90);
 
 	// slot numbers
-	fMenuSlotNr[0] = fbl_create_text(255, 255, 255, 0, (char*)"1");
+	fMenuSlotNr[0] = fbl_create_text(255, 255, 255, 0, (char*)"P1");
 	fbl_set_text_align(fMenuSlotNr[0], FBL_ALIGN_LEFT);
-	fbl_set_text_xy(fMenuSlotNr[0], x + 47, y - 50);
-	fMenuSlotNr[1] = fbl_create_text(255, 255, 255, 0, (char*)"2");
+	fbl_set_text_xy(fMenuSlotNr[0], x + 42, y - 50);
+	fMenuSlotNr[1] = fbl_create_text(255, 255, 255, 0, (char*)"P2");
 	fbl_set_text_align(fMenuSlotNr[1], FBL_ALIGN_LEFT);
-	fbl_set_text_xy(fMenuSlotNr[1], x + 347, y - 50);
-	fMenuSlotNr[2] = fbl_create_text(255, 255, 255, 0, (char*)"3");
+	fbl_set_text_xy(fMenuSlotNr[1], x + 342, y - 50);
+
+	fMenuSlotNr[2] = fbl_create_text(255, 255, 255, 0, (char*)"A1");
 	fbl_set_text_align(fMenuSlotNr[2], FBL_ALIGN_LEFT);
-	fbl_set_text_xy(fMenuSlotNr[2], x + 47, y + 80);
-	fMenuSlotNr[3] = fbl_create_text(255, 255, 255, 0, (char*)"4");
+	fbl_set_text_xy(fMenuSlotNr[2], x + 42, y + 35);
+	fMenuSlotNr[3] = fbl_create_text(255, 255, 255, 0, (char*)"A2");
 	fbl_set_text_align(fMenuSlotNr[3], FBL_ALIGN_LEFT);
-	fbl_set_text_xy(fMenuSlotNr[3], x + 347, y + 80);
+	fbl_set_text_xy(fMenuSlotNr[3], x + 342, y + 35);
+
+	fMenuSlotNr[4] = fbl_create_text(255, 255, 255, 0, (char*)"A3");
+	fbl_set_text_align(fMenuSlotNr[4], FBL_ALIGN_LEFT);
+	fbl_set_text_xy(fMenuSlotNr[4], x + 42, y + 120);
+	fMenuSlotNr[5] = fbl_create_text(255, 255, 255, 0, (char*)"A4");
+	fbl_set_text_align(fMenuSlotNr[5], FBL_ALIGN_LEFT);
+	fbl_set_text_xy(fMenuSlotNr[5], x + 342, y + 120);
 
 	// slots
 	fMenuSlot[0] = fbl_create_prim(FBL_RECT, x + 50, y - 20, 16, 16, 0, false, false);
-	fbl_set_prim_color(fMenuSlot[0], 0, 255, 0, 255);
+	fbl_set_prim_color(fMenuSlot[0], 0, 83, 255, 255);
 	fbl_fix_prim_to_screen(fMenuSlot[0], true);
 	fMenuSlot[1] = fbl_create_prim(FBL_RECT, x + 350, y - 20, 16, 16, 0, false, false);
-	fbl_set_prim_color(fMenuSlot[1], 255, 0, 0, 255);
+	fbl_set_prim_color(fMenuSlot[1], 0, 83, 255, 255);
 	fbl_fix_prim_to_screen(fMenuSlot[1], true);
-	fMenuSlot[2] = fbl_create_prim(FBL_RECT, x + 50, y + 110, 16, 16, 0, false, false);
-	fbl_set_prim_color(fMenuSlot[2], 255, 0, 0, 255);
+
+	fMenuSlot[2] = fbl_create_prim(FBL_RECT, x + 50, y + 65, 16, 16, 0, false, false);
+	fbl_set_prim_color(fMenuSlot[2], 255, 106, 0, 255);
 	fbl_fix_prim_to_screen(fMenuSlot[2], true);
-	fMenuSlot[3] = fbl_create_prim(FBL_RECT, x + 350, y + 110, 16, 16, 0, false, false);
-	fbl_set_prim_color(fMenuSlot[3], 255, 0, 0, 255);
+	fMenuSlot[3] = fbl_create_prim(FBL_RECT, x + 350, y + 65, 16, 16, 0, false, false);
+	fbl_set_prim_color(fMenuSlot[3], 255, 106, 0, 255);
 	fbl_fix_prim_to_screen(fMenuSlot[3], true);
+
+	fMenuSlot[4] = fbl_create_prim(FBL_RECT, x + 50, y + 150, 16, 16, 0, false, false);
+	fbl_set_prim_color(fMenuSlot[4], 255, 106, 0, 255);
+	fbl_fix_prim_to_screen(fMenuSlot[4], true);
+	fMenuSlot[5] = fbl_create_prim(FBL_RECT, x + 350, y + 150, 16, 16, 0, false, false);
+	fbl_set_prim_color(fMenuSlot[5], 255, 106, 0, 255);
+	fbl_fix_prim_to_screen(fMenuSlot[5], true);
+
+	// active/passive instr
+	fMenuPassive = fbl_create_text(0, 83, 255, 0, (char*)"P = passive");
+	fbl_set_text_align(fMenuPassive, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(fMenuPassive, x + 154, y + 145);
+	fMenuActive = fbl_create_text(255, 106, 0, 0, (char*)"A = active");
+	fbl_set_text_align(fMenuActive, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(fMenuActive, x + 154, y + 165);
+
+	// rect around passive/active text
+	fMenuPassiveActive = fbl_create_prim(FBL_RECT, x + 200, y + 155, 50, 32, 0, false, false);
+	fbl_set_prim_color(fMenuPassiveActive, 100, 100, 100, 255);
+	fbl_fix_prim_to_screen(fMenuPassiveActive, true);
 
 	// next/previous robot arrows
 	fMenuButtonLeft = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 128, 32, 32, 32, NULL);
@@ -394,6 +423,11 @@ void showCollectionMenu() {
 		fbl_set_prim_active(fMenuSlot[i], true);
 	}
 
+	// active/passive intr.
+	fbl_set_text_active(fMenuActive, true);
+	fbl_set_text_active(fMenuPassive, true);
+	fbl_set_prim_active(fMenuPassiveActive, true);
+
 	// left right arrows
 	fbl_set_ui_elem_active(fMenuButtonLeft, true);
 	fbl_set_ui_elem_active(fMenuButtonRight, true);
@@ -443,6 +477,11 @@ void hideCollectionMenu() {
 		fbl_set_text_active(fMenuSlotNr[i], false);
 		fbl_set_prim_active(fMenuSlot[i], false);
 	}
+
+	// active/passive instr.
+	fbl_set_text_active(fMenuActive, false);
+	fbl_set_text_active(fMenuPassive, false);
+	fbl_set_prim_active(fMenuPassiveActive, false);
 
 	// left right arrows
 	fbl_set_ui_elem_active(fMenuButtonLeft, false);

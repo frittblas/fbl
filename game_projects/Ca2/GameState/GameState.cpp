@@ -111,6 +111,8 @@ void GameState::change(Game& g, StateType newState) {
 												 // layers contd. white robotBg 5, powerups 6, robots 7.
 			mCurrentStateInstance = new Explore();
 
+			fbl_load_ttf_font("font/garamond.ttf", 22);	// use this font for explore mode (and dialogue)
+
 			break;
 
 		case StateType::Dialogue:
@@ -143,9 +145,11 @@ void GameState::change(Game& g, StateType newState) {
 			g.mAddons->showAddonsInMenu(g.mEcs);						// same with addons
 
 			RobotCollection* rc = new RobotCollection();
+			fbl_load_ttf_font("font/roboto.ttf", 18);	// use this font for the menu
 			rc->cyclePages(g, 0);			// call this to update the first robots stats in the menu
 			rc->updateAddonInfo(g, true);	// update addon info to empty
 			mCurrentStateInstance = rc;
+
 			break;
 
 	}

@@ -172,6 +172,7 @@ int luaDisplayDialog(lua_State* lua_env) {
 	char* reply1 = (char*)lua_tostring(lua_env, 4);
 	char* reply2 = (char*)lua_tostring(lua_env, 5);
 	
+
 	// activate the square
 	fbl_set_prim_active(fDiaBgSquareId, true);
 	fbl_set_prim_active(fDiaBgOutlineId, true);

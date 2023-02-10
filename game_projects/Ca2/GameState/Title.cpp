@@ -30,7 +30,7 @@ Title::Title() {
 	//fbl_set_text_xy(titleId, Game::DeviceResW / 2, 100);
 	fbl_set_text_align(titleId, FBL_ALIGN_CENTER);
 
-	fbl_load_ttf_font("font/garamond.ttf", 27);
+	fbl_load_ttf_font("font/roboto_italic.ttf", 27);
 	subTitleId = fbl_create_text(154, 33, 34, 255, (char*)"Reasonable Robots");
 	//fbl_set_text_xy(subTitleId, Game::DeviceResW / 2, 200);
 	fbl_set_text_align(subTitleId, FBL_ALIGN_CENTER);
