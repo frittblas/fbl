@@ -36,7 +36,7 @@ public:
         Down
     };
 
-    const uint32_t Unassigned = 9999; // used for empty slots in the addon-arrays.
+    const uint16_t Unassigned = 9999; // used for empty slots in the addon-arrays.
 
     Entity mAllAddons[NumAddons];     // all the addons
     Entity mOwnedAddons[NumAddons];   // all the addons you own
@@ -50,6 +50,7 @@ public:
     void removeAddons(Coordinator* mEcs);
     void hideAddons(Coordinator* mEcs);
     void showAddonsInMenu(Coordinator* mEcs);
+    void showAddonAsEquipped(Coordinator* mEcs, Entity addon, int position);
     void showAddonInRace(Coordinator* mEcs, Entity addon, int position);
     void claimAddon(int nameIndex);    // call this to "own" an Addon
 

@@ -23,37 +23,37 @@
 #include "GameState.hpp"
 #include "RobotCollection.hpp"
 
-const int fNumSlots = 6;	// number of passive and active slots
-const int fNumLines = 17;	// lines for the grid to the left, 10x5 grid, 17 lines
+const uint16_t fNumSlots = 6;	// number of passive and active slots
+const uint16_t fNumLines = 17;	// lines for the grid to the left, 10x5 grid, 17 lines
 
 // id's for the robot collection-menu
-int fMenuBgSquareId, fMenuBgOutlineId, fMenuRobotBgSquareId;
-int fMenuDividerLine, fSmallMenuDividerLine;
-int fMenuButtonLeft, fMenuButtonRight;
-int fMenuRobotDescr, fMenuAddonsDescr;
-int fMenuName, fMenuLevel, fMenuXp, fMenuHp, fMenuSpeed;
-int fMenuDiag, fMenuEnergy, fMenuWeight;
-int fMenuSlotNr[fNumSlots], fMenuSlot[fNumSlots], fMenuSlotArrow[fNumSlots];
-int fMenuActive, fMenuPassive, fMenuPassiveActive;
-int fMenuAddonGrid[fNumLines];
-int fMenuAddonInfoLine;
-int fAddonName, fAddonLevel, fAddonRarity, fAddonPassive, fAddonEquipped, fAddonPrice;
-int fSaveAndQuit, fSaveAndQuitText;
-
-// currently selected addon on the grid (as entity id)
-int fSelectedAddon;
+uint16_t fMenuBgSquareId, fMenuBgOutlineId, fMenuRobotBgSquareId;
+uint16_t fMenuDividerLine, fSmallMenuDividerLine;
+uint16_t fMenuButtonLeft, fMenuButtonRight;
+uint16_t fMenuRobotDescr, fMenuAddonsDescr;
+uint16_t fMenuName, fMenuLevel, fMenuXp, fMenuHp, fMenuSpeed;
+uint16_t fMenuDiag, fMenuEnergy, fMenuWeight;
+uint16_t fMenuSlotNr[fNumSlots], fMenuSlot[fNumSlots], fMenuSlotArrow[fNumSlots];
+uint16_t fMenuActive, fMenuPassive, fMenuPassiveActive;
+uint16_t fMenuAddonGrid[fNumLines];
+uint16_t fMenuAddonInfoLine;
+uint16_t fAddonName, fAddonLevel, fAddonRarity, fAddonPassive, fAddonEquipped, fAddonPrice;
+uint16_t fSaveAndQuit, fSaveAndQuitText;
 
 // the menu button (always visible when in a game), externed in Explore.cpp
-int gRobotCollectionMenuButton;
+uint16_t gRobotCollectionMenuButton;
 
 
 // RobotCollection-class implementation
 RobotCollection::RobotCollection() {
 
-	fSelectedAddon = notSet;
+	mSelectedAddon = notSet;
 
 	mCurrentRobotPage = 0;
 	showCollectionMenu();
+
+	// set all arrows to inactive
+	for (int id : fMenuSlotArrow) fbl_set_sprite_active(id, false);
 
 	std::cout << "Started RobotCollection state." << std::endl;
 
@@ -61,7 +61,6 @@ RobotCollection::RobotCollection() {
 
 RobotCollection::~RobotCollection() {
 
-	hideCollectionMenu();
 
 	std::cout << "Destroyed RobotCollection state." << std::endl;
 
@@ -103,14 +102,14 @@ void RobotCollection::updateAddonInfo(Game& g, bool empty) {
 
 
 	// get s component
-	if (fSelectedAddon != notSet && !empty) {
-		auto& add = g.mEcs->GetComponent<Addon>(fSelectedAddon);
+	if (mSelectedAddon != notSet && !empty) {
+		auto& add = g.mEcs->GetComponent<Addon>(mSelectedAddon);
 
 		fbl_update_text(fAddonName, 255, 255, 255, 0, (char*)"Name: %s", add.name.c_str());
 		fbl_update_text(fAddonLevel, 255, 255, 255, 0, (char*)"Level:  %d", add.level);
 		fbl_update_text(fAddonRarity, 255, 255, 255, 0, (char*)"Rarity:  %d", add.rarity);
 		fbl_update_text(fAddonPassive, 255, 255, 255, 0, (char*)"Type: %s", add.passive ? "Passive" : "Active");
-		fbl_update_text(fAddonEquipped, 255, 255, 255, 0, (char*)"Equipped:  %s", add.equipped ? "Yes" : "No");
+		fbl_update_text(fAddonEquipped, 255, 255, 255, 0, (char*)"Equipped:  %s", add.equippedBy != g.mAddons->Unassigned ? "Yes" : "No");
 		fbl_update_text(fAddonPrice, 255, 255, 255, 0, (char*)"Price:  %d", add.price);
 
 	}
@@ -127,10 +126,34 @@ void RobotCollection::updateAddonInfo(Game& g, bool empty) {
 
 }
 
-void RobotCollection::processSelectAddons(Game& g) {
+void RobotCollection::setFreeSlotsArrows(Game& g, bool empty) {
+
+	// begin by setting all arrows to inactive
+	for (int id : fMenuSlotArrow) fbl_set_sprite_active(id, false);
+
+	if (!empty) {
+		std::cout << "Set arrows" << std::endl;
+		auto& add = g.mEcs->GetComponent<Addon>(mSelectedAddon);
+		auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mOwnedRobots[mCurrentRobotPage]);
+
+		// take care of the passive slots (show an arrow if the selected addon is passive and the slot is free)
+		if (add.passive && sta.passiveSlot[0] == notSet) fbl_set_sprite_active(fMenuSlotArrow[0], true);
+		if (add.passive && sta.passiveSlot[1] == notSet) fbl_set_sprite_active(fMenuSlotArrow[1], true);
+
+		// active slots
+		for (int i = 0; i < 4; i++) {
+			if (!add.passive && sta.activeSlot[i] == notSet) fbl_set_sprite_active(fMenuSlotArrow[i + 2], true);
+		}
+
+	}
+	else if(empty)
+		std::cout << "Set no arrows" << std::endl;
+
+}
+
+void RobotCollection::selectAddon(Game& g) {
 
 	bool allOff = true;
-
 
 	for (int i = 0; i < g.mAddons->NumAddons; i++) {	// loop through all buttons and check if one was pressed
 
@@ -142,19 +165,20 @@ void RobotCollection::processSelectAddons(Game& g) {
 
 				allOff = false;		// this is not true anymore bc a button is pressed
 
-				if (fSelectedAddon != g.mAddons->mOwnedAddons[i]) {		// do the following only if the pressed button is a new one
+				if (mSelectedAddon != g.mAddons->mOwnedAddons[i]) {		// do the following only if the pressed button is a new one
 
 					// turn off the last pressed button in favor for the new one.
-					if (fSelectedAddon != notSet) {
-						auto& add2 = g.mEcs->GetComponent<Addon>(fSelectedAddon);
+					if (mSelectedAddon != notSet) {
+						auto& add2 = g.mEcs->GetComponent<Addon>(mSelectedAddon);
 						fbl_set_ui_elem_val(add2.uiId, 0);
 					}
 
-					fSelectedAddon = g.mAddons->mOwnedAddons[i];		// set the selectedAddon to the current entity
+					mSelectedAddon = g.mAddons->mOwnedAddons[i];		// set the selectedAddon to the current entity
 
 					updateAddonInfo(g, false);
+					setFreeSlotsArrows(g, false);
 					std::cout << "Updated addon info." << std::endl;
-					std::cout << "Selected: " << fSelectedAddon << ", i: " << g.mAddons->mOwnedAddons[i] << std::endl;
+					std::cout << "Selected: " << mSelectedAddon << ", i: " << g.mAddons->mOwnedAddons[i] << std::endl;
 
 				}
 
@@ -165,11 +189,61 @@ void RobotCollection::processSelectAddons(Game& g) {
 
 	}
 
-	if (allOff && fSelectedAddon != notSet) {	// if all buttons are off, show empty info
+	if (allOff && mSelectedAddon != notSet) {	// if all buttons are off, show empty info
 		updateAddonInfo(g, true);
-		fSelectedAddon = notSet;
+		setFreeSlotsArrows(g, true);
+		mSelectedAddon = notSet;
 		std::cout << "All off." << std::endl;
 	}
+
+}
+
+void RobotCollection::equipAddon(Game& g) {
+
+	int slotX, slotY, mouseX, mouseY;
+
+	if (fbl_get_mouse_release(FBLMB_LEFT)) {	// first check if user clicked
+
+		mouseX = fbl_get_mouse_logical_x();
+		mouseY = fbl_get_mouse_logical_y();
+
+		for (int i = 0; i < fNumSlots; i++) {	// loop through all slots
+
+			// set up the clicking zones.
+			slotX = fbl_get_prim_x(fMenuSlot[i]) - Game::TileSize / 2;
+			slotY = fbl_get_prim_y(fMenuSlot[i]) - Game::TileSize / 2;
+
+			if (mouseX > slotX && mouseY > slotY && mouseX < (slotX + Game::TileSize) && mouseY < (slotY + Game::TileSize)) {	// if click is inside a slot
+
+				// get Addon and Stats components from the selected addon and the current robot
+				auto& add = g.mEcs->GetComponent<Addon>(mSelectedAddon);
+				auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mOwnedRobots[mCurrentRobotPage]);
+
+
+
+				// just continue; in case of any error
+
+				// can't move to the same slot, check passive/active restrictions etc.
+
+				add.equippedBy = g.mRobots->mOwnedRobots[mCurrentRobotPage]; // the addon is now equipped by this robot (Entity id)
+
+				// assign the passive or active slots
+				if (i < 2)
+					sta.passiveSlot[i] = mSelectedAddon;
+				else {
+					sta.activeSlot[i - 2] = mSelectedAddon;
+				}
+
+				g.mAddons->showAddonAsEquipped(g.mEcs, mSelectedAddon, i);	// move the addon to the correct slot
+
+				break;
+
+			}
+
+		}
+
+	}
+
 
 }
 
@@ -188,8 +262,8 @@ void RobotCollection::processInput(Game& g) {
 
 	}
 
-	processSelectAddons(g);
-
+	selectAddon(g);
+	equipAddon(g);
 
 	// the almighty menu button (very top left)
 	if (fbl_get_ui_elem_val(gRobotCollectionMenuButton) > 0)
@@ -311,24 +385,24 @@ void initCollectionMenu() {
 	fbl_set_text_xy(fMenuSlotNr[5], x + 342, y + 120);
 
 	// slots
-	fMenuSlot[0] = fbl_create_prim(FBL_RECT, x + 50, y - 20, 16, 16, 0, false, false);
+	fMenuSlot[0] = fbl_create_prim(FBL_RECT, x + 50, y - 20, 15, 15, 0, false, false);
 	fbl_set_prim_color(fMenuSlot[0], 0, 83, 255, 255);
 	fbl_fix_prim_to_screen(fMenuSlot[0], true);
-	fMenuSlot[1] = fbl_create_prim(FBL_RECT, x + 350, y - 20, 16, 16, 0, false, false);
+	fMenuSlot[1] = fbl_create_prim(FBL_RECT, x + 350, y - 20, 15, 15, 0, false, false);
 	fbl_set_prim_color(fMenuSlot[1], 0, 83, 255, 255);
 	fbl_fix_prim_to_screen(fMenuSlot[1], true);
 
-	fMenuSlot[2] = fbl_create_prim(FBL_RECT, x + 50, y + 65, 16, 16, 0, false, false);
+	fMenuSlot[2] = fbl_create_prim(FBL_RECT, x + 50, y + 65, 15, 15, 0, false, false);
 	fbl_set_prim_color(fMenuSlot[2], 255, 106, 0, 255);
 	fbl_fix_prim_to_screen(fMenuSlot[2], true);
-	fMenuSlot[3] = fbl_create_prim(FBL_RECT, x + 350, y + 65, 16, 16, 0, false, false);
+	fMenuSlot[3] = fbl_create_prim(FBL_RECT, x + 350, y + 65, 15, 15, 0, false, false);
 	fbl_set_prim_color(fMenuSlot[3], 255, 106, 0, 255);
 	fbl_fix_prim_to_screen(fMenuSlot[3], true);
 
-	fMenuSlot[4] = fbl_create_prim(FBL_RECT, x + 50, y + 150, 16, 16, 0, false, false);
+	fMenuSlot[4] = fbl_create_prim(FBL_RECT, x + 50, y + 150, 15, 15, 0, false, false);
 	fbl_set_prim_color(fMenuSlot[4], 255, 106, 0, 255);
 	fbl_fix_prim_to_screen(fMenuSlot[4], true);
-	fMenuSlot[5] = fbl_create_prim(FBL_RECT, x + 350, y + 150, 16, 16, 0, false, false);
+	fMenuSlot[5] = fbl_create_prim(FBL_RECT, x + 350, y + 150, 15, 15, 0, false, false);
 	fbl_set_prim_color(fMenuSlot[5], 255, 106, 0, 255);
 	fbl_fix_prim_to_screen(fMenuSlot[5], true);
 

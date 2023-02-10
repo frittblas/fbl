@@ -30,7 +30,7 @@
 #include "Explore.hpp"
 
 // this is from RobotCollection.cpp
-extern int gRobotCollectionMenuButton;
+extern uint16_t gRobotCollectionMenuButton;
 
 // Explore-class implementation
 

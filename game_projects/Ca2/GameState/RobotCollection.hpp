@@ -28,13 +28,16 @@ public:
 
     void cyclePages(Game& g, int dir);
     void updateAddonInfo(Game& g, bool empty);
-    void processSelectAddons(Game& g);
+    void setFreeSlotsArrows(Game& g, bool empty);
+    void selectAddon(Game& g);
+    void equipAddon(Game& g);
     void processInput(Game& g);
 
     virtual void tick(Game& g) override;
 
 private:
     const int notSet = -1;
-    int mCurrentRobotPage;
+    int mCurrentRobotPage;  // what robot-page are you at? It's an index to the owned robot array
+    int mSelectedAddon;     // currently selected addon on the grid (as entity id)
 
 };

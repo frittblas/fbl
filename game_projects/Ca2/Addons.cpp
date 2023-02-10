@@ -52,14 +52,14 @@ void Addons::setupAddons(Coordinator* mEcs) {
 		switch (i) {
 
 		case AutoAim:
-											   // type      name   uiId tx ty lv rrty psv  eqp  price
-			mEcs->AddComponent(tmpAddon, Addon{ AutoAim, "Auto Aim", 0, 0, 96, 1, 1, true, false, 19});
+											   // type      name   uiId tx ty lv rrty psv     eqp    price
+			mEcs->AddComponent(tmpAddon, Addon{ AutoAim, "Auto Aim", 0, 0, 96, 1, 1, true, Unassigned, 19});
 
 			break;
 
 		case Laser:
-											 // type    name   uiId tx ty lv rrty psv  eqp  price
-			mEcs->AddComponent(tmpAddon, Addon{ Laser, "Laser", 0, 0, 64, 1, 2, false, false, 20 });
+											 // type    name   uiId tx ty lv rrty psv     eqp    price
+			mEcs->AddComponent(tmpAddon, Addon{ Laser, "Laser", 0, 0, 64, 1, 2, false, Unassigned, 20 });
 
 			break;
 
@@ -151,6 +151,48 @@ void Addons::showAddonsInMenu(Coordinator* mEcs) {
 		}
 
 	}
+
+}
+
+void Addons::showAddonAsEquipped(Coordinator* mEcs, Entity addon, int position) {
+
+
+	int x = Game::DeviceResW / 2;
+	int y = Game::DeviceResH / 2;
+
+	switch (position) {
+
+	case 0:
+		x += 50;
+		y -= 20;
+		break;
+	case 1:
+		x += 350;
+		y -= 20;
+		break;
+	case 2:
+		x += 50;
+		y += 65;
+		break;
+	case 3:
+		x += 350;
+		y += 65;
+		break;
+	case 4:
+		x += 50;
+		y += 150;
+		break;
+	case 5:
+		x += 350;
+		y += 150;
+		break;
+
+	}
+
+	auto& add = mEcs->GetComponent<Addon>(addon);
+
+	fbl_set_ui_elem_xy(add.uiId, x, y);
+	fbl_set_ui_elem_active(add.uiId, true);
 
 }
 

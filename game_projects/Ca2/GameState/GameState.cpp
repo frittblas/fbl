@@ -104,6 +104,9 @@ void GameState::change(Game& g, StateType newState) {
 			}
 			else if (mState == StateType::Dialogue) {	// if coming from dialogue
 			}
+			else if (mState == StateType::RobotCollection) {	// if coming from robotCollection
+				hideCollectionMenu();
+			}
 
 			g.mRobots->hideRobots(g.mEcs);		 // don't show the robot-sprites in explore mode (or in beginning of race)
 			g.mAddons->hideAddons(g.mEcs);		 // don't show addons either (ui buttons)
@@ -178,9 +181,9 @@ void GameState::exploreToTitle(Game& g) {
 	g.mChars->removeNpc(g.mEcs);	 // also delete all npcs in the current scene
 	g.mRobots->removeRobots(g.mEcs); // delete all the robots
 	g.mAddons->removeAddons(g.mEcs); // delete all addons
-	fbl_set_clear_color(11, 168, 230, 255);	// dark sky blue for the title
+	fbl_set_clear_color(11, 168, 230, 255);	// dark blue sky for the title
 	g.mWeather->setWeather(Weather::TimeOfDay::Day, 0, 14, 80, false);	// timeOfDay, rainLevel, snowLevel, numClouds, lightningOn
-	fbl_lua_shutdown();				 // so the dialogues gets reset
+	fbl_lua_shutdown();				 // so the dialogues get reset
 
 }
 
@@ -208,7 +211,7 @@ void GameState::titleToExplore(Game& g) {
 
 	fbl_lua_init("Ca2Dialogue.lua", registerFuncsToLua);	// set this up each new game, so the dialogues restart
 
-	std::cout << "player id: " << g.mChars->mBrodo << std::endl;
+	std::cout << "player id(e): " << g.mChars->mBrodo << std::endl;
 
 }
 
