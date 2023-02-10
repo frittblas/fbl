@@ -32,7 +32,7 @@ int fMenuButtonLeft, fMenuButtonRight;
 int fMenuRobotDescr, fMenuAddonsDescr;
 int fMenuName, fMenuLevel, fMenuXp, fMenuHp, fMenuSpeed;
 int fMenuDiag, fMenuEnergy, fMenuWeight;
-int fMenuSlotNr[fNumSlots], fMenuSlot[fNumSlots];
+int fMenuSlotNr[fNumSlots], fMenuSlot[fNumSlots], fMenuSlotArrow[fNumSlots];
 int fMenuActive, fMenuPassive, fMenuPassiveActive;
 int fMenuAddonGrid[fNumLines];
 int fMenuAddonInfoLine;
@@ -322,13 +322,32 @@ void initCollectionMenu() {
 	fbl_set_prim_color(fMenuSlot[5], 255, 106, 0, 255);
 	fbl_fix_prim_to_screen(fMenuSlot[5], true);
 
+
+	// the animated arrows that point to available slots
+	for (int i = 0; i < fNumSlots; i++) {
+		fMenuSlotArrow[i] = fbl_create_sprite(256, 288, 16, 16, 0);
+		fbl_set_sprite_xy(fMenuSlotArrow[i], x + 10, y - 27);
+		fbl_set_sprite_layer(fMenuSlotArrow[i], 5);
+		fbl_set_sprite_animation(fMenuSlotArrow[i], true, 256, 288, 16, 16, 4, 7, true);
+		fbl_fix_sprite_to_screen(fMenuSlotArrow[i], true);
+		if(i % 2 != 0)
+			fbl_set_sprite_flip(fMenuSlotArrow[i], 1); // 1 = horizontal
+	}
+
+	fbl_set_sprite_xy(fMenuSlotArrow[0], x + 10, y - 27);
+	fbl_set_sprite_xy(fMenuSlotArrow[1], x + 375, y - 27);
+	fbl_set_sprite_xy(fMenuSlotArrow[2], x + 10, y + 58);
+	fbl_set_sprite_xy(fMenuSlotArrow[3], x + 375, y + 58);
+	fbl_set_sprite_xy(fMenuSlotArrow[4], x + 10, y + 143);
+	fbl_set_sprite_xy(fMenuSlotArrow[5], x + 375, y + 143);
+
 	// active/passive instr
 	fMenuPassive = fbl_create_text(0, 83, 255, 0, (char*)"P = passive");
 	fbl_set_text_align(fMenuPassive, FBL_ALIGN_LEFT);
-	fbl_set_text_xy(fMenuPassive, x + 154, y + 145);
+	fbl_set_text_xy(fMenuPassive, x + 155, y + 144);
 	fMenuActive = fbl_create_text(255, 106, 0, 0, (char*)"A = active");
 	fbl_set_text_align(fMenuActive, FBL_ALIGN_LEFT);
-	fbl_set_text_xy(fMenuActive, x + 154, y + 165);
+	fbl_set_text_xy(fMenuActive, x + 155, y + 166);
 
 	// rect around passive/active text
 	fMenuPassiveActive = fbl_create_prim(FBL_RECT, x + 200, y + 155, 50, 32, 0, false, false);
@@ -421,7 +440,9 @@ void showCollectionMenu() {
 	for (int i = 0; i < fNumSlots; i++) {
 		fbl_set_text_active(fMenuSlotNr[i], true);
 		fbl_set_prim_active(fMenuSlot[i], true);
+		fbl_set_sprite_active(fMenuSlotArrow[i], true);
 	}
+
 
 	// active/passive intr.
 	fbl_set_text_active(fMenuActive, true);
@@ -476,6 +497,7 @@ void hideCollectionMenu() {
 	for (int i = 0; i < fNumSlots; i++) {
 		fbl_set_text_active(fMenuSlotNr[i], false);
 		fbl_set_prim_active(fMenuSlot[i], false);
+		fbl_set_sprite_active(fMenuSlotArrow[i], false);
 	}
 
 	// active/passive instr.

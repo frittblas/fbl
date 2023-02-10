@@ -34,7 +34,7 @@ public:
     virtual void tick(Game& g) override;
 
 private:
-    const int notSet = -2;
+    const int notSet = -1;
     int mCurrentRobotPage;
 
 };

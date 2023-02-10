@@ -199,7 +199,8 @@ void GameState::titleToExplore(Game& g) {
 	//g.mSysManager->mCameraSystem->Init(*g.mEcs);	// creates debug rect for camera deadzone
 	g.mSysManager->mLightSystem->Init(*g.mEcs);		// create lights for all entities with a light component
 
-	g.mWeather->setWeather(Weather::TimeOfDay::Evening, 1, 0, 50, true);
+	//g.mWeather->setWeather(Weather::TimeOfDay::Evening, 1, 0, 50, true);
+	g.mWeather->setWeather(Weather::TimeOfDay::Day, 0, 0, 50, true);
 
 	initCollectionMenu();	// set up prims and text and ui for the collection-menu, sprite draw-order is important
 	g.mAddons->initAddons(g.mEcs); // create the addon ui elements (buttons)
