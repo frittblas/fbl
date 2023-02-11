@@ -395,28 +395,31 @@ int render_ui_elem(int tag, void *ui_elem, void *dummy)
 
 	SDL_Rect temp_rect;
 
-	if(((FBL_UI_ELEM *)ui_elem)->active)
-    	{
+    FBL_UI_ELEM* ui = (FBL_UI_ELEM*)ui_elem;	// ui is now the current ui-element
+
+	if(ui->active)
+    {
         
-        	/* ui elements are always fixed to screen */
+        /* ui elements are always fixed to screen */
     
-        	temp_rect.x = ((FBL_UI_ELEM *)ui_elem)->dest_rect.x;
-        	temp_rect.y = ((FBL_UI_ELEM *)ui_elem)->dest_rect.y;
+        temp_rect.x = ui->dest_rect.x;
+        temp_rect.y = ui->dest_rect.y;
 
 
-        	/* adjust so ui element gets drawn from the center */
+        /* adjust so ui element gets drawn from the center */
 
-        	temp_rect.x = temp_rect.x - ((FBL_UI_ELEM *)ui_elem)->dest_rect.w / 2;
-        	temp_rect.y = temp_rect.y - ((FBL_UI_ELEM *)ui_elem)->dest_rect.h / 2;
-
-
-        	temp_rect.w = ((FBL_UI_ELEM *)ui_elem)->dest_rect.w;
-        	temp_rect.h = ((FBL_UI_ELEM *)ui_elem)->dest_rect.h;
+        temp_rect.x = temp_rect.x - ui->dest_rect.w / 2;
+        temp_rect.y = temp_rect.y - ui->dest_rect.h / 2;
 
 
-        	/* render */
+        temp_rect.w = ui->dest_rect.w;
+        temp_rect.h = ui->dest_rect.h;
+
+
+        /* render */
         
-        	SDL_RenderCopy(fbl_engine.renderer, fbl_ui_texture, &((FBL_UI_ELEM *)ui_elem)->source_rect, &temp_rect);
+        SDL_RenderCopy(fbl_engine.renderer, fbl_ui_texture, &ui->source_rect, &temp_rect);
+
 	}
 
 	return 0;
@@ -445,8 +448,10 @@ int process_ui_elem(int tag, void *ui_elem, void *dummy)
     
     SDL_Point point;
     SDL_Rect  temp_rect;
+
+    FBL_UI_ELEM* ui = (FBL_UI_ELEM*)ui_elem;	// ui is now the current ui-element
     
-    if(((FBL_UI_ELEM *)ui_elem)->active)
+    if(ui->active)
     {
     
         /* get mouse position */
@@ -459,15 +464,15 @@ int process_ui_elem(int tag, void *ui_elem, void *dummy)
     
         /* adjust for ui element gets drawn from the center */
     
-        temp_rect.x = ((FBL_UI_ELEM *)ui_elem)->dest_rect.x;
-        temp_rect.y = ((FBL_UI_ELEM *)ui_elem)->dest_rect.y;
-        temp_rect.x = temp_rect.x - ((FBL_UI_ELEM *)ui_elem)->dest_rect.w / 2;
-        temp_rect.y = temp_rect.y - ((FBL_UI_ELEM *)ui_elem)->dest_rect.h / 2;
-        temp_rect.w = ((FBL_UI_ELEM *)ui_elem)->dest_rect.w;
-        temp_rect.h = ((FBL_UI_ELEM *)ui_elem)->dest_rect.h;
+        temp_rect.x = ui->dest_rect.x;
+        temp_rect.y = ui->dest_rect.y;
+        temp_rect.x = temp_rect.x - ui->dest_rect.w / 2;
+        temp_rect.y = temp_rect.y - ui->dest_rect.h / 2;
+        temp_rect.w = ui->dest_rect.w;
+        temp_rect.h = ui->dest_rect.h;
     
     
-        switch(((FBL_UI_ELEM *)ui_elem)->type)
+        switch(ui->type)
         {
         
             /* hold is used for buttons that needs to be held down (like a throttle) */
@@ -475,33 +480,33 @@ int process_ui_elem(int tag, void *ui_elem, void *dummy)
             case FBL_UI_BUTTON_HOLD :
                  
                 
-                ((FBL_UI_ELEM *)ui_elem)->value = 0;
+                ui->value = 0;
                 
                 /* check "mouse over" */
     
                 if(SDL_PointInRect(&point, &temp_rect))
                 {
     
-                    ((FBL_UI_ELEM *)ui_elem)->source_rect.x = ((FBL_UI_ELEM *)ui_elem)->orig_x + ((FBL_UI_ELEM *)ui_elem)->source_rect.w;
+                    ui->source_rect.x = ui->orig_x + ui->source_rect.w;
         
                     if(fbl_get_mouse_click(FBLMB_LEFT))
                     {
         
                         /* call the function as long as button is held! */
                         
-                        if(((FBL_UI_ELEM *)ui_elem)->func != NULL)
-                            ((FBL_UI_ELEM *)ui_elem)->func(1, 2);
+                        if(ui->func != NULL)
+                            ui->func(1, 2);
 
-                        ((FBL_UI_ELEM *)ui_elem)->source_rect.x = ((FBL_UI_ELEM *)ui_elem)->orig_x + ((FBL_UI_ELEM *)ui_elem)->source_rect.w * 2;
+                        ui->source_rect.x = ui->orig_x + ui->source_rect.w * 2;
                         
-                        ((FBL_UI_ELEM *)ui_elem)->value = 1;
+                        ui->value = 1;
             
                     }
-                    else ((FBL_UI_ELEM *)ui_elem)->source_rect.x = ((FBL_UI_ELEM *)ui_elem)->orig_x + ((FBL_UI_ELEM *)ui_elem)->source_rect.w;
+                    else ui->source_rect.x = ui->orig_x + ui->source_rect.w;
                     
                     
                 }
-                else ((FBL_UI_ELEM *)ui_elem)->source_rect.x = ((FBL_UI_ELEM *)ui_elem)->orig_x;
+                else ui->source_rect.x = ui->orig_x;
                 
             break;
                 
@@ -509,44 +514,45 @@ int process_ui_elem(int tag, void *ui_elem, void *dummy)
                 
             case FBL_UI_BUTTON_CLICK :
                 
-                ((FBL_UI_ELEM *)ui_elem)->value = 0;
+
+                ui->value = 0;
                 
                 /* check "mouse over" */
                 
                 if(SDL_PointInRect(&point, &temp_rect))
                 {
                     
-                    ((FBL_UI_ELEM *)ui_elem)->source_rect.x = ((FBL_UI_ELEM *)ui_elem)->orig_x + ((FBL_UI_ELEM *)ui_elem)->source_rect.w;
+                    ui->source_rect.x = ui->orig_x + ui->source_rect.w;
                     
                     
                     if(fbl_get_mouse_click(FBLMB_LEFT))
                     {
                         
-                        ((FBL_UI_ELEM *)ui_elem)->source_rect.x = ((FBL_UI_ELEM *)ui_elem)->orig_x + ((FBL_UI_ELEM *)ui_elem)->source_rect.w * 2;
+                        ui->source_rect.x = ui->orig_x + ui->source_rect.w * 2;
                         
-                        ((FBL_UI_ELEM *)ui_elem)->pressed = true;
+                        ui->pressed = true;
                     
                     }
-                    else ((FBL_UI_ELEM *)ui_elem)->source_rect.x = ((FBL_UI_ELEM *)ui_elem)->orig_x + ((FBL_UI_ELEM *)ui_elem)->source_rect.w;
+                    else ui->source_rect.x = ui->orig_x + ui->source_rect.w;
 
-                    if(fbl_get_mouse_release(FBLMB_LEFT) && ((FBL_UI_ELEM *)ui_elem)->pressed)
+                    if(fbl_get_mouse_release(FBLMB_LEFT) && ui->pressed)
                     {
                         
                         /* call the function once! */
                         
-                        if(((FBL_UI_ELEM *)ui_elem)->func != NULL)
-                            ((FBL_UI_ELEM *)ui_elem)->func(1, 2);
+                        if(ui->func != NULL)
+                            ui->func(1, 2);
                         
-                        ((FBL_UI_ELEM *)ui_elem)->pressed = false;
+                        ui->pressed = false;
                         
-                        ((FBL_UI_ELEM *)ui_elem)->value = 1;
+                        ((FBL_UI_ELEM*)ui_elem)->value = 1;
                         
                     }
 
                     
                     
                 }
-                else ((FBL_UI_ELEM *)ui_elem)->source_rect.x = ((FBL_UI_ELEM *)ui_elem)->orig_x;
+                else ui->source_rect.x = ui->orig_x;
                 
             break;
                 
@@ -560,34 +566,34 @@ int process_ui_elem(int tag, void *ui_elem, void *dummy)
                 if(SDL_PointInRect(&point, &temp_rect))
                 {
                     
-                    if(((FBL_UI_ELEM *)ui_elem)->value == 0)
-                        ((FBL_UI_ELEM *)ui_elem)->source_rect.x = ((FBL_UI_ELEM *)ui_elem)->orig_x + ((FBL_UI_ELEM *)ui_elem)->source_rect.w;
-                    if(((FBL_UI_ELEM *)ui_elem)->value == 1)
-                        ((FBL_UI_ELEM *)ui_elem)->source_rect.x = ((FBL_UI_ELEM *)ui_elem)->orig_x + ((FBL_UI_ELEM *)ui_elem)->source_rect.w * 3;
+                    if(ui->value == 0)
+                        ui->source_rect.x = ui->orig_x + ui->source_rect.w;
+                    if(ui->value == 1)
+                        ui->source_rect.x = ui->orig_x + ui->source_rect.w * 3;
                     
                     
                     if(fbl_get_mouse_click(FBLMB_LEFT))
                     {
                         
-                        ((FBL_UI_ELEM *)ui_elem)->pressed = true;
+                        ui->pressed = true;
                         
                     }
                     
-                    if(fbl_get_mouse_release(FBLMB_LEFT) && ((FBL_UI_ELEM *)ui_elem)->pressed)
+                    if(fbl_get_mouse_release(FBLMB_LEFT) && ui->pressed)
                     {
                         
-                        ((FBL_UI_ELEM *)ui_elem)->pressed = false;
+                        ui->pressed = false;
                         
                         
                         /* toggle */
                         
-                        ((FBL_UI_ELEM *)ui_elem)->value = ((FBL_UI_ELEM *)ui_elem)->value ? 0 : 1;
+                        ui->value = ui->value ? 0 : 1;
                      
                         
                         /* call the function once! */
                         
-                        if(((FBL_UI_ELEM *)ui_elem)->func != NULL)
-                            ((FBL_UI_ELEM *)ui_elem)->func(((FBL_UI_ELEM *)ui_elem)->pressed, ((FBL_UI_ELEM *)ui_elem)->value);
+                        if(ui->func != NULL)
+                            ui->func(ui->pressed, ui->value);
                         
                         
                     }
@@ -595,8 +601,8 @@ int process_ui_elem(int tag, void *ui_elem, void *dummy)
                     
                     
                 }
-                else if(((FBL_UI_ELEM *)ui_elem)->value == 0) ((FBL_UI_ELEM *)ui_elem)->source_rect.x = ((FBL_UI_ELEM *)ui_elem)->orig_x;
-                else if(((FBL_UI_ELEM *)ui_elem)->value == 1) ((FBL_UI_ELEM *)ui_elem)->source_rect.x = ((FBL_UI_ELEM *)ui_elem)->orig_x + ((FBL_UI_ELEM *)ui_elem)->source_rect.w * 2;
+                else if(ui->value == 0) ui->source_rect.x = ui->orig_x;
+                else if(ui->value == 1) ui->source_rect.x = ui->orig_x + ui->source_rect.w * 2;
                 
             break;
                 

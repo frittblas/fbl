@@ -536,42 +536,44 @@ int render_text_object(int tag, void *text_obj, void *dummy)
 
 	SDL_Rect temp_rect;
 
-	if (((FBL_TEXT_OBJECT *)text_obj)->fix_to_screen)
+	FBL_TEXT_OBJECT* text = (FBL_TEXT_OBJECT*)text_obj;	// text is now the current text obj
+
+	if (text->fix_to_screen)
 	{
-		temp_rect.x = ((FBL_TEXT_OBJECT *)text_obj)->dest_rect.x;
-		temp_rect.y = ((FBL_TEXT_OBJECT *)text_obj)->dest_rect.y;
+		temp_rect.x = text->dest_rect.x;
+		temp_rect.y = text->dest_rect.y;
 	}
 	else
 	{
-		temp_rect.x = ((FBL_TEXT_OBJECT *)text_obj)->dest_rect.x - fbl_camera.x;
-		temp_rect.y = ((FBL_TEXT_OBJECT *)text_obj)->dest_rect.y - fbl_camera.y;
+		temp_rect.x = text->dest_rect.x - fbl_camera.x;
+		temp_rect.y = text->dest_rect.y - fbl_camera.y;
 	}
 
 
 	/* adjust so text gets drawn from center, also adjust if align is centered */
 
-	switch(((FBL_TEXT_OBJECT *)text_obj)->align)
+	switch(text->align)
 	{
 		case FBL_ALIGN_LEFT:
 			// do nothing
 		break;
 		case FBL_ALIGN_CENTER :
-			temp_rect.x = temp_rect.x - ((FBL_TEXT_OBJECT *)text_obj)->dest_rect.w / 2;
+			temp_rect.x = temp_rect.x - text->dest_rect.w / 2;
 		break;
 		case FBL_ALIGN_RIGHT:
-			temp_rect.x = temp_rect.x - ((FBL_TEXT_OBJECT *)text_obj)->dest_rect.w;
+			temp_rect.x = temp_rect.x - text->dest_rect.w;
 		break;
 	}
 
-	temp_rect.y = temp_rect.y - ((FBL_TEXT_OBJECT *)text_obj)->dest_rect.h / 2;
+	temp_rect.y = temp_rect.y - text->dest_rect.h / 2;
 
 
-	temp_rect.w = ((FBL_TEXT_OBJECT *)text_obj)->dest_rect.w;
-	temp_rect.h = ((FBL_TEXT_OBJECT *)text_obj)->dest_rect.h;
+	temp_rect.w = text->dest_rect.w;
+	temp_rect.h = text->dest_rect.h;
 
 
-	if (((FBL_TEXT_OBJECT *)text_obj)->active)
-		SDL_RenderCopy(fbl_engine.renderer, ((FBL_TEXT_OBJECT *)text_obj)->text_image, NULL, &temp_rect);
+	if (text->active)
+		SDL_RenderCopy(fbl_engine.renderer, text->text_image, NULL, &temp_rect);
 
 	return 0;
 

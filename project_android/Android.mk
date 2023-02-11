@@ -24,6 +24,8 @@ fbl/src/thread.c \
 fbl/src/network.c \
 fbl/src/ui.c \
 fbl/game_projects/Ca2/Chars.cpp \
+fbl/game_projects/Ca2/Addons.cpp \
+fbl/game_projects/Ca2/Efx.cpp \
 fbl/game_projects/Ca2/Robots.cpp \
 fbl/game_projects/Ca2/Location.cpp \
 fbl/game_projects/Ca2/Weather.cpp \

@@ -20,8 +20,8 @@
 bool key_down[NUM_KEYS] = { 0 };
 bool key_up[NUM_KEYS] = { 0 };
 
-bool mouse_button_down[NUM_KEYS] = { 0 };
-bool mouse_button_up[NUM_KEYS] = { 0 };
+bool mouse_button_down[NUM_MOUSE_BUTTONS] = { 0 };
+bool mouse_button_up[NUM_MOUSE_BUTTONS] = { 0 };
 
 int logical_mouse_x = 0;
 int logical_mouse_y = 0;
@@ -690,7 +690,7 @@ void engine_process_mouse(SDL_Event *event)
 
 
 	}
-	else if (event->type == SDL_MOUSEMOTION) {
+	else if (event->type == SDL_MOUSEMOTION || event->type == SDL_FINGERMOTION) {
 		//printf("x=%d, y=%d, xrel=%d, yrel=%d\n", event->motion.x, event->motion.y, event->motion.xrel, event->motion.yrel);
 		logical_mouse_x = event->motion.x;
 		logical_mouse_y = event->motion.y;
