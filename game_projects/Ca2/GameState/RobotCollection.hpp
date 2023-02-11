@@ -39,5 +39,7 @@ private:
     const int notSet = -1;
     int mCurrentRobotPage;  // what robot-page are you at? It's an index to the owned robot array
     int mSelectedAddon;     // currently selected addon on the grid (as entity id)
+    int mKeyAccess;
+    bool mMouseDown;
 
 };
