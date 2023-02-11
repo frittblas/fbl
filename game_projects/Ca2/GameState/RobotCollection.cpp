@@ -95,6 +95,26 @@ void RobotCollection::cyclePages(Game& g, int dir) {
 	fbl_update_text(fMenuDiag, 255, 255, 255, 0, (char*)"Diagonals:  %s", sta.diag ? "Yes" : "No");
 	fbl_update_text(fMenuSpeed, 255, 255, 255, 0, (char*)"Energy:  %d / %d", sta.energy, sta.maxEnergy);
 
+	// show the addons in left menu (won't show equipped addons)
+	g.mAddons->showAddonsInMenu(g.mEcs);
+	if (mSelectedAddon != notSet) {
+		auto& add = g.mEcs->GetComponent<Addon>(mSelectedAddon);
+		if (add.equippedBy == notSet) {
+			fbl_set_ui_elem_val(add.uiId, 1);
+			setFreeSlotsArrows(g, false);
+		}
+		else {
+			mSelectedAddon = notSet;
+			updateAddonInfo(g, true);
+			setFreeSlotsArrows(g, true);
+		}
+	}
+
+	// check if the current robot has anything equipped, in that case, show it.
+	for (int i = 0; i < fNumSlots; i++)
+		if (sta.slot[i] != notSet)
+			g.mAddons->showAddonAsEquipped(g.mEcs, sta.slot[i], i);
+
 	std::cout << mCurrentRobotPage << std::endl;
 	std::cout << sta.name << std::endl;
 
@@ -139,12 +159,12 @@ void RobotCollection::setFreeSlotsArrows(Game& g, bool empty) {
 		auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mOwnedRobots[mCurrentRobotPage]);
 
 		// take care of the passive slots (show an arrow if the selected addon is passive and the slot is free)
-		if (add.passive && sta.passiveSlot[0] == notSet) fbl_set_sprite_active(fMenuSlotArrow[0], true);
-		if (add.passive && sta.passiveSlot[1] == notSet) fbl_set_sprite_active(fMenuSlotArrow[1], true);
+		if (add.passive && sta.slot[0] == notSet) fbl_set_sprite_active(fMenuSlotArrow[0], true);
+		if (add.passive && sta.slot[1] == notSet) fbl_set_sprite_active(fMenuSlotArrow[1], true);
 
 		// active slots
-		for (int i = 0; i < 4; i++) {
-			if (!add.passive && sta.activeSlot[i] == notSet) fbl_set_sprite_active(fMenuSlotArrow[i + 2], true);
+		for (int i = 2; i < fNumSlots; i++) {
+			if (!add.passive && sta.slot[i] == notSet) fbl_set_sprite_active(fMenuSlotArrow[i], true);
 		}
 
 	}
@@ -221,46 +241,32 @@ void RobotCollection::equipAddon(Game& g) {
 
 			if (mouseX > slotX && mouseY > slotY && mouseX < (slotX + Game::TileSize) && mouseY < (slotY + Game::TileSize)) {	// if click is inside a slot
 
-
-
-				std::cout << "Before." << std::endl;
 				// get Addon and Stats components from the selected addon and the current robot
-				auto& add = g.mEcs->GetComponent<Addon>(mSelectedAddon);
-				auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mOwnedRobots[mCurrentRobotPage]);
-				std::cout << "After" << std::endl;
+				if (mSelectedAddon != notSet) {
 
-				// just continue; in case of any error, check passive/active restrictions etc.
-				if (i < 2 && !add.passive) continue;
-				if (i > 1 && add.passive) continue;
+					auto& add = g.mEcs->GetComponent<Addon>(mSelectedAddon);
+					auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mOwnedRobots[mCurrentRobotPage]);
 
-				// NOTE: can't move to the same slot if equipped! will crash "retrieving non-existent component"
+					// just continue; in case of any error, check passive/active restrictions etc.
+					if (i < 2 && !add.passive) continue;
+					if (i > 1 && add.passive) continue;
 
-				add.equippedBy = g.mRobots->mOwnedRobots[mCurrentRobotPage]; // the addon is now equipped by this robot (Entity id)
+					add.equippedBy = g.mRobots->mOwnedRobots[mCurrentRobotPage]; // the addon is now equipped by this robot (Entity id)
 
-				// check if this addon is just moved between equipped slots
-				// first set passive and active slots with a value of mSelectedAddon to notSet
+					// check if this addon is just moved between equipped slots
+					// first set passive and active slots with a value of mSelectedAddon to notSet
+					for (int j = 0; j < fNumSlots; j++)
+						if (sta.slot[j] == mSelectedAddon) sta.slot[j] = notSet;
 
-				for (int j = 0; j < fNumSlots; j++) {
+					// then assign the passive or active slots
+					sta.slot[i] = mSelectedAddon;
 
-					if (j < 2)
-						if(sta.passiveSlot[j] == mSelectedAddon) sta.passiveSlot[j] = notSet;
-					else if(j > 1){
-						if(sta.activeSlot[j - 2] == mSelectedAddon) sta.activeSlot[j] = notSet;
-					}
+					g.mAddons->showAddonAsEquipped(g.mEcs, mSelectedAddon, i);	// move the addon to the correct slot
+					setFreeSlotsArrows(g, false);	// set arrows pointing correctly
+
+					break;
 
 				}
-
-				// then assign the passive or active slots
-				if (i < 2)
-					sta.passiveSlot[i] = mSelectedAddon;
-				else {
-					sta.activeSlot[i - 2] = mSelectedAddon;
-				}
-				
-				g.mAddons->showAddonAsEquipped(g.mEcs, mSelectedAddon, i);	// move the addon to the correct slot
-				setFreeSlotsArrows(g, false);
-				
-				break;
 
 			}
 

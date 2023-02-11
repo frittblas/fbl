@@ -36,7 +36,8 @@ public:
         Down
     };
 
-    const uint16_t Unassigned = 9999; // used for empty slots in the addon-arrays.
+    const uint16_t Unassigned = 9999;      // used for empty slots in the addon-arrays.
+    const int16_t  notSet = -1;            // used for equippedBy
 
     Entity mAllAddons[NumAddons];     // all the addons
     Entity mOwnedAddons[NumAddons];   // all the addons you own

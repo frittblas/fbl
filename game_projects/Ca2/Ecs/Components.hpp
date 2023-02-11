@@ -104,7 +104,7 @@ struct Addon {
     uint8_t level;       // Addons can level up (max 3?)
     uint8_t rarity;      // rarity of the addon (common, rare, etc.)
     bool passive;        // passive addon or active?
-    uint16_t equippedBy; // who is this equipped by (robots)
+    int16_t equippedBy;  // who is this equipped by (robots) -1 = notSet
     uint8_t price;       // how much to buy (sells for half)
 
 };
@@ -125,9 +125,8 @@ struct Stats
     uint8_t maxEnergy;      // max energy
     uint8_t energy;         // current energy
     uint8_t weight;         // weight
-    int16_t activeSlot[4];  // active skills (like weapons, for the buttons to the left and right) as Entity (Addon)
-    int16_t passiveSlot[2]; // passive skills (like magnetic, diagonal etc.) as Entity (Addon)
-
+    int16_t slot[6];        // passive skills (like magnetic, diagonal etc.) as Entity (Addon) first 2!
+                            // AND active skills (like weapons, for the buttons to the left and right) as Entity (Addon) last 4!
 };
 
 // AutoAim (consists of a invisible ray (line) and dir)

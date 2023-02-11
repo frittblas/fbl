@@ -53,13 +53,13 @@ void Addons::setupAddons(Coordinator* mEcs) {
 
 		case AutoAim:
 											   // type      name   uiId tx ty lv rrty psv     eqp    price
-			mEcs->AddComponent(tmpAddon, Addon{ AutoAim, "Auto Aim", 0, 0, 96, 1, 1, true, Unassigned, 19});
+			mEcs->AddComponent(tmpAddon, Addon{ AutoAim, "Auto Aim", 0, 0, 96, 1, 1, true, notSet, 19});
 
 			break;
 
 		case Laser:
 											 // type    name   uiId tx ty lv rrty psv     eqp    price
-			mEcs->AddComponent(tmpAddon, Addon{ Laser, "Laser", 0, 0, 64, 1, 2, false, Unassigned, 20 });
+			mEcs->AddComponent(tmpAddon, Addon{ Laser, "Laser", 0, 0, 64, 1, 2, false, notSet, 20 });
 
 			break;
 
@@ -140,9 +140,12 @@ void Addons::showAddonsInMenu(Coordinator* mEcs) {
 	for (Entity e : mOwnedAddons) {
 		if (e != Unassigned) {
 			auto& add = mEcs->GetComponent<Addon>(e);
-			fbl_set_ui_elem_xy(add.uiId, x, y);		// position it
-			fbl_set_ui_elem_active(add.uiId, true); // set to active
-			fbl_set_ui_elem_val(add.uiId, 0);		// uncheck it
+			if (add.equippedBy == notSet) {
+				fbl_set_ui_elem_xy(add.uiId, x, y);			// position it
+				fbl_set_ui_elem_active(add.uiId, true);		// set to active
+			}
+			else fbl_set_ui_elem_active(add.uiId, false);   // set to inactive if equipped (these are set in robotcollection)
+			fbl_set_ui_elem_val(add.uiId, 0);				// uncheck it
 			x += 35;
 			if (x > 440) {	// if one row is filled continue on the next row
 				x = 123;
