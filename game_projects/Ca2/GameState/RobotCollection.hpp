@@ -31,6 +31,7 @@ public:
     void setFreeSlotsArrows(Game& g, bool empty);
     void selectAddon(Game& g);
     void equipAddon(Game& g);
+    void unEquipAddon(Game& g);
     void processInput(Game& g);
 
     virtual void tick(Game& g) override;

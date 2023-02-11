@@ -38,6 +38,7 @@ uint16_t fMenuActive, fMenuPassive, fMenuPassiveActive;
 uint16_t fMenuAddonGrid[fNumLines];
 uint16_t fMenuAddonInfoLine;
 uint16_t fAddonName, fAddonLevel, fAddonRarity, fAddonPassive, fAddonEquipped, fAddonPrice;
+uint16_t fUnEquipAddon, fUnEquipAddonText;
 uint16_t fSaveAndQuit, fSaveAndQuitText;
 
 // the menu button (always visible when in a game), externed in Explore.cpp
@@ -53,6 +54,10 @@ RobotCollection::RobotCollection() {
 	mMouseDown = false;
 
 	showCollectionMenu();
+
+	// hide unequip ui
+	fbl_set_ui_elem_active(fUnEquipAddon, false);
+	fbl_set_text_active(fUnEquipAddonText, false);
 
 	// set all arrows to inactive
 	for (int id : fMenuSlotArrow) fbl_set_sprite_active(id, false);
@@ -279,6 +284,47 @@ void RobotCollection::equipAddon(Game& g) {
 
 }
 
+void RobotCollection::unEquipAddon(Game& g) {
+
+	if (mSelectedAddon != notSet) {
+
+		// check if the selected addon is equipped
+		auto& add = g.mEcs->GetComponent<Addon>(mSelectedAddon);
+
+		if (add.equippedBy != notSet) {		// if the selected addon is equipped by someone
+
+			fbl_set_ui_elem_active(fUnEquipAddon, true);	// set the unequip button to active
+			fbl_set_text_active(fUnEquipAddonText, true);
+
+			// now take care of the button press
+			if (fbl_get_ui_elem_val(fUnEquipAddon) > 0) {
+
+				auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mOwnedRobots[mCurrentRobotPage]);
+
+				for (int i = 0; i < fNumSlots; i++)
+					if (sta.slot[i] == mSelectedAddon) sta.slot[i] = notSet;
+
+				add.equippedBy = notSet;
+				fbl_set_ui_elem_val(fUnEquipAddon, 0);	// set the ui value to 0
+
+				// update graphics
+				cyclePages(g, 0);
+				setFreeSlotsArrows(g, false);
+				fbl_set_ui_elem_active(fUnEquipAddon, false);	// set the unequip button to active
+				fbl_set_text_active(fUnEquipAddonText, false);	// and text
+
+			}
+
+		}	
+
+	}
+	else {
+		fbl_set_ui_elem_active(fUnEquipAddon, false);	// set the unequip button to active
+		fbl_set_text_active(fUnEquipAddonText, false);
+	}
+
+}
+
 // deal with all the clicking on stats and buttons
 void RobotCollection::processInput(Game& g) {
 
@@ -296,6 +342,7 @@ void RobotCollection::processInput(Game& g) {
 
 	selectAddon(g);
 	equipAddon(g);
+	unEquipAddon(g);
 
 	// the almighty menu button (very top left)
 	if (fbl_get_ui_elem_val(gRobotCollectionMenuButton) > 0)
@@ -525,6 +572,15 @@ void initCollectionMenu() {
 	gRobotCollectionMenuButton = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 128, 64, 32, NULL);
 	fbl_set_ui_elem_xy(gRobotCollectionMenuButton, 40, 24);	// top left corner 8 px in
 
+	// unequip context sensitive button
+	fUnEquipAddon = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, NULL);
+	fbl_set_ui_elem_xy(fUnEquipAddon, 530, 500);	// down right-ish
+
+	// Unequip Text
+	fUnEquipAddonText = fbl_create_text(255, 255, 255, 0, (char*)"Un-equip addon");
+	fbl_set_text_align(fUnEquipAddonText, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(fUnEquipAddonText, 560, 500);
+
 	// save and quit to menu
 	fSaveAndQuit = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, NULL);
 	fbl_set_ui_elem_xy(fSaveAndQuit, 123, 500);	// down left-ish
@@ -592,6 +648,10 @@ void showCollectionMenu() {
 	fbl_set_text_active(fAddonEquipped, true);
 	fbl_set_text_active(fAddonPrice, true);
 
+	// unequip
+	fbl_set_ui_elem_active(fUnEquipAddon, true);
+	fbl_set_text_active(fUnEquipAddonText, true);
+
 	// save and quit
 	fbl_set_ui_elem_active(fSaveAndQuit, true);
 	fbl_set_text_active(fSaveAndQuitText, true);
@@ -651,6 +711,10 @@ void hideCollectionMenu() {
 	fbl_set_text_active(fAddonPassive, false);
 	fbl_set_text_active(fAddonEquipped, false);
 	fbl_set_text_active(fAddonPrice, false);
+
+	// unequip
+	fbl_set_ui_elem_active(fUnEquipAddon, false);
+	fbl_set_text_active(fUnEquipAddonText, false);
 
 	// save and quit
 	fbl_set_ui_elem_active(fSaveAndQuit, false);
