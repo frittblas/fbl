@@ -655,7 +655,7 @@ void engine_process_mouse(SDL_Event *event)
 	mouse_button_up[0] = false;
 	mouse_button_up[1] = false;
 
-	if (event->type == SDL_MOUSEBUTTONDOWN || event->type == SDL_FINGERDOWN)
+	if (event->type == SDL_MOUSEBUTTONDOWN)// could use event->type == SDL_FINGERDOWN aswell for touch specifics
 	{
 
 		switch (event->button.button)
@@ -671,7 +671,7 @@ void engine_process_mouse(SDL_Event *event)
 		}
 
 	}
-	else if (event->type == SDL_MOUSEBUTTONUP || event->type == SDL_FINGERUP)
+	else if (event->type == SDL_MOUSEBUTTONUP)
 	{
 
 		switch (event->button.button)
@@ -690,7 +690,7 @@ void engine_process_mouse(SDL_Event *event)
 
 
 	}
-	else if (event->type == SDL_MOUSEMOTION || event->type == SDL_FINGERMOTION) {
+	else if (event->type == SDL_MOUSEMOTION) {
 		//printf("x=%d, y=%d, xrel=%d, yrel=%d\n", event->motion.x, event->motion.y, event->motion.xrel, event->motion.yrel);
 		logical_mouse_x = event->motion.x;
 		logical_mouse_y = event->motion.y;

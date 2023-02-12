@@ -251,6 +251,8 @@ Add more functionality to the particle system:
 Particle angle, ability to use sprite instead of prim, more presets (flower, rain, snow etc). Optimise - Done! (will add stuff over time)
 Add the new particle functions (new create_emitter(), set_params() set_shape()) to Lua! - Done!
 
+Add ui elements with INTERVAL to Lua.
+
 Big feature fbl_net:
 Use SDL_net (make it possible to fbl_net_init() without creating window?? maybe not (for server..))
 Maybe do a blocking loop in fbl_start for the server.. and call fbl_engine_quit() immediately in fbl_loop().

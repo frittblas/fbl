@@ -821,12 +821,13 @@ int touch_callback(int event_type, const EmscriptenTouchEvent *touchEvent, void 
 					X = (int)X*scale;
 					Y = (int)Y*scale;
 				}
-
+				
 				sdlevent.type = SDL_MOUSEMOTION;
 				sdlevent.button.button = SDL_BUTTON_LEFT;
 				last_touch_x = X;
 				last_touch_y = Y;
 				SDL_PushEvent(&sdlevent);
+				
 			}
 		}
 		break;

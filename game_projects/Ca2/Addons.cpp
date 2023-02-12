@@ -82,14 +82,14 @@ void Addons::initAddons(Coordinator* mEcs) {
 	for (Entity e : mAllAddons) {
 		if (e != Unassigned) {
 			auto& add = mEcs->GetComponent<Addon>(e);
-			add.uiId = fbl_create_ui_elem(FBL_UI_CHECKBOX, add.tx, add.ty, Game::TileSize, Game::TileSize, NULL);
+			add.uiId = fbl_create_ui_elem(FBL_UI_CHECKBOX_INTERVAL, add.tx, add.ty, Game::TileSize, Game::TileSize, NULL);
 		}
 	}
 
 	for (Entity e : mOwnedAddons) {
 		if (e != Unassigned) {
 			auto& add = mEcs->GetComponent<Addon>(e);
-			add.uiId = fbl_create_ui_elem(FBL_UI_CHECKBOX, add.tx, add.ty, Game::TileSize, Game::TileSize, NULL);
+			add.uiId = fbl_create_ui_elem(FBL_UI_CHECKBOX_INTERVAL, add.tx, add.ty, Game::TileSize, Game::TileSize, NULL);
 		}
 	}
 

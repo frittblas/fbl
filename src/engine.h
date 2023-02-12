@@ -248,10 +248,11 @@ typedef struct
 	SDL_Rect source_rect;
 	SDL_Rect dest_rect;
 	
-	int orig_x; /* original x position */
-	int value;  /* just a value : D */
-    bool pressed; /* check to see left click before release (mouse) */
+	int orig_x;		/* original x position */
+	int value;		/* just a value : D */
+    bool pressed;	/* check to see left click before release (mouse) */
 	bool active;
+	int access;		/* some buttons have access time */
 
 	/* the function to be called when a ui element is used */
 

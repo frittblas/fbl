@@ -518,9 +518,9 @@ void initCollectionMenu() {
 	fbl_fix_prim_to_screen(fMenuPassiveActive, true);
 
 	// next/previous robot arrows
-	fMenuButtonLeft = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 128, 32, 32, 32, NULL);
+	fMenuButtonLeft = fbl_create_ui_elem(FBL_UI_BUTTON_INTERVAL, 128, 32, 32, 32, NULL);
 	fbl_set_ui_elem_xy(fMenuButtonLeft, x + 50, y - 125);
-	fMenuButtonRight = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 128, 0, 32, 32, NULL);
+	fMenuButtonRight = fbl_create_ui_elem(FBL_UI_BUTTON_INTERVAL, 128, 0, 32, 32, NULL);
 	fbl_set_ui_elem_xy(fMenuButtonRight, x + 350, y - 125);
 
 

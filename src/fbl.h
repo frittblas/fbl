@@ -17,8 +17,10 @@
 #define FBL_H__
 
 #ifdef __EMSCRIPTEN__
+#ifndef __cplusplus		// this is bc I compile fbl as a c-lib and ca2 as cpp (cpp doesn't like those headers)
 #include <emscripten.h>
 #include <emscripten/html5.h>
+#endif
 #endif
 
 #include <stdio.h>
@@ -213,7 +215,9 @@ enum FBL_UI_ELEM_TYPES
 
 	FBL_UI_BUTTON_CLICK,
 	FBL_UI_BUTTON_HOLD,
+	FBL_UI_BUTTON_INTERVAL,
 	FBL_UI_CHECKBOX,
+	FBL_UI_CHECKBOX_INTERVAL,
 	FBL_UI_SLIDER,  /* not impl. yet */
 	FBL_UI_EDITBOX  /* not impl. yet */
 

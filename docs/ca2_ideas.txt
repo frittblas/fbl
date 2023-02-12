@@ -148,10 +148,10 @@ Add diagonals passive ability? (or maybe this is robot specific)
 Add teleport.
 Add ability to slow down time (as long as you hold button)
 
-Add tweening.
+Add tweening. - Done!
 Add camera shake. Done!
 Add darkness/light to the race. Done!
-Add button to bring up RobotCollection.
+Add button to bring up RobotCollection. - Done!
 Add button to start ongoing conversation with charming alarming, black bg, ridicolous conversation.
 Sometimes charming alarming does not want to talk (when no progress has been made.)
 
@@ -181,7 +181,7 @@ The player believes the robot an start questioning himself.
 
 NEXT THING TO DO:
 
-1. Make addons work in robot-collection (drag-and-drop?) aand in the race (correct addon as buttons)
+1. Make addons work in robot-collection aand in the race (correct addon as buttons) - menu done, will add buttons to race
 
 2. Start writing a long dialogue thing with Charming Alarming (and a nice scene, black borders up and down)
 
@@ -189,7 +189,7 @@ NEXT THING TO DO:
 BUGS:
 
 1. If you create an emitter before the first weather-call in Game.cpp, the fbl_set_lighting_tint() doesn't work!
-Really  weird, probably something simple.
+Really  weird, probably something simple. (Test if this is still relevant, might have fixed it)
 
 2. The zip from gihub builds and runs but can't load a level! Also weird.
 

@@ -112,7 +112,7 @@ int fbl_create_ui_elem(uint8_t type, int x, int y, int w, int h, int(*func)(int,
     fbl_ui_elem->value = 0;
 	fbl_ui_elem->active = true;
     fbl_ui_elem->pressed = false;
-
+    fbl_ui_elem->access = 0;
 
 	/* set function */
 
@@ -509,6 +509,46 @@ int process_ui_elem(int tag, void *ui_elem, void *dummy)
                 else ui->source_rect.x = ui->orig_x;
                 
             break;
+
+            /* hold interval turns value on, off, on off with a small delay (good for touch) */
+
+            case FBL_UI_BUTTON_INTERVAL:
+
+
+                ui->value = 0;
+
+                /* check "mouse over" */
+
+                if (SDL_PointInRect(&point, &temp_rect))
+                {
+
+                    ui->source_rect.x = ui->orig_x + ui->source_rect.w;
+
+                    if (fbl_get_mouse_click(FBLMB_LEFT) && ui->access == 0)
+                    {
+
+                        /* call the function once every 30th frame */
+
+                        if (ui->func != NULL)
+                            ui->func(1, 2);
+
+                        ui->source_rect.x = ui->orig_x + ui->source_rect.w * 2;
+
+                        ui->value = 1;
+
+                        ui->access = 30;
+
+                    }
+                    else ui->source_rect.x = ui->orig_x + ui->source_rect.w;
+
+
+                }
+                else ui->source_rect.x = ui->orig_x;
+
+                ui->access--;
+                if (ui->access < 0) ui->access = 0;
+
+                break;
                 
             /* click is used for buttons that needs to be one clicked at a time (on the mouse release) */
                 
@@ -605,6 +645,49 @@ int process_ui_elem(int tag, void *ui_elem, void *dummy)
                 else if(ui->value == 1) ui->source_rect.x = ui->orig_x + ui->source_rect.w * 2;
                 
             break;
+
+            /* checkbox interval turns on/off with 30 frames delay */
+
+            case FBL_UI_CHECKBOX_INTERVAL:
+
+                /* check "mouse over" */
+
+                if (SDL_PointInRect(&point, &temp_rect))
+                {
+
+                    if (ui->value == 0)
+                        ui->source_rect.x = ui->orig_x + ui->source_rect.w;
+                    if (ui->value == 1)
+                        ui->source_rect.x = ui->orig_x + ui->source_rect.w * 3;
+
+
+                    if (fbl_get_mouse_click(FBLMB_LEFT) && ui->access == 0)
+                    {
+
+                        /* toggle */
+
+                        ui->value = ui->value ? 0 : 1;
+
+
+                        /* call the function once with 30 frames delay */
+
+                        if (ui->func != NULL)
+                            ui->func(ui->pressed, ui->value);
+
+                        ui->access = 30;
+
+                    }
+
+
+
+                }
+                else if (ui->value == 0) ui->source_rect.x = ui->orig_x;
+                else if (ui->value == 1) ui->source_rect.x = ui->orig_x + ui->source_rect.w * 2;
+
+                ui->access--;
+                if (ui->access < 0) ui->access = 0;
+
+                break;
                 
                 
         }
