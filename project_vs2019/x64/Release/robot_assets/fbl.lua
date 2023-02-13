@@ -164,9 +164,11 @@ FBL_WINDOW_FULLSCREEN_DESKTOP = 4097
 
 -- FBL_UI_ELEM_TYPES
 
-	FBL_UI_BUTTON_CLICK	= 0
-	FBL_UI_BUTTON_HOLD	= 1
-	FBL_UI_CHECKBOX		= 2
+	FBL_UI_BUTTON_CLICK		 = 0
+	FBL_UI_BUTTON_HOLD		 = 1
+	FBL_UI_BUTTON_INTERVAL	 = 2
+	FBL_UI_CHECKBOX			 = 3
+	FBL_UI_CHECKBOX_INTERVAL = 4
 	-- FBL_UI_SLIDER,  /* not impl. yet */
 	-- FBL_UI_EDITBOX  /* not impl. yet */
 
@@ -323,6 +325,7 @@ int    fbl_get_ui_elem_x(int id);
 int    fbl_get_ui_elem_y(int id);
 int    fbl_get_ui_elem_val(int id);
 void   fbl_set_ui_elem_val(int id, int value);
+void   fbl_set_ui_elem_access(int id, int frames);
 void   fbl_set_ui_elem_active(int id, bool active);
 bool   fbl_get_ui_elem_active(int id);
 int    fbl_get_num_ui_elems(void);

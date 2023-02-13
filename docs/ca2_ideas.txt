@@ -185,6 +185,7 @@ NEXT THING TO DO:
 
 2. Start writing a long dialogue thing with Charming Alarming (and a nice scene, black borders up and down)
 
+Make a check so you can't equip an addon where there is already one, easy, (or switch?)
 
 BUGS:
 

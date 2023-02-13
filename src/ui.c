@@ -113,6 +113,7 @@ int fbl_create_ui_elem(uint8_t type, int x, int y, int w, int h, int(*func)(int,
 	fbl_ui_elem->active = true;
     fbl_ui_elem->pressed = false;
     fbl_ui_elem->access = 0;
+    fbl_ui_elem->access_delay = 30;     /* default to half aa second */
 
 	/* set function */
 
@@ -283,6 +284,29 @@ void fbl_set_ui_elem_val(int id, int value)
     }
 #ifdef FBL_DEBUG
     else fprintf(FBL_ERROR_OUT, "Tried to set value for ui element %d, that does not exist!\n", id);
+#endif
+
+}
+
+/*
+ *  Set the delay for _INTERVAL ui buttons
+ */
+void fbl_set_ui_elem_access(int id, int frames)
+{
+
+    FBL_UI_ELEM* ui_elem = NULL;
+    DLLIST* item = get_ui_item_at_id(id);
+
+    if (item != NULL)
+    {
+
+        ui_elem = ((FBL_UI_ELEM*)item->Object);
+
+        ui_elem->access_delay = frames;
+
+    }
+#ifdef FBL_DEBUG
+    else fprintf(FBL_ERROR_OUT, "Tried to set access for ui element %d, that does not exist!\n", id);
 #endif
 
 }
@@ -527,7 +551,7 @@ int process_ui_elem(int tag, void *ui_elem, void *dummy)
                     if (fbl_get_mouse_click(FBLMB_LEFT) && ui->access == 0)
                     {
 
-                        /* call the function once every 30th frame */
+                        /* call the function once every nth frame */
 
                         if (ui->func != NULL)
                             ui->func(1, 2);
@@ -536,7 +560,7 @@ int process_ui_elem(int tag, void *ui_elem, void *dummy)
 
                         ui->value = 1;
 
-                        ui->access = 30;
+                        ui->access = ui->access_delay;
 
                     }
                     else ui->source_rect.x = ui->orig_x + ui->source_rect.w;
@@ -646,7 +670,7 @@ int process_ui_elem(int tag, void *ui_elem, void *dummy)
                 
             break;
 
-            /* checkbox interval turns on/off with 30 frames delay */
+            /* checkbox interval turns on/off with n frames delay */
 
             case FBL_UI_CHECKBOX_INTERVAL:
 
@@ -674,7 +698,7 @@ int process_ui_elem(int tag, void *ui_elem, void *dummy)
                         if (ui->func != NULL)
                             ui->func(ui->pressed, ui->value);
 
-                        ui->access = 30;
+                        ui->access = ui->access_delay;
 
                     }
 

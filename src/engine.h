@@ -252,7 +252,7 @@ typedef struct
 	int value;		/* just a value : D */
     bool pressed;	/* check to see left click before release (mouse) */
 	bool active;
-	int access;		/* some buttons have access time */
+	int access, access_delay;		/* some buttons have access time */
 
 	/* the function to be called when a ui element is used */
 

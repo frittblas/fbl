@@ -42,8 +42,8 @@ void Chars::setupPlayer(Coordinator* mEcs) {
 	mEcs->AddComponent(mBrodo, Sprite{ 0, 0, 0, 0, 4, 0, 224, 32, 32, true, 2, 12, 1, 1, 1 });
 								 // id  gX gY newPath speed diag pixelsPerFrame
 	mEcs->AddComponent(mBrodo, Path{ 0, 0, 0, false, 2.0, FBL_PATHF_USE_DIAG, 1 });
-									  // clicked
-	mEcs->AddComponent(mBrodo, MouseCtrl{ false });
+									  // access
+	mEcs->AddComponent(mBrodo, MouseCtrl{ 60 });
 									// x  y	 damp  w  h
 	mEcs->AddComponent(mBrodo, Camera{ 0, 0, 0.05, 2, 2 });
 								  // id  tx  ty   w    h  scale

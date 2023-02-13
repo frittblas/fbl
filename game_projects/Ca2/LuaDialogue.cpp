@@ -104,17 +104,19 @@ void initLuaDialog() {
 	fbl_set_text_xy(fDiaResponseNoId, x + 30, y + 64);
 
 	// ui yes / no and Ok buttons
-	fDiaButtonYes = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, NULL);
+	fDiaButtonYes = fbl_create_ui_elem(FBL_UI_BUTTON_INTERVAL, 0, 0, 32, 32, NULL);
 	fbl_set_ui_elem_xy(fDiaButtonYes, x - 215, y + 64);
-	fDiaButtonNo = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, NULL);
+	fbl_set_ui_elem_access(fDiaButtonYes, 60);
+	fDiaButtonNo = fbl_create_ui_elem(FBL_UI_BUTTON_INTERVAL, 0, 0, 32, 32, NULL);
 	fbl_set_ui_elem_xy(fDiaButtonNo, x, y + 64);
+	fbl_set_ui_elem_access(fDiaButtonNo, 60);
 
 	// the "Talk" text and button
 	fDiaTextTalk = fbl_create_text(255, 255, 255, 0, (char*)"Talk");
 	fbl_set_text_align(fDiaTextTalk, FBL_ALIGN_LEFT);
 	fbl_set_text_xy(fDiaTextTalk, x, 32);
 
-	gButtonTalk = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, NULL);
+	gButtonTalk = fbl_create_ui_elem(FBL_UI_BUTTON_INTERVAL, 0, 0, 32, 32, NULL);
 	fbl_set_ui_elem_xy(gButtonTalk, x - 32, 32);
 
 

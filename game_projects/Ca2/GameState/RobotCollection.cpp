@@ -520,8 +520,10 @@ void initCollectionMenu() {
 	// next/previous robot arrows
 	fMenuButtonLeft = fbl_create_ui_elem(FBL_UI_BUTTON_INTERVAL, 128, 32, 32, 32, NULL);
 	fbl_set_ui_elem_xy(fMenuButtonLeft, x + 50, y - 125);
+	fbl_set_ui_elem_access(fMenuButtonLeft, 15);
 	fMenuButtonRight = fbl_create_ui_elem(FBL_UI_BUTTON_INTERVAL, 128, 0, 32, 32, NULL);
 	fbl_set_ui_elem_xy(fMenuButtonRight, x + 350, y - 125);
+	fbl_set_ui_elem_access(fMenuButtonRight, 15);
 
 
 	// the grid to the left 10x5, 17 lines (11 + 6)
@@ -569,11 +571,11 @@ void initCollectionMenu() {
 
 
 	// the menu button
-	gRobotCollectionMenuButton = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 128, 64, 32, NULL);
+	gRobotCollectionMenuButton = fbl_create_ui_elem(FBL_UI_BUTTON_INTERVAL, 0, 128, 64, 32, NULL);
 	fbl_set_ui_elem_xy(gRobotCollectionMenuButton, 40, 24);	// top left corner 8 px in
 
 	// unequip context sensitive button
-	fUnEquipAddon = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, NULL);
+	fUnEquipAddon = fbl_create_ui_elem(FBL_UI_BUTTON_INTERVAL, 0, 0, 32, 32, NULL);
 	fbl_set_ui_elem_xy(fUnEquipAddon, 530, 500);	// down right-ish
 
 	// Unequip Text
@@ -582,7 +584,7 @@ void initCollectionMenu() {
 	fbl_set_text_xy(fUnEquipAddonText, 560, 500);
 
 	// save and quit to menu
-	fSaveAndQuit = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, NULL);
+	fSaveAndQuit = fbl_create_ui_elem(FBL_UI_BUTTON_INTERVAL, 0, 0, 32, 32, NULL);
 	fbl_set_ui_elem_xy(fSaveAndQuit, 123, 500);	// down left-ish
 
 	fSaveAndQuitText = fbl_create_text(255, 255, 255, 0, (char*)"Save and Quit");

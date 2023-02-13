@@ -56,7 +56,7 @@ struct Path
 struct MouseCtrl
 {
 
-    bool clicked;   // so the fbl_mouse function doesn't fire several times.
+    int8_t access;   // so the fbl_mouse function doesn't too often.
 
 };
 

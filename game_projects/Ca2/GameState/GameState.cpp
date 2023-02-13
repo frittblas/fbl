@@ -103,6 +103,8 @@ void GameState::change(Game& g, StateType newState) {
 				raceToExplore(g);
 			}
 			else if (mState == StateType::Dialogue) {	// if coming from dialogue
+				auto& mctrl = g.mEcs->GetComponent<MouseCtrl>(g.mChars->mBrodo);
+				mctrl.access = 40;	// slight delay before move after dialogue
 			}
 			else if (mState == StateType::RobotCollection) {	// if coming from robotCollection
 				hideCollectionMenu();

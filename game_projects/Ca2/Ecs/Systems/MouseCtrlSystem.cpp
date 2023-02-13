@@ -26,8 +26,10 @@ void MouseCtrlSystem::Init(Coordinator& ecs) {
 	for (auto const& entity : mEntities)
 	{
 
-		auto& mCtrl = ecs.GetComponent<MouseCtrl>(entity);
-		mCtrl.clicked = false;
+		// We dont' need this (already initialized when addong component)
+		
+		//auto& mCtrl = ecs.GetComponent<MouseCtrl>(entity);
+		//mCtrl.access = 30;
 
 	}
 
@@ -45,13 +47,7 @@ void MouseCtrlSystem::Update(Coordinator& ecs) {
 		auto& path = ecs.GetComponent<Path>(entity);
 		auto& mCtrl = ecs.GetComponent<MouseCtrl>(entity);
 
-		if (fbl_get_mouse_click(FBLMB_LEFT)) {
-
-			mCtrl.clicked = true;
-
-		}
-
-		if (fbl_get_mouse_release(FBLMB_LEFT) && mCtrl.clicked) {
+		if (fbl_get_mouse_click(FBLMB_LEFT) && mCtrl.access == 0) {
 
 			path.goalX = fbl_get_mouse_logical_x() + fbl_get_camera_x();
 			path.goalY = fbl_get_mouse_logical_y() + fbl_get_camera_y();
@@ -63,9 +59,12 @@ void MouseCtrlSystem::Update(Coordinator& ecs) {
 			if(!(pos.x == path.goalX && pos.y == path.goalY))	// can't click on yourself, doesn't count
 				path.newPath = true;
 
-			mCtrl.clicked = false;
+			mCtrl.access = 20;
 
 		}
+
+		mCtrl.access--;
+		if (mCtrl.access < 0) mCtrl.access = 0;
 
 
 	}

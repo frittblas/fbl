@@ -34,7 +34,6 @@ UserInput::~UserInput() {
 
 void UserInput::tick(Game& g) {
 
-	static bool pressedMouseDown = false;
 
 	if (fbl_get_key_down(FBLK_1) && access == 0) {
 		g.mState->change(g, GameState::StateType::Title);
@@ -63,11 +62,9 @@ void UserInput::tick(Game& g) {
 
 
 	// for android, temporary :)
-	if (fbl_get_mouse_click(FBLMB_LEFT) && g.mState->get() == GameState::StateType::Title) pressedMouseDown = true;
-	if (fbl_get_mouse_release(FBLMB_LEFT) && pressedMouseDown && access == 0 && g.mState->get() == GameState::StateType::Title) {
+	if (fbl_get_mouse_click(FBLMB_LEFT) && access == 0 && g.mState->get() == GameState::StateType::Title) {
 		g.mState->change(g, GameState::StateType::Explore);
 		access = buttonDelay;
-		pressedMouseDown = false;
 	}
 
 
