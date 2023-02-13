@@ -229,11 +229,9 @@ void RobotCollection::equipAddon(Game& g) {
 
 	int slotX, slotY, mouseX, mouseY;
 
-	if (fbl_get_mouse_click(FBLMB_LEFT)) mMouseDown = true;
-	if (fbl_get_mouse_release(FBLMB_LEFT) && mMouseDown && mKeyAccess == 0) {	// first check if user clicked
+	if (fbl_get_mouse_click(FBLMB_LEFT) && mKeyAccess == 0) {	// first check if user clicked
 
-		mKeyAccess = g.mInput->buttonDelay / 2;
-		mMouseDown = false;
+		mKeyAccess = g.mInput->buttonDelay;
 
 		mouseX = fbl_get_mouse_logical_x();
 		mouseY = fbl_get_mouse_logical_y();
@@ -256,6 +254,8 @@ void RobotCollection::equipAddon(Game& g) {
 					if (i < 2 && !add.passive) continue;
 					if (i > 1 && add.passive) continue;
 
+					if (sta.slot[i] == mSelectedAddon) continue;	// already in the correct place
+
 					add.equippedBy = g.mRobots->mOwnedRobots[mCurrentRobotPage]; // the addon is now equipped by this robot (Entity id)
 
 					// check if this addon is just moved between equipped slots
@@ -268,6 +268,10 @@ void RobotCollection::equipAddon(Game& g) {
 
 					g.mAddons->showAddonAsEquipped(g.mEcs, mSelectedAddon, i);	// move the addon to the correct slot
 					setFreeSlotsArrows(g, false);	// set arrows pointing correctly
+					fbl_set_ui_elem_access_left(add.uiId, g.mInput->buttonDelay);
+
+					// test to add component! brrr
+
 
 					break;
 

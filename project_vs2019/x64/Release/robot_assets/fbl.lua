@@ -326,6 +326,7 @@ int    fbl_get_ui_elem_y(int id);
 int    fbl_get_ui_elem_val(int id);
 void   fbl_set_ui_elem_val(int id, int value);
 void   fbl_set_ui_elem_access(int id, int frames);
+void   fbl_set_ui_elem_access_left(int id, int frames);
 void   fbl_set_ui_elem_active(int id, bool active);
 bool   fbl_get_ui_elem_active(int id);
 int    fbl_get_num_ui_elems(void);

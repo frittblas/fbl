@@ -52,14 +52,20 @@ void Addons::setupAddons(Coordinator* mEcs) {
 		switch (i) {
 
 		case AutoAim:
-											   // type      name   uiId tx ty lv rrty psv     eqp    price
+											   // type      name   uiId tx ty lv rrty psv    eqp  price
 			mEcs->AddComponent(tmpAddon, Addon{ AutoAim, "Auto Aim", 0, 0, 96, 1, 1, true, notSet, 19});
 
 			break;
 
 		case Laser:
-											 // type    name   uiId tx ty lv rrty psv     eqp    price
+											 // type    name   uiId tx ty lv rrty psv    eqp  price
 			mEcs->AddComponent(tmpAddon, Addon{ Laser, "Laser", 0, 0, 64, 1, 2, false, notSet, 20 });
+
+			break;
+
+		case Magnet:
+											 // type    name   uiId tx ty	lv rrty psv     eqp  price
+			mEcs->AddComponent(tmpAddon, Addon{ Magnet, "Magnet", 0, 0, 160, 1, 2, true, notSet, 12 });
 
 			break;
 
@@ -72,6 +78,7 @@ void Addons::setupAddons(Coordinator* mEcs) {
 
 	claimAddon(AutoAim);
 	claimAddon(Laser);
+	claimAddon(Magnet);
 
 }
 

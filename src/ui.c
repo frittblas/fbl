@@ -312,6 +312,29 @@ void fbl_set_ui_elem_access(int id, int frames)
 }
 
 /*
+ *  Set the access time left for _INTERVAL ui buttons
+ */
+void fbl_set_ui_elem_access_left(int id, int frames)
+{
+
+    FBL_UI_ELEM* ui_elem = NULL;
+    DLLIST* item = get_ui_item_at_id(id);
+
+    if (item != NULL)
+    {
+
+        ui_elem = ((FBL_UI_ELEM*)item->Object);
+
+        ui_elem->access = frames;
+
+    }
+#ifdef FBL_DEBUG
+    else fprintf(FBL_ERROR_OUT, "Tried to set access left for ui element %d, that does not exist!\n", id);
+#endif
+
+}
+
+/*
  * If ui element is inactive it's not rendered and not checked for interactions.
  */
 void fbl_set_ui_elem_active(int id, bool active)

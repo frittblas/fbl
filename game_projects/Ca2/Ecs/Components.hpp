@@ -143,7 +143,7 @@ struct AutoAim
 
 };
 
-// laser (consists of a ray (line) and particle system)
+// Laser (consists of a ray (line) and particle system)
 struct Laser
 {
 
@@ -154,5 +154,16 @@ struct Laser
     uint8_t  damage;        // damage dealt per frame
     uint8_t  level;         // you can level up the laser.
     bool     isFiring;      // are you firing atm?
+
+};
+
+// Magnet (attracts coins and energy)
+struct Magnet
+{
+
+    uint16_t spriteId;      // id for the magnetic effect sprite
+    uint16_t strength;      // length of the beam
+    uint8_t  level;         // you can level up the laser.
+    bool     isPulling;     // are you firing atm?
 
 };

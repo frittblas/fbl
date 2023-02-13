@@ -25,6 +25,7 @@ public:
 
         AutoAim,
         Laser,
+        Magnet,
         NumAddons
 
     };
