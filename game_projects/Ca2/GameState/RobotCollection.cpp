@@ -244,8 +244,10 @@ void RobotCollection::equipAddon(Game& g) {
 
 			if (mouseX > slotX && mouseY > slotY && mouseX < (slotX + Game::TileSize) && mouseY < (slotY + Game::TileSize)) {	// if click is inside a slot
 
-				// get Addon and Stats components from the selected addon and the current robot
+				// do the following if an addon is selected
 				if (mSelectedAddon != notSet) {
+
+					// get Addon and Stats components from the selected addon and the current robot
 
 					auto& add = g.mEcs->GetComponent<Addon>(mSelectedAddon);
 					auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mOwnedRobots[mCurrentRobotPage]);
@@ -253,25 +255,34 @@ void RobotCollection::equipAddon(Game& g) {
 					// just continue; in case of any error, check passive/active restrictions etc.
 					if (i < 2 && !add.passive) continue;
 					if (i > 1 && add.passive) continue;
-
 					if (sta.slot[i] == mSelectedAddon) continue;	// already in the correct place
 
 					add.equippedBy = g.mRobots->mOwnedRobots[mCurrentRobotPage]; // the addon is now equipped by this robot (Entity id)
 
 					// check if this addon is just moved between equipped slots
-					// first set passive and active slots with a value of mSelectedAddon to notSet
+					// first set passive and active slots with a value of mSelectedAddon, to notSet, also set flag
+					bool moveSlot = false;
 					for (int j = 0; j < fNumSlots; j++)
-						if (sta.slot[j] == mSelectedAddon) sta.slot[j] = notSet;
+						if (sta.slot[j] == mSelectedAddon) {
+							sta.slot[j] = notSet;
+							moveSlot = true;
+						}
 
 					// then assign the passive or active slots
 					sta.slot[i] = mSelectedAddon;
 
 					g.mAddons->showAddonAsEquipped(g.mEcs, mSelectedAddon, i);	// move the addon to the correct slot
 					setFreeSlotsArrows(g, false);	// set arrows pointing correctly
+					// set the current access time if the "checkbox" to buttonDelay frames (so it doesn't get pushed immediately)
 					fbl_set_ui_elem_access_left(add.uiId, g.mInput->buttonDelay);
 
-					// test to add component! brrr
-
+					// NOTE: brodos pathing weirds out if you add path components to robots in the menu! goes well when you remove it again :)
+					// test to add component! NOTE: call function to add the correct comp. based on add.type
+					if (!moveSlot) {
+						std::cout << "Adding Path component to current robot!" << std::endl;
+						g.mEcs->AddComponent(g.mRobots->mOwnedRobots[mCurrentRobotPage], Path{ 0, 0, 0, false, 5, true, 10 });
+					}
+					else std::cout << "Moving peacefully between slots :)" << std::endl;
 
 					break;
 
@@ -314,8 +325,12 @@ void RobotCollection::unEquipAddon(Game& g) {
 				// update graphics
 				cyclePages(g, 0);
 				setFreeSlotsArrows(g, false);
-				fbl_set_ui_elem_active(fUnEquipAddon, false);	// set the unequip button to active
+				fbl_set_ui_elem_active(fUnEquipAddon, false);	// set the unequip button to inactive
 				fbl_set_text_active(fUnEquipAddonText, false);	// and text
+
+				// remove component NOTE: remove correct comp. based on add.type
+				std::cout << "Removing Path component from current robot!" << std::endl;
+				g.mEcs->RemoveComponent<Path>(g.mRobots->mOwnedRobots[mCurrentRobotPage]);
 
 			}
 
