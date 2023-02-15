@@ -39,7 +39,7 @@ int gCurrentDialogueId = 0; // id of the current dialogue to start, externed in 
 int luaGetState(lua_State* lua_env);
 int luaSetState(lua_State* lua_env);
 int luaDisplayDialog(lua_State* lua_env);
-int luaHideDialog(lua_State* lua_env);
+//int luaHideDialog(lua_State* lua_env);
 int luaGetResponse(lua_State* lua_env);
 int luaGetCurrentDialogueId(lua_State* lua_env);
 
@@ -140,6 +140,17 @@ void showTalkButton(bool set) {
 
 	fbl_set_text_active(fDiaTextTalk, set);
 	fbl_set_ui_elem_active(gButtonTalk, set);
+
+}
+
+//
+//	Here follows Lua function you can call from C++
+//
+
+void setLuaWaitResponse() {
+
+	lua_getglobal(fbl_lua_env, "set_lua_not_wait_response");
+	lua_call(fbl_lua_env, 0, 0);
 
 }
 

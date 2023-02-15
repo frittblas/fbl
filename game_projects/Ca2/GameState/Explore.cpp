@@ -12,8 +12,6 @@
 
 
 #include "../../../src/fbl.hpp"
-#include "../Ecs/Ecs.hpp"
-#include "../Ecs/Components.hpp"
 #include "../Game.hpp"
 #include "../SysManager.hpp"
 
@@ -51,9 +49,7 @@ void Explore::processInput(Game& g) {
 	// the almighty menu button
 	if (fbl_get_ui_elem_val(gRobotCollectionMenuButton) > 0) {
 		g.mState->change(g, GameState::StateType::RobotCollection);
-		auto& path = g.mEcs->GetComponent<Path>(g.mChars->mBrodo);
-		fbl_pathf_set_path_status(path.id, FBL_PATHF_NOT_STARTED);	// this seems to work was 0 before
-		path.newPath = false;
+		g.mChars->stopPlayerPathing(g);
 	}
 
 }

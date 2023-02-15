@@ -122,10 +122,6 @@ void GameState::change(Game& g, StateType newState) {
 
 		case StateType::Dialogue:
 
-
-			// temporarily remove component from the player
-			//g.mEcs->RemoveComponent<Path>(g.mChars->mBrodo);
-
 			mCurrentStateInstance = new Dialogue();
 
 			break;
@@ -146,6 +142,14 @@ void GameState::change(Game& g, StateType newState) {
 			break;
 
 		case StateType::RobotCollection:
+
+			if (mState == StateType::Dialogue) {	// if coming from dialogue
+				setLuaWaitResponse();
+				luaHideDialog(NULL);
+			}
+
+			showTalkButton(false);
+
 			g.mRobots->showRobotInMenu(g.mEcs, Robots::Name::Charmy);	// make the robots visible in the menu
 			g.mAddons->showAddonsInMenu(g.mEcs);						// same with addons
 

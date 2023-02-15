@@ -52,7 +52,7 @@ Race::~Race() {
 
 	delete mMaze;
 
-	fbl_destroy_all_emitters();
+	//fbl_destroy_all_emitters();
 
 	std::cout << "Destroyed Race state." << std::endl;
 
@@ -131,9 +131,9 @@ void Race::tick(Game& g) {
 	if (fbl_get_mouse_click(FBLMB_RIGHT)) Efx::getInstance().shakeCamera(20, 40);
 
 	// for testing
-	auto& las = g.mEcs->GetComponent<Laser>(g.mRobots->mRacingRobots[0]);
-	if (fbl_get_key_down(FBLK_Z)) las.isFiring = true;
-	if (fbl_get_key_up(FBLK_Z)) las.isFiring = false;
+	//auto& las = g.mEcs->GetComponent<Laser>(g.mRobots->mRacingRobots[0]);
+	//if (fbl_get_key_down(FBLK_Z)) las.isFiring = true;
+	//if (fbl_get_key_up(FBLK_Z)) las.isFiring = false;
 
 	if(fbl_get_raw_frames_count() % 60 == 0)
 		std::cout << "Tick race!" << std::endl;

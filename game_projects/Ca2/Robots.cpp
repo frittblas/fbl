@@ -59,10 +59,10 @@ void Robots::setupRobots(Coordinator* mEcs) {
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 0, 96, 32, 32, false, 0, 0, 0, 0, 7 });	// robots are on layer 7
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
 				mEcs->AddComponent(tmpRobot, Stats{ "Charmy", 1, 0, 4, 10, 10, 8, true, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
-												//  rid len dir ivalM ivalC hasTarg autoAim
+												//  rid len dir ivalM ivalC hasTarg active
 				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, false });
 												// rid pid len        dir	    dmg lv  isFiring
-				mEcs->AddComponent(tmpRobot, Laser{ 0, 0, 800, Addons::Dir::Up, 1, 1, false });
+				//mEcs->AddComponent(tmpRobot, Laser{ 0, 0, 800, Addons::Dir::Up, 1, 1, false });
 											  // id  tx  ty   w    h  scale
 				mEcs->AddComponent(tmpRobot, Light{ 0, 384, 0, 128, 128, 2.0 });
 				break;
@@ -71,7 +71,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 32, 96, 32, 32, true, 2, 12, 0, 0, 7 });
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
 				mEcs->AddComponent(tmpRobot, Stats{ "Alarmy", 1, 0, 4, 10, 10, 6, true, 20, 19, 17, -1, -1, -1, -1, -1, -1 });
-												//  rid len dir ivalM ivalC hasTarg autoAim
+												//  rid len dir ivalM ivalC hasTarg active
 				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, true });
 												// rid pid len        dir	  dmg lv isFiring
 				mEcs->AddComponent(tmpRobot, Laser{ 0, 0, 800, Addons::Dir::Up, 1, 1, false });
@@ -83,7 +83,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 96, 96, 32, 32, true, 2, 12, 0, 0, 7 });
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
 				mEcs->AddComponent(tmpRobot, Stats{ "Boingy", 2, 0, 4, 11, 9, 4, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
-												//  rid len dir ivalM ivalC hasTarg autoAim
+												//  rid len dir ivalM ivalC hasTarg active
 				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, true });
 												// rid pid len        dir	  dmg lv isFiring
 				mEcs->AddComponent(tmpRobot, Laser{ 0, 0, 800, Addons::Dir::Up, 1, 1, false });
@@ -95,7 +95,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 160, 96, 32, 32, true, 3, 12, 0, 0, 7 });
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
 				mEcs->AddComponent(tmpRobot, Stats{ "Chompy", 2, 0, 4, 11, 9, 5, true, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
-												//  rid len dir ivalM ivalC hasTarg autoAim
+												//  rid len dir ivalM ivalC hasTarg active
 				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, true });
 												// rid pid len        dir	  dmg lv isFiring
 				mEcs->AddComponent(tmpRobot, Laser{ 0, 0, 800, Addons::Dir::Up, 1, 1, false });
@@ -114,6 +114,49 @@ void Robots::setupRobots(Coordinator* mEcs) {
 	claimRobot(Alarmy);
 	claimRobot(Boingy);
 	claimRobot(Chompy);
+
+}
+
+void Robots::addAddonComponent(Coordinator* mEcs, Entity robot, uint8_t addonType) {
+
+	switch (addonType) {
+
+		case Addons::AutoAim :
+			// in this case we only set the auto aim to active (component is always on)
+			{
+				auto& aim = mEcs->GetComponent<AutoAim>(robot);
+				aim.active = true;
+			}
+			break;
+		case Addons::Laser:
+										 // rid pid len        dir	   dmg lv  isFiring
+			mEcs->AddComponent(robot, Laser{ 0, 0, 800, Addons::Dir::Up, 1, 1, false });
+			break;
+		case Addons::Magnet:
+			break;
+
+	}
+
+}
+
+void Robots::removeAddonComponent(Coordinator* mEcs, Entity robot, uint8_t addonType) {
+
+	switch (addonType) {
+
+		case Addons::AutoAim:
+			// in this case we only set the auto aim to inactive (component is always on)
+			{
+				auto& aim = mEcs->GetComponent<AutoAim>(robot);
+				aim.active = false;
+			}
+			break;
+		case Addons::Laser:
+			mEcs->RemoveComponent<Laser>(robot);
+			break;
+		case Addons::Magnet:
+			break;
+
+	}
 
 }
 

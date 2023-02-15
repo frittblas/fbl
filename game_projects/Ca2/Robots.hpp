@@ -46,6 +46,8 @@ public:
     ~Robots();
 
     void setupRobots(Coordinator* mEcs);
+    void addAddonComponent(Coordinator* mEcs, Entity robot, uint8_t addonType);
+    void removeAddonComponent(Coordinator* mEcs, Entity robot, uint8_t addonType);
     void mapSpriteIdToEntity(Coordinator* mEcs);    // used by the laser hitdetection (raycasting)
     void removeRobots(Coordinator* mEcs);
     void hideRobots(Coordinator* mEcs);

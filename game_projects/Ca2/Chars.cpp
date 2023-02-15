@@ -13,8 +13,11 @@
 #include "../../tools/ScenEdit/ScenEdit.hpp"
 #include "Ecs/Ecs.hpp"
 #include "Ecs/Components.hpp"
+#include "Ecs/Systems/MouseCtrlSystem.hpp"
 #include "Game.hpp"
 #include "Chars.hpp"
+#include "SysManager.hpp"
+
 
 // Chars-class implementation
 
@@ -65,6 +68,17 @@ void Chars::hidePlayer(Coordinator* mEcs) {
 		fbl_set_sprite_active(spr.id[i], false);
 
 }
+
+void Chars::stopPlayerPathing(Game& g) {
+
+	// make sure that you don't path to the menu button for example, annoying
+	auto& path = g.mEcs->GetComponent<Path>(g.mChars->mBrodo);
+	fbl_pathf_set_path_status(path.id, FBL_PATHF_NOT_STARTED);
+	path.newPath = false;
+	g.mSysManager->mMouseCtrlSystem->Update(*g.mEcs);		// update the mouse control system
+
+}
+
 
 void Chars::setupNpc(Game& g) {
 

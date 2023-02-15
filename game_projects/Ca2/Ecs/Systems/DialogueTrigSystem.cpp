@@ -65,7 +65,7 @@ void DialogueTrigSystem::Update(Game& g) {
 				gCurrentDialogueId = trig.dialogueId;	// set the correct dialogue id
 				g.mState->change(g, GameState::StateType::Dialogue);
 				fbl_pathf_set_path_status(path.id, FBL_PATHF_NOT_STARTED);	// this seems to work was 0 before
-				path.newPath = false;									// in combination with this :)
+				path.newPath = false;										// in combination with this :)
 
 			}
 

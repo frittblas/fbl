@@ -26,6 +26,7 @@ public:
     RobotCollection();
     ~RobotCollection();
 
+    void updateContextHelp(std::string msg);
     void cyclePages(Game& g, int dir);
     void updateAddonInfo(Game& g, bool empty);
     void setFreeSlotsArrows(Game& g, bool empty);
@@ -41,6 +42,5 @@ private:
     int mCurrentRobotPage;  // what robot-page are you at? It's an index to the owned robot array
     int mSelectedAddon;     // currently selected addon on the grid (as entity id)
     int mKeyAccess;
-    bool mMouseDown;
 
 };

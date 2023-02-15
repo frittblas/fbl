@@ -36,6 +36,8 @@ void AutoAimSystem::Init(Coordinator& ecs) {
 		fbl_set_prim_color(aim.rayId, 0, 255, 0, 60);
 		fbl_set_prim_active(aim.rayId, true);	// show the ray
 
+		aim.hasTarget = false;
+
 	}
 
 	std::cout << "AutoAim component system initialized!" << std::endl;

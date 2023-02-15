@@ -42,6 +42,10 @@ void LaserSystem::Init(Coordinator& ecs) {
 		fbl_set_emitter_color(las.particleId, 0, 0, 0, 0, false);
 		// only activate when you use the laser (create smoke where the laser hits)
 		fbl_set_emitter_active(las.particleId, false);
+
+		// not firing yet!
+		las.isFiring = false;
+
 	}
 
 	std::cout << "Laser component system initialized!" << std::endl;
@@ -54,15 +58,15 @@ void LaserSystem::Update(Game& g) {
 	{
 		auto& pos = g.mEcs->GetComponent<Position>(entity);
 		auto& sta = g.mEcs->GetComponent<Stats>(entity);
-		auto& aut = g.mEcs->GetComponent<AutoAim>(entity);
+		auto& aim = g.mEcs->GetComponent<AutoAim>(entity);
 		auto& las = g.mEcs->GetComponent<Laser>(entity);
 
 		// get info from autoAim component if there is a target (and if auto-aim is active)
-		if (aut.active) {
+		if (aim.active) {
 
-			if (aut.hasTarget) {
+			if (aim.hasTarget) {
 				las.isFiring = true;
-				las.dir = aut.dir;
+				las.dir = aim.dir;
 			}
 			else las.isFiring = false;
 

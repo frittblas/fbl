@@ -26,7 +26,7 @@ void MouseCtrlSystem::Init(Coordinator& ecs) {
 	for (auto const& entity : mEntities)
 	{
 
-		// We dont' need this (already initialized when addong component)
+		// We dont' need this (already initialized when adding component)
 		
 		//auto& mCtrl = ecs.GetComponent<MouseCtrl>(entity);
 		//mCtrl.access = 30;

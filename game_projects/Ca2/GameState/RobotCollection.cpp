@@ -19,6 +19,7 @@
 #include "../UserInput.hpp"
 #include "../Addons.hpp"
 #include "../Robots.hpp"
+#include "../Chars.hpp"
 #include "../Weather.hpp"
 #include "GameState.hpp"
 #include "RobotCollection.hpp"
@@ -27,6 +28,7 @@ const uint16_t fNumSlots = 6;	// number of passive and active slots
 const uint16_t fNumLines = 17;	// lines for the grid to the left, 10x5 grid, 17 lines
 
 // id's for the robot collection-menu
+uint16_t fContextHelp, fContextLine;
 uint16_t fMenuBgSquareId, fMenuBgOutlineId, fMenuRobotBgSquareId;
 uint16_t fMenuDividerLine, fSmallMenuDividerLine;
 uint16_t fMenuButtonLeft, fMenuButtonRight;
@@ -41,7 +43,7 @@ uint16_t fAddonName, fAddonLevel, fAddonRarity, fAddonPassive, fAddonEquipped, f
 uint16_t fUnEquipAddon, fUnEquipAddonText;
 uint16_t fSaveAndQuit, fSaveAndQuitText;
 
-// the menu button (always visible when in a game), externed in Explore.cpp
+// the menu button (always visible when in a game), externed in Explore.cpp and Dialogue.cpp
 uint16_t gRobotCollectionMenuButton;
 
 
@@ -51,7 +53,6 @@ RobotCollection::RobotCollection() {
 	mSelectedAddon = notSet;
 	mCurrentRobotPage = 0;
 	mKeyAccess = 0;
-	mMouseDown = false;
 
 	showCollectionMenu();
 
@@ -71,6 +72,13 @@ RobotCollection::~RobotCollection() {
 
 	std::cout << "Destroyed RobotCollection state." << std::endl;
 
+}
+
+void RobotCollection::updateContextHelp(std::string msg) {
+
+	fbl_load_ttf_font("font/roboto.ttf", 16);
+	fbl_update_text(fContextHelp, 255, 255, 255, 255, (char*)msg.c_str());
+	fbl_load_ttf_font("font/roboto.ttf", 18);
 }
 
 void RobotCollection::cyclePages(Game& g, int dir) {
@@ -279,8 +287,8 @@ void RobotCollection::equipAddon(Game& g) {
 					// NOTE: brodos pathing weirds out if you add path components to robots in the menu! goes well when you remove it again :)
 					// test to add component! NOTE: call function to add the correct comp. based on add.type
 					if (!moveSlot) {
-						std::cout << "Adding Path component to current robot!" << std::endl;
-						g.mEcs->AddComponent(g.mRobots->mOwnedRobots[mCurrentRobotPage], Path{ 0, 0, 0, false, 5, true, 10 });
+						std::cout << "Adding addonComponent to current robot!" << std::endl;
+						g.mRobots->addAddonComponent(g.mEcs, g.mRobots->mOwnedRobots[mCurrentRobotPage], add.type);
 					}
 					else std::cout << "Moving peacefully between slots :)" << std::endl;
 
@@ -330,7 +338,7 @@ void RobotCollection::unEquipAddon(Game& g) {
 
 				// remove component NOTE: remove correct comp. based on add.type
 				std::cout << "Removing Path component from current robot!" << std::endl;
-				g.mEcs->RemoveComponent<Path>(g.mRobots->mOwnedRobots[mCurrentRobotPage]);
+				g.mRobots->removeAddonComponent(g.mEcs, g.mRobots->mOwnedRobots[mCurrentRobotPage], add.type);
 
 			}
 
@@ -357,6 +365,8 @@ void RobotCollection::processInput(Game& g) {
 
 		cyclePages(g, 1);	// cycle forward
 
+		updateContextHelp("Now you're clicking away :)");
+
 	}
 
 	selectAddon(g);
@@ -364,8 +374,12 @@ void RobotCollection::processInput(Game& g) {
 	unEquipAddon(g);
 
 	// the almighty menu button (very top left)
-	if (fbl_get_ui_elem_val(gRobotCollectionMenuButton) > 0)
+	if (fbl_get_ui_elem_val(gRobotCollectionMenuButton) > 0) {
 		g.mState->change(g, GameState::StateType::Explore);
+		auto& path = g.mEcs->GetComponent<Path>(g.mChars->mBrodo);
+		fbl_pathf_set_path_status(path.id, FBL_PATHF_NOT_STARTED);	// this seems to work was 0 before
+		path.newPath = false;
+	}
 
 
 	// save and quit button down left
@@ -400,9 +414,20 @@ void initCollectionMenu() {
 	int width = 400;
 	int height = 200;
 
+	fbl_load_ttf_font("font/roboto.ttf", 16);
+	fContextHelp = fbl_create_text(255, 255, 255, 0, (char*)"Select an addon, then click a free slot (right side) to equip it, click addon again to deselect.");
+	fbl_set_text_align(fContextHelp, FBL_ALIGN_CENTER);
+	fbl_set_text_xy(fContextHelp, x, y - height - 20);
+
+	// create the context help white divider line
+	fContextLine = fbl_create_prim(FBL_LINE, x - width, y - height, x + width, y - height, 0, false, false);
+	fbl_set_prim_color(fContextLine, 255, 255, 255, 255);
+	fbl_fix_prim_to_screen(fContextLine, true);
+
+
 	// create gray menu area
-	fMenuBgSquareId = fbl_create_sprite(32, 480, 20, 10, 0);
-	fbl_set_sprite_xy(fMenuBgSquareId, x - width, y - height);
+	fMenuBgSquareId = fbl_create_sprite(32, 480, 20, 11, 0);
+	fbl_set_sprite_xy(fMenuBgSquareId, x - width, y - height - 40);
 	fbl_set_sprite_scale(fMenuBgSquareId, 40);
 	fbl_set_sprite_layer(fMenuBgSquareId, 4);
 	fbl_fix_sprite_to_screen(fMenuBgSquareId, true);
@@ -416,7 +441,7 @@ void initCollectionMenu() {
 	fbl_set_sprite_is_light(fMenuRobotBgSquareId, true);
 
 	// create the white outline
-	fMenuBgOutlineId = fbl_create_prim(FBL_RECT, x, y, width, height, 0, false, false);
+	fMenuBgOutlineId = fbl_create_prim(FBL_RECT, x, y - 20, width, height + 20, 0, false, false);
 	fbl_set_prim_color(fMenuBgOutlineId, 255, 255, 255, 255);
 	fbl_fix_prim_to_screen(fMenuBgOutlineId, true);
 
@@ -617,6 +642,10 @@ void initCollectionMenu() {
 
 void showCollectionMenu() {
 
+	// context help
+	fbl_set_text_active(fContextHelp, true);
+	fbl_set_prim_active(fContextLine, true);
+
 	// gray bg, white robot bg, and outline
 	fbl_set_sprite_active(fMenuBgSquareId, true);
 	fbl_set_sprite_active(fMenuRobotBgSquareId, true);
@@ -680,6 +709,10 @@ void showCollectionMenu() {
 }
 
 void hideCollectionMenu() {
+
+	// context help
+	fbl_set_text_active(fContextHelp, false);
+	fbl_set_prim_active(fContextLine, false);
 
 	// gray bg
 	fbl_set_sprite_active(fMenuBgSquareId, false);

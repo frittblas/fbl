@@ -79,6 +79,14 @@ function debug_console(iter)
 
 end
 
+-- set the g_wait_response from C++
+
+function set_lua_not_wait_response()
+
+	g_wait_response = false
+
+end
+
 -- display dialog and set wait for response-flag
 function disp_dw(text1, text2, text3, reply1, reply2)
 

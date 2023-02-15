@@ -187,6 +187,9 @@ NEXT THING TO DO:
 
 1. Make addons work in robot-collection aand in the race (correct addon as buttons) - menu done, will add buttons to race
 
+10 different addons total (autoaim, laser, shield, magnet, mine, etc)
+5 levels to each addon! (same components/sprite different just different stats/colors (make fbl_set_ui_elem_color(r, g, b)))
+
 2. Start writing a long dialogue thing with Charming Alarming (and a nice scene, black borders up and down)
 
 

@@ -15,6 +15,7 @@
 #include "GameState/GameState.hpp"
 #include "UserInput.hpp"
 #include "Weather.hpp"
+#include "Chars.hpp"
 
 #include <iostream>
 
@@ -72,10 +73,17 @@ void UserInput::tick(Game& g) {
 		if (g.mState->get() == GameState::StateType::RobotCollection) {
 			g.mState->change(g, GameState::StateType::Explore);
 			access = buttonDelay;
+			g.mChars->stopPlayerPathing(g);
 		}
 		else if (g.mState->get() == GameState::StateType::Explore) {
 			g.mState->change(g, GameState::StateType::RobotCollection);
 			access = buttonDelay;
+			g.mChars->stopPlayerPathing(g);
+		}
+		else if (g.mState->get() == GameState::StateType::Dialogue) {
+			g.mState->change(g, GameState::StateType::RobotCollection);
+			access = buttonDelay;
+			g.mChars->stopPlayerPathing(g);
 		}
 		else
 			fbl_engine_quit();
