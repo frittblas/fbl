@@ -20,8 +20,13 @@ MouseControl
 Camera
 DialogTrig
 Light
+--
 AutoAim
 Laser
+Magnet - on the way
+Shield -
+
+
 
 Todo:
 Register components and systems in sysManager class. Done!
@@ -191,6 +196,15 @@ NEXT THING TO DO:
 5 levels to each addon! (same components/sprite different just different stats/colors (make fbl_set_ui_elem_color(r, g, b)))
 
 2. Start writing a long dialogue thing with Charming Alarming (and a nice scene, black borders up and down)
+
+idea: after each race (or set of 3 races) the player can choose to buy 1 of 3 random items (robots AND Addons) or to get some cash.
+Some stuff is really expensive.
+less chance to get good stuff of course. Can't be offered stuff you already own of course.
+When you buy a robot, all the addons are removed.
+
+Robots can level up and gain HP, speed, energy, diag, mousectrl
+
+All robots can go back to base at any time and recharge the energy (by clicking on the base.)
 
 
 BUGS:

@@ -18,9 +18,9 @@
 
 SoundManager::SoundManager() {
 
-	//loadSfx();
-	//fbl_play_sound(0, -1);
-	//loadAndPlayMusic("music/harp.ogg");
+	loadSfx();
+	fbl_play_sound(1, -1);
+	loadAndPlayMusic("music/harp.ogg");
 
 	std::cout << "Initialized SoundManager subsystem." << std::endl;
 

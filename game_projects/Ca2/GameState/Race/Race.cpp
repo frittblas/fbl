@@ -99,7 +99,7 @@ void Race::assignRobots(Game& g) {
 
 	std::cout << "THE NEXT SPRITE ID IS : " << fbl_create_sprite(0, 0, 1, 1, 0) << std::endl;
 
-	mMaze->initMaze(g, 35, mNumRacers);
+	mMaze->initMaze(g, 15, mNumRacers);
 
 	fbl_sort_sprites(FBL_SORT_BY_LAYER);
 

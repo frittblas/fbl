@@ -75,7 +75,8 @@ void Chars::stopPlayerPathing(Game& g) {
 	auto& path = g.mEcs->GetComponent<Path>(g.mChars->mBrodo);
 	fbl_pathf_set_path_status(path.id, FBL_PATHF_NOT_STARTED);
 	path.newPath = false;
-	g.mSysManager->mMouseCtrlSystem->Update(*g.mEcs);		// update the mouse control system
+	auto& ctrl = g.mEcs->GetComponent<MouseCtrl>(g.mChars->mBrodo);
+	ctrl.access = 30;
 
 }
 
