@@ -91,7 +91,7 @@ struct Light
 
 
 /////////////////////////
-// Robot components /////
+// Addon components /////
 /////////////////////////
 
 // Addons have this component
@@ -109,6 +109,9 @@ struct Addon {
 
 };
 
+/////////////////////////
+// Robot components /////
+/////////////////////////
 
 // Robot stats
 struct Stats

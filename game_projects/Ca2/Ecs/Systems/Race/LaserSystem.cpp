@@ -19,6 +19,7 @@
 #include "../../../Game.hpp"
 #include "../../../Robots.hpp"
 #include "../../../Addons.hpp"
+#include "../../../Efx.hpp"	// remove this (observer pattern)
 
 #include "LaserSystem.hpp"
 
@@ -88,6 +89,7 @@ void LaserSystem::Update(Game& g) {
 
 				if(x > 25 && y > 25)	// avoid having the particles spawn at x == 0 and y == 0
 					fbl_set_emitter_active(las.particleId, true);	// only turn the particles on if the ray hit something
+
 				std::cout << "id hit = " << id << std::endl;
 
 				//printf("Ray 0 hit sprite: %d at x: %d, y: %d\n", id, x, y);
@@ -96,6 +98,20 @@ void LaserSystem::Update(Game& g) {
 				for (int i = 0; i < g.mRobots->mNumRacers; i++)
 					if (g.mRobots->mSpriteIdToEntityMap[id] == g.mRobots->mRacingRobots[i]) {
 						auto& targetSta = g.mEcs->GetComponent<Stats>(g.mRobots->mSpriteIdToEntityMap[id]);
+						targetSta.hp--;
+						if (targetSta.hp <= 0) {
+							auto& targetSpr = g.mEcs->GetComponent<Sprite>(g.mRobots->mSpriteIdToEntityMap[id]);
+							auto& targetAim = g.mEcs->GetComponent<AutoAim>(g.mRobots->mSpriteIdToEntityMap[id]);
+							auto& targetLas = g.mEcs->GetComponent<Laser>(g.mRobots->mSpriteIdToEntityMap[id]);	// NOTE: if hasConmponent?? :)
+							
+							targetSta.hp = 0;	// keep hp at 0
+							fbl_set_sprite_active(targetSpr.id[0], false);				// turn off sprite (dead)
+							fbl_set_sprite_phys(targetSpr.id[0], false, 0, 0, false);	// turn off ray colission
+							targetAim.active = false;									// can't target people when dead
+							//targetLas.isFiring = false;
+							Efx::getInstance().shakeCamera(20, 40);						// shake camera
+							fbl_set_emitter_active(las.particleId, false);				// turn off emitter making a cloud
+						}
 						//std::cout << sta.name << " killed " << targetSta.name << std::endl;
 						break;	// no need to check the other robots after a hit
 					}

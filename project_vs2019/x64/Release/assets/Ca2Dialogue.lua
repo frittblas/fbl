@@ -172,13 +172,13 @@ local iter = 1
 while true do
 	if iter == 1 then
 		if not g_wait_response then
-			disp_dw("Hello! I am the second slime", "I'm not as reasonable", "Ask the other slime", "Good stuff..", " ")
+			disp_dw("Hello! I am the second slime", "I'm not as reasonable as the other slime.", "", "Good stuff..", " ")
 		elseif getResponse() == OK then
 			iter = advance(Explore, iter + 1) -- advance to next dialog and go to Explore state
 		end
 	elseif iter == 2 then
 		if not g_wait_response then
-			disp_dw("If you answer no, you will be sent back", "to first dialog!", " ", "That's arosta..", "That's arostarous!")
+			disp_dw("If you answer no, you will be sent back", "to first dialog!", " ", "That's insanity!", "Ok")
 		elseif getResponse() == NO then
 			iter = advance(Stay, 1)
 		elseif getResponse() == YES then
