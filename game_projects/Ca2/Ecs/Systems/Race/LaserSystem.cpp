@@ -102,7 +102,7 @@ void LaserSystem::Update(Game& g) {
 						if (targetSta.hp <= 0) {
 							auto& targetSpr = g.mEcs->GetComponent<Sprite>(g.mRobots->mSpriteIdToEntityMap[id]);
 							auto& targetAim = g.mEcs->GetComponent<AutoAim>(g.mRobots->mSpriteIdToEntityMap[id]);
-							auto& targetLas = g.mEcs->GetComponent<Laser>(g.mRobots->mSpriteIdToEntityMap[id]);	// NOTE: if hasConmponent?? :)
+							auto& targetLas = g.mEcs->GetComponent<Laser>(g.mRobots->mSpriteIdToEntityMap[id]);	// NOTE: if hasComponent?? :)
 							
 							targetSta.hp = 0;	// keep hp at 0
 							fbl_set_sprite_active(targetSpr.id[0], false);				// turn off sprite (dead)
