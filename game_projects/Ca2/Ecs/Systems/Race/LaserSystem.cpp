@@ -99,7 +99,7 @@ void LaserSystem::Update(Game& g) {
 					if (g.mRobots->mSpriteIdToEntityMap[id] == g.mRobots->mRacingRobots[i]) {
 						auto& targetSta = g.mEcs->GetComponent<Stats>(g.mRobots->mSpriteIdToEntityMap[id]);
 						targetSta.hp--;
-						if (targetSta.hp <= 0) {
+						if (targetSta.hp <= 0) {/*
 							auto& targetSpr = g.mEcs->GetComponent<Sprite>(g.mRobots->mSpriteIdToEntityMap[id]);
 							auto& targetAim = g.mEcs->GetComponent<AutoAim>(g.mRobots->mSpriteIdToEntityMap[id]);
 							auto& targetLas = g.mEcs->GetComponent<Laser>(g.mRobots->mSpriteIdToEntityMap[id]);	// NOTE: if hasComponent?? :)
@@ -111,6 +111,7 @@ void LaserSystem::Update(Game& g) {
 							//targetLas.isFiring = false;
 							Efx::getInstance().shakeCamera(20, 40);						// shake camera
 							fbl_set_emitter_active(las.particleId, false);				// turn off emitter making a cloud
+							*/
 						}
 						//std::cout << sta.name << " killed " << targetSta.name << std::endl;
 						break;	// no need to check the other robots after a hit
