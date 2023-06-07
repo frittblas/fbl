@@ -89,8 +89,8 @@ Make the tile-type 0-9 be terrain. 10-19 = objects (pushable blocks, shops, secr
 Make a sound system for music, ambient sounds and sfx. - in progress.
 
 Maybe add more detailed folder structure.
-Add #ifdef cplusplus in the html5 section of emscripten build to build easier.
-Add a save system online and leaderboards online. {
+Add #ifdef cplusplus in the html5 section of emscripten build to build easier. - Done!
+Add a save system online and leaderboards online (inLeed node). {
 
 Regarding save/load game: Maybe keep track of everything in Progress.cpp, every time something happens:
 - you claim a new robot
@@ -139,8 +139,7 @@ Robots: 7 (on top)
 
 Addons are UI elements (buttons), will always be rendered on top of everything.
 
-Come up with a solution for the collectionMenu being susceptible to time of day :)
-Maybe just draw a BIG bg sprite (scaled) before drawing the menu and turn off weather.. (<-this)
+Come up with a solution for the collectionMenu being susceptible to time of day :) - Done!
 
 MAYBE looks like a good idea to remove path component of the robots in explore mode :)
 at least if you use mousectrl on one of the robots, and hop between race and explore.
@@ -190,12 +189,21 @@ The player believes the robot an start questioning himself.
 
 NEXT THING TO DO:
 
-1. Make addons work in robot-collection aand in the race (correct addon as buttons) - menu done, will add buttons to race
+1. Add a system for setting new waypoints easily (base, center)
+
+2. Make the center and bases clickable, click and the robot will path there. If a robot gets a coin it will
+start going to its base. When it has dropped off the coin it will go back to the center to get more.
+
+The center contains X coins that can be picked up 1 by one and dropped in the base.
+
+All robots can go back to base at any time and recharge the energy (by clicking on the base.)
+
+3. Make addons work in robot-collection aand in the race (correct addon as buttons) - menu done, will add buttons to race
 
 10 different addons total (autoaim, laser, shield, magnet, mine, etc)
 5 levels to each addon! (same components/sprite different just different stats/colors (make fbl_set_ui_elem_color(r, g, b)))
 
-2. Start writing a long dialogue thing with Charming Alarming (and a nice scene, black borders up and down)
+4. Start writing a long dialogue thing with Charming Alarming (and a nice scene, black borders up and down)
 
 idea: after each race (or set of 3 races) the player can choose to buy 1 of 3 random items (robots AND Addons) or to get some cash.
 Some stuff is really expensive.
@@ -204,8 +212,9 @@ When you buy a robot, all the addons are removed.
 
 Robots can level up and gain HP, speed, energy, diag, mousectrl
 
-All robots can go back to base at any time and recharge the energy (by clicking on the base.)
+5. Use observer pattern to handle sfx, screen shake etc.
 
+6. create hasComponent function? yes :) - Done!
 
 BUGS:
 

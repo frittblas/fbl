@@ -147,6 +147,15 @@ public:
 		return mComponentArray[mEntityToIndexMap[entity]];
 	}
 
+	// Added by Hans used by hasComponent()
+	bool HasData(Entity entity)
+	{
+		if(mEntityToIndexMap.find(entity) != mEntityToIndexMap.end())
+			return true;
+
+		return false;
+	}
+
 	void EntityDestroyed(Entity entity) override
 	{
 		if (mEntityToIndexMap.find(entity) != mEntityToIndexMap.end())
@@ -225,6 +234,13 @@ public:
 	{
 		// Get a reference to a component from the array for an entity
 		return GetComponentArray<T>()->GetData(entity);
+	}
+
+	// Added by Hans
+	template<typename T>
+	bool HasComponent(Entity entity)
+	{
+		return GetComponentArray<T>()->HasData(entity);
 	}
 
 	void EntityDestroyed(Entity entity)
@@ -397,6 +413,13 @@ public:
 	T& GetComponent(Entity entity)
 	{
 		return mComponentManager->GetComponent<T>(entity);
+	}
+
+	// Added by Hans
+	template<typename T>
+	bool HasComponent(Entity entity)
+	{
+		return mComponentManager->HasComponent<T>(entity);
 	}
 
 	template<typename T>

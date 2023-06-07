@@ -200,7 +200,7 @@ DONE!! works lika da charm
 Fix one particle to screen. (don't worry, threads will help with performance w. alot of particles :) - will fix this when making Ca2!
 
 Make android version concat the required .lua-files then run the lua load_string(). Hmm maybe not? Or do it manually?
-Raycast collission (shape gets returned, but who's shape is it? :)
+Raycast collission (shape gets returned, but who's shape is it? :) - Done.
 Delete demo 1. Make something else :) demo 1 is horrible. Ok fixed it to be slightly better :)
 
 Add set_sprite_image to lua! Done!
