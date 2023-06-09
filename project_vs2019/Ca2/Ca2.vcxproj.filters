@@ -186,6 +186,9 @@
     <ClCompile Include="..\..\game_projects\Ca2\Efx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\Race\PathLogicSystem.cpp">
+      <Filter>Source Files\Ecs\Systems\Race</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\fbl.h">
@@ -310,6 +313,9 @@
     </ClInclude>
     <ClInclude Include="..\..\game_projects\Ca2\Efx.hpp">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\Race\PathLogicSystem.hpp">
+      <Filter>Source Files\Ecs\Systems\Race</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

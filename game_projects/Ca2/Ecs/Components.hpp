@@ -56,7 +56,7 @@ struct Path
 struct MouseCtrl
 {
 
-    int8_t access;   // so the fbl_mouse function doesn't too often.
+    int16_t access;   // so the fbl_mouse function doesn't trigger too often.
 
 };
 
@@ -130,6 +130,16 @@ struct Stats
     uint8_t weight;         // weight
     int16_t slot[6];        // passive skills (like magnetic, diagonal etc.) as Entity (Addon) first 2!
                             // AND active skills (like weapons, for the buttons to the left and right) as Entity (Addon) last 4!
+};
+
+// PathLogic (handles when new paths are assigned and stuff)
+struct PathLogic
+{
+    uint16_t baseX, baseY;  // the robot's base coordinates
+    uint8_t  smallCoins;    // keep track of how many small coins collected
+    uint8_t  bigCoins;      // keep track of how many big coins collected
+    bool     hasBigCoin;    // is the robot carrying a big coin?
+
 };
 
 // AutoAim (consists of a invisible ray (line) and dir)

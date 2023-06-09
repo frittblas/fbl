@@ -191,6 +191,10 @@ NEXT THING TO DO:
 
 1. Add a system for setting new waypoints easily (base, center)
 
+maybe PathLogicSystem that sets various points based on stuff like do I have a coin? (go to center)
+if you get a coin (bb hitdetect) (could also be a coin on the way) you head to your base. This should work
+the same for all robots, but the player should be able to click (anywhere?) and change path. In the base you get full energy.
+
 2. Make the center and bases clickable, click and the robot will path there. If a robot gets a coin it will
 start going to its base. When it has dropped off the coin it will go back to the center to get more.
 
@@ -222,4 +226,3 @@ BUGS:
 Really  weird, probably something simple. (Test if this is still relevant, might have fixed it)
 
 2. The zip from gihub builds and runs but can't load a level! Also weird.
-

@@ -18,6 +18,8 @@
 #include "Maze.hpp"
 
 
+int gFlagId; // the id of the flag sprite, externed in PathLogicSystem
+
 // Maze-class implementation
 
 Maze::Maze() {
@@ -270,6 +272,9 @@ void Maze::initMaze(Game& g, int density, int numRacers) {
 	// create all the sprites at correct locations
 	populateMaze();
 
+	// add flag in the middle
+	gFlagId = fbl_create_sprite(256, 320, 32, 32, 0);
+	fbl_set_sprite_xy(gFlagId, cTargetX + 16, cTargetY + 16);	// drawn from the center
 	
 	for (int i = 0; i < numRacers; i++)
 		std::cout << "Path status: " << fbl_pathf_get_path_status(mPathId[i]) << std::endl;
@@ -407,8 +412,13 @@ void Maze::assignPaths(Game& g) {
 
 	for (int i = 0; i < mNumRacers; i++) {
 		auto& pos = g.mEcs->GetComponent<Position>(g.mRobots->mRacingRobots[i]);
+		auto& plog = g.mEcs->GetComponent<PathLogic>(g.mRobots->mRacingRobots[i]);
 		mStartPos[i][0] = pos.x;
 		mStartPos[i][1] = pos.y;
+
+		// set the robots base coords
+		plog.baseX = pos.x;
+		plog.baseY = pos.y;
 	}
 
 	// finally find paths for the new locations (will find immediately, maze is already in place (maze is a place))

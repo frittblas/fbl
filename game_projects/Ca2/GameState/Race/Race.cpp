@@ -24,6 +24,7 @@
 #include "../../Ecs/Systems/CameraSystem.hpp"
 #include "../../Ecs/Systems/LightSystem.hpp"
 
+#include "../../Ecs/Systems/Race/PathLogicSystem.hpp"
 #include "../../Ecs/Systems/Race/AutoAimSystem.hpp"
 #include "../../Ecs/Systems/Race/LaserSystem.hpp"
 
@@ -119,6 +120,7 @@ void Race::tick(Game& g) {
 
 	g.mSysManager->mLightSystem->Update(g);					// update the light system
 	
+	g.mSysManager->mPathLogicSystem->Update(g);				// update the PathLogic system
 	g.mSysManager->mAutoAimSystem->Update(g);				// update the AutoAim system
 	g.mSysManager->mLaserSystem->Update(g);					// update the Laser system
 

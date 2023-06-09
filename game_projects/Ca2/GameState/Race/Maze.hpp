@@ -27,8 +27,8 @@ public:
 
     static const int cMaxRacers = 4;
 
-    static const int cTargetX = 15 * Game::TileSize;
-    static const int cTargetY = 8 * Game::TileSize;
+    static const int cTargetX = 15 * 32; //Game::TileSize;
+    static const int cTargetY = 8 * 32;  //Game::TileSize;
 
     void tick(Game& g);
     void setupPickStart();

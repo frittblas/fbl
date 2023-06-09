@@ -24,6 +24,7 @@ class LightSystem;
 
 // robot specific
 // Stats does not have it's own system YET!
+class PathLogicSystem;
 class AutoAimSystem;
 class LaserSystem;
 
@@ -39,6 +40,7 @@ public:
     std::shared_ptr<DialogueTrigSystem> mDialogueTrigSystem; // the dialogue trigger system
     std::shared_ptr<LightSystem> mLightSystem;               // the light system
 
+    std::shared_ptr<PathLogicSystem> mPathLogicSystem;       // the path logic system
     std::shared_ptr<AutoAimSystem> mAutoAimSystem;           // the auto aim system
     std::shared_ptr<LaserSystem> mLaserSystem;               // the laser system
 

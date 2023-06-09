@@ -23,6 +23,7 @@
 #include "Ecs/Systems/LightSystem.hpp"
 
 // robot specific
+#include "Ecs/Systems/Race/PathLogicSystem.hpp"
 #include "Ecs/Systems/Race/AutoAimSystem.hpp"
 #include "Ecs/Systems/Race/LaserSystem.hpp"
 
@@ -56,6 +57,7 @@ void SysManager::setupEcs(Coordinator *mEcs) {
 	// robot specific
 	mEcs->RegisterComponent<Addon>();
 	mEcs->RegisterComponent<Stats>();
+	mEcs->RegisterComponent<PathLogic>();
 	mEcs->RegisterComponent<AutoAim>();
 	mEcs->RegisterComponent<Laser>();
 
@@ -68,6 +70,7 @@ void SysManager::setupEcs(Coordinator *mEcs) {
 	mLightSystem = mEcs->RegisterSystem<LightSystem>();
 
 	// robot specific
+	mPathLogicSystem = mEcs->RegisterSystem<PathLogicSystem>();
 	mAutoAimSystem = mEcs->RegisterSystem<AutoAimSystem>();
 	mLaserSystem = mEcs->RegisterSystem<LaserSystem>();
 
@@ -104,6 +107,13 @@ void SysManager::setupEcs(Coordinator *mEcs) {
 	mEcs->SetSystemSignature<LightSystem>(sign);
 
 	// robot specific
+	sign.reset();
+	sign.set(mEcs->GetComponentType<Position>());
+	sign.set(mEcs->GetComponentType<Sprite>());
+	sign.set(mEcs->GetComponentType<Stats>());
+	sign.set(mEcs->GetComponentType<PathLogic>());
+	mEcs->SetSystemSignature<PathLogicSystem>(sign);
+
 	sign.reset();
 	sign.set(mEcs->GetComponentType<Position>());
 	sign.set(mEcs->GetComponentType<Stats>());

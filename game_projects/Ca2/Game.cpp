@@ -96,7 +96,9 @@ bool Game::init() {
 	mWeather = new Weather();
 	mProgress = new Progress();
 
+	std::cout << "starting sysmanager setup: " << std::endl;
 	mSysManager->setupEcs(mEcs);
+	std::cout << "done with sysmanager setup: " << std::endl;
 
 	// start the snow particle effect
 	//mWeather->setWeather(Weather::TimeOfDay::Day, 0, 6, 50, false);
