@@ -137,8 +137,8 @@ struct PathLogic
 {
     uint16_t baseX, baseY;  // the robot's base coordinates
     uint8_t  smallCoins;    // keep track of how many small coins collected
-    uint8_t  bigCoins;      // keep track of how many big coins collected
-    bool     hasBigCoin;    // is the robot carrying a big coin?
+    uint8_t  flags;         // keep track of how many flags collected
+    bool     hasFlag;       // is the robot carrying a flag?
 
 };
 

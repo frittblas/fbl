@@ -803,6 +803,7 @@ void fbl_fix_sprite_to_screen(int id, bool fix)
  * Does not work well with angled sprites but works with scale.
  * This is just here for an easy way to do simple collision checking.
  * It's slow, use chipmunk functions instead maybe..
+ * This is meant for sprites drawn from the center.
  */
 bool fbl_get_sprite_collision(int id_1, int id_2)
 {
@@ -820,13 +821,23 @@ bool fbl_get_sprite_collision(int id_1, int id_2)
 
 		if(sprite_1->active && sprite_2->active)
 		{
-
+			/*
+			// Use this if you're drawing sprites from the top left corner
 			if ((sprite_1->dest_rect.x > sprite_2->dest_rect.x + sprite_1->dest_rect.w) ||
 				(sprite_2->dest_rect.x > sprite_1->dest_rect.x + sprite_1->dest_rect.w) ||
 				(sprite_1->dest_rect.y > sprite_2->dest_rect.y + sprite_1->dest_rect.h) ||
 				(sprite_2->dest_rect.y > sprite_1->dest_rect.y + sprite_1->dest_rect.h))
 				return false;
 			else return true;
+			*/
+			// And this for sprites drawn from the center.
+			if ((sprite_1->dest_rect.x - sprite_1->dest_rect.w / 2 > sprite_2->dest_rect.x + sprite_2->dest_rect.w / 2) ||
+				(sprite_2->dest_rect.x - sprite_2->dest_rect.w / 2 > sprite_1->dest_rect.x + sprite_1->dest_rect.w / 2) ||
+				(sprite_1->dest_rect.y - sprite_1->dest_rect.h / 2 > sprite_2->dest_rect.y + sprite_2->dest_rect.h / 2) ||
+				(sprite_2->dest_rect.y - sprite_2->dest_rect.h / 2 > sprite_1->dest_rect.y + sprite_1->dest_rect.h / 2))
+				return false;
+			else
+				return true;
 
 		}
 

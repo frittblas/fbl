@@ -18,7 +18,8 @@
 #include "Maze.hpp"
 
 
-int gFlagId; // the id of the flag sprite, externed in PathLogicSystem
+int gFlagId;    // the id of the flag sprite, externed in PathLogicSystem
+int gCoinId[50]; // the sprite id's for the coins, also externed in PathLogicSystem
 
 // Maze-class implementation
 
@@ -273,8 +274,22 @@ void Maze::initMaze(Game& g, int density, int numRacers) {
 	populateMaze();
 
 	// add flag in the middle
-	gFlagId = fbl_create_sprite(256, 320, 32, 32, 0);
+	gFlagId = fbl_create_sprite(265, 324, 17, 24, 0);
 	fbl_set_sprite_xy(gFlagId, cTargetX + 16, cTargetY + 16);	// drawn from the center
+
+	// add coins
+	for (int i = 0; i < 50; i++) {
+		gCoinId[i] = fbl_create_sprite(320, 288, 16, 16, 0);
+		fbl_set_sprite_animation(gCoinId[i], true, 320, 288, 16, 16, 2, 30, true);
+		//int x = rand() % cMazeSizeX;
+		int x = 3 + rand() % (cMazeSizeX - 6);
+		int y = rand() % cMazeSizeY;
+		while (fbl_pathf_get_walkability(x, y) == FBL_PATHF_UNWALKABLE || (x * Game::TileSize == cTargetX && y * Game::TileSize == cTargetY)) {
+			int x = 3 + rand() % (cMazeSizeX - 6);
+			y = rand() % cMazeSizeY;
+		}
+		fbl_set_sprite_xy(gCoinId[i], x * Game::TileSize + 16, y * Game::TileSize + 16);		// drawn from the center
+	}
 	
 	for (int i = 0; i < numRacers; i++)
 		std::cout << "Path status: " << fbl_pathf_get_path_status(mPathId[i]) << std::endl;

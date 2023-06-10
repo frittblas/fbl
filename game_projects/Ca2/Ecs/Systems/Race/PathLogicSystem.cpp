@@ -26,6 +26,7 @@
 #include "PathLogicSystem.hpp"
 
 extern int gFlagId;
+extern int gCoinId[50];
 
 void PathLogicSystem::Init(Coordinator& ecs) {
 
@@ -57,6 +58,17 @@ void PathLogicSystem::Update(Game& g) {
 
 		}
 		
+		for (int i = 0; i < 50; i++) {
+
+			if (fbl_get_sprite_collision(spr.id[0], gCoinId[i])) {
+
+				fbl_set_sprite_active(gCoinId[i], false);
+
+			}
+
+
+		}
+
 	}
 
 }
