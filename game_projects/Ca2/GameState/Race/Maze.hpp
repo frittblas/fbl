@@ -30,6 +30,8 @@ public:
     static const int cTargetX = 15 * 32; //Game::TileSize;
     static const int cTargetY = 8 * 32;  //Game::TileSize;
 
+    static const int cMaxCoins = 20;     // max nmber of coins in a level
+
     void tick(Game& g);
     void setupPickStart();
     void pickStartPosition(Game& g);

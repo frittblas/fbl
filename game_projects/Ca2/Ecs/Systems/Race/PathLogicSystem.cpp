@@ -26,7 +26,7 @@
 #include "PathLogicSystem.hpp"
 
 extern int gFlagId;
-extern int gCoinId[50];
+extern int gCoinId[Maze::cMaxCoins];
 
 void PathLogicSystem::Init(Coordinator& ecs) {
 
@@ -58,12 +58,15 @@ void PathLogicSystem::Update(Game& g) {
 
 		}
 		
-		for (int i = 0; i < 50; i++) {
+		for (int i = 0; i < Maze::cMaxCoins; i++) {
 
-			if (fbl_get_sprite_collision(spr.id[0], gCoinId[i])) {
+			if (gCoinId[i] != -1) {
+				if (fbl_get_sprite_collision(spr.id[0], gCoinId[i])) {
 
-				fbl_set_sprite_active(gCoinId[i], false);
+					fbl_set_sprite_active(gCoinId[i], false);
+					gCoinId[i] = -1;
 
+				}
 			}
 
 
