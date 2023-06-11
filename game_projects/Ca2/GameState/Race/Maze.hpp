@@ -52,7 +52,8 @@ public:
     void addItems();
     void addBorder();
     void createGUI();
-    void updateGUI(Game &g);
+    void updateGUI(Game& g);
+    void setOneUIbox(Stats& stat, PathLogic& plog, int base, int entity);
     bool mazeHasAllPaths();
     void assignPaths(Game& g);
 

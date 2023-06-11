@@ -94,6 +94,10 @@ void Race::assignRobots(Game& g) {
 		// add mousectrl to a robot IF it has the skill!!!! (just testing now)
 				    												  // clicked
 		//g.mEcs->AddComponent(g.mRobots->mRacingRobots[0], MouseCtrl{ false });
+
+		// reset hp and energy
+		sta.hp = sta.maxHp;
+		sta.energy = sta.maxEnergy;
 	}
 
 	g.mSysManager->mPathSystem->Init(*g.mEcs);		// assign a unique path id to the entities with a path component

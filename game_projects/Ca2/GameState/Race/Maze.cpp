@@ -500,17 +500,18 @@ void Maze::createGUI() {
 
 void Maze::updateGUI(Game& g) {
 
+	int barMaxWidth = 50; // Maximum width of hp pand power bar
+	int barPercentage = 0;
+	int barWidth = 0;
+
 	for (int i = 0; i < mNumRacers; i++) {
 
 		auto& stat = g.mEcs->GetComponent<Stats>(g.mRobots->mRacingRobots[i]);
 		auto& plog = g.mEcs->GetComponent<PathLogic>(g.mRobots->mRacingRobots[i]);
 
+		// update number of flags, coins and hp + power (energy)
 		if (plog.baseX == Game::TileSize * 3 && plog.baseY == 0) {
-			if (gui[0].coins != plog.coins) {
-				fbl_update_text(gui[0].coinTextId, 255, 255, 255, 255, "%d", plog.coins);
-				gui[0].coins = plog.coins;
-				std::cout << "updated coin text for player " << g.mRobots->mRacingRobots[i] << std::endl;
-			}
+			setOneUIbox(stat, plog, 0, g.mRobots->mRacingRobots[i]);
 		}
 		if (plog.baseX == Game::LogicalResW - Game::TileSize * 4 && plog.baseY == 0) {
 			if (gui[1].coins != plog.coins) {
@@ -518,6 +519,18 @@ void Maze::updateGUI(Game& g) {
 				gui[1].coins = plog.coins;
 				std::cout << "updated coin text for player " << g.mRobots->mRacingRobots[i] << std::endl;
 			}
+			if (gui[1].flags != plog.flags) {
+				fbl_update_text(gui[1].flagTextId, 255, 255, 255, 255, "%d", plog.flags);
+				gui[1].flags = plog.flags;
+				std::cout << "updated flag text for player " << g.mRobots->mRacingRobots[i] << std::endl;
+			}
+			// hp and power meters
+			barPercentage = stat.hp / stat.maxHp;	// calc percentage of current HP
+			barWidth = barMaxWidth * barPercentage; // calc the width of the HP bar
+			fbl_set_prim_size(gui[1].hpRectId, barWidth, 3, 0);
+			barPercentage = stat.energy / stat.maxEnergy;	// calc percentage of current power (energy)
+			barWidth = barMaxWidth * barPercentage; // calc the width of the bar
+			fbl_set_prim_size(gui[1].powRectId, barWidth, 3, 0);
 		}
 		if (plog.baseX == Game::TileSize * 3 && plog.baseY == Game::TileSize * 16) {
 			if (gui[2].coins != plog.coins) {
@@ -525,6 +538,18 @@ void Maze::updateGUI(Game& g) {
 				gui[2].coins = plog.coins;
 				std::cout << "updated coin text for player " << g.mRobots->mRacingRobots[i] << std::endl;
 			}
+			if (gui[2].flags != plog.flags) {
+				fbl_update_text(gui[2].flagTextId, 255, 255, 255, 255, "%d", plog.flags);
+				gui[2].flags = plog.flags;
+				std::cout << "updated flag text for player " << g.mRobots->mRacingRobots[i] << std::endl;
+			}
+			// hp and power meters
+			barPercentage = stat.hp / stat.maxHp;	// calc percentage of current HP
+			barWidth = barMaxWidth * barPercentage; // calc the width of the HP bar
+			fbl_set_prim_size(gui[2].hpRectId, barWidth, 3, 0);
+			barPercentage = stat.energy / stat.maxEnergy;	// calc percentage of current power (energy)
+			barWidth = barMaxWidth * barPercentage; // calc the width of the bar
+			fbl_set_prim_size(gui[2].powRectId, barWidth, 3, 0);
 		}
 		if (plog.baseX == Game::LogicalResW - Game::TileSize * 4 && plog.baseY == Game::TileSize * 16) {
 			if (gui[3].coins != plog.coins) {
@@ -532,10 +557,49 @@ void Maze::updateGUI(Game& g) {
 				gui[3].coins = plog.coins;
 				std::cout << "updated coin text for player " << g.mRobots->mRacingRobots[i] << std::endl;
 			}
+			if (gui[3].flags != plog.flags) {
+				fbl_update_text(gui[3].flagTextId, 255, 255, 255, 255, "%d", plog.flags);
+				gui[3].flags = plog.flags;
+				std::cout << "updated flag text for player " << g.mRobots->mRacingRobots[i] << std::endl;
+			}
+			// hp and power meters
+			barPercentage = stat.hp / stat.maxHp;	// calc percentage of current HP
+			barWidth = barMaxWidth * barPercentage; // calc the width of the HP bar
+			fbl_set_prim_size(gui[3].hpRectId, barWidth, 3, 0);
+			barPercentage = stat.energy / stat.maxEnergy;	// calc percentage of current power (energy)
+			barWidth = barMaxWidth * barPercentage; // calc the width of the bar
+			fbl_set_prim_size(gui[3].powRectId, barWidth, 3, 0);
 		}
 
 
 	}
+
+}
+
+void Maze::setOneUIbox(Stats& stat, PathLogic& plog, int base, int entity) {
+
+	int barMaxWidth = 50; // Maximum width of hp pand power bar
+	int barPercentage = 0;
+	int barWidth = 0;
+
+	// update number of flags, coins
+	if (gui[0].coins != plog.coins) {
+		fbl_update_text(gui[base].coinTextId, 255, 255, 255, 255, "%d", plog.coins);
+		gui[0].coins = plog.coins;
+		std::cout << "updated coin text for player " << entity << std::endl;
+	}
+	if (gui[0].flags != plog.flags) {
+		fbl_update_text(gui[base].flagTextId, 255, 255, 255, 255, "%d", plog.flags);
+		gui[0].flags = plog.flags;
+	}
+
+	// hp and power meters
+	barPercentage = stat.hp / stat.maxHp;	// calc percentage of current HP
+	barWidth = barMaxWidth * barPercentage; // calc the width of the HP bar
+	fbl_set_prim_size(gui[base].hpRectId, stat.hp, 3, 0);
+	barPercentage = stat.energy / stat.maxEnergy;	// calc percentage of current power (energy)
+	barWidth = barMaxWidth * barPercentage; // calc the width of the bar
+	fbl_set_prim_size(gui[base].powRectId, barWidth, 3, 0);
 
 }
 

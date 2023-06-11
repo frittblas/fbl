@@ -58,7 +58,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 0, 96, 32, 32, false, 0, 0, 0, 0, 7 });	// robots are on layer 7
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
-				mEcs->AddComponent(tmpRobot, Stats{ "Charmy", 1, 0, 4, 10, 30, 8, true, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
+				mEcs->AddComponent(tmpRobot, Stats{ "Charmy", 1, 0, 4, 50, 50, 8, true, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
 												  // baseX Y smallC bigC hasBig
 				mEcs->AddComponent(tmpRobot, PathLogic{ 0, 0, 0, 0, false });
 												//  rid len dir ivalM ivalC hasTarg active
@@ -73,7 +73,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 32, 96, 32, 32, true, 2, 12, 0, 0, 7 });
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
-				mEcs->AddComponent(tmpRobot, Stats{ "Alarmy", 1, 0, 4, 10, 30, 6, true, 20, 19, 17, -1, -1, -1, -1, -1, -1 });
+				mEcs->AddComponent(tmpRobot, Stats{ "Alarmy", 1, 0, 4, 40, 40, 6, true, 20, 19, 17, -1, -1, -1, -1, -1, -1 });
 											   // baseX Y smallC bigC hasBig
 				mEcs->AddComponent(tmpRobot, PathLogic{ 0, 0, 0, 0, false });
 												//  rid len dir ivalM ivalC hasTarg active
@@ -87,7 +87,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 96, 96, 32, 32, true, 2, 12, 0, 0, 7 });
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
-				mEcs->AddComponent(tmpRobot, Stats{ "Boingy", 2, 0, 4, 11, 15, 4, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
+				mEcs->AddComponent(tmpRobot, Stats{ "Boingy", 2, 0, 4, 30, 30, 4, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
 											   // baseX Y smallC bigC hasBig
 				mEcs->AddComponent(tmpRobot, PathLogic{ 0, 0, 0, 0, false });
 												//  rid len dir ivalM ivalC hasTarg active
@@ -101,7 +101,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 160, 96, 32, 32, true, 3, 12, 0, 0, 7 });
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
-				mEcs->AddComponent(tmpRobot, Stats{ "Chompy", 2, 0, 4, 11, 39, 5, true, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
+				mEcs->AddComponent(tmpRobot, Stats{ "Chompy", 2, 0, 4, 30, 30, 5, true, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
 											   // baseX Y smallC bigC hasBig
 				mEcs->AddComponent(tmpRobot, PathLogic{ 0, 0, 0, 0, false });
 												//  rid len dir ivalM ivalC hasTarg active
