@@ -33,7 +33,7 @@ void AutoAimSystem::Init(Coordinator& ecs) {
 
 		// create the ray with 0 length
 		aim.rayId = fbl_create_prim(FBL_RAY, 0, 0, 0, 0, 0, true, false);
-		fbl_set_prim_color(aim.rayId, 0, 255, 0, 0);
+		fbl_set_prim_color(aim.rayId, 0, 255, 0, 40);
 		fbl_set_prim_active(aim.rayId, true);	// show the ray
 
 		aim.hasTarget = false;
