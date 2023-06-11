@@ -51,6 +51,8 @@ void Maze::tick(Game& g) {
 		else if(mPickTimer > -160)
 			mPickTimer--;
 
+		updateGUI(g);
+
 	}
 
 }
@@ -186,6 +188,9 @@ void Maze::pickStartPosition(Game& g) {
 
 	if (mPickTimer < 1) {
 
+		// create gui for the robots () coins health etc
+		createGUI();
+
 		if (mPickTimer == 0) {
 			mPickedPosition = rand() % 4; // if time runs out, assign a random position
 			assignPaths(g);
@@ -273,25 +278,9 @@ void Maze::initMaze(Game& g, int density, int numRacers) {
 	// create all the sprites at correct locations
 	populateMaze();
 
-	// add flag in the middle
-	gFlagId = fbl_create_sprite(265, 324, 17, 24, 0);
-	fbl_set_sprite_xy(gFlagId, cTargetX + 16, cTargetY + 16);	// drawn from the center
+	// add the flag and coins
+	addItems();
 
-	// add random amount of coins (from 10 to 20)
-	for (int i = 0; i < Maze::cMaxCoins; i++) gCoinId[i] = -1;	// set all id's to -1
-	int numCoins = rand() % (Maze::cMaxCoins / 2) + 10;
-	std::cout << "numCoins: " << numCoins << std::endl;
-	for (int i = 0; i < numCoins; i++) {
-		gCoinId[i] = fbl_create_sprite(320, 288, 16, 16, 0);
-		fbl_set_sprite_animation(gCoinId[i], true, 320, 288, 16, 16, 2, 30, true);
-		int x = 3 + rand() % (cMazeSizeX - 6);
-		int y = rand() % cMazeSizeY;
-		while (fbl_pathf_get_walkability(x, y) == FBL_PATHF_UNWALKABLE || (x * Game::TileSize == cTargetX && y * Game::TileSize == cTargetY)) {
-			int x = 3 + rand() % (cMazeSizeX - 6);
-			y = rand() % cMazeSizeY;
-		}
-		fbl_set_sprite_xy(gCoinId[i], x * Game::TileSize + 16, y * Game::TileSize + 16);		// drawn from the center
-	}
 	
 	for (int i = 0; i < numRacers; i++)
 		std::cout << "Path status: " << fbl_pathf_get_path_status(mPathId[i]) << std::endl;
@@ -354,6 +343,30 @@ void Maze::populateMaze() {
 
 }
 
+void Maze::addItems() {
+
+	// add flag in the middle
+	gFlagId = fbl_create_sprite(265, 324, 17, 24, 0);
+	fbl_set_sprite_xy(gFlagId, cTargetX + 16, cTargetY + 16);	// drawn from the center
+
+	// add random amount of coins (from 10 to 20)
+	for (int i = 0; i < Maze::cMaxCoins; i++) gCoinId[i] = -1;	// set all id's to -1
+	int numCoins = rand() % (Maze::cMaxCoins / 2) + 10;
+	std::cout << "numCoins: " << numCoins << std::endl;
+	for (int i = 0; i < numCoins; i++) {
+		gCoinId[i] = fbl_create_sprite(320, 288, 16, 16, 0);
+		fbl_set_sprite_animation(gCoinId[i], true, 320, 288, 16, 16, 2, 30, true);
+		int x = 3 + rand() % (cMazeSizeX - 6);
+		int y = rand() % cMazeSizeY;
+		while (fbl_pathf_get_walkability(x, y) == FBL_PATHF_UNWALKABLE || (x * Game::TileSize == cTargetX && y * Game::TileSize == cTargetY)) {
+			int x = 3 + rand() % (cMazeSizeX - 6);
+			y = rand() % cMazeSizeY;
+		}
+		fbl_set_sprite_xy(gCoinId[i], x * Game::TileSize + 16, y * Game::TileSize + 16);		// drawn from the center
+	}
+
+}
+
 void Maze::addBorder() {
 
 	// creates sprites with correct coordinates as obstacles
@@ -387,6 +400,118 @@ void Maze::addBorder() {
 
 }
 
+// create the gui in each corner showing how many flags and coins each robot has got, lifebars etc etc
+void Maze::createGUI() {
+
+	// 96x64 gui thing in all 4 corners
+	int id = fbl_create_sprite(416, 288, 96, 64, 0);
+	fbl_set_sprite_xy(id, 48, 32);
+	fbl_set_sprite_layer(id, 10);
+
+	id = fbl_create_sprite(416, 288, 96, 64, 0);
+	fbl_set_sprite_xy(id, 912, 32);
+	fbl_set_sprite_layer(id, 10);
+
+	id = fbl_create_sprite(416, 288, 96, 64, 0);
+	fbl_set_sprite_xy(id, 48, 512);
+	fbl_set_sprite_layer(id, 10);
+
+	id = fbl_create_sprite(416, 288, 96, 64, 0);
+	fbl_set_sprite_xy(id, 912, 512);
+	fbl_set_sprite_layer(id, 10);
+
+	// add base markers (spinning circles) topleft, top right, down left, down right, draw from center
+	id = fbl_create_sprite(224, 352, 32, 32, 0);
+	fbl_set_sprite_xy(id, 3 * Game::TileSize + 16, 16);
+	fbl_set_sprite_animation(id, true, 224, 352, 32, 32, 9, 7, true);
+	fbl_set_sprite_color(id, 255, 127, 80); // coral red
+	fbl_set_sprite_alpha(id, 150);
+	fbl_set_sprite_layer(id, 0);
+
+	id = fbl_create_sprite(224, 352, 32, 32, 0);
+	fbl_set_sprite_xy(id, (cMazeSizeX - 4) * Game::TileSize + 16, 16);
+	fbl_set_sprite_animation(id, true, 224, 352, 32, 32, 9, 7, true);
+	fbl_set_sprite_color(id, 80, 200, 120); // emerald green
+	fbl_set_sprite_alpha(id, 150);
+	fbl_set_sprite_layer(id, 0);
+
+	id = fbl_create_sprite(224, 352, 32, 32, 0);
+	fbl_set_sprite_xy(id, 3 * Game::TileSize + 16, (cMazeSizeY - 1) * Game::TileSize + 16);
+	fbl_set_sprite_animation(id, true, 224, 352, 32, 32, 9, 7, true);
+	fbl_set_sprite_color(id, 0, 150, 255); // bright blue
+	fbl_set_sprite_alpha(id, 150);
+	fbl_set_sprite_layer(id, 0);
+
+	id = fbl_create_sprite(224, 352, 32, 32, 0);
+	fbl_set_sprite_xy(id, (cMazeSizeX - 4) * Game::TileSize + 16, (cMazeSizeY - 1) * Game::TileSize + 16);
+	fbl_set_sprite_animation(id, true, 224, 352, 32, 32, 9, 7, true);
+	fbl_set_sprite_color(id, 251, 236, 93); // nice yellow
+	fbl_set_sprite_alpha(id, 150);
+	fbl_set_sprite_layer(id, 0);
+
+	fbl_sort_sprites(FBL_SORT_BY_LAYER);
+
+	// text items
+	fbl_load_ttf_font("font/garamond.ttf", 16);
+	gui[0].flagTextId = fbl_create_text(255, 255, 255, 255, "%d", 0);
+	fbl_set_text_xy(gui[0].flagTextId, 78, 19); // 48, 32
+	gui[0].coinTextId = fbl_create_text(255, 255, 255, 255, "%d", 0);
+	fbl_set_text_xy(gui[0].coinTextId, 38, 19);
+
+	gui[1].flagTextId = fbl_create_text(255, 255, 255, 255, "%d", 0);
+	fbl_set_text_xy(gui[1].flagTextId, 942, 19); // 912, 32
+	gui[1].coinTextId = fbl_create_text(255, 255, 255, 255, "%d", 0);
+	fbl_set_text_xy(gui[1].coinTextId, 902, 19);
+
+	gui[2].flagTextId = fbl_create_text(255, 255, 255, 255, "%d", 0);
+	fbl_set_text_xy(gui[2].flagTextId, 78, 499); // 48, 512
+	gui[2].coinTextId = fbl_create_text(255, 255, 255, 255, "%d", 0);
+	fbl_set_text_xy(gui[2].coinTextId, 38, 499);
+
+	gui[3].flagTextId = fbl_create_text(255, 255, 255, 255, "%d", 0);
+	fbl_set_text_xy(gui[3].flagTextId, 942, 499); // 912, 512
+	gui[3].coinTextId = fbl_create_text(255, 255, 255, 255, "%d", 0);
+	fbl_set_text_xy(gui[3].coinTextId, 902, 499);
+
+	// red and blue hp/pow rects
+	gui[0].hpRectId = fbl_create_prim(FBL_NORMAL_RECT, 33, 41, 50, 3, 0, false, true);
+	//fbl_set_prim_color(gui[0].hpRectId, 0, 237, 55, 36);
+	gui[0].powRectId = fbl_create_prim(FBL_NORMAL_RECT, 33, 51, 50, 3, 0, false, true);
+	fbl_set_prim_color(gui[0].powRectId, 0, 162, 232, 255);
+
+	gui[1].hpRectId = fbl_create_prim(FBL_NORMAL_RECT, 897, 41, 50, 3, 0, false, true);
+	//fbl_set_prim_color(gui[0].hpRectId, 0, 237, 55, 36);
+	gui[1].powRectId = fbl_create_prim(FBL_NORMAL_RECT, 897, 51, 50, 3, 0, false, true);
+	fbl_set_prim_color(gui[1].powRectId, 0, 162, 232, 255);
+
+	gui[2].hpRectId = fbl_create_prim(FBL_NORMAL_RECT, 33, 521, 50, 3, 0, false, true);
+	//fbl_set_prim_color(gui[0].hpRectId, 0, 237, 55, 36);
+	gui[2].powRectId = fbl_create_prim(FBL_NORMAL_RECT, 33, 531, 50, 3, 0, false, true);
+	fbl_set_prim_color(gui[2].powRectId, 0, 162, 232, 255);
+
+	gui[3].hpRectId = fbl_create_prim(FBL_NORMAL_RECT, 897, 521, 50, 3, 0, false, true);
+	//fbl_set_prim_color(gui[0].hpRectId, 0, 237, 55, 36);
+	gui[3].powRectId = fbl_create_prim(FBL_NORMAL_RECT, 897, 531, 50, 3, 0, false, true);
+	fbl_set_prim_color(gui[3].powRectId, 0, 162, 232, 255);
+
+}
+
+void Maze::updateGUI(Game& g) {
+
+	for (int i = 0; i < mNumRacers; i++) {
+
+		auto& stat = g.mEcs->GetComponent<Stats>(g.mRobots->mRacingRobots[i]);
+		auto& plog = g.mEcs->GetComponent<PathLogic>(g.mRobots->mRacingRobots[i]);
+
+		if (gui[i].coins != plog.coins) {
+			fbl_update_text(gui->coinTextId, 255, 255, 255, 255, "%d", plog.coins);
+			gui[i].coins = plog.coins;
+			std::cout << "updated coin text for player " << i << std::endl;
+		}
+
+	}
+
+}
 
 bool Maze::mazeHasAllPaths() {
 

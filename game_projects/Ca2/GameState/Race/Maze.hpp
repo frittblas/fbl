@@ -22,6 +22,15 @@ public:
     Maze();
     ~Maze();
 
+    struct guiItems {
+
+        uint16_t flagTextId, coinTextId;
+        uint8_t  flags, coins;
+        uint16_t hpRectId, powRectId;
+        uint8_t  hp, pow;
+
+    };
+
     static const int cMazeSizeX = 30;
     static const int cMazeSizeY = 17;
 
@@ -40,7 +49,10 @@ public:
     void resetMaze();
     void randomizeMaze(int density);
     void populateMaze();
+    void addItems();
     void addBorder();
+    void createGUI();
+    void updateGUI(Game &g);
     bool mazeHasAllPaths();
     void assignPaths(Game& g);
 
@@ -50,6 +62,8 @@ private:
     int mPathId[Robots::NumRobots] = {};        // keep robots path id's
     int mStartPos[Robots::NumRobots][2] = {};   // keep robots starting positions
     uint8_t mUseDiag[Robots::NumRobots] = {};   // keep info on wether robot can go diagonally
+
+    guiItems gui[Robots::NumRobots] = {};
 
     int mNumRacers;     // his many robots in a race at once
 
