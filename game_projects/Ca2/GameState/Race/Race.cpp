@@ -89,7 +89,7 @@ void Race::assignRobots(Game& g) {
 		float speed = (float)sta.speed / 10;
 		uint8_t diag = sta.diag ? FBL_PATHF_USE_DIAG : FBL_PATHF_NO_DIAG;
 															// id gX gY newPath speed diag pixelsPerFrame
-		g.mEcs->AddComponent(g.mRobots->mRacingRobots[i], Path{ 0, 0, 0, false, speed, diag, 1 });
+		g.mEcs->AddComponent(g.mRobots->mRacingRobots[i], Path{ 0, 0, 0, false, speed, diag, 1 }); // last param should be 10 if you wanna use speed
 
 		// add mousectrl to a robot IF it has the skill!!!! (just testing now)
 				    												  // clicked

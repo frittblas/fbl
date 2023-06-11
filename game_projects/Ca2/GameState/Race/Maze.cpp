@@ -188,13 +188,15 @@ void Maze::pickStartPosition(Game& g) {
 
 	if (mPickTimer < 1) {
 
-		// create gui for the robots () coins health etc
-		createGUI();
 
 		if (mPickTimer == 0) {
 			mPickedPosition = rand() % 4; // if time runs out, assign a random position
 			assignPaths(g);
 		}
+
+		// create gui for the robots () coins health etc
+		createGUI();
+		std::cout << "created GUI!" << std::endl;
 
 		for (int i = mFirstCircleId; i < (mFirstCircleId + 12); i++)
 			fbl_set_prim_active(i, false);
@@ -503,11 +505,35 @@ void Maze::updateGUI(Game& g) {
 		auto& stat = g.mEcs->GetComponent<Stats>(g.mRobots->mRacingRobots[i]);
 		auto& plog = g.mEcs->GetComponent<PathLogic>(g.mRobots->mRacingRobots[i]);
 
-		if (gui[i].coins != plog.coins) {
-			fbl_update_text(gui->coinTextId, 255, 255, 255, 255, "%d", plog.coins);
-			gui[i].coins = plog.coins;
-			std::cout << "updated coin text for player " << i << std::endl;
+		if (plog.baseX == Game::TileSize * 3 && plog.baseY == 0) {
+			if (gui[0].coins != plog.coins) {
+				fbl_update_text(gui[0].coinTextId, 255, 255, 255, 255, "%d", plog.coins);
+				gui[0].coins = plog.coins;
+				std::cout << "updated coin text for player " << g.mRobots->mRacingRobots[i] << std::endl;
+			}
 		}
+		if (plog.baseX == Game::LogicalResW - Game::TileSize * 4 && plog.baseY == 0) {
+			if (gui[1].coins != plog.coins) {
+				fbl_update_text(gui[1].coinTextId, 255, 255, 255, 255, "%d", plog.coins);
+				gui[1].coins = plog.coins;
+				std::cout << "updated coin text for player " << g.mRobots->mRacingRobots[i] << std::endl;
+			}
+		}
+		if (plog.baseX == Game::TileSize * 3 && plog.baseY == Game::TileSize * 16) {
+			if (gui[2].coins != plog.coins) {
+				fbl_update_text(gui[2].coinTextId, 255, 255, 255, 255, "%d", plog.coins);
+				gui[2].coins = plog.coins;
+				std::cout << "updated coin text for player " << g.mRobots->mRacingRobots[i] << std::endl;
+			}
+		}
+		if (plog.baseX == Game::LogicalResW - Game::TileSize * 4 && plog.baseY == Game::TileSize * 16) {
+			if (gui[3].coins != plog.coins) {
+				fbl_update_text(gui[3].coinTextId, 255, 255, 255, 255, "%d", plog.coins);
+				gui[3].coins = plog.coins;
+				std::cout << "updated coin text for player " << g.mRobots->mRacingRobots[i] << std::endl;
+			}
+		}
+
 
 	}
 
@@ -561,6 +587,11 @@ void Maze::assignPaths(Game& g) {
 		// set the robots base coords
 		plog.baseX = pos.x;
 		plog.baseY = pos.y;
+
+		// set coins and flags to zero
+		plog.flags = 0;
+		plog.coins = 0;
+		plog.hasFlag = false;
 	}
 
 	// finally find paths for the new locations (will find immediately, maze is already in place (maze is a place))
