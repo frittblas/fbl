@@ -191,20 +191,20 @@ NEXT THING TO DO:
 
 1. Add a system for setting new waypoints easily (base, center)
 
-maybe PathLogicSystem that sets various points based on stuff like do I have a coin? (go to center)
-if you get a coin (bb hitdetect) (could also be a coin on the way) you head to your base. This should work
+maybe PathLogicSystem that sets various points based on stuff like do I have a flag? (go to base)
+if you get a flag (bb hitdetect) (could also be a dropped flag on the way) you head to your base. This should work
 the same for all robots, but the player should be able to click (anywhere?) and change path. In the base you get full energy.
 
-2. Make the center and bases clickable, click and the robot will path there. If a robot gets a coin it will
-start going to its base. When it has dropped off the coin it will go back to the center to get more.
+2. Make the center and bases clickable, click and the robot will path there. If a robot gets a flag it will
+start going to its base. When it has dropped off the flag it will go back to the center to get more.
 
-The center contains X coins that can be picked up 1 by one and dropped in the base.
+The center contains 10 flags that can be picked up 1 by one and dropped in the base.
 
 All robots can go back to base at any time and recharge the energy (by clicking on the base.)
 
 3. Make addons work in robot-collection aand in the race (correct addon as buttons) - menu done, will add buttons to race
 
-10 different addons total (autoaim, laser, shield, magnet, mine, etc)
+10 different addons total (autoaim, laser, shield, magnet, mine, teleport, build/destroy blocks etc)
 5 levels to each addon! (same components/sprite different just different stats/colors (make fbl_set_ui_elem_color(r, g, b)))
 
 4. Start writing a long dialogue thing with Charming Alarming (and a nice scene, black borders up and down)

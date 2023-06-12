@@ -546,7 +546,7 @@ void Maze::setOneUIbox(Stats stat, PathLogic plog, int base, int entity) {
 	barWidth = std::round(barMaxWidth * barPercentage);			// calc width of the bar
 	fbl_set_prim_size(gui[base].hpRectId, barWidth, 3, 0);		// resize the rect
 	// same with power (energy) bar
-	barPercentage = static_cast<double>(stat.hp) / stat.maxHp;
+	barPercentage = static_cast<double>(stat.energy) / stat.maxEnergy;
 	barWidth = std::round(barMaxWidth * barPercentage);
 	fbl_set_prim_size(gui[base].powRectId, barWidth, 3, 0);
 

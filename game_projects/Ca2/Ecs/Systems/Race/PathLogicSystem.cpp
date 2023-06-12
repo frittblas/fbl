@@ -66,7 +66,8 @@ void PathLogicSystem::Update(Game& g) {
 					fbl_set_sprite_active(gCoinId[i], false);
 					gCoinId[i] = -1;
 					plog.coins++;
-					std::cout << "player " << entity << " has " << plog.coins << std::endl;
+					//std::cout << "player " << entity << " has " << plog.coins << std::endl;
+					fbl_log("player %d has %d coins.", entity, plog.coins);
 
 				}
 			}
