@@ -40,7 +40,7 @@ public:
 
     struct aFlag {
         int16_t  id;      // sprite id
-        uint8_t  state;   // 0 = center, 1 = carried by robot, 2 = dropped, 3 = in base
+        int16_t  state;   // -2 = center, -1 = dropped, > 0 held by that robot entity
     };
 
     struct aCoin {

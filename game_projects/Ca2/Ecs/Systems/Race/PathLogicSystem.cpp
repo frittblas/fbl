@@ -53,9 +53,9 @@ void PathLogicSystem::Update(Game& g) {
 		
 		// handle flag colissions
 		for (int i = 0; i < Maze::cMaxFlags; i++) {
+
 			if (fbl_get_sprite_collision(spr.id[0], gFlag[i].id)) {
 
-				std::cout << "collided with flag!" << std::endl;
 
 				// if in center or dropped (not in base or held by a robot)
 				if (gFlag[i].state == Maze::FlagState::Center || gFlag[i].state == Maze::FlagState::Dropped) {
@@ -71,7 +71,7 @@ void PathLogicSystem::Update(Game& g) {
 
 					std::cout << "got new pos!" << std::endl;
 
-					break; // break from the loop (already got a flag)
+					i = Maze::cMaxFlags; // break from the loop (already got a flag)
 
 				}
 
@@ -81,7 +81,7 @@ void PathLogicSystem::Update(Game& g) {
 			if (gFlag[i].state == entity) {
 
 				fbl_set_sprite_xy(gFlag[i].id, pos.x, pos.y);
-				break;
+				i = Maze::cMaxFlags;
 			}
 
 		}
