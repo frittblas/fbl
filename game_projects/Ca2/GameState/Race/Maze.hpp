@@ -22,13 +22,9 @@ public:
     Maze();
     ~Maze();
 
-    struct guiItems {
-
-        uint16_t flagTextId, coinTextId;
-        uint8_t  flags, coins;
-        uint16_t hpRectId, powRectId;
-        uint8_t  hp, pow;
-
+    enum FlagState {
+        Center = -2,
+        Dropped = -1
     };
 
     static const int cMazeSizeX = 30;
@@ -39,7 +35,25 @@ public:
     static const int cTargetX = 15 * 32; //Game::TileSize;
     static const int cTargetY = 8 * 32;  //Game::TileSize;
 
+    static const int cMaxFlags = 10;     // max nmber of flags in a level
     static const int cMaxCoins = 20;     // max nmber of coins in a level
+
+    struct aFlag {
+        int16_t  id;      // sprite id
+        uint8_t  state;   // 0 = center, 1 = carried by robot, 2 = dropped, 3 = in base
+    };
+
+    struct aCoin {
+        int16_t  id;      // sprite id
+        uint8_t  anim;    // play som e nice anim when taken
+    };
+
+    struct guiItems {
+        uint16_t levelTextId, flagTextId, coinTextId;
+        uint8_t  level, flags, coins;
+        uint16_t hpRectId, powRectId;
+        uint8_t  hp, pow;
+    };
 
     void tick(Game& g);
     void setupPickStart();

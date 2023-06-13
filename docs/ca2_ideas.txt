@@ -21,12 +21,13 @@ Camera
 DialogTrig
 Light
 --
-AutoAim
 Laser
+AutoAim
 Magnet - on the way
 Shield -
-
-
+teleport
+repair
+build/destroy blocks
 
 Todo:
 Register components and systems in sysManager class. Done!
@@ -226,3 +227,6 @@ BUGS:
 Really  weird, probably something simple. (Test if this is still relevant, might have fixed it)
 
 2. The zip from gihub builds and runs but can't load a level! Also weird.
+
+3. if a robot dies, the next time you play the autoaim is gone! if it's the player you can get it back by re equipping.
+   (it's because the autoaim.active is turned off!)

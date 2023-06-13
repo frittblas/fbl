@@ -365,7 +365,7 @@ void RobotCollection::processInput(Game& g) {
 
 		cyclePages(g, 1);	// cycle forward
 
-		updateContextHelp("Now you're clicking away :)");
+		updateContextHelp("You clicked the right arrow :)");
 
 	}
 

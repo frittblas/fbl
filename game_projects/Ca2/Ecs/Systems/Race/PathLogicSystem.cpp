@@ -25,8 +25,8 @@
 
 #include "PathLogicSystem.hpp"
 
-extern int gFlagId;
-extern int gCoinId[Maze::cMaxCoins];
+extern Maze::aFlag gFlag[Maze::cMaxFlags];
+extern Maze::aCoin gCoin[Maze::cMaxCoins];
 
 void PathLogicSystem::Init(Coordinator& ecs) {
 
@@ -46,27 +46,55 @@ void PathLogicSystem::Update(Game& g) {
 
 	for (auto const& entity : mEntities)
 	{
+		auto& pos = g.mEcs->GetComponent<Position>(entity);
 		auto& spr = g.mEcs->GetComponent<Sprite>(entity);
 		auto& path = g.mEcs->GetComponent<Path>(entity);
 		auto& plog = g.mEcs->GetComponent<PathLogic>(entity);
 		
-		if (fbl_get_sprite_collision(spr.id[0], gFlagId)) {
+		// handle flag colissions
+		for (int i = 0; i < Maze::cMaxFlags; i++) {
+			if (fbl_get_sprite_collision(spr.id[0], gFlag[i].id)) {
 
-			path.goalX = plog.baseX;
-			path.goalY = plog.baseY;
-			path.newPath = true;
+				std::cout << "collided with flag!" << std::endl;
+
+				// if in center or dropped (not in base or held by a robot)
+				if (gFlag[i].state == Maze::FlagState::Center || gFlag[i].state == Maze::FlagState::Dropped) {
+
+					// pick up flag
+					gFlag[i].state = entity;	// values equal to or over 0 is state == held by that robot entity
+					plog.hasFlag = gFlag[i].id;	// the hasFlag is set to the sprite index of the flag
+
+					// set course to the base
+					path.goalX = plog.baseX;
+					path.goalY = plog.baseY;
+					path.newPath = true;
+
+					std::cout << "got new pos!" << std::endl;
+
+					break; // break from the loop (already got a flag)
+
+				}
+
+			}
+
+			// move flags that are being held by robots
+			if (gFlag[i].state == entity) {
+
+				fbl_set_sprite_xy(gFlag[i].id, pos.x, pos.y);
+				break;
+			}
 
 		}
 		
+		// handle coin colissions
 		for (int i = 0; i < Maze::cMaxCoins; i++) {
 
-			if (gCoinId[i] != -1) {
-				if (fbl_get_sprite_collision(spr.id[0], gCoinId[i])) {
+			if (gCoin[i].id != -1) {
+				if (fbl_get_sprite_collision(spr.id[0], gCoin[i].id)) {
 
-					fbl_set_sprite_active(gCoinId[i], false);
-					gCoinId[i] = -1;
+					fbl_set_sprite_active(gCoin[i].id, false);
+					gCoin[i].id = -1;
 					plog.coins++;
-					//std::cout << "player " << entity << " has " << plog.coins << std::endl;
 					fbl_log("player %d has %d coins.", entity, plog.coins);
 
 				}

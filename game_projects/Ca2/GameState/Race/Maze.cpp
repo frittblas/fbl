@@ -18,8 +18,9 @@
 #include "Maze.hpp"
 
 
-int gFlagId;    // the id of the flag sprite, externed in PathLogicSystem
-int gCoinId[Maze::cMaxCoins]; // the sprite id's for the coins, also externed in PathLogicSystem
+Maze::aFlag gFlag[Maze::cMaxFlags];    // the flag sprites, externed in PathLogicSystem
+Maze::aCoin gCoin[Maze::cMaxCoins];	   // the coins, also externed in PathLogicSystem
+
 
 // Maze-class implementation
 
@@ -347,24 +348,27 @@ void Maze::populateMaze() {
 
 void Maze::addItems() {
 
-	// add flag in the middle
-	gFlagId = fbl_create_sprite(265, 324, 17, 24, 0);
-	fbl_set_sprite_xy(gFlagId, cTargetX + 16, cTargetY + 16);	// drawn from the center
+	// add flags in the middle
+	for (int i = 0; i < cMaxFlags; i++) {
+		gFlag[i].id = fbl_create_sprite(265, 324, 17, 24, 0);
+		fbl_set_sprite_xy(gFlag[i].id, cTargetX + 16, cTargetY + 16);	// drawn from the center
+		gFlag[i].state = FlagState::Center;	// start in the center
+	}
 
 	// add random amount of coins (from 10 to 20)
-	for (int i = 0; i < Maze::cMaxCoins; i++) gCoinId[i] = -1;	// set all id's to -1
+	for (int i = 0; i < Maze::cMaxCoins; i++) gCoin[i].id = -1;	// set all id's to -1
 	int numCoins = rand() % (Maze::cMaxCoins / 2) + 10;
 	std::cout << "numCoins: " << numCoins << std::endl;
 	for (int i = 0; i < numCoins; i++) {
-		gCoinId[i] = fbl_create_sprite(320, 288, 16, 16, 0);
-		fbl_set_sprite_animation(gCoinId[i], true, 320, 288, 16, 16, 2, 30, true);
+		gCoin[i].id = fbl_create_sprite(320, 288, 16, 16, 0);
+		fbl_set_sprite_animation(gCoin[i].id, true, 320, 288, 16, 16, 2, 30, true);
 		int x = 3 + rand() % (cMazeSizeX - 6);
 		int y = rand() % cMazeSizeY;
 		while (fbl_pathf_get_walkability(x, y) == FBL_PATHF_UNWALKABLE || (x * Game::TileSize == cTargetX && y * Game::TileSize == cTargetY)) {
 			int x = 3 + rand() % (cMazeSizeX - 6);
 			y = rand() % cMazeSizeY;
 		}
-		fbl_set_sprite_xy(gCoinId[i], x * Game::TileSize + 16, y * Game::TileSize + 16);		// drawn from the center
+		fbl_set_sprite_xy(gCoin[i].id, x * Game::TileSize + 16, y * Game::TileSize + 16);		// drawn from the center
 	}
 
 }
@@ -454,46 +458,57 @@ void Maze::createGUI() {
 	fbl_sort_sprites(FBL_SORT_BY_LAYER);
 
 	// text items
+	fbl_load_ttf_font("font/garamond.ttf", 15);
+	gui[0].levelTextId = fbl_create_text(255, 255, 255, 255, "%d", 1);
+	fbl_set_text_xy(gui[0].levelTextId, 38, 9);
+	gui[1].levelTextId = fbl_create_text(255, 255, 255, 255, "%d", 1);
+	fbl_set_text_xy(gui[1].levelTextId, 902, 9);
+	gui[2].levelTextId = fbl_create_text(255, 255, 255, 255, "%d", 1);
+	fbl_set_text_xy(gui[2].levelTextId, 38, 489);
+	gui[3].levelTextId = fbl_create_text(255, 255, 255, 255, "%d", 1);
+	fbl_set_text_xy(gui[3].levelTextId, 902, 489);
+
+
 	fbl_load_ttf_font("font/garamond.ttf", 16);
 	gui[0].flagTextId = fbl_create_text(255, 255, 255, 255, "%d", 0);
-	fbl_set_text_xy(gui[0].flagTextId, 78, 19); // 48, 32
+	fbl_set_text_xy(gui[0].flagTextId, 78, 26);
 	gui[0].coinTextId = fbl_create_text(255, 255, 255, 255, "%d", 0);
-	fbl_set_text_xy(gui[0].coinTextId, 38, 19);
+	fbl_set_text_xy(gui[0].coinTextId, 38, 26);
 
 	gui[1].flagTextId = fbl_create_text(255, 255, 255, 255, "%d", 0);
-	fbl_set_text_xy(gui[1].flagTextId, 942, 19); // 912, 32
+	fbl_set_text_xy(gui[1].flagTextId, 942, 26);
 	gui[1].coinTextId = fbl_create_text(255, 255, 255, 255, "%d", 0);
-	fbl_set_text_xy(gui[1].coinTextId, 902, 19);
+	fbl_set_text_xy(gui[1].coinTextId, 902, 26);
 
 	gui[2].flagTextId = fbl_create_text(255, 255, 255, 255, "%d", 0);
-	fbl_set_text_xy(gui[2].flagTextId, 78, 499); // 48, 512
+	fbl_set_text_xy(gui[2].flagTextId, 78, 506);
 	gui[2].coinTextId = fbl_create_text(255, 255, 255, 255, "%d", 0);
-	fbl_set_text_xy(gui[2].coinTextId, 38, 499);
+	fbl_set_text_xy(gui[2].coinTextId, 38, 506);
 
 	gui[3].flagTextId = fbl_create_text(255, 255, 255, 255, "%d", 0);
-	fbl_set_text_xy(gui[3].flagTextId, 942, 499); // 912, 512
+	fbl_set_text_xy(gui[3].flagTextId, 942, 506);
 	gui[3].coinTextId = fbl_create_text(255, 255, 255, 255, "%d", 0);
-	fbl_set_text_xy(gui[3].coinTextId, 902, 499);
+	fbl_set_text_xy(gui[3].coinTextId, 902, 506);
 
 	// red and blue hp/pow rects
-	gui[0].hpRectId = fbl_create_prim(FBL_NORMAL_RECT, 33, 41, 50, 3, 0, false, true);
+	gui[0].hpRectId = fbl_create_prim(FBL_NORMAL_RECT, 33, 43, 50, 3, 0, false, true);
 	//fbl_set_prim_color(gui[0].hpRectId, 0, 237, 55, 36);
-	gui[0].powRectId = fbl_create_prim(FBL_NORMAL_RECT, 33, 51, 50, 3, 0, false, true);
+	gui[0].powRectId = fbl_create_prim(FBL_NORMAL_RECT, 33, 53, 50, 3, 0, false, true);
 	fbl_set_prim_color(gui[0].powRectId, 0, 162, 232, 255);
 
-	gui[1].hpRectId = fbl_create_prim(FBL_NORMAL_RECT, 897, 41, 50, 3, 0, false, true);
+	gui[1].hpRectId = fbl_create_prim(FBL_NORMAL_RECT, 897, 43, 50, 3, 0, false, true);
 	//fbl_set_prim_color(gui[0].hpRectId, 0, 237, 55, 36);
-	gui[1].powRectId = fbl_create_prim(FBL_NORMAL_RECT, 897, 51, 50, 3, 0, false, true);
+	gui[1].powRectId = fbl_create_prim(FBL_NORMAL_RECT, 897, 53, 50, 3, 0, false, true);
 	fbl_set_prim_color(gui[1].powRectId, 0, 162, 232, 255);
 
-	gui[2].hpRectId = fbl_create_prim(FBL_NORMAL_RECT, 33, 521, 50, 3, 0, false, true);
+	gui[2].hpRectId = fbl_create_prim(FBL_NORMAL_RECT, 33, 523, 50, 3, 0, false, true);
 	//fbl_set_prim_color(gui[0].hpRectId, 0, 237, 55, 36);
-	gui[2].powRectId = fbl_create_prim(FBL_NORMAL_RECT, 33, 531, 50, 3, 0, false, true);
+	gui[2].powRectId = fbl_create_prim(FBL_NORMAL_RECT, 33, 533, 50, 3, 0, false, true);
 	fbl_set_prim_color(gui[2].powRectId, 0, 162, 232, 255);
 
-	gui[3].hpRectId = fbl_create_prim(FBL_NORMAL_RECT, 897, 521, 50, 3, 0, false, true);
+	gui[3].hpRectId = fbl_create_prim(FBL_NORMAL_RECT, 897, 523, 50, 3, 0, false, true);
 	//fbl_set_prim_color(gui[0].hpRectId, 0, 237, 55, 36);
-	gui[3].powRectId = fbl_create_prim(FBL_NORMAL_RECT, 897, 531, 50, 3, 0, false, true);
+	gui[3].powRectId = fbl_create_prim(FBL_NORMAL_RECT, 897, 533, 50, 3, 0, false, true);
 	fbl_set_prim_color(gui[3].powRectId, 0, 162, 232, 255);
 
 }
@@ -529,7 +544,12 @@ void Maze::setOneUIbox(Stats stat, PathLogic plog, int base, int entity) {
 	double barPercentage = 0.0;
 	int barWidth = 0;
 
-	// update number of flags, coins
+	// update number of flags, coins and level
+	if (gui[base].level != stat.level) {
+		fbl_update_text(gui[base].levelTextId, 255, 255, 255, 255, "%d", stat.level);
+		gui[base].level = stat.level;
+		std::cout << "updated level text for player " << entity << std::endl;
+	}
 	if (gui[base].coins != plog.coins) {
 		fbl_update_text(gui[base].coinTextId, 255, 255, 255, 255, "%d", plog.coins);
 		gui[base].coins = plog.coins;
