@@ -59,8 +59,8 @@ void Robots::setupRobots(Coordinator* mEcs) {
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 0, 96, 32, 32, false, 0, 0, 0, 0, 7 });	// robots are on layer 7
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
 				mEcs->AddComponent(tmpRobot, Stats{ "Charmy", 1, 0, 4, 40, 30, 8, true, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
-												  // baseX Y flg coin hasFlag
-				mEcs->AddComponent(tmpRobot, PathLogic{ 0, 0, 0, 0, -1 });
+												  // baseX Y flg coin
+				mEcs->AddComponent(tmpRobot, PathLogic{ 0, 0, 0, 0 });
 												//  rid len dir ivalM ivalC hasTarg active
 				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, false });
 												// rid pid len        dir	    dmg lv  isFiring
@@ -74,8 +74,8 @@ void Robots::setupRobots(Coordinator* mEcs) {
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 32, 96, 32, 32, true, 2, 12, 0, 0, 7 });
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
 				mEcs->AddComponent(tmpRobot, Stats{ "Alarmy", 1, 0, 4, 40, 40, 6, true, 20, 19, 17, -1, -1, -1, -1, -1, -1 });
-											   // baseX Y flg coin hasFlag
-				mEcs->AddComponent(tmpRobot, PathLogic{ 0, 0, 0, 0, -1 });
+											   // baseX Y flg coin
+				mEcs->AddComponent(tmpRobot, PathLogic{ 0, 0, 0, 0 });
 												//  rid len dir ivalM ivalC hasTarg active
 				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, true });
 												// rid pid len        dir	  dmg lv isFiring
@@ -88,8 +88,8 @@ void Robots::setupRobots(Coordinator* mEcs) {
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 96, 96, 32, 32, true, 2, 12, 0, 0, 7 });
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
 				mEcs->AddComponent(tmpRobot, Stats{ "Boingy", 2, 0, 4, 30, 30, 4, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
-												  // baseX Y flg coin hasFlag
-				mEcs->AddComponent(tmpRobot, PathLogic{ 0, 0, 0, 0, -1 });
+												  // baseX Y flg coin
+				mEcs->AddComponent(tmpRobot, PathLogic{ 0, 0, 0, 0 });
 												//  rid len dir ivalM ivalC hasTarg active
 				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, true });
 												// rid pid len        dir	  dmg lv isFiring
@@ -102,8 +102,8 @@ void Robots::setupRobots(Coordinator* mEcs) {
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 160, 96, 32, 32, true, 3, 12, 0, 0, 7 });
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
 				mEcs->AddComponent(tmpRobot, Stats{ "Chompy", 2, 0, 4, 30, 30, 5, true, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
-											   // baseX Y flg coin hasFlag
-				mEcs->AddComponent(tmpRobot, PathLogic{ 0, 0, 0, 0, -1 });
+											   // baseX Y flg coin
+				mEcs->AddComponent(tmpRobot, PathLogic{ 0, 0, 0, 0 });
 												//  rid len dir ivalM ivalC hasTarg active
 				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, true });
 												// rid pid len        dir	  dmg lv isFiring

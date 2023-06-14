@@ -104,7 +104,6 @@ void LaserSystem::Update(Game& g) {
 						auto& targetSta = g.mEcs->GetComponent<Stats>(g.mRobots->mSpriteIdToEntityMap[id]);
 						targetSta.hp--;
 						if (targetSta.hp <= 0) {
-							auto& targetPlog = g.mEcs->GetComponent<PathLogic>(g.mRobots->mSpriteIdToEntityMap[id]);
 							auto& targetSpr = g.mEcs->GetComponent<Sprite>(g.mRobots->mSpriteIdToEntityMap[id]);
 							auto& targetAim = g.mEcs->GetComponent<AutoAim>(g.mRobots->mSpriteIdToEntityMap[id]);
 							Laser* targetLas = nullptr;
@@ -126,7 +125,6 @@ void LaserSystem::Update(Game& g) {
 									break;
 								}
 							}
-							targetPlog.hasFlag = Maze::FlagState::Dropped;
 							
 						}
 						//std::cout << sta.name << " killed " << targetSta.name << std::endl;

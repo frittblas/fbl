@@ -621,10 +621,6 @@ void Maze::assignPaths(Game& g) {
 		plog.baseX = pos.x;
 		plog.baseY = pos.y;
 
-		// set coins and flags to zero
-		plog.flags = 0;
-		plog.coins = 0;
-		plog.hasFlag = false;
 	}
 
 	// finally find paths for the new locations (will find immediately, maze is already in place (maze is a place))

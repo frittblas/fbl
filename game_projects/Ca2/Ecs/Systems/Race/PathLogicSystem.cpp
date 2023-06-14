@@ -35,7 +35,9 @@ void PathLogicSystem::Init(Coordinator& ecs) {
 
 		auto& plog = ecs.GetComponent<PathLogic>(entity);
 
-		plog.hasFlag = Maze::FlagState::Center;
+		// set coins and flags to zero
+		plog.flags = 0;
+		plog.coins = 0;
 
 	}
 
@@ -52,43 +54,41 @@ void PathLogicSystem::Update(Game& g) {
 		auto& path = g.mEcs->GetComponent<Path>(entity);
 		auto& plog = g.mEcs->GetComponent<PathLogic>(entity);
 		
+		int flagIndex = hasFlag(entity);
+		if (flagIndex >= 0) {
+			fbl_set_sprite_xy(gFlag[flagIndex].id, pos.x, pos.y);
+		}
+		else {
 
-		// handle flag colissions
-		for (int i = 0; i < Maze::cMaxFlags; i++) {
+			for (int i = 0; i < Maze::cMaxFlags; i++) {
 
-			if (fbl_get_sprite_collision(spr.id[0], gFlag[i].id)) {
+				// handle flag colissions
+				if (fbl_get_sprite_collision(spr.id[0], gFlag[i].id)) {
 
-				//std::cout << "collided with flag = " << std::endl;
+					std::cout << "collided with flag = " << std::endl;
 
-				// if in center or dropped (not in base or held by a robot)
-				if (gFlag[i].state == Maze::FlagState::Center || gFlag[i].state == Maze::FlagState::Dropped) {
+					// if in center or dropped (not in base or held by a robot)
+					if (gFlag[i].state == Maze::FlagState::Center || gFlag[i].state == Maze::FlagState::Dropped) {
 
-					// pick up flag
-					gFlag[i].state = entity;	// values equal to or over 0 is state == held by that robot entity
-					plog.hasFlag = gFlag[i].id;	// the hasFlag is set to the sprite index of the flag
+						// pick up flag
+						gFlag[i].state = entity;	// values equal to or over 0 is state == held by that robot entity
 
-					// set course to the base
-					path.goalX = plog.baseX;
-					path.goalY = plog.baseY;
-					path.newPath = true;
+						// set course to the base
+						path.goalX = plog.baseX;
+						path.goalY = plog.baseY;
+						path.newPath = true;
 
-					std::cout << "Picked up flag!" << std::endl;
+						std::cout << "Picked up flag!" << std::endl;
 
-					i = Maze::cMaxFlags; // break from the loop (already got a flag)
+						break; // break from the loop (already got a flag)
+
+					}
 
 				}
 
 			}
 
-			// move flags that are being held by robots
-			if (gFlag[i].state == entity) {
-
-				fbl_set_sprite_xy(gFlag[i].id, pos.x, pos.y);
-				i = Maze::cMaxFlags; // break
-			}
-
 		}
-
 		
 		// handle coin colissions
 		for (int i = 0; i < Maze::cMaxCoins; i++) {
@@ -111,11 +111,11 @@ void PathLogicSystem::Update(Game& g) {
 
 }
 
-bool PathLogicSystem::hasFlag(Entity e) {
+int PathLogicSystem::hasFlag(Entity e) {
 
 	for (int i = 0; i < Maze::cMaxFlags; i++)
-		if (gFlag[i].state == e) return true;
+		if (gFlag[i].state == e) return i;
 		
-	return false;
+	return -1;
 
 }
