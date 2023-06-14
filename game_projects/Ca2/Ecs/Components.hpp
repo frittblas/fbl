@@ -122,7 +122,7 @@ struct Stats
     uint16_t xp;            // experience points
     uint16_t nextLv;        // limit for next level
     uint8_t maxHp;          // max hp
-    uint8_t hp;             // current hp
+    float   hp;             // current hp
     uint8_t speed;          // speed
     bool diag;              // can go diagonal?
     uint8_t maxEnergy;      // max energy
@@ -139,7 +139,7 @@ struct PathLogic
     uint16_t baseX, baseY;  // the robot's base coordinates
     uint8_t  flags;         // keep track of how many flags collected
     uint8_t  coins;         // keep track of how many small coins collected
-
+    bool     isAlive;       // is the robot alive?
 };
 
 // AutoAim (consists of a invisible ray (line) and dir)
@@ -164,7 +164,7 @@ struct Laser
     uint16_t particleId;    // id for the particle emitter
     uint16_t length;        // length of the beam
     uint8_t  dir;           // in what direction are you firing? can be 0 = up, 1 = right, 2 = left, 3 = down
-    uint8_t  damage;        // damage dealt per frame
+    uint8_t  damage;        // damage dealt per frame / 10
     uint8_t  level;         // you can level up the laser.
     bool     isFiring;      // are you firing atm?
 

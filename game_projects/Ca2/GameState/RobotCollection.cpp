@@ -144,7 +144,8 @@ void RobotCollection::updateAddonInfo(Game& g, bool empty) {
 		fbl_update_text(fAddonLevel, 255, 255, 255, 0, (char*)"Level:  %d", add.level);
 		fbl_update_text(fAddonRarity, 255, 255, 255, 0, (char*)"Rarity:  %d", add.rarity);
 		fbl_update_text(fAddonPassive, 255, 255, 255, 0, (char*)"Type: %s", add.passive ? "Passive" : "Active");
-		fbl_update_text(fAddonEquipped, 255, 255, 255, 0, (char*)"Equipped:  %s", add.equippedBy != g.mAddons->Unassigned ? "Yes" : "No");
+		//fbl_update_text(fAddonEquipped, 255, 255, 255, 0, (char*)"Equipped:  %s", add.equippedBy != g.mAddons->Unassigned ? "Yes" : "No");
+		fbl_update_text(fAddonEquipped, 255, 255, 255, 0, (char*)"Equipped:  %s", add.equippedBy != notSet ? "Yes" : "No");
 		fbl_update_text(fAddonPrice, 255, 255, 255, 0, (char*)"Price:  %d", add.price);
 
 	}
@@ -267,6 +268,8 @@ void RobotCollection::equipAddon(Game& g) {
 
 					add.equippedBy = g.mRobots->mOwnedRobots[mCurrentRobotPage]; // the addon is now equipped by this robot (Entity id)
 
+					updateAddonInfo(g, false);
+
 					// check if this addon is just moved between equipped slots
 					// first set passive and active slots with a value of mSelectedAddon, to notSet, also set flag
 					bool moveSlot = false;
@@ -328,6 +331,7 @@ void RobotCollection::unEquipAddon(Game& g) {
 					if (sta.slot[i] == mSelectedAddon) sta.slot[i] = notSet;
 
 				add.equippedBy = notSet;
+				updateAddonInfo(g, false);
 				fbl_set_ui_elem_val(fUnEquipAddon, 0);	// set the ui value to 0
 
 				// update graphics

@@ -22,5 +22,6 @@ public:
 	void Init(Coordinator& ecs);
 	void Update(Game& g);
 
+	void dealDamage(Game& g, Entity attacker, Entity target);
 	void setDirection(Position& pos, Laser& las);
 };

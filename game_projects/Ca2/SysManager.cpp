@@ -122,6 +122,7 @@ void SysManager::setupEcs(Coordinator *mEcs) {
 
 	sign.reset();
 	sign.set(mEcs->GetComponentType<Position>());
+	sign.set(mEcs->GetComponentType<PathLogic>());
 	sign.set(mEcs->GetComponentType<Stats>());
 	sign.set(mEcs->GetComponentType<AutoAim>());
 	sign.set(mEcs->GetComponentType<Laser>());
