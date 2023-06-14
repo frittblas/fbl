@@ -22,6 +22,7 @@
 #include "../Ecs/Systems/CameraSystem.hpp"
 #include "../Ecs/Systems/LightSystem.hpp"
 
+#include "../Ecs/Systems/Race/PathLogicSystem.hpp"
 #include "../Ecs/Systems/Race/AutoAimSystem.hpp"
 #include "../Ecs/Systems/Race/LaserSystem.hpp"
 
@@ -252,6 +253,7 @@ void GameState::setupRace(Game& g) {
 
 	destroyAllGfx();								// remove resources (ALL sprites, prims, text, ui and emitters)
 	g.mLocation->unLoadLocation(g.mMap);			// this destroys ALL sprites
+	g.mSysManager->mPathLogicSystem->Init(*g.mEcs);	// set up path logic (flags and stuff)
 	g.mSysManager->mSpriteSystem->Init(*g.mEcs);	// create sprites for all entities with a sprite component
 	g.mSysManager->mLightSystem->Init(*g.mEcs);		// create lights for all entities with a light component
 	g.mSysManager->mAutoAimSystem->Init(*g.mEcs);	// create rays for entities with AutoAim  component.

@@ -21,5 +21,6 @@ class PathLogicSystem : public System
 public:
 	void Init(Coordinator& ecs);
 	void Update(Game& g);
+	bool hasFlag(Entity e);
 
 };

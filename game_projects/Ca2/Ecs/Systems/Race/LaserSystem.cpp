@@ -16,12 +16,16 @@
 #include "../../Ecs.hpp"
 #include "../../Components.hpp"
 
+#include "../../../GameState/Race/Maze.hpp"
+
 #include "../../../Game.hpp"
 #include "../../../Robots.hpp"
 #include "../../../Addons.hpp"
 #include "../../../Efx.hpp"	// remove this (observer pattern)
 
 #include "LaserSystem.hpp"
+
+extern Maze::aFlag gFlag[Maze::cMaxFlags];
 
 void LaserSystem::Init(Coordinator& ecs) {
 
@@ -100,6 +104,7 @@ void LaserSystem::Update(Game& g) {
 						auto& targetSta = g.mEcs->GetComponent<Stats>(g.mRobots->mSpriteIdToEntityMap[id]);
 						targetSta.hp--;
 						if (targetSta.hp <= 0) {
+							auto& targetPlog = g.mEcs->GetComponent<PathLogic>(g.mRobots->mSpriteIdToEntityMap[id]);
 							auto& targetSpr = g.mEcs->GetComponent<Sprite>(g.mRobots->mSpriteIdToEntityMap[id]);
 							auto& targetAim = g.mEcs->GetComponent<AutoAim>(g.mRobots->mSpriteIdToEntityMap[id]);
 							Laser* targetLas = nullptr;
@@ -113,6 +118,15 @@ void LaserSystem::Update(Game& g) {
 							if (targetLas) targetLas->isFiring = false;
 							Efx::getInstance().shakeCamera(20, 40);						// shake camera
 							fbl_set_emitter_active(las.particleId, false);				// turn off emitter making a cloud
+
+							// drop the flag
+							for (int j = 0; j < Maze::cMaxFlags; j++) {
+								if (gFlag[j].state == g.mRobots->mSpriteIdToEntityMap[id]) {
+									gFlag[j].state = Maze::FlagState::Dropped;
+									break;
+								}
+							}
+							targetPlog.hasFlag = Maze::FlagState::Dropped;
 							
 						}
 						//std::cout << sta.name << " killed " << targetSta.name << std::endl;
