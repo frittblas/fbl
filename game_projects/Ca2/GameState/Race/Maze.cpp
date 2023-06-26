@@ -18,14 +18,16 @@
 #include "Maze.hpp"
 
 
-Maze::aBase gBase[Maze::cMaxBases];    // the flag sprites, externed in PathLogicSystem
 Maze::aFlag gFlag[Maze::cMaxFlags];    // the flag sprites, externed in PathLogicSystem
 Maze::aCoin gCoin[Maze::cMaxCoins];	   // the coins, also externed in PathLogicSystem
 
+bool gStartingOut;	// externed in PathLogicSystem
 
 // Maze-class implementation
 
 Maze::Maze() {
+
+	gStartingOut = true;
 
 	std::cout << "Maze constructor." << std::endl;
 
@@ -49,6 +51,7 @@ void Maze::tick(Game& g) {
 			std::cout << "Picked pos: " << mPickedPosition << std::endl;
 			std::cout << "Running! Num sprites: " << fbl_get_num_sprites() << std::endl;
 			mPickTimer--;
+			gStartingOut = false;
 		}
 		else if(mPickTimer > -160)
 			mPickTimer--;
@@ -349,17 +352,12 @@ void Maze::populateMaze() {
 
 void Maze::addItems() {
 
-	// add the 4 bases
-	for (int i = 0; i < cMaxBases; i++) {
-		gFlag[i].id = fbl_create_sprite(0, 500, 11, 511, 0);
-		fbl_set_sprite_xy(gBase[i].id, cTargetX + 16, cTargetY + 16);	// drawn from the center
-		gBase[i].position = i;	// each corner of the map
-	}
 
 	// add flags in the middle
 	for (int i = 0; i < cMaxFlags; i++) {
 		gFlag[i].id = fbl_create_sprite(265, 324, 17, 24, 0);
 		fbl_set_sprite_xy(gFlag[i].id, cTargetX + 16, cTargetY + 16);	// drawn from the center
+		fbl_set_sprite_layer(gFlag[i].id, 6);
 		gFlag[i].state = FlagState::Center;	// start in the center
 	}
 
@@ -369,6 +367,7 @@ void Maze::addItems() {
 	std::cout << "numCoins: " << numCoins << std::endl;
 	for (int i = 0; i < numCoins; i++) {
 		gCoin[i].id = fbl_create_sprite(320, 288, 16, 16, 0);
+		fbl_set_sprite_layer(gCoin[i].id, 5);
 		fbl_set_sprite_animation(gCoin[i].id, true, 320, 288, 16, 16, 2, 30, true);
 		int x = 3 + rand() % (cMazeSizeX - 6);
 		int y = rand() % cMazeSizeY;
@@ -420,19 +419,19 @@ void Maze::createGUI() {
 	// 96x64 gui thing in all 4 corners
 	int id = fbl_create_sprite(416, 288, 96, 64, 0);
 	fbl_set_sprite_xy(id, 48, 32);
-	fbl_set_sprite_layer(id, 10);
+	fbl_set_sprite_layer(id, 1);
 
 	id = fbl_create_sprite(416, 288, 96, 64, 0);
 	fbl_set_sprite_xy(id, 912, 32);
-	fbl_set_sprite_layer(id, 10);
+	fbl_set_sprite_layer(id, 1);
 
 	id = fbl_create_sprite(416, 288, 96, 64, 0);
 	fbl_set_sprite_xy(id, 48, 512);
-	fbl_set_sprite_layer(id, 10);
+	fbl_set_sprite_layer(id, 1);
 
 	id = fbl_create_sprite(416, 288, 96, 64, 0);
 	fbl_set_sprite_xy(id, 912, 512);
-	fbl_set_sprite_layer(id, 10);
+	fbl_set_sprite_layer(id, 1);
 
 	// add base markers (spinning circles) top left, top right, down left, down right, draw from center
 	id = fbl_create_sprite(224, 352, 32, 32, 0);
@@ -440,28 +439,24 @@ void Maze::createGUI() {
 	fbl_set_sprite_animation(id, true, 224, 352, 32, 32, 9, 7, true);
 	fbl_set_sprite_color(id, 255, 127, 80); // coral red
 	fbl_set_sprite_alpha(id, 150);
-	fbl_set_sprite_layer(id, 0);
 
 	id = fbl_create_sprite(224, 352, 32, 32, 0);
 	fbl_set_sprite_xy(id, (cMazeSizeX - 4) * Game::TileSize + 16, 16);
 	fbl_set_sprite_animation(id, true, 224, 352, 32, 32, 9, 7, true);
 	fbl_set_sprite_color(id, 80, 200, 120); // emerald green
 	fbl_set_sprite_alpha(id, 150);
-	fbl_set_sprite_layer(id, 0);
 
 	id = fbl_create_sprite(224, 352, 32, 32, 0);
 	fbl_set_sprite_xy(id, 3 * Game::TileSize + 16, (cMazeSizeY - 1) * Game::TileSize + 16);
 	fbl_set_sprite_animation(id, true, 224, 352, 32, 32, 9, 7, true);
 	fbl_set_sprite_color(id, 0, 150, 255); // bright blue
 	fbl_set_sprite_alpha(id, 150);
-	fbl_set_sprite_layer(id, 0);
 
 	id = fbl_create_sprite(224, 352, 32, 32, 0);
 	fbl_set_sprite_xy(id, (cMazeSizeX - 4) * Game::TileSize + 16, (cMazeSizeY - 1) * Game::TileSize + 16);
 	fbl_set_sprite_animation(id, true, 224, 352, 32, 32, 9, 7, true);
 	fbl_set_sprite_color(id, 251, 236, 93); // nice yellow
 	fbl_set_sprite_alpha(id, 150);
-	fbl_set_sprite_layer(id, 0);
 
 	fbl_sort_sprites(FBL_SORT_BY_LAYER);
 

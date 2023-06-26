@@ -27,6 +27,7 @@
 
 extern Maze::aFlag gFlag[Maze::cMaxFlags];	// externed from Maze.cpp
 extern Maze::aCoin gCoin[Maze::cMaxCoins];
+extern bool gStartingOut;
 
 void PathLogicSystem::Init(Coordinator& ecs) {
 
@@ -141,6 +142,8 @@ void PathLogicSystem::handleBases(Entity e, Position& pos, Sprite& spr, Path& pa
 	if (pos.x < (plog.baseX + 10) && pos.x > (plog.baseX - 10) &&
 		pos.y < (plog.baseY + 10) && pos.y > (plog.baseY - 10)) {
 
+		//std::cout << "Collided with da base!" << std::endl;
+
 		int flagIndex = hasFlag(e);
 		if (flagIndex >= 0) {
 			plog.flags++;
@@ -149,14 +152,20 @@ void PathLogicSystem::handleBases(Entity e, Position& pos, Sprite& spr, Path& pa
 			std::cout << "Dropped flag in base!" << std::endl;
 		}
 
-		path.goalX = 15 * 32;
-		path.goalY = 8  * 32;
-		path.newPath = true;
-
-		std::cout << "Heading out from base!" << std::endl;
-
-		//fbl_pathf_set_path_status(path.id, FBL_PATHF_NOT_STARTED);
+		if (!gStartingOut) {
+			path.goalX = 15 * 32;
+			path.goalY = 8 * 32;
+			path.newPath = true;
+			std::cout << "Heading out from base!" << std::endl;
+		}
 
 	}
+
+
+}
+
+void PathLogicSystem::findClosestFlag(Entity e, Position& pos, Sprite& spr, Path& path, PathLogic& plog) {
+
+
 
 }

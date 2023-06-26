@@ -37,14 +37,8 @@ public:
     static const int cTargetX = 15 * 32; //Game::TileSize;
     static const int cTargetY = 8 * 32;  //Game::TileSize;
 
-    static const int cMaxBases = 4;      // max nmber of bases in a level
     static const int cMaxFlags = 10;     // max nmber of flags in a level
     static const int cMaxCoins = 20;     // max nmber of coins in a level
-
-    struct aBase {
-        int16_t  id;        // sprite id
-        uint8_t  position;  // 0 = top left, 1 = top right, 3 down left, 3 = down right
-    };
 
     struct aFlag {
         int16_t  id;      // sprite id
