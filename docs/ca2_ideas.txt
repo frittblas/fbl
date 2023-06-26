@@ -221,6 +221,8 @@ Robots can level up and gain HP, speed, energy, diag, mousectrl
 
 6. create hasComponent function? yes :) - Done!
 
+7. add story slime (green), info slime (yellow) and race-slime (red)
+
 BUGS:
 
 1. If you create an emitter before the first weather-call in Game.cpp, the fbl_set_lighting_tint() doesn't work!

@@ -25,7 +25,7 @@
 
 #include "PathLogicSystem.hpp"
 
-extern Maze::aFlag gFlag[Maze::cMaxFlags];
+extern Maze::aFlag gFlag[Maze::cMaxFlags];	// externed from Maze.cpp
 extern Maze::aCoin gCoin[Maze::cMaxCoins];
 
 void PathLogicSystem::Init(Coordinator& ecs) {
@@ -54,56 +54,49 @@ void PathLogicSystem::Update(Game& g) {
 		auto& path = g.mEcs->GetComponent<Path>(entity);
 		auto& plog = g.mEcs->GetComponent<PathLogic>(entity);
 		
-		int flagIndex = hasFlag(entity);
-		if (flagIndex >= 0) {
-			fbl_set_sprite_xy(gFlag[flagIndex].id, pos.x, pos.y);
-		}
-		else {
 
-			for (int i = 0; i < Maze::cMaxFlags; i++) {
+		handleFlags(entity, pos, spr, path, plog);
+		handleCoins(entity, spr, plog);
+		handleBases(entity, pos, spr, path, plog);
 
-				// handle flag colissions
-				if (fbl_get_sprite_collision(spr.id[0], gFlag[i].id)) {
+	}
 
-					std::cout << "collided with flag = " << std::endl;
+}
 
-					// if in center or dropped (not in base or held by a robot)
-					if (gFlag[i].state == Maze::FlagState::Center || gFlag[i].state == Maze::FlagState::Dropped) {
+void PathLogicSystem::handleFlags(Entity e, Position& pos, Sprite& spr, Path& path, PathLogic& plog) {
 
-						// pick up flag
-						gFlag[i].state = entity;	// values equal to or over 0 is state == held by that robot entity
+	// if the current robot has a flag, let the flag follow the robot, otherwise check for flag collisions
+	int flagIndex = hasFlag(e);
+	if (flagIndex >= 0) {
+		fbl_set_sprite_xy(gFlag[flagIndex].id, pos.x, pos.y);
+	}
+	else {
 
-						// set course to the base
-						path.goalX = plog.baseX;
-						path.goalY = plog.baseY;
-						path.newPath = true;
+		for (int i = 0; i < Maze::cMaxFlags; i++) {
 
-						std::cout << "Picked up flag!" << std::endl;
+			// handle flag colissions
+			if (fbl_get_sprite_collision(spr.id[0], gFlag[i].id)) {
 
-						break; // break from the loop (already got a flag)
+				std::cout << "collided with flag = " << i <<std::endl;
 
-					}
+				// if in center or dropped (not in base or held by a robot)
+				if (gFlag[i].state == Maze::FlagState::Center || gFlag[i].state == Maze::FlagState::Dropped) {
+
+					// pick up flag
+					gFlag[i].state = e;	// values equal to or over 0 is state == held by that robot entity
+
+					// set course to the base
+					path.goalX = plog.baseX;
+					path.goalY = plog.baseY;
+					path.newPath = true;
+
+					std::cout << "Picked up flag!" << std::endl;
+
+					break; // break from the loop (already got a flag)
 
 				}
 
 			}
-
-		}
-		
-		// handle coin colissions
-		for (int i = 0; i < Maze::cMaxCoins; i++) {
-
-			if (gCoin[i].id != -1) {
-				if (fbl_get_sprite_collision(spr.id[0], gCoin[i].id)) {
-
-					fbl_set_sprite_active(gCoin[i].id, false);
-					gCoin[i].id = -1;
-					plog.coins++;
-					fbl_log("player %d has %d coins.", entity, plog.coins);
-
-				}
-			}
-
 
 		}
 
@@ -117,5 +110,53 @@ int PathLogicSystem::hasFlag(Entity e) {
 		if (gFlag[i].state == e) return i;
 		
 	return -1;
+
+}
+
+void PathLogicSystem::handleCoins(Entity e, Sprite& spr, PathLogic& plog) {
+
+	// handle coin colissions
+	for (int i = 0; i < Maze::cMaxCoins; i++) {
+
+		if (gCoin[i].id != -1) {
+			if (fbl_get_sprite_collision(spr.id[0], gCoin[i].id)) {
+
+				fbl_set_sprite_active(gCoin[i].id, false);
+				gCoin[i].id = -1;
+				plog.coins++;
+				fbl_log("player %d has %d coins.", e, plog.coins);
+
+			}
+		}
+
+	}
+
+}
+
+void PathLogicSystem::handleBases(Entity e, Position& pos, Sprite& spr, Path& path, PathLogic& plog) {
+
+	// if a robot collides with it's base, drop any flags carried, charge the battery and set out for nearest flag
+
+	// check to see if a robot has collided with a 20x20 square around the base coords.
+	if (pos.x < (plog.baseX + 10) && pos.x > (plog.baseX - 10) &&
+		pos.y < (plog.baseY + 10) && pos.y > (plog.baseY - 10)) {
+
+		int flagIndex = hasFlag(e);
+		if (flagIndex >= 0) {
+			plog.flags++;
+			fbl_set_sprite_active(gFlag[flagIndex].id, false);
+			gFlag[flagIndex].state = Maze::FlagState::Base;
+			std::cout << "Dropped flag in base!" << std::endl;
+		}
+
+		path.goalX = 15 * 32;
+		path.goalY = 8  * 32;
+		path.newPath = true;
+
+		std::cout << "Heading out from base!" << std::endl;
+
+		//fbl_pathf_set_path_status(path.id, FBL_PATHF_NOT_STARTED);
+
+	}
 
 }

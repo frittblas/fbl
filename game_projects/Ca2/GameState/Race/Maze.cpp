@@ -18,6 +18,7 @@
 #include "Maze.hpp"
 
 
+Maze::aBase gBase[Maze::cMaxBases];    // the flag sprites, externed in PathLogicSystem
 Maze::aFlag gFlag[Maze::cMaxFlags];    // the flag sprites, externed in PathLogicSystem
 Maze::aCoin gCoin[Maze::cMaxCoins];	   // the coins, also externed in PathLogicSystem
 
@@ -348,6 +349,13 @@ void Maze::populateMaze() {
 
 void Maze::addItems() {
 
+	// add the 4 bases
+	for (int i = 0; i < cMaxBases; i++) {
+		gFlag[i].id = fbl_create_sprite(0, 500, 11, 511, 0);
+		fbl_set_sprite_xy(gBase[i].id, cTargetX + 16, cTargetY + 16);	// drawn from the center
+		gBase[i].position = i;	// each corner of the map
+	}
+
 	// add flags in the middle
 	for (int i = 0; i < cMaxFlags; i++) {
 		gFlag[i].id = fbl_create_sprite(265, 324, 17, 24, 0);
@@ -426,7 +434,7 @@ void Maze::createGUI() {
 	fbl_set_sprite_xy(id, 912, 512);
 	fbl_set_sprite_layer(id, 10);
 
-	// add base markers (spinning circles) topleft, top right, down left, down right, draw from center
+	// add base markers (spinning circles) top left, top right, down left, down right, draw from center
 	id = fbl_create_sprite(224, 352, 32, 32, 0);
 	fbl_set_sprite_xy(id, 3 * Game::TileSize + 16, 16);
 	fbl_set_sprite_animation(id, true, 224, 352, 32, 32, 9, 7, true);

@@ -21,11 +21,11 @@
 #include "../../../Game.hpp"
 #include "../../../Robots.hpp"
 #include "../../../Addons.hpp"
-#include "../../../Efx.hpp"	// remove this (observer pattern)
+#include "../../../Efx.hpp"	// remove this (use observer pattern instead :)
 
 #include "LaserSystem.hpp"
 
-extern Maze::aFlag gFlag[Maze::cMaxFlags];
+extern Maze::aFlag gFlag[Maze::cMaxFlags]; // externed from Maze.cpp
 
 void LaserSystem::Init(Coordinator& ecs) {
 
