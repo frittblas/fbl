@@ -166,6 +166,33 @@ void PathLogicSystem::handleBases(Entity e, Position& pos, Sprite& spr, Path& pa
 
 void PathLogicSystem::findClosestFlag(Entity e, Position& pos, Sprite& spr, Path& path, PathLogic& plog) {
 
+	bool noFlagsAvailable = true;
+	int flagX, flagY;
+	int shortestDistance = 1000;	// start with a very high number
 
+	// check the distance to all the flags and pick the shortest path.
+
+	for (int i = 0; i < Maze::cMaxFlags; i++) {
+		
+		// are any flags dropped?
+		if (gFlag[i].state == Maze::FlagState::Dropped) {
+
+			noFlagsAvailable = true;
+
+			flagX = fbl_get_sprite_x(gFlag[i].id);
+			flagY = fbl_get_sprite_y(gFlag[i].id);
+
+		}
+
+	}
+
+	if(noFlagsAvailable) {
+
+		// if no flags available, set course to the base
+		path.goalX = plog.baseX;
+		path.goalY = plog.baseY;
+		path.newPath = true;
+
+	}
 
 }
