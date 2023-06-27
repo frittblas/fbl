@@ -140,6 +140,7 @@ struct PathLogic
     uint8_t  flags;         // keep track of how many flags collected
     uint8_t  coins;         // keep track of how many small coins collected
     bool     isAlive;       // is the robot alive?
+
 };
 
 // AutoAim (consists of a invisible ray (line) and dir)

@@ -21,7 +21,7 @@
 Maze::aFlag gFlag[Maze::cMaxFlags];    // the flag sprites, externed in PathLogicSystem
 Maze::aCoin gCoin[Maze::cMaxCoins];	   // the coins, also externed in PathLogicSystem
 
-bool gStartingOut;	// externed in PathLogicSystem
+bool gStartingOut;	// externed in PathLogicSystem, takes waiting 2 secs into consideration (before the race starts)
 
 // Maze-class implementation
 

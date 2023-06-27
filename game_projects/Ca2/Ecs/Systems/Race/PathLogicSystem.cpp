@@ -25,9 +25,10 @@
 
 #include "PathLogicSystem.hpp"
 
-extern Maze::aFlag gFlag[Maze::cMaxFlags];	// externed from Maze.cpp
+extern Maze::aFlag gFlag[Maze::cMaxFlags];	// from Maze.cpp
 extern Maze::aCoin gCoin[Maze::cMaxCoins];
 extern bool gStartingOut;
+extern bool gUpdatePaths;	// from Laser.cpp
 
 void PathLogicSystem::Init(Coordinator& ecs) {
 
@@ -62,6 +63,8 @@ void PathLogicSystem::Update(Game& g) {
 
 	}
 
+	updatePaths(g);
+
 }
 
 void PathLogicSystem::handleFlags(Entity e, Position& pos, Sprite& spr, Path& path, PathLogic& plog) {
@@ -91,7 +94,9 @@ void PathLogicSystem::handleFlags(Entity e, Position& pos, Sprite& spr, Path& pa
 					path.goalY = plog.baseY;
 					path.newPath = true;
 
-					std::cout << "Picked up flag!" << std::endl;
+					std::cout << "Picked up flag! entity: " << e << std::endl;
+
+					gUpdatePaths = true;	// the other robots may need to find new path now.
 
 					break; // break from the loop (already got a flag)
 
@@ -125,7 +130,7 @@ void PathLogicSystem::handleCoins(Entity e, Sprite& spr, PathLogic& plog) {
 				fbl_set_sprite_active(gCoin[i].id, false);
 				gCoin[i].id = -1;
 				plog.coins++;
-				fbl_log("player %d has %d coins.", e, plog.coins);
+				std::cout << "Player " << e << " has " << (int)plog.coins << std::endl;
 
 			}
 		}
@@ -149,14 +154,12 @@ void PathLogicSystem::handleBases(Entity e, Position& pos, Sprite& spr, Path& pa
 			plog.flags++;
 			fbl_set_sprite_active(gFlag[flagIndex].id, false);
 			gFlag[flagIndex].state = Maze::FlagState::Base;
-			std::cout << "Dropped flag in base!" << std::endl;
+			std::cout << "Dropped flag in base! entity: " << e << std::endl;
 		}
 
 		if (!gStartingOut) {
-			path.goalX = 15 * 32;
-			path.goalY = 8 * 32;
-			path.newPath = true;
-			std::cout << "Heading out from base!" << std::endl;
+			findClosestFlag(pos, path, plog);
+			std::cout << "Heading out from base! entity: " << e << std::endl;
 		}
 
 	}
@@ -164,34 +167,84 @@ void PathLogicSystem::handleBases(Entity e, Position& pos, Sprite& spr, Path& pa
 
 }
 
-void PathLogicSystem::findClosestFlag(Entity e, Position& pos, Sprite& spr, Path& path, PathLogic& plog) {
+void PathLogicSystem::findClosestFlag(Position& pos, Path& path, PathLogic& plog) {
 
-	bool noFlagsAvailable = true;
+	bool flagsAvailable = false;
 	int flagX, flagY;
 	int shortestDistance = 1000;	// start with a very high number
+	int nearestFlagId;
 
-	// check the distance to all the flags and pick the shortest path.
+	// first check the distance to all the dropped (if any) flags and pick the shortest path.
 
 	for (int i = 0; i < Maze::cMaxFlags; i++) {
 		
 		// are any flags dropped?
-		if (gFlag[i].state == Maze::FlagState::Dropped) {
+		if (gFlag[i].state == Maze::FlagState::Center || gFlag[i].state == Maze::FlagState::Dropped) {
 
-			noFlagsAvailable = true;
+			flagsAvailable = true;
 
 			flagX = fbl_get_sprite_x(gFlag[i].id);
 			flagY = fbl_get_sprite_y(gFlag[i].id);
+
+			fbl_pathf_set_path_status(path.id, fbl_pathf_find_path(path.id, pos.x, pos.y, flagX, flagY, path.diag));
+
+			int pathLen = fbl_pathf_get_path_length(path.id);
+
+			if (pathLen < shortestDistance) {
+				shortestDistance = pathLen;	// update this
+				nearestFlagId = i;
+			}
+
+			//std::cout << "Distance to dropped flag: " << pathLen << std::endl;
 
 		}
 
 	}
 
-	if(noFlagsAvailable) {
+	if (flagsAvailable) {
+
+		path.goalX = fbl_get_sprite_x(gFlag[nearestFlagId].id);
+		path.goalY = fbl_get_sprite_y(gFlag[nearestFlagId].id);
+		path.newPath = true;
+
+	}
+
+	if(!flagsAvailable) {
 
 		// if no flags available, set course to the base
 		path.goalX = plog.baseX;
 		path.goalY = plog.baseY;
 		path.newPath = true;
+
+	}
+
+}
+
+void PathLogicSystem::updatePaths(Game& g) {
+
+	if (gUpdatePaths) {
+
+		for (auto const& entity : mEntities)
+		{
+
+			auto& pos = g.mEcs->GetComponent<Position>(entity);
+			auto& path = g.mEcs->GetComponent<Path>(entity);
+			auto& plog = g.mEcs->GetComponent<PathLogic>(entity);
+
+			// this only applies to robots that are not carrying a flag
+			int flagIndex = hasFlag(entity);
+			if (flagIndex < 0) {
+
+				findClosestFlag(pos, path, plog);
+
+				std::cout << "New path for robot-entity: " << entity << std::endl;
+
+			}
+
+
+		}
+
+		gUpdatePaths = false;
 
 	}
 

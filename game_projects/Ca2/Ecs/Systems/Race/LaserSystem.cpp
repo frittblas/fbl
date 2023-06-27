@@ -25,6 +25,8 @@
 
 #include "LaserSystem.hpp"
 
+bool gUpdatePaths = false;	// externed in PathLogicSystem
+
 extern Maze::aFlag gFlag[Maze::cMaxFlags]; // externed from Maze.cpp
 
 void LaserSystem::Init(Coordinator& ecs) {
@@ -148,6 +150,7 @@ void LaserSystem::dealDamage(Game &g, Entity attacker, Entity target) {
 				for (int j = 0; j < Maze::cMaxFlags; j++) {
 					if (gFlag[j].state == target) {
 						gFlag[j].state = Maze::FlagState::Dropped;
+						gUpdatePaths = true;
 						break;
 					}
 				}
