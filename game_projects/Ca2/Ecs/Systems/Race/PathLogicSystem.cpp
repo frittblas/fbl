@@ -159,7 +159,7 @@ void PathLogicSystem::handleBases(Entity e, Position& pos, Sprite& spr, Path& pa
 
 		if (!gStartingOut) {
 			findClosestFlag(pos, path, plog);
-			std::cout << "Heading out from base! entity: " << e << std::endl;
+			//std::cout << "Heading out from base! entity: " << e << std::endl;
 		}
 
 	}
@@ -178,7 +178,7 @@ void PathLogicSystem::findClosestFlag(Position& pos, Path& path, PathLogic& plog
 
 	for (int i = 0; i < Maze::cMaxFlags; i++) {
 		
-		// are any flags dropped?
+		// are any flags available?
 		if (gFlag[i].state == Maze::FlagState::Center || gFlag[i].state == Maze::FlagState::Dropped) {
 
 			flagsAvailable = true;
@@ -235,7 +235,9 @@ void PathLogicSystem::updatePaths(Game& g) {
 			int flagIndex = hasFlag(entity);
 			if (flagIndex < 0) {
 
-				findClosestFlag(pos, path, plog);
+				// update paths for robots without a MouseCtrl component
+				if(!g.mEcs->HasComponent<MouseCtrl>(entity))
+					findClosestFlag(pos, path, plog);
 
 				std::cout << "New path for robot-entity: " << entity << std::endl;
 

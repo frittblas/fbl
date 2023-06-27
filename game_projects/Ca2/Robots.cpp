@@ -58,7 +58,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 0, 96, 32, 32, false, 0, 0, 0, 0, 7 });	// robots are on layer 7
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
-				mEcs->AddComponent(tmpRobot, Stats{ "Charmy", 1, 0, 4, 40, 30, 8, true, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
+				mEcs->AddComponent(tmpRobot, Stats{ "Charmy", 1, 0, 4, 50, 30, 8, true, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
 												  // baseX Y flg coin alive
 				mEcs->AddComponent(tmpRobot, PathLogic{ 0, 0, 0, 0, true });
 												//  rid len dir ivalM ivalC hasTarg active
@@ -107,7 +107,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 												//  rid len dir ivalM ivalC hasTarg active
 				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, true });
 												// rid pid len        dir	  dmg lv isFiring
-				mEcs->AddComponent(tmpRobot, Laser{ 0, 0, 800, Addons::Dir::Up, 15, 1, false });
+				mEcs->AddComponent(tmpRobot, Laser{ 0, 0, 800, Addons::Dir::Up, 5, 1, false });
 												// id  tx  ty   w    h  scale
 				mEcs->AddComponent(tmpRobot, Light{ 0, 384, 0, 128, 128, 2.0 });
 				break;
