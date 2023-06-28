@@ -26,6 +26,7 @@
 #include "Ecs/Systems/Race/PathLogicSystem.hpp"
 #include "Ecs/Systems/Race/AutoAimSystem.hpp"
 #include "Ecs/Systems/Race/LaserSystem.hpp"
+#include "Ecs/Systems/Race/MagnetSystem.hpp"
 
 // SysManager-class implementation
 
@@ -60,6 +61,7 @@ void SysManager::setupEcs(Coordinator *mEcs) {
 	mEcs->RegisterComponent<PathLogic>();
 	mEcs->RegisterComponent<AutoAim>();
 	mEcs->RegisterComponent<Laser>();
+	mEcs->RegisterComponent<Magnet>();
 
 	// register systems
 	mSpriteSystem = mEcs->RegisterSystem<SpriteSystem>();
@@ -73,6 +75,7 @@ void SysManager::setupEcs(Coordinator *mEcs) {
 	mPathLogicSystem = mEcs->RegisterSystem<PathLogicSystem>();
 	mAutoAimSystem = mEcs->RegisterSystem<AutoAimSystem>();
 	mLaserSystem = mEcs->RegisterSystem<LaserSystem>();
+	mMagnetSystem = mEcs->RegisterSystem<MagnetSystem>();
 
 	// set up what components the systems require
 	Signature sign;
@@ -127,5 +130,10 @@ void SysManager::setupEcs(Coordinator *mEcs) {
 	sign.set(mEcs->GetComponentType<AutoAim>());
 	sign.set(mEcs->GetComponentType<Laser>());
 	mEcs->SetSystemSignature<LaserSystem>(sign);
+
+	sign.reset();
+	sign.set(mEcs->GetComponentType<Position>());
+	sign.set(mEcs->GetComponentType<Magnet>());
+	mEcs->SetSystemSignature<MagnetSystem>(sign);
 
 }

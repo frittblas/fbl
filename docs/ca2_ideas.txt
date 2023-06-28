@@ -217,7 +217,7 @@ When you buy a robot, all the addons are removed.
 
 Robots can level up and gain HP, speed, energy, diag, mousectrl
 
-5. Use observer pattern to handle sfx, screen shake etc.
+5. Use observer pattern to handle sfx, screen shake etc. MAYBE NEXT TIME :)
 
 6. create hasComponent function? yes :) - Done!
 
@@ -232,3 +232,6 @@ Really  weird, probably something simple. (Test if this is still relevant, might
 
 3. if a robot dies, the next time you play the autoaim is gone! if it's the player you can get it back by re equipping.
    (it's because the autoaim.active is turned off!)
+
+4. when robots get a new path they sometimes cut corners very aggressively, sometimes even going completely through a block!
+	Could this be bc they are halfway into a tile and gets a new path. Test it out.

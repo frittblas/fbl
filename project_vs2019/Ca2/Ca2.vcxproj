@@ -145,6 +145,7 @@
     <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\PathSystem.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\Race\AutoAimSystem.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\Race\LaserSystem.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\Race\MagnetSystem.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\Race\PathLogicSystem.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\SpriteSystem.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\Efx.cpp" />
@@ -198,6 +199,7 @@
     <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\PathSystem.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\Race\AutoAimSystem.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\Race\LaserSystem.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\Race\MagnetSystem.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\Race\PathLogicSystem.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\SpriteSystem.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\Ecs\Types.hpp" />

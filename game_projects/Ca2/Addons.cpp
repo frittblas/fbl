@@ -71,7 +71,7 @@ void Addons::setupAddons(Coordinator* mEcs) {
 
 		}
 
-		// add the entity to the array containing all robots
+		// add the entity to the array containing all addons
 		mAllAddons[i] = tmpAddon;
 
 	}

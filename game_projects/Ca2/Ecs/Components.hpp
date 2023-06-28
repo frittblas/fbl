@@ -171,13 +171,13 @@ struct Laser
 
 };
 
-// Magnet (attracts coins and energy)
+// Magnet (attracts coins)
 struct Magnet
 {
 
     uint16_t spriteId;      // id for the magnetic effect sprite
-    uint16_t strength;      // length of the beam
-    uint8_t  level;         // you can level up the laser.
-    bool     isPulling;     // are you firing atm?
+    uint16_t strength;      // strength of the magnet (distance to coin pulling effectish)
+    uint8_t  level;         // you can level up the magnet.
+    bool     isPulling;     // is the magnet pulling in coins atm?
 
 };

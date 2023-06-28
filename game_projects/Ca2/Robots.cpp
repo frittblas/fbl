@@ -142,6 +142,8 @@ void Robots::addAddonComponent(Coordinator* mEcs, Entity robot, uint8_t addonTyp
 			mEcs->AddComponent(robot, Laser{ 0, 0, 800, Addons::Dir::Up, 15, 1, false });
 			break;
 		case Addons::Magnet:
+										  // sid str lv pull
+			mEcs->AddComponent(robot, Magnet{ 0, 132, 1, false });
 			break;
 
 	}
@@ -163,6 +165,7 @@ void Robots::removeAddonComponent(Coordinator* mEcs, Entity robot, uint8_t addon
 			mEcs->RemoveComponent<Laser>(robot);
 			break;
 		case Addons::Magnet:
+			mEcs->RemoveComponent<Magnet>(robot);
 			break;
 
 	}

@@ -27,6 +27,7 @@
 #include "../../Ecs/Systems/Race/PathLogicSystem.hpp"
 #include "../../Ecs/Systems/Race/AutoAimSystem.hpp"
 #include "../../Ecs/Systems/Race/LaserSystem.hpp"
+#include "../../Ecs/Systems/Race/MagnetSystem.hpp"
 
 #include "../../Chars.hpp"
 #include "../../Weather.hpp"
@@ -89,7 +90,7 @@ void Race::assignRobots(Game& g) {
 		float speed = (float)sta.speed / 10;
 		uint8_t diag = sta.diag ? FBL_PATHF_USE_DIAG : FBL_PATHF_NO_DIAG;
 															// id gX gY newPath speed diag pixelsPerFrame
-		g.mEcs->AddComponent(g.mRobots->mRacingRobots[i], Path{ 0, 0, 0, false, speed, diag, 10 }); // last param should be 10 if you wanna use speed
+		g.mEcs->AddComponent(g.mRobots->mRacingRobots[i], Path{ 0, 0, 0, false, speed, diag, 1 }); // last param should be 10 if you wanna use speed
 
 		// add mousectrl to a robot IF it has the skill!!!! (just testing now)
 				    												  // clicked
@@ -127,6 +128,7 @@ void Race::tick(Game& g) {
 	g.mSysManager->mPathLogicSystem->Update(g);				// update the PathLogic system
 	g.mSysManager->mAutoAimSystem->Update(g);				// update the AutoAim system
 	g.mSysManager->mLaserSystem->Update(g);					// update the Laser system
+	g.mSysManager->mMagnetSystem->Update(g);				// update the Magnet system
 
 	//g.mWeather->tick();
 
