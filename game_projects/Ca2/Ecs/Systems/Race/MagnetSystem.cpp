@@ -72,7 +72,7 @@ void MagnetSystem::Update(Game& g) {
 					int cx = fbl_get_sprite_x(gCoin[i].id);
 					int cy = fbl_get_sprite_y(gCoin[i].id);
 
-					if (distance(pos.x + 16, pos.y + 16, cx, cy) < mag.strength + 132) {
+					if (distance(pos.x + 16, pos.y + 16, cx, cy) < mag.strength + 2) {
 
 						if (cx < pos.x + 16) fbl_set_sprite_xy(gCoin[i].id, cx + 1, cy);
 						if (cx > pos.x + 16) fbl_set_sprite_xy(gCoin[i].id, cx - 1, cy);

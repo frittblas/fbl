@@ -143,7 +143,7 @@ void Robots::addAddonComponent(Coordinator* mEcs, Entity robot, uint8_t addonTyp
 			break;
 		case Addons::Magnet:
 										  // sid str lv pull
-			mEcs->AddComponent(robot, Magnet{ 0, 32, 1, false });
+			mEcs->AddComponent(robot, Magnet{ 0, 64, 1, false });
 			break;
 
 	}
