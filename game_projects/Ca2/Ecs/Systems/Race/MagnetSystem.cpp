@@ -27,6 +27,8 @@
 #include "MagnetSystem.hpp"
 
 extern Maze::aCoin gCoin[Maze::cMaxCoins];	// from Maze.cpp
+extern bool gStartingOut;
+//int pointId;
 
 void MagnetSystem::Init(Coordinator& ecs) {
 
@@ -38,9 +40,12 @@ void MagnetSystem::Init(Coordinator& ecs) {
 		// create the magnetic effect sprite
 		mag.spriteId = fbl_create_sprite(255, 0, 64, 64, 0);
 		fbl_set_sprite_animation(mag.spriteId, true, 255, 0, 64, 64, 2, 15, true);
+		fbl_set_sprite_layer(mag.spriteId, 8);	// on top of robots
 		fbl_set_sprite_active(mag.spriteId, false);		// set the sprite to off to begin with
 
 	}
+
+	//pointId = fbl_create_prim(FBL_CIRCLE, 0, 0, 0, 0, 5, false, true);
 
 	std::cout << "Magnet component system initialized!" << std::endl;
 
@@ -51,36 +56,51 @@ void MagnetSystem::Update(Game& g) {
 	for (auto const& entity : mEntities)
 	{
 		auto& pos = g.mEcs->GetComponent<Position>(entity);
+		auto& sta = g.mEcs->GetComponent<Stats>(entity);
 		auto& mag = g.mEcs->GetComponent<Magnet>(entity);
 		
+		bool isClose = false;
 
-		// check if any coins are in within the "strength" param and attract them to the player
+		// check if any coins are in within the "strength" (distance in pixels) param and attract them to the player
 		
-		for (int i = 0; i < Maze::cMaxCoins; i++) {
-		
-			if (gCoin[i].id != -1) {
+		if (sta.hp > 0 && !gStartingOut) {
 
-				int cx = fbl_get_sprite_x(gCoin[i].id);
-				int cy = fbl_get_sprite_y(gCoin[i].id);
+			for (int i = 0; i < Maze::cMaxCoins; i++) {
 
-				if (distance(pos.x + 16, pos.y + 16, cx + 8, cy + 8) < mag.strength) {
+				if (gCoin[i].id != -1) {
 
-					if (cx + 8 < pos.x + 16) fbl_set_sprite_xy(gCoin[i].id, cx + 1, cy);
-					if (cx + 8 > pos.x + 16) fbl_set_sprite_xy(gCoin[i].id, cx - 1, cy);
-					if (cy + 8 < pos.y + 16) fbl_set_sprite_xy(gCoin[i].id, fbl_get_sprite_x(gCoin[i].id), cy + 1);
-					if (cy + 8 > pos.y + 16) fbl_set_sprite_xy(gCoin[i].id, fbl_get_sprite_x(gCoin[i].id), cy - 1);
+					int cx = fbl_get_sprite_x(gCoin[i].id);
+					int cy = fbl_get_sprite_y(gCoin[i].id);
 
-					std::cout << "Magnet active! distance: " << distance(pos.x + 16, pos.y + 16, cx + 8, cy + 8) << std::endl;
+					if (distance(pos.x + 16, pos.y + 16, cx, cy) < mag.strength + 132) {
 
+						if (cx < pos.x + 16) fbl_set_sprite_xy(gCoin[i].id, cx + 1, cy);
+						if (cx > pos.x + 16) fbl_set_sprite_xy(gCoin[i].id, cx - 1, cy);
+						if (cy < pos.y + 16) fbl_set_sprite_xy(gCoin[i].id, fbl_get_sprite_x(gCoin[i].id), cy + 1);
+						if (cy > pos.y + 16) fbl_set_sprite_xy(gCoin[i].id, fbl_get_sprite_x(gCoin[i].id), cy - 1);
+
+						//std::cout << "Magnet active! distance: " << distance(pos.x + 16, pos.y + 16, cx, cy) << std::endl;
+
+						isClose = true;
+
+					}
 
 				}
 
 			}
-		
+
+			if (isClose) {
+				fbl_set_sprite_xy(mag.spriteId, pos.x + 16, pos.y + 16);
+				fbl_set_sprite_active(mag.spriteId, true);
+			}
+			else fbl_set_sprite_active(mag.spriteId, false);
+
 		}
+		else fbl_set_sprite_active(mag.spriteId, false);
 		
 
 	}
+
 	
 }
 
