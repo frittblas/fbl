@@ -61,7 +61,7 @@ void MagnetSystem::Update(Game& g) {
 		
 		bool isClose = false;
 
-		// check if any coins are in within the "strength" (distance in pixels) param and attract them to the player
+		// check if any coins are in within the "strength" (distance in pixels) param and attract them to the player.
 		
 		if (sta.hp > 0 && !gStartingOut) {
 
