@@ -125,6 +125,7 @@ void LaserSystem::dealDamage(Game &g, Entity attacker, Entity target) {
 
 			auto& attackLas = g.mEcs->GetComponent<Laser>(attacker);
 			auto& targetSta = g.mEcs->GetComponent<Stats>(target);
+			auto& light = g.mEcs->GetComponent<Light>(target);
 
 			targetSta.hp -= static_cast<double>(attackLas.damage) / 10;
 
@@ -140,6 +141,7 @@ void LaserSystem::dealDamage(Game &g, Entity attacker, Entity target) {
 				targetSta.hp = 0;	// keep hp at 0
 				fbl_set_sprite_active(targetSpr.id[0], false);				// turn off sprite (dead)
 				fbl_set_sprite_phys(targetSpr.id[0], false, 0, 0, false);	// turn off ray colission
+				fbl_set_sprite_active(light.id, false);						// turn off the light sprite (dead)
 				fbl_set_prim_active(targetAim.rayId, false);				// turn off the aim prim
 				targetAim.active = false;									// can't target people when dead
 				if (targetLas) targetLas->isFiring = false;

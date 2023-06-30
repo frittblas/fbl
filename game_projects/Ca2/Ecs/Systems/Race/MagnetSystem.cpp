@@ -19,16 +19,11 @@
 #include "../../../GameState/Race/Maze.hpp"
 
 #include "../../../Game.hpp"
-/*
-#include "../../../Robots.hpp"
-#include "../../../Addons.hpp"
-#include "../../../Efx.hpp"
-*/
+
 #include "MagnetSystem.hpp"
 
 extern Maze::aCoin gCoin[Maze::cMaxCoins];	// from Maze.cpp
 extern bool gStartingOut;
-//int pointId;
 
 void MagnetSystem::Init(Coordinator& ecs) {
 
@@ -45,7 +40,6 @@ void MagnetSystem::Init(Coordinator& ecs) {
 
 	}
 
-	//pointId = fbl_create_prim(FBL_CIRCLE, 0, 0, 0, 0, 5, false, true);
 
 	std::cout << "Magnet component system initialized!" << std::endl;
 

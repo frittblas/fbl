@@ -19,9 +19,6 @@
 
 #include "../../../Game.hpp"
 #include "../../../GameState/GameState.hpp"
-//#include "../../../Robots.hpp"
-//#include "../../../Addons.hpp"
-//#include "../../../Efx.hpp"	// remove this (observer pattern)
 
 #include "PathLogicSystem.hpp"
 

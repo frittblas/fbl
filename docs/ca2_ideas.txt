@@ -21,13 +21,21 @@ Camera
 DialogTrig
 Light
 --
-Laser
-AutoAim
-Magnet - on the way
-Shield -
-teleport
-repair
-build/destroy blocks
+Laser	(active)
+AutoAim (passive)
+Magnet	(passive)
+
+- on the way -
+Shield (active, circle around the robot that blocks laser and saves hp)
+charge (active, replenish 100% energy - one use on level 1, 2 on 2 etc.)
+heal (active, replenish hp - one use)
+boost (active, hold button to go faster, costs energy.)
+teleport (active, dissapear and reappear randomly?)
+
+these are in a special category (far right in addon collection):
+Diagonal (passive, let robot go diagonally)
+MouseCtrl (passive, let robot go wherever)
+build/destroy blocks (passive, takes 2 slots!, click map to build or remove a block (10 times or so))
 
 Todo:
 Register components and systems in sysManager class. Done!
@@ -83,13 +91,12 @@ Add darkness/light to the race. Done!
 Add button to bring up RobotCollection. - Done!
 
 Make nice transition between levels. Two filled rects that meet in the middle of the screen. Also some text describing the location.
-Add ability to choose which way to go (can only choose one direction!), a pathway will open up. Backtracking?
-Add some nice tiles (more grass, snow etc) - in progress.
-Make a couple of nice levels that are final-ish - in progress.
+Add some nice tiles (more grass, snow etc) - done.
+Make a couple of nice levels that are final-ish - Will start with one!
 Make the tile-type 0-9 be terrain. 10-19 = objects (pushable blocks, shops, secret passage etc.) 20-up NPCs
 Make a sound system for music, ambient sounds and sfx. - in progress.
 
-Maybe add more detailed folder structure.
+Maybe add more detailed folder structure. Done!
 Add #ifdef cplusplus in the html5 section of emscripten build to build easier. - Done!
 Add a save system online and leaderboards online (inLeed node). {
 
@@ -113,20 +120,17 @@ will be intact.
 
 }
 
-Other stuff:
-Player can find skills in chests (or buy), called Addons. Passive or active skills.
 
 Cool thing:
 Make a "dungeon" with never ending races, player sets up a team of 3 robots with strategic addons, can't repair.
 Just go as far as you can.
 
 
-robot collection menu! - almost done!
-the actual game (race) - on the way :)
+robot collection menu! - done!
+the actual game (race) - in progress..
 
-Team of 3 robots to compete?
-Random and ready made levels?
-passive (i.e magnetic) and active (i.e laser) skills.
+Team of 3 robots to compete? - later
+passive (i.e magnetic) and active (i.e laser) skills. - done.
 
 Sprite layers are:
 Ground tiles (grass and blocks): 0
@@ -137,6 +141,7 @@ Gray collectionMenu BG: 4
 White RobotBg BG: 5
 Powerups: 6 (coins and such, not done)
 Robots: 7 (on top)
+Magnet effect: 8
 
 Addons are UI elements (buttons), will always be rendered on top of everything.
 
@@ -148,29 +153,15 @@ Done - I removed the path components, only use 4 (max) now.
 
 Next:
 
-Some kind of meaningful powerup that the robots can pick up (also added during the race).
-Add different ways to control the robot: a button that makes robot path back home.
-Normally it will maybe pick up three powerups, then go to the middle, then back home.
-So the a.i will look for power-ups, path there, get new path and so on.
-Add shield.
-Add mines.
-Add homing missile (using pathfinding continously to find the target)
-Add magnetic passive ability.
-Add diagonals passive ability? (or maybe this is robot specific)
-Add teleport.
-Add ability to slow down time (as long as you hold button)
+Some kind of meaningful powerup that the robots can pick up (also added during the race). Done! (coins)
 
 
-Add button to start ongoing conversation with charming alarming, black bg, ridicolous conversation.
-Sometimes charming alarming does not want to talk (when no progress has been made.)
-
-Maybe separate Path and RobotPath systems (esp. if the a.i gets more sophisticated).
-Maybe sprite aswell.
+Maybe separate Path and RobotPath systems (esp. if the a.i gets more sophisticated). Yes I think so.
 
 Write some catchy synth-tunes.
 
 Also later (maybe):
-Let player move a block in the race (later).
+
 Let player drop a bait that a.i-robots follow!
 Let player MouseCtrl the robot.
 What about teams? 3 races after one another?
@@ -190,45 +181,73 @@ The player believes the robot an start questioning himself.
 
 NEXT THING TO DO:
 
-1. Add a system for setting new waypoints easily (base, center)
+- Add a system for setting new waypoints easily (base, center) done!
 
 maybe PathLogicSystem that sets various points based on stuff like do I have a flag? (go to base)
 if you get a flag (bb hitdetect) (could also be a dropped flag on the way) you head to your base. This should work
-the same for all robots, but the player should be able to click (anywhere?) and change path. In the base you get full energy.
+the same for all robots, but the player should be able to click (anywhere?) and change path. In the base you get full energy. - almost done.
 
-2. Make the center and bases clickable, click and the robot will path there. If a robot gets a flag it will
-start going to its base. When it has dropped off the flag it will go back to the center to get more.
+The center contains 10 flags that can be picked up 1 by one and dropped in the base. - Done!
 
-The center contains 10 flags that can be picked up 1 by one and dropped in the base.
+All robots can go back to base at any time and recharge the energy (by clicking on the base.) - Maybe..
 
-All robots can go back to base at any time and recharge the energy (by clicking on the base.)
-
-3. Make addons work in robot-collection aand in the race (correct addon as buttons) - menu done, will add buttons to race
+- Make addons work in robot-collection aand in the race (correct addon as buttons) - menu done, will add buttons to race
 
 10 different addons total (autoaim, laser, shield, magnet, mine, teleport, build/destroy blocks etc)
-5 levels to each addon! (same components/sprite different just different stats/colors (make fbl_set_ui_elem_color(r, g, b)))
+5 levels to each addon! (same components/sprite just different stats/colors (make fbl_set_ui_elem_color(r, g, b)))
+total of 50 addons (don't do all of them, save some for updates :)
 
-4. Start writing a long dialogue thing with Charming Alarming (and a nice scene, black borders up and down)
+Think about which addons are passive and active and how to use them in the best way.
 
-idea: after each race (or set of 3 races) the player can choose to buy 1 of 3 random items (robots AND Addons) or to get some cash.
+Choose
+
+idea: after each race the player can choose to buy 1 of 3 random items (1 robot and 2 Addons).
 Some stuff is really expensive.
-less chance to get good stuff of course. Can't be offered stuff you already own of course.
-When you buy a robot, all the addons are removed.
+less chance to get good stuff of course (rarity etc). Can't be offered stuff you already own of course.
+When you buy a robot, all the addons are removed and the robot is level 1. 
 
-Robots can level up and gain HP, speed, energy, diag, mousectrl
+Robots can level up and gain HP, speed, energy, diag.
 
-5. Use observer pattern to handle sfx, screen shake etc. MAYBE NEXT TIME :)
+- Use observer pattern to handle sfx, screen shake etc. MAYBE NEXT TIME :)
 
-6. create hasComponent function? yes :) - Done!
+- create hasComponent function? yes :) - Done!
 
-7. add story slime (green), info slime (yellow) and race-slime (red)
+- add a bunch of slimes. Story slime (green), info slime (yellow) and race-slime (red). And a level that progresses to a boss fight with lv 5 alarmy & co.
+
+- add a checkbox next to the robot name in robotCollection that will be used in the race.
+
+- create a function setRobotLevel() in robots.cpp that sets a robot to a specific level (stats component)
+  This can be used to level up AND to set AI robots to specific levels as the game gets harder.
+
+- Add the manual laser (add another short line-prim) the line point in the direction where you shoot. GOOD idea! :)
+
+- Add the skills to the race! already started in addons I think.
+
+- reserve 3 "boss robots" that can't be claimed. The last race is against these.
+  construct a bunch of races (start by talking to race-slimes). The enemy robots should have increasing level and addons.
+
+- If a robot dies, It's gone forever!!! If all robots are dead the game is over.
+
+- Make the robots different from each other. Charmy (balanced) Alarmy (op) Chompy (strong slow), Boingy (fast but weak) etc.
+
+- Maybe each race should cost a little bit to prevent grinding xp and coins. OR just allow a race once! hmm
+
+- The last race should be very hard and require many high level robots in your collection and strategic addons use.
+
+- if your robot dies in a race the next robot (to the right in collection) will start.
+
+- each race start with fully healed and charged robots?
+
+- OR maybe you can talk to to a slime that repairs you robots for a fee. Or sometimes free.
+
+- make the difficulty easy first race, but quickly harder. One full playthrough should maybe be 2 hours.
 
 BUGS:
 
 1. If you create an emitter before the first weather-call in Game.cpp, the fbl_set_lighting_tint() doesn't work!
 Really  weird, probably something simple. (Test if this is still relevant, might have fixed it)
 
-2. The zip from gihub builds and runs but can't load a level! Also weird.
+2. The zip from gihub builds and runs but can't load a level! Also weird. Just use git pull/clone.
 
 3. if a robot dies, the next time you play the autoaim is gone! if it's the player you can get it back by re equipping.
    (it's because the autoaim.active is turned off!)
