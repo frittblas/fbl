@@ -60,8 +60,8 @@ void PathSystem::Update(Game& g) {
 			fbl_pathf_set_path_status(path.id, fbl_pathf_find_path(path.id, pos.x, pos.y, path.goalX, path.goalY, path.diag));
 			path.newPath = false;
 
-			if(fbl_pathf_get_path_status(path.id) == FBL_PATHF_FOUND)
-				std::cout << "New path for id: " << (int)path.id << std::endl;	// need to cast path.id bc of auto& (Path&)
+			//if(fbl_pathf_get_path_status(path.id) == FBL_PATHF_FOUND)
+				//std::cout << "New path for id: " << (int)path.id << std::endl;
 
 		}
 

@@ -57,7 +57,7 @@ void MagnetSystem::Update(Game& g) {
 
 		// check if any coins are in within the "strength" (distance in pixels) param and attract them to the player.
 		
-		if (sta.hp > 0 && !gStartingOut) {
+		if (sta.hp > 0.5 && !gStartingOut) {
 
 			if (mag.active) {
 

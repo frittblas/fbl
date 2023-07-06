@@ -164,6 +164,8 @@ void Race::getInput(Game& g) {
 
 void Race::handleAddons(Game& g, Addon& add, Entity playingRobot, bool on) {
 
+	static bool laserDirChangeOk = false;
+
 	// passive addons are just activated/deactivated, active addons are set to "fire" or not.
 
 	switch (add.type) {
@@ -178,6 +180,21 @@ void Race::handleAddons(Game& g, Addon& add, Entity playingRobot, bool on) {
 			{
 				auto& las = g.mEcs->GetComponent<Laser>(playingRobot);
 				las.isFiring = on;
+
+				// change laser direction every time you release (clockwise)
+				if (!las.isFiring && laserDirChangeOk) {
+
+					// rotate directions
+					if (las.dir == Addons::Dir::Up) las.dir = Addons::Dir::Right;
+					else if (las.dir == Addons::Dir::Right) las.dir = Addons::Dir::Down;
+					else if (las.dir == Addons::Dir::Down) las.dir = Addons::Dir::Left;
+					else if (las.dir == Addons::Dir::Left) las.dir = Addons::Dir::Up;
+					
+					laserDirChangeOk = false;
+				}
+
+				if (las.isFiring) laserDirChangeOk = true;
+
 			}
 			break;
 		case Addons::Type::Magnet:

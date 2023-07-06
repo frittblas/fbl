@@ -163,6 +163,7 @@ struct Laser
 
     uint16_t rayId;         // id for the ray prim
     uint16_t particleId;    // id for the particle emitter
+    uint16_t crossHairId;   // id for the crosshair prim
     uint16_t length;        // length of the beam
     uint8_t  dir;           // in what direction are you firing? can be 0 = up, 1 = right, 2 = left, 3 = down
     uint8_t  damage;        // damage dealt per frame / 10

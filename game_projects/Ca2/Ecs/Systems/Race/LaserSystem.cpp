@@ -37,6 +37,10 @@ void LaserSystem::Init(Coordinator& ecs) {
 		auto& sta = ecs.GetComponent<Stats>(entity);
 		auto& las = ecs.GetComponent<Laser>(entity);
 
+		// create crosshair
+		las.crossHairId = fbl_create_prim(FBL_NORMAL_RECT, 0, 0, 2, 2, 0, 0, true);
+		fbl_set_prim_color(las.crossHairId, 255, 255, 255, 255);
+
 		// create the ray with 0 length
 		las.rayId = fbl_create_prim(FBL_RAY, 0, 0, 0, 0, 0, true, false);
 		fbl_set_prim_active(las.rayId, false);
@@ -71,39 +75,63 @@ void LaserSystem::Update(Game& g) {
 		// get info from autoAim component if there is a target (and if auto-aim is active)
 		if (aim.active) {
 
-			if (aim.hasTarget) {
-				las.isFiring = true;
-				las.dir = aim.dir;
-			}
+			if (aim.hasTarget) las.isFiring = true;
 			else las.isFiring = false;
 
+			las.dir = aim.dir;
+
+		}
+
+		// set crosshair
+		switch (las.dir) {
+			case Addons::Dir::Up :
+				fbl_set_prim_xy(las.crossHairId, pos.x + 16, pos.y - 2);
+				break;
+			case Addons::Dir::Right:
+				fbl_set_prim_xy(las.crossHairId, pos.x + 32, pos.y + 16);
+				break;
+			case Addons::Dir::Down:
+				fbl_set_prim_xy(las.crossHairId, pos.x + 16, pos.y + 32);
+				break;
+			case Addons::Dir::Left:
+				fbl_set_prim_xy(las.crossHairId, pos.x - 2, pos.y + 16);
+				break;
 		}
 
 		// only fire if (bool)firing is true
 		if (las.isFiring) {
 
-			fbl_set_prim_active(las.rayId, true);	// show the ray
+			if (sta.hp > 0.5) {
 
-			setDirection(pos, las);
+				fbl_set_prim_active(las.rayId, true);	// show the ray
 
-			// some ray hit detection
-			int id, x, y;
-			fbl_get_ray_hit_sprite(las.rayId, &id, &x, &y);
-			fbl_set_emitter_xy(las.particleId, x, y);	// position the particles where the ray hit
+				setDirection(pos, las);
 
-			if (id != -1) {	// do the following if the laser didn't miss completely (didn't even hit a rock)
+				// some ray hit detection
+				int id, x, y;
+				fbl_get_ray_hit_sprite(las.rayId, &id, &x, &y);
+				fbl_set_emitter_xy(las.particleId, x, y);	// position the particles where the ray hit
 
-				if(x > 25 && y > 25)	// avoid having the particles spawn at x == 0 and y == 0
-					fbl_set_emitter_active(las.particleId, true);	// only turn the particles on if the ray hit something
+				if (id != -1) {	// do the following if the laser didn't miss completely (didn't even hit a rock)
 
-				std::cout << "id hit = " << id << std::endl;
+					if (x > 25 && y > 25)	// avoid having the particles spawn at x == 0 and y == 0
+						fbl_set_emitter_active(las.particleId, true);	// only turn the particles on if the ray hit something
 
-				//printf("Ray 0 hit sprite: %d at x: %d, y: %d\n", id, x, y);
+					std::cout << "id hit = " << id << std::endl;
 
-				dealDamage(g, entity, g.mRobots->mSpriteIdToEntityMap[id]);
+					//printf("Ray 0 hit sprite: %d at x: %d, y: %d\n", id, x, y);
+
+					dealDamage(g, entity, g.mRobots->mSpriteIdToEntityMap[id]);
+
+				}
+				else fbl_set_emitter_active(las.particleId, false);	// turn off particles if ray didn't hit anything
 
 			}
-			else fbl_set_emitter_active(las.particleId, false);	// turn off particles if ray didn't hit anything
+			else {
+				fbl_set_prim_active(las.rayId, false);
+				fbl_set_emitter_active(las.particleId, false);
+				fbl_set_prim_active(las.crossHairId, false);
+			}
 
 		}
 		else {
@@ -143,6 +171,7 @@ void LaserSystem::dealDamage(Game &g, Entity attacker, Entity target) {
 				fbl_set_sprite_phys(targetSpr.id[0], false, 0, 0, false);	// turn off ray colission
 				fbl_set_sprite_active(light.id, false);						// turn off the light sprite (dead)
 				fbl_set_prim_active(targetAim.rayId, false);				// turn off the aim prim
+				if (targetLas) fbl_set_prim_active(targetLas->crossHairId, false);	// turn off the aim prim
 				targetAim.active = false;									// can't target people when dead
 				if (targetLas) targetLas->isFiring = false;
 				Efx::getInstance().shakeCamera(20, 40);						// shake camera
