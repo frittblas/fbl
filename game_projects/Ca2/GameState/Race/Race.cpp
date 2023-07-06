@@ -20,18 +20,18 @@
 
 #include "../../Ecs/Systems/SpriteSystem.hpp"
 #include "../../Ecs/Systems/PathSystem.hpp"
-#include "../../Ecs/Systems/MouseCtrlSystem.hpp"
-#include "../../Ecs/Systems/CameraSystem.hpp"
 #include "../../Ecs/Systems/LightSystem.hpp"
 
 #include "../../Ecs/Systems/Race/PathLogicSystem.hpp"
 #include "../../Ecs/Systems/Race/AutoAimSystem.hpp"
 #include "../../Ecs/Systems/Race/LaserSystem.hpp"
 #include "../../Ecs/Systems/Race/MagnetSystem.hpp"
+#include "../../Ecs/Systems/Race/RobotCtrlSystem.hpp"
 
 #include "../../Chars.hpp"
 #include "../../Weather.hpp"
 #include "../../Robots.hpp"
+#include "../../Addons.hpp"
 
 #include "Race.hpp"
 
@@ -116,32 +116,104 @@ void Race::unassignRobots(Game& g) {
 
 }
 
+void Race::getInput(Game& g) {
+
+	// get the player input in the race (push the addon buttons or ASZX on pc)
+
+	auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mRacingRobots[0]);
+
+	// first handle passive addons
+	for (int i = 0; i < 2; i++) {
+
+		if (sta.slot[i] != g.mAddons->notSet) {
+
+			auto& add = g.mEcs->GetComponent<Addon>(sta.slot[i]);
+			if (fbl_get_ui_elem_val(add.uiId)) {
+				handleAddons(g, add, g.mRobots->mRacingRobots[0], true);
+			}
+			else handleAddons(g, add, g.mRobots->mRacingRobots[0], false);
+
+		}
+
+	}
+
+	// then active (user interactable) addons
+	int key = FBLK_A;
+	for (int i = 2; i < 6; i++) {
+
+		if (sta.slot[i] != g.mAddons->notSet) {
+
+			switch (i) {
+				case 3: key = FBLK_S; break;
+				case 4: key = FBLK_Z; break;
+				case 5: key = FBLK_X; break;
+			}
+
+			auto& add = g.mEcs->GetComponent<Addon>(sta.slot[i]);
+			if (fbl_get_ui_elem_val(add.uiId) || fbl_get_key_down(key)) {
+				handleAddons(g, add, g.mRobots->mRacingRobots[0], true);
+			}
+			else handleAddons(g, add, g.mRobots->mRacingRobots[0], false);
+
+		
+		}
+
+	}
+
+}
+
+void Race::handleAddons(Game& g, Addon& add, Entity playingRobot, bool on) {
+
+	// passive addons are just activated/deactivated, active addons are set to "fire" or not.
+
+	switch (add.type) {
+
+		case Addons::Type::AutoAim :
+			{
+				auto& aim = g.mEcs->GetComponent<AutoAim>(playingRobot);
+				aim.active = on;
+			}
+			break;
+		case Addons::Type::Laser:
+			{
+				auto& las = g.mEcs->GetComponent<Laser>(playingRobot);
+				las.isFiring = on;
+			}
+			break;
+		case Addons::Type::Magnet:
+			{
+				auto& mag = g.mEcs->GetComponent<Magnet>(playingRobot);
+				mag.active = on;
+			}
+			break;
+
+	}
+
+}
+
 void Race::tick(Game& g) {
 
 	g.mSysManager->mSpriteSystem->Update(*g.mEcs);			// update the sprite system
 	g.mSysManager->mPathSystem->Update(g);					// update the path system, note the g as argument
-	g.mSysManager->mMouseCtrlSystem->Update(*g.mEcs);		// update the mouse control system
-	//g.mSysManager->mCameraSystem->Update(*g.mEcs);		// update the camera system
-
 	g.mSysManager->mLightSystem->Update(g);					// update the light system
 	
 	g.mSysManager->mPathLogicSystem->Update(g);				// update the PathLogic system
 	g.mSysManager->mAutoAimSystem->Update(g);				// update the AutoAim system
 	g.mSysManager->mLaserSystem->Update(g);					// update the Laser system
 	g.mSysManager->mMagnetSystem->Update(g);				// update the Magnet system
+	g.mSysManager->mRobotCtrlSystem->Update(*g.mEcs);		// update the robot control system
+
+	getInput(g);
 
 	//g.mWeather->tick();
 
 	Efx::getInstance().tickCameraShake();
 
-	mMaze->tick(g);	// needed for the pick-start positions-"state" in the beginning of the race
+	mMaze->tick(g);
 
 	if (fbl_get_mouse_click(FBLMB_RIGHT)) Efx::getInstance().shakeCamera(20, 40);
 
-	// for testing
-	//auto& las = g.mEcs->GetComponent<Laser>(g.mRobots->mRacingRobots[0]);
-	//if (fbl_get_key_down(FBLK_Z)) las.isFiring = true;
-	//if (fbl_get_key_up(FBLK_Z)) las.isFiring = false;
+
 
 	if(fbl_get_raw_frames_count() % 60 == 0)
 		std::cout << "Tick race!" << std::endl;

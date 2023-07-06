@@ -49,6 +49,7 @@ public:
 
     void setupAddons(Coordinator* mEcs);
     void initAddons(Coordinator* mEcs);
+    void initRaceAddons(Coordinator* mEcs);
     void removeAddons(Coordinator* mEcs);
     void hideAddons(Coordinator* mEcs);
     void showAddonsInMenu(Coordinator* mEcs);

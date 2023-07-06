@@ -26,6 +26,7 @@
 #include "../Ecs/Systems/Race/AutoAimSystem.hpp"
 #include "../Ecs/Systems/Race/LaserSystem.hpp"
 #include "../Ecs/Systems/Race/MagnetSystem.hpp"
+#include "../Ecs/Systems/Race/RobotCtrlSystem.hpp"
 
 #include "GameState.hpp"
 #include "Title.hpp"
@@ -253,14 +254,18 @@ void GameState::setupRace(Game& g) {
 
 	destroyAllGfx();								// remove resources (ALL sprites, prims, text, ui and emitters)
 	g.mLocation->unLoadLocation(g.mMap);			// this destroys ALL sprites
-	g.mSysManager->mPathLogicSystem->Init(*g.mEcs);	// set up path logic (flags and stuff)
 	g.mSysManager->mSpriteSystem->Init(*g.mEcs);	// create sprites for all entities with a sprite component
 	g.mSysManager->mLightSystem->Init(*g.mEcs);		// create lights for all entities with a light component
+
+	g.mSysManager->mPathLogicSystem->Init(*g.mEcs);	// set up path logic (flags and stuff)
 	g.mSysManager->mAutoAimSystem->Init(*g.mEcs);	// create rays for entities with AutoAim  component.
 	g.mSysManager->mLaserSystem->Init(*g.mEcs);		// create rays and particles for all entities with a Laser component.
 	g.mSysManager->mMagnetSystem->Init(*g.mEcs);	// create magnet sprites and stuff.
+	g.mSysManager->mRobotCtrlSystem->Init(*g.mEcs);	// set up robot control access time.
+
 	g.mRobots->mapSpriteIdToEntity(g.mEcs);
 	g.mRobots->hideRobots(g.mEcs);
+	g.mAddons->initRaceAddons(g.mEcs);
 
 	// temporarily remove path component from the player
 	g.mEcs->RemoveComponent<Path>(g.mChars->mBrodo);

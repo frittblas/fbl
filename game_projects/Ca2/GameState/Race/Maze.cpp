@@ -15,6 +15,7 @@
 #include "../../Ecs/Ecs.hpp"
 #include "../../Ecs/Components.hpp"
 #include "../../Game.hpp"
+#include "../../Addons.hpp"
 #include "Maze.hpp"
 
 
@@ -285,9 +286,11 @@ void Maze::initMaze(Game& g, int density, int numRacers) {
 	// create all the sprites at correct locations
 	populateMaze();
 
+	// add the addon gui buttons
+	showAddons(g);
+
 	// add the flag and coins
 	addItems();
-
 	
 	for (int i = 0; i < numRacers; i++)
 		std::cout << "Path status: " << fbl_pathf_get_path_status(mPathId[i]) << std::endl;
@@ -343,6 +346,27 @@ void Maze::populateMaze() {
 				fbl_set_sprite_phys(id, true, FBL_RECT, FBL_PHYS_KINEMATIC, false);
 
 			}
+
+		}
+
+	}
+
+}
+
+void Maze::showAddons(Game& g) {
+
+	// hide all addons to begin with (necessary when one robot dies and the next starts)
+	g.mAddons->hideAddons(g.mEcs);
+
+	// first robot is always the players
+	auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mRacingRobots[0]);
+
+	for (int i = 0; i < 6; i++) {
+
+		if (sta.slot[i] != g.mAddons->notSet) {		// only show addons that are equipped
+
+			g.mAddons->showAddonInRace(g.mEcs, sta.slot[i], i);
+			std::cout << "sta.slot[i]: " << sta.slot[i] << " i= " << i << std::endl;
 
 		}
 

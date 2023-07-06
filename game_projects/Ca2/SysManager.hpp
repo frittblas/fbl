@@ -28,6 +28,7 @@ class PathLogicSystem;
 class AutoAimSystem;
 class LaserSystem;
 class MagnetSystem;
+class RobotCtrlSystem;
 
 class Coordinator;
 
@@ -45,6 +46,7 @@ public:
     std::shared_ptr<AutoAimSystem> mAutoAimSystem;           // the auto aim system
     std::shared_ptr<LaserSystem> mLaserSystem;               // the laser system
     std::shared_ptr<MagnetSystem> mMagnetSystem;             // the magnet system
+    std::shared_ptr<RobotCtrlSystem> mRobotCtrlSystem;       // the robot control system
 
     SysManager();
     ~SysManager();

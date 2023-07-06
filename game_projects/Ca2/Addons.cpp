@@ -102,6 +102,34 @@ void Addons::initAddons(Coordinator* mEcs) {
 
 }
 
+void Addons::initRaceAddons(Coordinator* mEcs) {
+
+	// create the ui elements for the addons (buttons)
+
+	for (Entity e : mAllAddons) {
+		if (e != Unassigned) {
+			auto& add = mEcs->GetComponent<Addon>(e);
+			if (add.passive)
+				add.uiId = fbl_create_ui_elem(FBL_UI_CHECKBOX_INTERVAL, add.tx, add.ty, Game::TileSize, Game::TileSize, NULL);
+			else
+				add.uiId = fbl_create_ui_elem(FBL_UI_BUTTON_HOLD, add.tx, add.ty, Game::TileSize, Game::TileSize, NULL);
+		}
+	}
+
+	for (Entity e : mOwnedAddons) {
+		if (e != Unassigned) {
+			auto& add = mEcs->GetComponent<Addon>(e);
+			if (add.passive) {
+				add.uiId = fbl_create_ui_elem(FBL_UI_CHECKBOX_INTERVAL, add.tx, add.ty, Game::TileSize, Game::TileSize, NULL);
+				fbl_set_ui_elem_val(add.uiId, 1);	// set the passive addons to on by default
+			}
+			else
+				add.uiId = fbl_create_ui_elem(FBL_UI_BUTTON_HOLD, add.tx, add.ty, Game::TileSize, Game::TileSize, NULL);
+		}
+	}
+
+}
+
 void Addons::removeAddons(Coordinator* mEcs) {
 
 	for (Entity e : mAllAddons) {
@@ -204,33 +232,40 @@ void Addons::showAddonAsEquipped(Coordinator* mEcs, Entity addon, int position) 
 	fbl_set_ui_elem_xy(add.uiId, x, y);
 	fbl_set_ui_elem_active(add.uiId, true);
 
+	std::cout << "activated addon ui: " << add.uiId << " at x " << x << " and y " << y << std::endl;
+
 }
 
 void Addons::showAddonInRace(Coordinator* mEcs, Entity addon, int position) {
 
-	int x, y;
+	int x = 0;
+	int y = 0;
 
 	switch (position) {
 
 	case 0:
-		x = Game::TileSize * 3;
-		y = 0;
+		x = Game::TileSize * 2 - Game::TileSize / 2;
+		y = Game::TileSize * 4;
 		break;
 	case 1:
-		x = Game::LogicalResW - Game::TileSize * 4;
-		y = 0;
+		x = Game::LogicalResW - Game::TileSize * 2 + Game::TileSize / 2;
+		y = Game::TileSize * 4;
 		break;
 	case 2:
-		x = Game::TileSize * 3;
-		y = Game::TileSize * 16;
+		x = Game::TileSize * 2 - Game::TileSize / 2;
+		y = Game::TileSize * 7;
 		break;
 	case 3:
-		x = Game::LogicalResW - Game::TileSize * 4;
-		y = Game::TileSize * 16;
+		x = Game::LogicalResW - Game::TileSize * 2 + Game::TileSize / 2;
+		y = Game::TileSize * 7;
 		break;
 	case 4:
+		x = Game::TileSize * 2 - Game::TileSize / 2;
+		y = Game::TileSize * 9;
 		break;
 	case 5:
+		x = Game::LogicalResW - Game::TileSize * 2 + Game::TileSize / 2;
+		y = Game::TileSize * 9;
 		break;
 
 	}
@@ -239,6 +274,8 @@ void Addons::showAddonInRace(Coordinator* mEcs, Entity addon, int position) {
 
 	fbl_set_ui_elem_xy(add.uiId, x, y);
 	fbl_set_ui_elem_active(add.uiId, true);
+
+	std::cout << "activated addon ui: " << add.uiId  << " at x " << x << " and y " << y << std::endl;
 
 }
 

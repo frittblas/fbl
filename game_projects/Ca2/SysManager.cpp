@@ -27,6 +27,7 @@
 #include "Ecs/Systems/Race/AutoAimSystem.hpp"
 #include "Ecs/Systems/Race/LaserSystem.hpp"
 #include "Ecs/Systems/Race/MagnetSystem.hpp"
+#include "Ecs/Systems/Race/RobotCtrlSystem.hpp"
 
 // SysManager-class implementation
 
@@ -55,13 +56,16 @@ void SysManager::setupEcs(Coordinator *mEcs) {
 	mEcs->RegisterComponent<DialogueTrigger>();
 	mEcs->RegisterComponent<Light>();
 
-	// robot specific
+	// the addon component
 	mEcs->RegisterComponent<Addon>();
+
+	// robot specific
 	mEcs->RegisterComponent<Stats>();
 	mEcs->RegisterComponent<PathLogic>();
 	mEcs->RegisterComponent<AutoAim>();
 	mEcs->RegisterComponent<Laser>();
 	mEcs->RegisterComponent<Magnet>();
+	mEcs->RegisterComponent<RobotCtrl>();
 
 	// register systems
 	mSpriteSystem = mEcs->RegisterSystem<SpriteSystem>();
@@ -76,6 +80,7 @@ void SysManager::setupEcs(Coordinator *mEcs) {
 	mAutoAimSystem = mEcs->RegisterSystem<AutoAimSystem>();
 	mLaserSystem = mEcs->RegisterSystem<LaserSystem>();
 	mMagnetSystem = mEcs->RegisterSystem<MagnetSystem>();
+	mRobotCtrlSystem = mEcs->RegisterSystem<RobotCtrlSystem>();
 
 	// set up what components the systems require
 	Signature sign;
@@ -137,5 +142,11 @@ void SysManager::setupEcs(Coordinator *mEcs) {
 	sign.set(mEcs->GetComponentType<Stats>());
 	sign.set(mEcs->GetComponentType<Magnet>());
 	mEcs->SetSystemSignature<MagnetSystem>(sign);
+
+	sign.reset();
+	sign.set(mEcs->GetComponentType<Position>());
+	sign.set(mEcs->GetComponentType<Path>());
+	sign.set(mEcs->GetComponentType<RobotCtrl>());
+	mEcs->SetSystemSignature<RobotCtrlSystem>(sign);
 
 }

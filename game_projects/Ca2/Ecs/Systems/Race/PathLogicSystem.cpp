@@ -233,7 +233,7 @@ void PathLogicSystem::updatePaths(Game& g) {
 			if (flagIndex < 0) {
 
 				// update paths for robots without a MouseCtrl component
-				if(!g.mEcs->HasComponent<MouseCtrl>(entity))
+				if(!g.mEcs->HasComponent<RobotCtrl>(entity))
 					findClosestFlag(pos, path, plog);
 
 				std::cout << "New path for robot-entity: " << entity << std::endl;

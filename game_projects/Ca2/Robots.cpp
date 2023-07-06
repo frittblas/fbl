@@ -67,7 +67,8 @@ void Robots::setupRobots(Coordinator* mEcs) {
 				//mEcs->AddComponent(tmpRobot, Laser{ 0, 0, 800, Addons::Dir::Up, 1, 1, false });
 											  // id  tx  ty   w    h  scale
 				mEcs->AddComponent(tmpRobot, Light{ 0, 384, 0, 128, 128, 2.0 });
-				mEcs->AddComponent(tmpRobot, MouseCtrl{ 300 });
+													//  access
+				mEcs->AddComponent(tmpRobot, RobotCtrl{ 120 });
 				break;
 			case Alarmy :
 												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
@@ -142,8 +143,8 @@ void Robots::addAddonComponent(Coordinator* mEcs, Entity robot, uint8_t addonTyp
 			mEcs->AddComponent(robot, Laser{ 0, 0, 800, Addons::Dir::Up, 15, 1, false });
 			break;
 		case Addons::Magnet:
-										  // sid str lv pull
-			mEcs->AddComponent(robot, Magnet{ 0, 64, 1, false });
+										  // sid str lv active
+			mEcs->AddComponent(robot, Magnet{ 0, 64, 1, true });
 			break;
 
 	}

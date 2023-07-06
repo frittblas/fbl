@@ -59,29 +59,34 @@ void MagnetSystem::Update(Game& g) {
 		
 		if (sta.hp > 0 && !gStartingOut) {
 
-			for (int i = 0; i < Maze::cMaxCoins; i++) {
+			if (mag.active) {
 
-				if (gCoin[i].id != -1) {
+				for (int i = 0; i < Maze::cMaxCoins; i++) {
 
-					int cx = fbl_get_sprite_x(gCoin[i].id);
-					int cy = fbl_get_sprite_y(gCoin[i].id);
+					if (gCoin[i].id != -1) {
 
-					if (distance(pos.x + 16, pos.y + 16, cx, cy) < mag.strength + 2) {
+						int cx = fbl_get_sprite_x(gCoin[i].id);
+						int cy = fbl_get_sprite_y(gCoin[i].id);
 
-						if (cx < pos.x + 16) fbl_set_sprite_xy(gCoin[i].id, cx + 1, cy);
-						if (cx > pos.x + 16) fbl_set_sprite_xy(gCoin[i].id, cx - 1, cy);
-						if (cy < pos.y + 16) fbl_set_sprite_xy(gCoin[i].id, fbl_get_sprite_x(gCoin[i].id), cy + 1);
-						if (cy > pos.y + 16) fbl_set_sprite_xy(gCoin[i].id, fbl_get_sprite_x(gCoin[i].id), cy - 1);
+						if (distance(pos.x + 16, pos.y + 16, cx, cy) < mag.strength + 2) {
 
-						//std::cout << "Magnet active! distance: " << distance(pos.x + 16, pos.y + 16, cx, cy) << std::endl;
+							if (cx < pos.x + 16) fbl_set_sprite_xy(gCoin[i].id, cx + 1, cy);
+							if (cx > pos.x + 16) fbl_set_sprite_xy(gCoin[i].id, cx - 1, cy);
+							if (cy < pos.y + 16) fbl_set_sprite_xy(gCoin[i].id, fbl_get_sprite_x(gCoin[i].id), cy + 1);
+							if (cy > pos.y + 16) fbl_set_sprite_xy(gCoin[i].id, fbl_get_sprite_x(gCoin[i].id), cy - 1);
 
-						isClose = true;
+							//std::cout << "Magnet active! distance: " << distance(pos.x + 16, pos.y + 16, cx, cy) << std::endl;
+
+							isClose = true;
+
+						}
 
 					}
 
 				}
 
 			}
+			else fbl_set_sprite_active(mag.spriteId, false);
 
 			if (isClose) {
 				fbl_set_sprite_xy(mag.spriteId, pos.x + 16, pos.y + 16);

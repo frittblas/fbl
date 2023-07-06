@@ -16,6 +16,7 @@
 #include "Maze.hpp"
 
 class Game;
+struct Addon;
 
 class Race : public IState{
 
@@ -25,6 +26,8 @@ public:
 
     void assignRobots(Game& g);
     void unassignRobots(Game& g);
+    void getInput(Game& g);
+    void handleAddons(Game& g, Addon& add, Entity playingRobot, bool on);
 
     virtual void tick(Game& g) override;
 

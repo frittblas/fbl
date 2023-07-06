@@ -65,6 +65,7 @@ public:
     void resetMaze();
     void randomizeMaze(int density);
     void populateMaze();
+    void showAddons(Game& g);
     void addItems();
     void addBorder();
     void createGUI();
