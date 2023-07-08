@@ -29,7 +29,7 @@ const uint16_t fNumLines = 17;	// lines for the grid to the left, 10x5 grid, 17 
 
 // id's for the robot collection-menu
 uint16_t fContextHelp, fContextLine;
-uint16_t fMenuBgSquareId, fMenuBgOutlineId, fMenuRobotBgSquareId;
+uint16_t fMenuBgSquareId, fMenuBgOutlineId, fMenuRobotBgSquareId, fFavRobotCheckBox;
 uint16_t fMenuDividerLine, fSmallMenuDividerLine;
 uint16_t fMenuButtonLeft, fMenuButtonRight;
 uint16_t fMenuRobotDescr, fMenuAddonsDescr;
@@ -442,6 +442,10 @@ void initCollectionMenu() {
 	fbl_fix_sprite_to_screen(fMenuRobotBgSquareId, true);
 	fbl_set_sprite_is_light(fMenuRobotBgSquareId, true);
 
+	// checkbox for the favourite robot
+	fFavRobotCheckBox = fbl_create_ui_elem(FBL_UI_CHECKBOX_INTERVAL, 0, 32, 24, 24, NULL);
+	fbl_set_ui_elem_xy(fFavRobotCheckBox, x + 150, y - 80);
+
 	// create the white outline
 	fMenuBgOutlineId = fbl_create_prim(FBL_RECT, x, y - 20, width, height + 20, 0, false, false);
 	fbl_set_prim_color(fMenuBgOutlineId, 255, 255, 255, 255);
@@ -617,7 +621,7 @@ void initCollectionMenu() {
 
 
 	// the menu button
-	gRobotCollectionMenuButton = fbl_create_ui_elem(FBL_UI_BUTTON_INTERVAL, 0, 128, 64, 32, NULL);
+	gRobotCollectionMenuButton = fbl_create_ui_elem(FBL_UI_BUTTON_INTERVAL, 0, 64, 64, 32, NULL);
 	fbl_set_ui_elem_xy(gRobotCollectionMenuButton, 40, 24);	// top left corner 8 px in
 
 	// unequip context sensitive button
@@ -652,6 +656,9 @@ void showCollectionMenu() {
 	fbl_set_sprite_active(fMenuBgSquareId, true);
 	fbl_set_sprite_active(fMenuRobotBgSquareId, true);
 	fbl_set_prim_active(fMenuBgOutlineId, true);
+
+	// favourite robot checkbox
+	fbl_set_ui_elem_active(fFavRobotCheckBox, true);
 
 	fbl_set_prim_active(fMenuDividerLine, true);
 
@@ -720,6 +727,9 @@ void hideCollectionMenu() {
 	fbl_set_sprite_active(fMenuBgSquareId, false);
 	fbl_set_sprite_active(fMenuRobotBgSquareId, false);
 	fbl_set_prim_active(fMenuBgOutlineId, false);
+
+	// favourite robot checkbox
+	fbl_set_ui_elem_active(fFavRobotCheckBox, false);
 
 	fbl_set_prim_active(fMenuDividerLine, false);
 

@@ -26,6 +26,7 @@ public:
         AutoAim,
         Laser,
         Magnet,
+        RobotCtrl,
         NumAddons
 
     };
@@ -42,7 +43,6 @@ public:
 
     Entity mAllAddons[NumAddons];     // all the addons
     Entity mOwnedAddons[NumAddons];   // all the addons you own
-    Entity mRacingAddons[6];          // 2 passive, 4 active
 
     Addons();
     ~Addons();

@@ -39,7 +39,6 @@ void Addons::setupAddons(Coordinator* mEcs) {
 	for (int i = 0; i < NumAddons; i++) {
 		mAllAddons[i] = Unassigned;
 		mOwnedAddons[i] = Unassigned;
-		mRacingAddons[i] = Unassigned;
 	}
 
 	// create all the addon entities
@@ -59,13 +58,19 @@ void Addons::setupAddons(Coordinator* mEcs) {
 
 		case Laser:
 											 // type    name   uiId tx ty lv rrty psv    eqp  price
-			mEcs->AddComponent(tmpAddon, Addon{ Laser, "Laser", 0, 0, 64, 1, 2, false, notSet, 20 });
+			mEcs->AddComponent(tmpAddon, Addon{ Laser, "Laser", 0, 0, 128, 1, 2, false, notSet, 20 });
 
 			break;
 
 		case Magnet:
 											 // type    name   uiId tx ty	lv rrty psv     eqp  price
 			mEcs->AddComponent(tmpAddon, Addon{ Magnet, "Magnet", 0, 0, 160, 1, 2, true, notSet, 12 });
+
+			break;
+
+		case RobotCtrl:
+												// type		 name		 uiId tx ty	  lv rrty psv     eqp  price
+			mEcs->AddComponent(tmpAddon, Addon{ RobotCtrl, "Robot Control", 0, 0, 224, 1, 2, true, notSet, 12 });
 
 			break;
 
@@ -79,6 +84,7 @@ void Addons::setupAddons(Coordinator* mEcs) {
 	claimAddon(AutoAim);
 	claimAddon(Laser);
 	claimAddon(Magnet);
+	claimAddon(RobotCtrl);
 
 }
 

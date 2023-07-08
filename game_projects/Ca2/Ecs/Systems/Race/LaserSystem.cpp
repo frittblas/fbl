@@ -145,6 +145,9 @@ void LaserSystem::Update(Game& g) {
 		// only show the crosshair if the robots are showing
 		if(gPickDone) fbl_set_prim_active(las.crossHairId, true);
 
+		// don't show the crosshair if robot's dead
+		if(sta.hp < 0.5) fbl_set_prim_active(las.crossHairId, false);
+
 	}
 
 }
@@ -175,7 +178,7 @@ void LaserSystem::dealDamage(Game &g, Entity attacker, Entity target) {
 				fbl_set_sprite_phys(targetSpr.id[0], false, 0, 0, false);	// turn off ray colission
 				fbl_set_sprite_active(light.id, false);						// turn off the light sprite (dead)
 				fbl_set_prim_active(targetAim.rayId, false);				// turn off the aim prim
-				if (targetLas) fbl_set_prim_active(targetLas->crossHairId, false);	// turn off the aim prim
+				if (targetLas) fbl_set_prim_active(targetLas->crossHairId, false);	// turn off the crosshair for targetLaser
 				targetAim.active = false;									// can't target people when dead
 				if (targetLas) targetLas->isFiring = false;
 				Efx::getInstance().shakeCamera(20, 40);						// shake camera
