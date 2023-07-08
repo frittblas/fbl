@@ -51,8 +51,11 @@ fbl/game_projects/Ca2/Ecs/Systems/MouseCtrlSystem.cpp \
 fbl/game_projects/Ca2/Ecs/Systems/PathSystem.cpp \
 fbl/game_projects/Ca2/Ecs/Systems/SpriteSystem.cpp \
 fbl/game_projects/Ca2/Ecs/Systems/LightSystem.cpp \
+fbl/game_projects/Ca2/Ecs/Systems/Race/PathLogicSystem.cpp \
 fbl/game_projects/Ca2/Ecs/Systems/Race/AutoAimSystem.cpp \
 fbl/game_projects/Ca2/Ecs/Systems/Race/LaserSystem.cpp \
+fbl/game_projects/Ca2/Ecs/Systems/Race/MagnetSystem.cpp \
+fbl/game_projects/Ca2/Ecs/Systems/Race/RobotCtrlSystem.cpp \
 fbl/tools/ScenEdit/ScenEdit.cpp \
 fbl/tools/scenEdit/Disk.cpp \
 fbl/tools/scenEdit/GuiFuncs.cpp \

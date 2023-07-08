@@ -490,35 +490,35 @@ void Maze::createGUI() {
 
 	// text items
 	fbl_load_ttf_font("font/garamond.ttf", 15);
-	gui[0].levelTextId = fbl_create_text(255, 255, 255, 255, "%d", 1);
+	gui[0].levelTextId = fbl_create_text(255, 255, 255, 255, (char*)"%d", 1);
 	fbl_set_text_xy(gui[0].levelTextId, 38, 9);
-	gui[1].levelTextId = fbl_create_text(255, 255, 255, 255, "%d", 1);
+	gui[1].levelTextId = fbl_create_text(255, 255, 255, 255, (char*)"%d", 1);
 	fbl_set_text_xy(gui[1].levelTextId, 902, 9);
-	gui[2].levelTextId = fbl_create_text(255, 255, 255, 255, "%d", 1);
+	gui[2].levelTextId = fbl_create_text(255, 255, 255, 255, (char*)"%d", 1);
 	fbl_set_text_xy(gui[2].levelTextId, 38, 489);
-	gui[3].levelTextId = fbl_create_text(255, 255, 255, 255, "%d", 1);
+	gui[3].levelTextId = fbl_create_text(255, 255, 255, 255, (char*)"%d", 1);
 	fbl_set_text_xy(gui[3].levelTextId, 902, 489);
 
 
 	fbl_load_ttf_font("font/garamond.ttf", 16);
-	gui[0].flagTextId = fbl_create_text(255, 255, 255, 255, "%d", 0);
+	gui[0].flagTextId = fbl_create_text(255, 255, 255, 255, (char*)"%d", 0);
 	fbl_set_text_xy(gui[0].flagTextId, 78, 26);
-	gui[0].coinTextId = fbl_create_text(255, 255, 255, 255, "%d", 0);
+	gui[0].coinTextId = fbl_create_text(255, 255, 255, 255, (char*)"%d", 0);
 	fbl_set_text_xy(gui[0].coinTextId, 38, 26);
 
-	gui[1].flagTextId = fbl_create_text(255, 255, 255, 255, "%d", 0);
+	gui[1].flagTextId = fbl_create_text(255, 255, 255, 255, (char*)"%d", 0);
 	fbl_set_text_xy(gui[1].flagTextId, 942, 26);
-	gui[1].coinTextId = fbl_create_text(255, 255, 255, 255, "%d", 0);
+	gui[1].coinTextId = fbl_create_text(255, 255, 255, 255, (char*)"%d", 0);
 	fbl_set_text_xy(gui[1].coinTextId, 902, 26);
 
-	gui[2].flagTextId = fbl_create_text(255, 255, 255, 255, "%d", 0);
+	gui[2].flagTextId = fbl_create_text(255, 255, 255, 255, (char*)"%d", 0);
 	fbl_set_text_xy(gui[2].flagTextId, 78, 506);
-	gui[2].coinTextId = fbl_create_text(255, 255, 255, 255, "%d", 0);
+	gui[2].coinTextId = fbl_create_text(255, 255, 255, 255, (char*)"%d", 0);
 	fbl_set_text_xy(gui[2].coinTextId, 38, 506);
 
-	gui[3].flagTextId = fbl_create_text(255, 255, 255, 255, "%d", 0);
+	gui[3].flagTextId = fbl_create_text(255, 255, 255, 255, (char*)"%d", 0);
 	fbl_set_text_xy(gui[3].flagTextId, 942, 506);
-	gui[3].coinTextId = fbl_create_text(255, 255, 255, 255, "%d", 0);
+	gui[3].coinTextId = fbl_create_text(255, 255, 255, 255, (char*)"%d", 0);
 	fbl_set_text_xy(gui[3].coinTextId, 902, 506);
 
 	// red and blue hp/pow rects
@@ -581,17 +581,17 @@ void Maze::setOneUIbox(Stats stat, PathLogic plog, int base, int entity) {
 
 	// update number of flags, coins and level
 	if (gui[base].level != stat.level) {
-		fbl_update_text(gui[base].levelTextId, 255, 255, 255, 255, "%d", stat.level);
+		fbl_update_text(gui[base].levelTextId, 255, 255, 255, 255, (char*)"%d", stat.level);
 		gui[base].level = stat.level;
 		std::cout << "updated level text for player " << entity << std::endl;
 	}
 	if (gui[base].coins != plog.coins) {
-		fbl_update_text(gui[base].coinTextId, 255, 255, 255, 255, "%d", plog.coins);
+		fbl_update_text(gui[base].coinTextId, 255, 255, 255, 255, (char*)"%d", plog.coins);
 		gui[base].coins = plog.coins;
 		std::cout << "updated coin text for player " << entity << std::endl;
 	}
 	if (gui[base].flags != plog.flags) {
-		fbl_update_text(gui[base].flagTextId, 255, 255, 255, 255, "%d", plog.flags);
+		fbl_update_text(gui[base].flagTextId, 255, 255, 255, 255, (char*)"%d", plog.flags);
 		gui[base].flags = plog.flags;
 		std::cout << "updated flag text for player " << entity << std::endl;
 	}
@@ -637,23 +637,23 @@ void Maze::createAddonSlots() {
 
 	// and some text
 	fbl_load_ttf_font("font/garamond.ttf", 16);
-	tempId = fbl_create_text(255, 255, 255, 255, "Passive");
+	tempId = fbl_create_text(255, 255, 255, 255, (char*)"Passive");
 	fbl_set_text_xy(tempId, Game::TileSize - 10, Game::TileSize * 3);
 
-	tempId = fbl_create_text(255, 255, 255, 255, "Passive");
+	tempId = fbl_create_text(255, 255, 255, 255, (char*)"Passive");
 	fbl_set_text_xy(tempId, Game::LogicalResW - Game::TileSize * 2 - 10, Game::TileSize * 3);
 
 	// and some keys to press :)
-	tempId = fbl_create_text(255, 255, 255, 255, "A");
+	tempId = fbl_create_text(255, 255, 255, 255, (char*)"A");
 	fbl_set_text_xy(tempId, Game::TileSize * 2 - 22, Game::TileSize * 7);
 
-	tempId = fbl_create_text(255, 255, 255, 255, "S");
+	tempId = fbl_create_text(255, 255, 255, 255, (char*)"S");
 	fbl_set_text_xy(tempId, Game::LogicalResW - Game::TileSize * 2 + 10, Game::TileSize * 7);
 
-	tempId = fbl_create_text(255, 255, 255, 255, "Z");
+	tempId = fbl_create_text(255, 255, 255, 255, (char*)"Z");
 	fbl_set_text_xy(tempId, Game::TileSize * 2 - 22, Game::TileSize * 10);
 
-	tempId = fbl_create_text(255, 255, 255, 255, "X");
+	tempId = fbl_create_text(255, 255, 255, 255, (char*)"X");
 	fbl_set_text_xy(tempId, Game::LogicalResW - Game::TileSize * 2 + 10, Game::TileSize * 10);
 
 	fbl_sort_sprites(FBL_SORT_BY_LAYER);
