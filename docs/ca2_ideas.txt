@@ -24,6 +24,7 @@ Light
 Laser	(active)
 AutoAim (passive)
 Magnet	(passive)
+RobotCtrl (passive)
 
 - on the way -
 Shield (active, circle around the robot that blocks laser and saves hp)
@@ -191,7 +192,7 @@ The center contains 10 flags that can be picked up 1 by one and dropped in the b
 
 All robots can go back to base at any time and recharge the energy (by clicking on the base.) - Maybe..
 
-- Make addons work in robot-collection aand in the race (correct addon as buttons) - menu done, will add buttons to race
+- Make addons work in robot-collection aand in the race (correct addon as buttons) - Done!!
 
 10 different addons total (autoaim, laser, shield, magnet, mine, teleport, build/destroy blocks etc)
 5 levels to each addon! (same components/sprite just different stats/colors (make fbl_set_ui_elem_color(r, g, b)))
@@ -212,14 +213,14 @@ Robots can level up and gain HP, speed, energy, diag.
 
 - create hasComponent function? yes :) - Done!
 
-- add a bunch of slimes. Story slime (green), info slime (yellow) and race-slime (red). And a level that progresses to a boss fight with lv 5 alarmy & co.
+ad- add a bunch of slimes. Story slime (green), info slime (yellow) and race-slime (red). And a level that progresses to a boss fight with lv 5 alarmy & co.
 
 - add a checkbox next to the robot name in robotCollection that will be used in the race.
 
 - create a function setRobotLevel() in robots.cpp that sets a robot to a specific level (stats component)
   This can be used to level up AND to set AI robots to specific levels as the game gets harder.
 
-- Add the manual laser (add another short line-prim) the line point in the direction where you shoot. GOOD idea! :)
+- Add the manual laser (add another short line-prim) the line point in the direction where you shoot. GOOD idea! :) - Done! (crosshair)
 
 - Add the skills to the race! already started in addons I think.
 

@@ -265,7 +265,8 @@ void GameState::setupRace(Game& g) {
 
 	g.mRobots->mapSpriteIdToEntity(g.mEcs);
 	g.mRobots->hideRobots(g.mEcs);
-	g.mAddons->initRaceAddons(g.mEcs);
+	g.mAddons->initRaceAddons(g.mEcs);	 // set up the ui elements
+	g.mAddons->hideAddons(g.mEcs);		 // don't show addons immediately
 
 	// temporarily remove path component from the player
 	g.mEcs->RemoveComponent<Path>(g.mChars->mBrodo);

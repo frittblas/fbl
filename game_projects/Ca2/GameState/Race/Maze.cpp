@@ -22,12 +22,14 @@
 Maze::aFlag gFlag[Maze::cMaxFlags];    // the flag sprites, externed in PathLogicSystem
 Maze::aCoin gCoin[Maze::cMaxCoins];	   // the coins, also externed in PathLogicSystem
 
-bool gStartingOut;	// externed in PathLogicSystem, takes waiting 2 secs into consideration (before the race starts)
+bool gPickDone;		// externed in LaserSystem, true if picking stage is complete.
+bool gStartingOut;	// externed in PathLogicSystem, takes waiting 3 secs into consideration (before the race starts)
 
 // Maze-class implementation
 
 Maze::Maze() {
 
+	gPickDone = false;
 	gStartingOut = true;
 
 	std::cout << "Maze constructor." << std::endl;
@@ -46,7 +48,9 @@ void Maze::tick(Game& g) {
 		pickStartPosition(g);
 	else {
 
-		if (mPickTimer == -150) { // wait a little before starting
+		gPickDone = true;
+
+		if (mPickTimer == -240) { // wait a little before starting
 			// make robots move
 			for (int i = 0; i < mNumRacers; i++) fbl_pathf_set_path_status(mPathId[i], FBL_PATHF_FOUND);
 			std::cout << "Picked pos: " << mPickedPosition << std::endl;
@@ -54,7 +58,7 @@ void Maze::tick(Game& g) {
 			mPickTimer--;
 			gStartingOut = false;
 		}
-		else if(mPickTimer > -160)
+		else if(mPickTimer > -250)
 			mPickTimer--;
 
 		updateGUI(g);
@@ -202,6 +206,10 @@ void Maze::pickStartPosition(Game& g) {
 
 		// create gui for the robots () coins health etc
 		createGUI();
+		// create the N/A images for unequipped addons
+		createAddonSlots();
+		// add the addon gui buttons
+		showAddons(g);
 		std::cout << "created GUI!" << std::endl;
 
 		for (int i = mFirstCircleId; i < (mFirstCircleId + 12); i++)
@@ -285,9 +293,6 @@ void Maze::initMaze(Game& g, int density, int numRacers) {
 
 	// create all the sprites at correct locations
 	populateMaze();
-
-	// add the addon gui buttons
-	showAddons(g);
 
 	// add the flag and coins
 	addItems();
@@ -482,7 +487,6 @@ void Maze::createGUI() {
 	fbl_set_sprite_color(id, 251, 236, 93); // nice yellow
 	fbl_set_sprite_alpha(id, 150);
 
-	fbl_sort_sprites(FBL_SORT_BY_LAYER);
 
 	// text items
 	fbl_load_ttf_font("font/garamond.ttf", 15);
@@ -537,6 +541,10 @@ void Maze::createGUI() {
 	//fbl_set_prim_color(gui[0].hpRectId, 0, 237, 55, 36);
 	gui[3].powRectId = fbl_create_prim(FBL_NORMAL_RECT, 897, 533, 50, 3, 0, false, true);
 	fbl_set_prim_color(gui[3].powRectId, 0, 162, 232, 255);
+
+
+	//  you have to sort the sprite list for the layer parameter to have effect
+	fbl_sort_sprites(FBL_SORT_BY_LAYER);
 
 }
 
@@ -596,6 +604,59 @@ void Maze::setOneUIbox(Stats stat, PathLogic plog, int base, int entity) {
 	barPercentage = static_cast<double>(stat.energy) / stat.maxEnergy;
 	barWidth = std::round(barMaxWidth * barPercentage);
 	fbl_set_prim_size(gui[base].powRectId, barWidth, 3, 0);
+
+}
+
+void Maze::createAddonSlots() {
+
+	// here follows the N/A images for the unequipped addons
+
+	int tempId = fbl_create_sprite(384, 288, Game::TileSize, Game::TileSize, 0);
+	fbl_set_sprite_xy(tempId, Game::TileSize * 2 - Game::TileSize / 2, Game::TileSize * 4);
+	fbl_set_sprite_layer(tempId, 2);
+
+	tempId = fbl_create_sprite(384, 288, Game::TileSize, Game::TileSize, 0);
+	fbl_set_sprite_xy(tempId, Game::LogicalResW - Game::TileSize * 2 + Game::TileSize / 2, Game::TileSize * 4);
+	fbl_set_sprite_layer(tempId, 2);
+
+	tempId = fbl_create_sprite(384, 288, Game::TileSize, Game::TileSize, 0);
+	fbl_set_sprite_xy(tempId, Game::TileSize * 2 - Game::TileSize / 2, Game::TileSize * 8);
+	fbl_set_sprite_layer(tempId, 2);
+
+	tempId = fbl_create_sprite(384, 288, Game::TileSize, Game::TileSize, 0);
+	fbl_set_sprite_xy(tempId, Game::LogicalResW - Game::TileSize * 2 + Game::TileSize / 2, Game::TileSize * 8);
+	fbl_set_sprite_layer(tempId, 2);
+
+	tempId = fbl_create_sprite(384, 288, Game::TileSize, Game::TileSize, 0);
+	fbl_set_sprite_xy(tempId, Game::TileSize * 2 - Game::TileSize / 2, Game::TileSize * 11);
+	fbl_set_sprite_layer(tempId, 2);
+
+	tempId = fbl_create_sprite(384, 288, Game::TileSize, Game::TileSize, 0);
+	fbl_set_sprite_xy(tempId, Game::LogicalResW - Game::TileSize * 2 + Game::TileSize / 2, Game::TileSize * 11);
+	fbl_set_sprite_layer(tempId, 2);
+
+	// and some text
+	fbl_load_ttf_font("font/garamond.ttf", 16);
+	tempId = fbl_create_text(255, 255, 255, 255, "Passive");
+	fbl_set_text_xy(tempId, Game::TileSize - 10, Game::TileSize * 3);
+
+	tempId = fbl_create_text(255, 255, 255, 255, "Passive");
+	fbl_set_text_xy(tempId, Game::LogicalResW - Game::TileSize * 2 - 10, Game::TileSize * 3);
+
+	// and some keys to press :)
+	tempId = fbl_create_text(255, 255, 255, 255, "A");
+	fbl_set_text_xy(tempId, Game::TileSize * 2 - 22, Game::TileSize * 7);
+
+	tempId = fbl_create_text(255, 255, 255, 255, "S");
+	fbl_set_text_xy(tempId, Game::LogicalResW - Game::TileSize * 2 + 10, Game::TileSize * 7);
+
+	tempId = fbl_create_text(255, 255, 255, 255, "Z");
+	fbl_set_text_xy(tempId, Game::TileSize * 2 - 22, Game::TileSize * 10);
+
+	tempId = fbl_create_text(255, 255, 255, 255, "X");
+	fbl_set_text_xy(tempId, Game::LogicalResW - Game::TileSize * 2 + 10, Game::TileSize * 10);
+
+	fbl_sort_sprites(FBL_SORT_BY_LAYER);
 
 }
 

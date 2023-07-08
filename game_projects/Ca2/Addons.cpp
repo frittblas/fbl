@@ -253,19 +253,19 @@ void Addons::showAddonInRace(Coordinator* mEcs, Entity addon, int position) {
 		break;
 	case 2:
 		x = Game::TileSize * 2 - Game::TileSize / 2;
-		y = Game::TileSize * 7;
+		y = Game::TileSize * 8;
 		break;
 	case 3:
 		x = Game::LogicalResW - Game::TileSize * 2 + Game::TileSize / 2;
-		y = Game::TileSize * 7;
+		y = Game::TileSize * 8;
 		break;
 	case 4:
 		x = Game::TileSize * 2 - Game::TileSize / 2;
-		y = Game::TileSize * 9;
+		y = Game::TileSize * 11;
 		break;
 	case 5:
 		x = Game::LogicalResW - Game::TileSize * 2 + Game::TileSize / 2;
-		y = Game::TileSize * 9;
+		y = Game::TileSize * 11;
 		break;
 
 	}

@@ -105,7 +105,11 @@ void Race::assignRobots(Game& g) {
 
 	//std::cout << "THE NEXT SPRITE ID IS : " << fbl_create_sprite(0, 0, 1, 1, 0) << std::endl;
 
-	mMaze->initMaze(g, 25, mNumRacers);
+	int blockDensity = (rand() % 20) + 19;	// under 40 is ok under 35 is very fast
+
+	std::cout << "Block density: " << blockDensity << std::endl;
+
+	mMaze->initMaze(g, blockDensity, mNumRacers);
 
 	fbl_sort_sprites(FBL_SORT_BY_LAYER);
 

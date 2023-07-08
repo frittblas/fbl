@@ -28,6 +28,7 @@
 bool gUpdatePaths = false;	// externed in PathLogicSystem
 
 extern Maze::aFlag gFlag[Maze::cMaxFlags]; // externed from Maze.cpp
+extern bool gPickDone;
 
 void LaserSystem::Init(Coordinator& ecs) {
 
@@ -40,6 +41,7 @@ void LaserSystem::Init(Coordinator& ecs) {
 		// create crosshair
 		las.crossHairId = fbl_create_prim(FBL_NORMAL_RECT, 0, 0, 2, 2, 0, 0, true);
 		fbl_set_prim_color(las.crossHairId, 255, 255, 255, 255);
+		fbl_set_prim_active(las.crossHairId, false);
 
 		// create the ray with 0 length
 		las.rayId = fbl_create_prim(FBL_RAY, 0, 0, 0, 0, 0, true, false);
@@ -140,6 +142,8 @@ void LaserSystem::Update(Game& g) {
 			fbl_set_emitter_active(las.particleId, false);
 		}
 
+		// only show the crosshair if the robots are showing
+		if(gPickDone) fbl_set_prim_active(las.crossHairId, true);
 
 	}
 

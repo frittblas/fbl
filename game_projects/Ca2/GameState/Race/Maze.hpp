@@ -71,6 +71,7 @@ public:
     void createGUI();
     void updateGUI(Game& g);
     void setOneUIbox(Stats stat, PathLogic plog, int base, int entity);
+    void createAddonSlots();
     bool mazeHasAllPaths();
     void assignPaths(Game& g);
 
@@ -87,7 +88,7 @@ private:
 
     int mGetReadyTextId = 0;    // get ready text id
 
-    int mGetReadyTimer = 1;	    // seconds of GET READY text with black bg
+    int mGetReadyTimer = 2;	    // seconds of GET READY text with black bg
     int mTimeToPick = 6;        // seconds of actual time player has to pick corner
 
     int mPickTimer = 0;	        // timer for picking state(in seconds * 60)
