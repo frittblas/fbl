@@ -179,7 +179,7 @@ struct Magnet
     uint16_t spriteId;      // id for the magnetic effect sprite
     uint16_t strength;      // strength of the magnet (distance to coin pulling effectish)
     uint8_t  level;         // you can level up the magnet.
-    bool     active;     // active or turned off?
+    bool     active;        // active or turned off?
 
 };
 
@@ -188,5 +188,23 @@ struct RobotCtrl
 {
 
     int16_t access;   // so the fbl_mouse function doesn't trigger too often.
+
+};
+
+// the shield component (shield against laser in race mode)
+struct Shield
+{
+
+    uint16_t spriteId;   // id for the white sprite circle that uses physics colissions (406, 214) 42x42
+    uint8_t  level;      // something
+
+};
+
+// the healing component (heal hp during race)
+struct Heal
+{
+
+    uint16_t particleId;   // is for the healing particle effect
+    uint8_t  level;        // something
 
 };

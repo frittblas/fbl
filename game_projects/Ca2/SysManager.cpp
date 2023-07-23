@@ -28,6 +28,8 @@
 #include "Ecs/Systems/Race/LaserSystem.hpp"
 #include "Ecs/Systems/Race/MagnetSystem.hpp"
 #include "Ecs/Systems/Race/RobotCtrlSystem.hpp"
+#include "Ecs/Systems/Race/ShieldSystem.hpp"
+#include "Ecs/Systems/Race/HealSystem.hpp"
 
 // SysManager-class implementation
 
@@ -66,6 +68,8 @@ void SysManager::setupEcs(Coordinator *mEcs) {
 	mEcs->RegisterComponent<Laser>();
 	mEcs->RegisterComponent<Magnet>();
 	mEcs->RegisterComponent<RobotCtrl>();
+	mEcs->RegisterComponent<Shield>();
+	mEcs->RegisterComponent<Heal>();
 
 	// register systems
 	mSpriteSystem = mEcs->RegisterSystem<SpriteSystem>();
@@ -81,6 +85,8 @@ void SysManager::setupEcs(Coordinator *mEcs) {
 	mLaserSystem = mEcs->RegisterSystem<LaserSystem>();
 	mMagnetSystem = mEcs->RegisterSystem<MagnetSystem>();
 	mRobotCtrlSystem = mEcs->RegisterSystem<RobotCtrlSystem>();
+	mShieldSystem = mEcs->RegisterSystem<ShieldSystem>();
+	mHealSystem = mEcs->RegisterSystem<HealSystem>();
 
 	// set up what components the systems require
 	Signature sign;
@@ -148,5 +154,17 @@ void SysManager::setupEcs(Coordinator *mEcs) {
 	sign.set(mEcs->GetComponentType<Path>());
 	sign.set(mEcs->GetComponentType<RobotCtrl>());
 	mEcs->SetSystemSignature<RobotCtrlSystem>(sign);
+
+	sign.reset();
+	sign.set(mEcs->GetComponentType<Position>());
+	sign.set(mEcs->GetComponentType<Stats>());
+	sign.set(mEcs->GetComponentType<Shield>());
+	mEcs->SetSystemSignature<ShieldSystem>(sign);
+
+	sign.reset();
+	sign.set(mEcs->GetComponentType<Position>());
+	sign.set(mEcs->GetComponentType<Stats>());
+	sign.set(mEcs->GetComponentType<Heal>());
+	mEcs->SetSystemSignature<HealSystem>(sign);
 
 }

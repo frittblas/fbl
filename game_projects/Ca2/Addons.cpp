@@ -74,6 +74,18 @@ void Addons::setupAddons(Coordinator* mEcs) {
 
 			break;
 
+		case Shield:
+												// type   name  uiId tx ty	lv rrty psv     eqp  price
+			mEcs->AddComponent(tmpAddon, Addon{ Shield, "Shield", 0, 0, 256, 1, 2, false, notSet, 15 });
+
+			break;
+
+		case Heal:
+											  // type  name uiId tx ty  lv rrty psv   eqp  price
+			mEcs->AddComponent(tmpAddon, Addon{ Heal, "Heal", 0, 0, 288, 1, 2, false, notSet, 11 });
+
+			break;
+
 		}
 
 		// add the entity to the array containing all addons
@@ -85,6 +97,8 @@ void Addons::setupAddons(Coordinator* mEcs) {
 	claimAddon(Laser);
 	claimAddon(Magnet);
 	claimAddon(RobotCtrl);
+	claimAddon(Shield);
+	claimAddon(Heal);
 
 }
 

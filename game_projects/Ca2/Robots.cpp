@@ -149,6 +149,14 @@ void Robots::addAddonComponent(Coordinator* mEcs, Entity robot, uint8_t addonTyp
 											// access
 			mEcs->AddComponent(robot, RobotCtrl{ 0 });
 			break;
+		case Addons::Shield:
+											// sid, lv
+			mEcs->AddComponent(robot, Shield{ 0, 0 });
+			break;
+		case Addons::Heal:
+										// sid, lv
+			mEcs->AddComponent(robot, Heal{ 0, 0 });
+			break;
 
 	}
 
@@ -173,6 +181,12 @@ void Robots::removeAddonComponent(Coordinator* mEcs, Entity robot, uint8_t addon
 			break;
 		case Addons::RobotCtrl:
 			mEcs->RemoveComponent<RobotCtrl>(robot);
+			break;
+		case Addons::Shield:
+			mEcs->RemoveComponent<Shield>(robot);
+			break;
+		case Addons::Heal:
+			mEcs->RemoveComponent<Heal>(robot);
 			break;
 
 	}

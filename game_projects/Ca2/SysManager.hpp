@@ -23,12 +23,14 @@ class DialogueTrigSystem;
 class LightSystem;
 
 // robot specific
-// Stats does not have it's own system YET!
+// Stats does not have it's own system!
 class PathLogicSystem;
 class AutoAimSystem;
 class LaserSystem;
 class MagnetSystem;
 class RobotCtrlSystem;
+class ShieldSystem;
+class HealSystem;
 
 class Coordinator;
 
@@ -47,6 +49,8 @@ public:
     std::shared_ptr<LaserSystem> mLaserSystem;               // the laser system
     std::shared_ptr<MagnetSystem> mMagnetSystem;             // the magnet system
     std::shared_ptr<RobotCtrlSystem> mRobotCtrlSystem;       // the robot control system
+    std::shared_ptr<ShieldSystem> mShieldSystem;             // the shield system
+    std::shared_ptr<HealSystem> mHealSystem;                 // the heal system
 
     SysManager();
     ~SysManager();

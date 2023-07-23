@@ -27,6 +27,8 @@
 #include "../../Ecs/Systems/Race/LaserSystem.hpp"
 #include "../../Ecs/Systems/Race/MagnetSystem.hpp"
 #include "../../Ecs/Systems/Race/RobotCtrlSystem.hpp"
+#include "../../Ecs/Systems/Race/ShieldSystem.hpp"
+#include "../../Ecs/Systems/Race/HealSystem.hpp"
 
 #include "../../Chars.hpp"
 #include "../../Weather.hpp"
@@ -174,7 +176,7 @@ void Race::handleAddons(Game& g, Addon& add, Entity playingRobot, bool on) {
 
 	switch (add.type) {
 
-		case Addons::Type::AutoAim :
+		case Addons::Type::AutoAim:
 			{
 				auto& aim = g.mEcs->GetComponent<AutoAim>(playingRobot);
 				aim.active = on;
@@ -223,6 +225,8 @@ void Race::tick(Game& g) {
 	g.mSysManager->mLaserSystem->Update(g);					// update the Laser system
 	g.mSysManager->mMagnetSystem->Update(g);				// update the Magnet system
 	g.mSysManager->mRobotCtrlSystem->Update(*g.mEcs);		// update the robot control system
+	g.mSysManager->mShieldSystem->Update(g);				// update the shield system
+	g.mSysManager->mHealSystem->Update(g);					// update the heal system
 
 	getInput(g);
 

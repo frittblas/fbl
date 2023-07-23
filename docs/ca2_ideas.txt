@@ -222,12 +222,12 @@ ad- add a bunch of slimes. Story slime (green), info slime (yellow) and race-sli
 
 - Add the manual laser (add another short line-prim) the line point in the direction where you shoot. GOOD idea! :) - Done! (crosshair)
 
-- Add the skills to the race! already started in addons I think.
+- Add the skills to the race! already started in addons I think. DONE!!!
 
 - reserve 3 "boss robots" that can't be claimed. The last race is against these.
   construct a bunch of races (start by talking to race-slimes). The enemy robots should have increasing level and addons.
 
-- If a robot dies, It's gone forever!!! If all robots are dead the game is over.
+- If a robot dies, It's gone forever!!! If all robots are dead the game is over. YES!
 
 - Make the robots different from each other. Charmy (balanced) Alarmy (op) Chompy (strong slow), Boingy (fast but weak) etc.
 
@@ -237,7 +237,7 @@ ad- add a bunch of slimes. Story slime (green), info slime (yellow) and race-sli
 
 - if your robot dies in a race the next robot (to the right in collection) will start.
 
-- each race start with fully healed and charged robots?
+- each race start with fully healed and charged robots? NO, charged but not healed.
 
 - OR maybe you can talk to to a slime that repairs you robots for a fee. Or sometimes free.
 

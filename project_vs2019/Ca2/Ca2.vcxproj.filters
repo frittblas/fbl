@@ -195,6 +195,12 @@
     <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\Race\RobotCtrlSystem.cpp">
       <Filter>Source Files\Ecs\Systems\Race</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\Race\HealSystem.cpp">
+      <Filter>Source Files\Ecs\Systems\Race</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\Race\ShieldSystem.cpp">
+      <Filter>Source Files\Ecs\Systems\Race</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\fbl.h">
@@ -327,6 +333,12 @@
       <Filter>Source Files\Ecs\Systems\Race</Filter>
     </ClInclude>
     <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\Race\RobotCtrlSystem.hpp">
+      <Filter>Source Files\Ecs\Systems\Race</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\Race\HealSystem.hpp">
+      <Filter>Source Files\Ecs\Systems\Race</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\Race\ShieldSystem.hpp">
       <Filter>Source Files\Ecs\Systems\Race</Filter>
     </ClInclude>
   </ItemGroup>

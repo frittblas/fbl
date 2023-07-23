@@ -27,6 +27,8 @@ public:
         Laser,
         Magnet,
         RobotCtrl,
+        Shield,
+        Heal,
         NumAddons
 
     };

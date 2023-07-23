@@ -317,7 +317,7 @@ void fbl_set_sprite_align(int mode)
 
 /*
  * Set the fullscreen, global tint to on or off, and set the color.
- * This is usefult for setting time of day, like night/evening.
+ * This is useful for setting time of day, like night/evening.
  * This is also needed to be on if you want to see any 2d lights created
  * by fbl_set_sprite_is_light()
  * 
@@ -802,8 +802,7 @@ void fbl_fix_sprite_to_screen(int id, bool fix)
  * Basic bounding box collision detection between 2 sprites.
  * Does not work well with angled sprites but works with scale.
  * This is just here for an easy way to do simple collision checking.
- * It's slow, use chipmunk functions instead maybe..
- * This is meant for sprites drawn from the center.
+  * This is meant for sprites drawn from the center.
  */
 bool fbl_get_sprite_collision(int id_1, int id_2)
 {
