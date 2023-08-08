@@ -209,6 +209,26 @@ void Race::handleAddons(Game& g, Addon& add, Entity playingRobot, bool on) {
 				mag.active = on;
 			}
 			break;
+		case Addons::Type::RobotCtrl:
+		{
+			auto& ctrl = g.mEcs->GetComponent<RobotCtrl>(playingRobot);
+			if(ctrl.active != on)
+				ctrl.justSwitched = true;
+			ctrl.active = on;
+		}
+		break;
+		case Addons::Type::Shield:
+		{
+			auto& shield = g.mEcs->GetComponent<Shield>(playingRobot);
+			shield.isShielding = on;
+		}
+		break;
+		case Addons::Type::Heal:
+		{
+			auto& heal = g.mEcs->GetComponent<Heal>(playingRobot);
+			// activate healing here
+		}
+		break;
 
 	}
 

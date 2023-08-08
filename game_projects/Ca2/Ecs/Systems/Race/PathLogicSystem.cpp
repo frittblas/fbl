@@ -56,11 +56,12 @@ void PathLogicSystem::Update(Game& g) {
 
 		handleFlags(entity, pos, spr, path, plog);
 		handleCoins(entity, spr, plog);
-		handleBases(entity, pos, spr, path, plog);
+		handleBases(g, entity, pos, spr, path, plog);
 
 	}
 
 	updatePaths(g);
+	switchCtrl(g);
 
 }
 
@@ -136,7 +137,7 @@ void PathLogicSystem::handleCoins(Entity e, Sprite& spr, PathLogic& plog) {
 
 }
 
-void PathLogicSystem::handleBases(Entity e, Position& pos, Sprite& spr, Path& path, PathLogic& plog) {
+void PathLogicSystem::handleBases(Game& g, Entity e, Position& pos, Sprite& spr, Path& path, PathLogic& plog) {
 
 	// if a robot collides with it's base, drop any flags carried, charge the battery and set out for nearest flag
 
@@ -155,8 +156,19 @@ void PathLogicSystem::handleBases(Entity e, Position& pos, Sprite& spr, Path& pa
 		}
 
 		if (!gStartingOut) {
-			findClosestFlag(pos, path, plog);
+			//findClosestFlag(pos, path, plog);
 			//std::cout << "Heading out from base! entity: " << e << std::endl;
+
+			if (!g.mEcs->HasComponent<RobotCtrl>(e)) {
+				findClosestFlag(pos, path, plog);
+			}
+			else {
+				auto& ctrl = g.mEcs->GetComponent<RobotCtrl>(e);
+
+				if (!ctrl.active)
+					findClosestFlag(pos, path, plog);
+			}
+
 		}
 
 	}
@@ -233,8 +245,15 @@ void PathLogicSystem::updatePaths(Game& g) {
 			if (flagIndex < 0) {
 
 				// update paths for robots without a MouseCtrl component
-				if(!g.mEcs->HasComponent<RobotCtrl>(entity))
+				if (!g.mEcs->HasComponent<RobotCtrl>(entity)) {
 					findClosestFlag(pos, path, plog);
+				}
+				else {
+					auto& ctrl = g.mEcs->GetComponent<RobotCtrl>(entity);
+
+					if (!ctrl.active && !gStartingOut)
+						findClosestFlag(pos, path, plog);
+				}
 
 				std::cout << "New path for robot-entity: " << entity << std::endl;
 
@@ -244,6 +263,60 @@ void PathLogicSystem::updatePaths(Game& g) {
 		}
 
 		gUpdatePaths = false;
+
+	}
+
+}
+
+void PathLogicSystem::switchCtrl(Game& g) {
+
+	// This is used for setting up the correct behaviour when the player
+	// clicks the passive RobotCtrl addon in a race.
+
+	for (auto const& entity : mEntities)
+	{
+
+		// update behaviour only for robots with a MouseCtrl component (i.e. the player)
+		if (g.mEcs->HasComponent<RobotCtrl>(entity)) {
+
+			auto& pos = g.mEcs->GetComponent<Position>(entity);
+			auto& path = g.mEcs->GetComponent<Path>(entity);
+			auto& plog = g.mEcs->GetComponent<PathLogic>(entity);
+			auto& ctrl = g.mEcs->GetComponent<RobotCtrl>(entity);
+
+			if (ctrl.justSwitched) {
+				std::cout << "JUST SWITCHED! for robot-entity: " << entity << std::endl;
+				if (!ctrl.active) {		// if the robot ctrl is deactivated, control goes back to auto
+
+					if (hasFlag(entity) >= 0) {
+
+						// if carrying flag, set course to the base
+						if (!gStartingOut) {
+							path.goalX = plog.baseX;
+							path.goalY = plog.baseY;
+							path.newPath = true;
+						}
+
+					}
+					else {
+						if (!gStartingOut)
+							findClosestFlag(pos, path, plog);
+					}
+
+				}
+				else {	// here it's active again
+
+					// make robot stop
+					
+					fbl_pathf_set_path_status(path.id, FBL_PATHF_NOT_STARTED);
+
+				}
+
+				ctrl.justSwitched = false;
+
+			}
+
+		}
 
 	}
 

@@ -146,15 +146,15 @@ void Robots::addAddonComponent(Coordinator* mEcs, Entity robot, uint8_t addonTyp
 			mEcs->AddComponent(robot, Magnet{ 0, 64, 1, true });
 			break;
 		case Addons::RobotCtrl:
-											// access
-			mEcs->AddComponent(robot, RobotCtrl{ 0 });
+											// access active justSw
+			mEcs->AddComponent(robot, RobotCtrl{ 0, true, false });
 			break;
 		case Addons::Shield:
-											// sid, lv
-			mEcs->AddComponent(robot, Shield{ 0, 0 });
+										// sid, lv, isShielding
+			mEcs->AddComponent(robot, Shield{ 0, 0, false });
 			break;
 		case Addons::Heal:
-										// sid, lv
+										// pid, lv
 			mEcs->AddComponent(robot, Heal{ 0, 0 });
 			break;
 

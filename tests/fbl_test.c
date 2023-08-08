@@ -101,7 +101,7 @@ void fbl_start()
 
 	/* ui */
 
-	fbl_load_ui_texture("ui_1.png");
+	fbl_load_ui_texture("ui_2.png");
 
 	left_button = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, NULL);
 	right_button = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 0, 32, 32, NULL);

@@ -51,8 +51,8 @@ void Maze::tick(Game& g) {
 		gPickDone = true;
 
 		if (mPickTimer == -240) { // wait a little before starting
-			// make robots move
-			for (int i = 0; i < mNumRacers; i++) fbl_pathf_set_path_status(mPathId[i], FBL_PATHF_FOUND);
+			// make robots move (this gets taken care of in handleBases instead (PathLogicSystem))
+			//for (int i = 0; i < mNumRacers; i++) fbl_pathf_set_path_status(mPathId[i], FBL_PATHF_FOUND);
 			std::cout << "Picked pos: " << mPickedPosition << std::endl;
 			std::cout << "Running! Num sprites: " << fbl_get_num_sprites() << std::endl;
 			mPickTimer--;

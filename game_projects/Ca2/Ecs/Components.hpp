@@ -179,7 +179,7 @@ struct Magnet
     uint16_t spriteId;      // id for the magnetic effect sprite
     uint16_t strength;      // strength of the magnet (distance to coin pulling effectish)
     uint8_t  level;         // you can level up the magnet.
-    bool     active;        // active or turned off?
+    bool     active;        // active or off?
 
 };
 
@@ -187,7 +187,9 @@ struct Magnet
 struct RobotCtrl
 {
 
-    int16_t access;   // so the fbl_mouse function doesn't trigger too often.
+    int16_t access;       // so the fbl_mouse function doesn't trigger too often.
+    bool    active;       // active of off
+    bool    justSwitched; // just clicked the ctrl ui button (switching between active and off, used in PathLogic)
 
 };
 
@@ -195,8 +197,9 @@ struct RobotCtrl
 struct Shield
 {
 
-    uint16_t spriteId;   // id for the white sprite circle that uses physics colissions (406, 214) 42x42
-    uint8_t  level;      // something
+    uint16_t spriteId;    // id for the white sprite circle that uses physics colissions (406, 214) 42x42
+    uint8_t  level;       // something
+    bool     isShielding; // are you shielding atm?
 
 };
 
