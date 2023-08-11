@@ -58,7 +58,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 0, 96, 32, 32, false, 0, 0, 0, 0, 7 });	// robots are on layer 7
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
-				mEcs->AddComponent(tmpRobot, Stats{ "Charmy", 1, 0, 4, 50, 50, 8, true, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
+				mEcs->AddComponent(tmpRobot, Stats{ "Charmy", 1, 0, 4, 50, 50, 8, true, 40, 40, 7, -1, -1, -1, -1, -1, -1 });
 												  // baseX Y flg coin alive
 				mEcs->AddComponent(tmpRobot, PathLogic{ 0, 0, 0, 0, true });
 												//  rid len dir ivalM ivalC hasTarg active
@@ -142,20 +142,20 @@ void Robots::addAddonComponent(Coordinator* mEcs, Entity robot, uint8_t addonTyp
 			mEcs->AddComponent(robot, Laser{ 0, 0, 0, 800, Addons::Dir::Up, 15, 1, false });
 			break;
 		case Addons::Magnet:
-										  // sid str lv active
-			mEcs->AddComponent(robot, Magnet{ 0, 64, 1, true });
+										  // sid str active
+			mEcs->AddComponent(robot, Magnet{ 0, 64, true });
 			break;
 		case Addons::RobotCtrl:
 											// access active justSw
 			mEcs->AddComponent(robot, RobotCtrl{ 0, true, false });
 			break;
 		case Addons::Shield:
-										// sid, lv, isShielding
-			mEcs->AddComponent(robot, Shield{ 0, 0, false });
+										// sid, eCost isShielding
+			mEcs->AddComponent(robot, Shield{ 0, 10, false });
 			break;
 		case Addons::Heal:
-										// pid, lv
-			mEcs->AddComponent(robot, Heal{ 0, 0 });
+									 // pid eCost amnt maxAmnt activated
+			mEcs->AddComponent(robot, Heal{ 0, 5, 50, 50, false });
 			break;
 
 	}

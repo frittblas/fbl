@@ -35,7 +35,7 @@ void MagnetSystem::Init(Coordinator& ecs) {
 		// create the magnetic effect sprite
 		mag.spriteId = fbl_create_sprite(255, 0, 64, 64, 0);
 		fbl_set_sprite_animation(mag.spriteId, true, 255, 0, 64, 64, 2, 15, true);
-		fbl_set_sprite_layer(mag.spriteId, 8);	// on top of robots
+		fbl_set_sprite_layer(mag.spriteId, 8);			// on top of the robots
 		fbl_set_sprite_active(mag.spriteId, false);		// set the sprite to off to begin with
 
 	}

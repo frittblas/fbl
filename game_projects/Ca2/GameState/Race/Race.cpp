@@ -168,7 +168,7 @@ void Race::getInput(Game& g) {
 
 }
 
-void Race::handleAddons(Game& g, Addon& add, Entity playingRobot, bool on) {
+void Race::handleAddons(Game& g, Addon& add, Entity playingRobot, bool onOff) {
 
 	static bool laserDirChangeOk = false;
 
@@ -179,13 +179,13 @@ void Race::handleAddons(Game& g, Addon& add, Entity playingRobot, bool on) {
 		case Addons::Type::AutoAim:
 			{
 				auto& aim = g.mEcs->GetComponent<AutoAim>(playingRobot);
-				aim.active = on;
+				aim.active = onOff;
 			}
 			break;
 		case Addons::Type::Laser:
 			{
 				auto& las = g.mEcs->GetComponent<Laser>(playingRobot);
-				las.isFiring = on;
+				las.isFiring = onOff;
 
 				// change laser direction every time you release (clockwise)
 				if (!las.isFiring && laserDirChangeOk) {
@@ -206,27 +206,27 @@ void Race::handleAddons(Game& g, Addon& add, Entity playingRobot, bool on) {
 		case Addons::Type::Magnet:
 			{
 				auto& mag = g.mEcs->GetComponent<Magnet>(playingRobot);
-				mag.active = on;
+				mag.active = onOff;
 			}
 			break;
 		case Addons::Type::RobotCtrl:
 		{
 			auto& ctrl = g.mEcs->GetComponent<RobotCtrl>(playingRobot);
-			if(ctrl.active != on)
+			if(ctrl.active != onOff)
 				ctrl.justSwitched = true;
-			ctrl.active = on;
+			ctrl.active = onOff;
 		}
 		break;
 		case Addons::Type::Shield:
 		{
 			auto& shield = g.mEcs->GetComponent<Shield>(playingRobot);
-			shield.isShielding = on;
+			shield.isShielding = onOff;
 		}
 		break;
 		case Addons::Type::Heal:
 		{
 			auto& heal = g.mEcs->GetComponent<Heal>(playingRobot);
-			// activate healing here
+			heal.activated = onOff;
 		}
 		break;
 

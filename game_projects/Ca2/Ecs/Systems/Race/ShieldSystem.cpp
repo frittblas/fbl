@@ -28,7 +28,12 @@ void ShieldSystem::Init(Coordinator& ecs) {
 	for (auto const& entity : mEntities)
 	{
 		auto& pos = ecs.GetComponent<Position>(entity);
+		auto& shield = ecs.GetComponent<Shield>(entity);
 
+		// create shield (sprite circle with physics)
+		shield.spriteId = fbl_create_sprite(406, 214, 42, 42, 0);
+		
+		//fbl_set_sprite_active(shield.spriteId, false);
 
 	}
 

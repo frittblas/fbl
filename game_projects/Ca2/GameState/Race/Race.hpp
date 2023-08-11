@@ -27,7 +27,7 @@ public:
     void assignRobots(Game& g);
     void unassignRobots(Game& g);
     void getInput(Game& g);
-    void handleAddons(Game& g, Addon& add, Entity playingRobot, bool on);
+    void handleAddons(Game& g, Addon& add, Entity playingRobot, bool onOff);
 
     virtual void tick(Game& g) override;
 

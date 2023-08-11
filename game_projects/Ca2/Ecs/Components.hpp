@@ -126,7 +126,7 @@ struct Stats
     uint8_t speed;          // speed
     bool diag;              // can go diagonal?
     uint8_t maxEnergy;      // max energy
-    uint8_t energy;         // current energy
+    float   energy;         // current energy
     uint8_t weight;         // weight
     int16_t slot[6];        // passive skills (like magnetic, diagonal etc.) as Entity (Addon) first 2!
                             // AND active skills (like weapons, for the buttons to the left and right) as Entity (Addon) last 4!
@@ -178,7 +178,6 @@ struct Magnet
 
     uint16_t spriteId;      // id for the magnetic effect sprite
     uint16_t strength;      // strength of the magnet (distance to coin pulling effectish)
-    uint8_t  level;         // you can level up the magnet.
     bool     active;        // active or off?
 
 };
@@ -197,8 +196,8 @@ struct RobotCtrl
 struct Shield
 {
 
-    uint16_t spriteId;    // id for the white sprite circle that uses physics colissions (406, 214) 42x42
-    uint8_t  level;       // something
+    uint16_t spriteId;    // id for the white sprite circle that uses physics colissions (406, 214) 42x42 px
+    uint8_t  energyCost;  // how much energy does it cost?
     bool     isShielding; // are you shielding atm?
 
 };
@@ -207,7 +206,10 @@ struct Shield
 struct Heal
 {
 
-    uint16_t particleId;   // is for the healing particle effect
-    uint8_t  level;        // something
+    uint16_t particleId;   // is for the healing particle effect (heart at 375, 288) 9x8 px
+    uint8_t  energyCost;   // how much energy does it cost?
+    uint8_t  amountLeft;   // healing has one use (press the button and let healing go up slowly) amount goes down.
+    uint8_t  maxAmount;    // total amount of healing to be done.
+    bool     activated;    // can only activade once a round.
 
 };
