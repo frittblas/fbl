@@ -30,12 +30,12 @@ void ShieldSystem::Init(Coordinator& ecs) {
 		auto& pos = ecs.GetComponent<Position>(entity);
 		auto& shield = ecs.GetComponent<Shield>(entity);
 
-		// create shield (sprite circle with physics)
-		shield.spriteId = fbl_create_sprite(406, 214, 42, 42, 0);
-		fbl_set_sprite_phys(shield.spriteId, true, FBL_CIRCLE, FBL_PHYS_DYNAMIC, false);
+		// create shield (sprite circle)
+		shield.spriteId = fbl_create_sprite(406, 214, 42, 42, 21);
+		//fbl_set_sprite_phys(shield.spriteId, true, FBL_CIRCLE, FBL_PHYS_DYNAMIC, false);
 		fbl_set_sprite_layer(shield.spriteId, 8);			// on top of the robots
 
-		//fbl_set_sprite_active(shield.spriteId, false);
+		fbl_set_sprite_active(shield.spriteId, false);
 
 	}
 
@@ -59,16 +59,16 @@ void ShieldSystem::Update(Game& g) {
 			if (stat.energy > 0 && stat.hp > 0) {
 
 				// activate shield effect
-				//fbl_set_sprite_active(shield.spriteId, true);
-				fbl_set_sprite_xy(shield.spriteId, pos.x, pos.y);
+				fbl_set_sprite_active(shield.spriteId, true);
+				fbl_set_sprite_xy(shield.spriteId, pos.x + 15, pos.y + 15);
 
 				stat.energy -= static_cast<double>(shield.energyCost) / 10;
 
 			}
-			else fbl_set_sprite_xy(shield.spriteId, -500, -500);
+			else fbl_set_sprite_active(shield.spriteId, false);
 
 		}
-		else fbl_set_sprite_xy(shield.spriteId, -500, -500);
+		else fbl_set_sprite_active(shield.spriteId, false);
 	}
 
 	

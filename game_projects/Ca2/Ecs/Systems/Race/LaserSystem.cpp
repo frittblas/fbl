@@ -162,7 +162,21 @@ void LaserSystem::dealDamage(Game &g, Entity attacker, Entity target) {
 			auto& targetSta = g.mEcs->GetComponent<Stats>(target);
 			auto& light = g.mEcs->GetComponent<Light>(target);
 
-			targetSta.hp -= static_cast<double>(attackLas.damage) / 10;
+			Shield* targetShield = nullptr;
+			if (g.mEcs->HasComponent<Shield>(target))
+				targetShield = &g.mEcs->GetComponent<Shield>(target);
+
+			if (targetShield) {
+
+				if (targetShield->isShielding && targetSta.energy > 0 && targetSta.hp > 0) {
+				
+					// nothing (don't take damage)
+				
+				}
+				else targetSta.hp -= static_cast<double>(attackLas.damage) / 10;
+
+			}
+			else targetSta.hp -= static_cast<double>(attackLas.damage) / 10;
 
 			// if target dead
 			if (targetSta.hp <= 0) {

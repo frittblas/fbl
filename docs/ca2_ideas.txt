@@ -244,7 +244,7 @@ ad- add a bunch of slimes. Story slime (green), info slime (yellow) and race-sli
 - make the difficulty easy first race, but quickly harder. One full playthrough should maybe be 2 hours? or 1 hour maybe.
 
 roadmap:
-finish heal addon then shield addon (only circle atm).
+finish heal addon then shield addon (only circle atm). - done!
 make all the addons in 3 versions of each (level 1-3) except for the Rctrl and Diag thing.
 add more robots and make claimRobot and claimAddon callable from lua.
 Start making the level with a bunch of dialogue and a couple of songs.
