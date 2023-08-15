@@ -29,6 +29,8 @@ public:
         RobotCtrl,
         Shield,
         Heal,
+        Diag,
+        Turbo,
         NumAddons
 
     };

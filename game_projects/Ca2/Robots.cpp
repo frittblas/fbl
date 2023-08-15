@@ -157,6 +157,14 @@ void Robots::addAddonComponent(Coordinator* mEcs, Entity robot, uint8_t addonTyp
 									 // pid eCost amnt maxAmnt activated
 			mEcs->AddComponent(robot, Heal{ 0, 5, 50, 50, false });
 			break;
+		case Addons::Diag:
+									// activated justSw
+			mEcs->AddComponent(robot, Diag{ true, false });
+			break;
+		case Addons::Turbo:
+									// amnt eCost activated
+			mEcs->AddComponent(robot, Turbo{ 0.5, 2, false });
+			break;
 
 	}
 
@@ -187,6 +195,12 @@ void Robots::removeAddonComponent(Coordinator* mEcs, Entity robot, uint8_t addon
 			break;
 		case Addons::Heal:
 			mEcs->RemoveComponent<Heal>(robot);
+			break;
+		case Addons::Diag:
+			mEcs->RemoveComponent<Diag>(robot);
+			break;
+		case Addons::Turbo:
+			mEcs->RemoveComponent<Turbo>(robot);
 			break;
 
 	}

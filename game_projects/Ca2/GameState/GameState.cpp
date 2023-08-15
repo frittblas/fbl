@@ -29,6 +29,8 @@
 #include "../Ecs/Systems/Race/RobotCtrlSystem.hpp"
 #include "../Ecs/Systems/Race/ShieldSystem.hpp"
 #include "../Ecs/Systems/Race/HealSystem.hpp"
+#include "../Ecs/Systems/Race/DiagSystem.hpp"
+#include "../Ecs/Systems/Race/TurboSystem.hpp"
 
 #include "GameState.hpp"
 #include "Title.hpp"
@@ -266,6 +268,8 @@ void GameState::setupRace(Game& g) {
 	g.mSysManager->mRobotCtrlSystem->Init(*g.mEcs);	// set up robot control access time.
 	g.mSysManager->mShieldSystem->Init(*g.mEcs);	// set up shield sprite etc.
 	g.mSysManager->mHealSystem->Init(*g.mEcs);		// set up healing particle system etc.
+	g.mSysManager->mDiagSystem->Init(*g.mEcs);	    // set up diagonal movement
+	g.mSysManager->mTurboSystem->Init(*g.mEcs);		// set up turbo
 
 	g.mRobots->mapSpriteIdToEntity(g.mEcs);
 	g.mRobots->hideRobots(g.mEcs);

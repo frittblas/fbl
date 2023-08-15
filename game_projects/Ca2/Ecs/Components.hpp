@@ -187,7 +187,7 @@ struct RobotCtrl
 {
 
     int16_t access;       // so the fbl_mouse function doesn't trigger too often.
-    bool    active;       // active of off
+    bool    active;       // active on/off
     bool    justSwitched; // just clicked the ctrl ui button (switching between active and off, used in PathLogic)
 
 };
@@ -211,5 +211,24 @@ struct Heal
     uint8_t  amountLeft;   // healing has one use (press the button and let healing go up slowly) amount goes down.
     uint8_t  maxAmount;    // total amount of healing to be done.
     bool     activated;    // can only activade once a round.
+
+};
+
+// the diagonal component
+struct Diag
+{
+
+    bool    active;       // active on/off
+    bool    justSwitched; // just clicked the ctrl ui button (switching between active and off, used in PathLogic)
+
+};
+
+// the turbo component
+struct Turbo
+{
+
+    float   amount;       // how much speed boost in percent (0.3, 0.5 and 0.7) ish
+    uint8_t energyCost;   // how much energy does it cost?
+    bool    active;       // active on/off
 
 };

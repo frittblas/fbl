@@ -201,6 +201,12 @@
     <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\Race\ShieldSystem.cpp">
       <Filter>Source Files\Ecs\Systems\Race</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\Race\DiagSystem.cpp">
+      <Filter>Source Files\Ecs\Systems\Race</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\Race\TurboSystem.cpp">
+      <Filter>Source Files\Ecs\Systems\Race</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\fbl.h">
@@ -339,6 +345,12 @@
       <Filter>Source Files\Ecs\Systems\Race</Filter>
     </ClInclude>
     <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\Race\ShieldSystem.hpp">
+      <Filter>Source Files\Ecs\Systems\Race</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\Race\DiagSystem.hpp">
+      <Filter>Source Files\Ecs\Systems\Race</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\Race\TurboSystem.hpp">
       <Filter>Source Files\Ecs\Systems\Race</Filter>
     </ClInclude>
   </ItemGroup>

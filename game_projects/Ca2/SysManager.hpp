@@ -31,6 +31,8 @@ class MagnetSystem;
 class RobotCtrlSystem;
 class ShieldSystem;
 class HealSystem;
+class DiagSystem;
+class TurboSystem;
 
 class Coordinator;
 
@@ -51,6 +53,8 @@ public:
     std::shared_ptr<RobotCtrlSystem> mRobotCtrlSystem;       // the robot control system
     std::shared_ptr<ShieldSystem> mShieldSystem;             // the shield system
     std::shared_ptr<HealSystem> mHealSystem;                 // the heal system
+    std::shared_ptr<DiagSystem> mDiagSystem;                 // the diagonal system
+    std::shared_ptr<TurboSystem> mTurboSystem;               // the turbo system
 
     SysManager();
     ~SysManager();

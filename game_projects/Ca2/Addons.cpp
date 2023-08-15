@@ -86,6 +86,18 @@ void Addons::setupAddons(Coordinator* mEcs) {
 
 			break;
 
+		case Diag:
+											  // type  name      uiId tx ty  lv rrty psv   eqp  price
+			mEcs->AddComponent(tmpAddon, Addon{ Diag, "Diagonals", 0, 0, 192, 1, 2, true, notSet, 5 });
+
+			break;
+
+		case Turbo:
+											  // type   name  uiId tx ty  lv rrty psv   eqp  price
+			mEcs->AddComponent(tmpAddon, Addon{ Turbo, "Turbo", 0, 0, 320, 1, 2, false, notSet, 9 });
+
+			break;
+
 		}
 
 		// add the entity to the array containing all addons
@@ -99,6 +111,8 @@ void Addons::setupAddons(Coordinator* mEcs) {
 	claimAddon(RobotCtrl);
 	claimAddon(Shield);
 	claimAddon(Heal);
+	claimAddon(Diag);
+	claimAddon(Turbo);
 
 }
 

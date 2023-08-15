@@ -30,6 +30,8 @@
 #include "Ecs/Systems/Race/RobotCtrlSystem.hpp"
 #include "Ecs/Systems/Race/ShieldSystem.hpp"
 #include "Ecs/Systems/Race/HealSystem.hpp"
+#include "Ecs/Systems/Race/DiagSystem.hpp"
+#include "Ecs/Systems/Race/TurboSystem.hpp"
 
 // SysManager-class implementation
 
@@ -70,6 +72,8 @@ void SysManager::setupEcs(Coordinator *mEcs) {
 	mEcs->RegisterComponent<RobotCtrl>();
 	mEcs->RegisterComponent<Shield>();
 	mEcs->RegisterComponent<Heal>();
+	mEcs->RegisterComponent<Diag>();
+	mEcs->RegisterComponent<Turbo>();
 
 	// register systems
 	mSpriteSystem = mEcs->RegisterSystem<SpriteSystem>();
@@ -87,6 +91,8 @@ void SysManager::setupEcs(Coordinator *mEcs) {
 	mRobotCtrlSystem = mEcs->RegisterSystem<RobotCtrlSystem>();
 	mShieldSystem = mEcs->RegisterSystem<ShieldSystem>();
 	mHealSystem = mEcs->RegisterSystem<HealSystem>();
+	mDiagSystem = mEcs->RegisterSystem<DiagSystem>();
+	mTurboSystem = mEcs->RegisterSystem<TurboSystem>();
 
 	// set up what components the systems require
 	Signature sign;
@@ -166,5 +172,15 @@ void SysManager::setupEcs(Coordinator *mEcs) {
 	sign.set(mEcs->GetComponentType<Stats>());
 	sign.set(mEcs->GetComponentType<Heal>());
 	mEcs->SetSystemSignature<HealSystem>(sign);
+
+	sign.reset();
+	sign.set(mEcs->GetComponentType<Path>());
+	sign.set(mEcs->GetComponentType<Diag>());
+	mEcs->SetSystemSignature<DiagSystem>(sign);
+
+	sign.reset();
+	sign.set(mEcs->GetComponentType<Path>());
+	sign.set(mEcs->GetComponentType<Turbo>());
+	mEcs->SetSystemSignature<TurboSystem>(sign);
 
 }
