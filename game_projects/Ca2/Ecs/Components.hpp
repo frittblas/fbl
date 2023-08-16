@@ -167,7 +167,7 @@ struct Laser
     uint16_t length;        // length of the beam
     uint8_t  dir;           // in what direction are you firing? can be 0 = up, 1 = right, 2 = left, 3 = down
     uint8_t  damage;        // damage dealt per frame / 10
-    uint8_t  level;         // you can level up the laser.
+    uint8_t  level;         // used to init the different laser colors.
     bool     isFiring;      // are you firing atm?
 
 };
@@ -198,6 +198,7 @@ struct Shield
 
     uint16_t spriteId;    // id for the white sprite circle that uses physics colissions (406, 214) 42x42 px
     uint8_t  energyCost;  // how much energy does it cost? divided by 20
+    uint8_t  level;       // used to init the different shield colors.
     bool     isShielding; // are you shielding atm?
 
 };

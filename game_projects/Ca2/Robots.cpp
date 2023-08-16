@@ -156,8 +156,8 @@ bool Robots::addAddonComponent(Coordinator* mEcs, Entity robot, uint8_t addonTyp
 			mEcs->AddComponent(robot, Turbo{ 1.5, 2, false });
 			break;
 		case Addons::Shield:
-										// sid, eCost isShielding
-			mEcs->AddComponent(robot, Shield{ 0, 2, false });
+										// sid, eCost lv isShielding
+			mEcs->AddComponent(robot, Shield{ 0, 2, 1, false });
 			break;
 		case Addons::Heal:
 									  // pid eCost amnt maxAmnt activated

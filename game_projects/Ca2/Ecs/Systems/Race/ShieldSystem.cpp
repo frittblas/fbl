@@ -32,8 +32,20 @@ void ShieldSystem::Init(Coordinator& ecs) {
 
 		// create shield (sprite circle)
 		shield.spriteId = fbl_create_sprite(406, 214, 42, 42, 21);
-		//fbl_set_sprite_phys(shield.spriteId, true, FBL_CIRCLE, FBL_PHYS_DYNAMIC, false);
 		fbl_set_sprite_layer(shield.spriteId, 8);			// on top of the robots
+
+		// set color
+		switch (shield.level) {
+		case 1:
+			fbl_set_sprite_color(shield.spriteId, 255, 70, 70);
+			break;
+		case 2:
+			fbl_set_sprite_color(shield.spriteId, 70, 255, 70);
+			break;
+		case 3:
+			fbl_set_sprite_color(shield.spriteId, 70, 70, 255);
+			break;
+		}
 
 		fbl_set_sprite_active(shield.spriteId, false);
 

@@ -45,6 +45,18 @@ void LaserSystem::Init(Coordinator& ecs) {
 
 		// create the ray with 0 length
 		las.rayId = fbl_create_prim(FBL_RAY, 0, 0, 0, 0, 0, true, false);
+		// set color
+		switch (las.level) {
+		case 1:
+			fbl_set_prim_color(las.rayId, 255, 70, 70, 255);
+			break;
+		case 2:
+			fbl_set_prim_color(las.rayId, 70, 255, 70, 255);
+			break;
+		case 3:
+			fbl_set_prim_color(las.rayId, 70, 70, 255, 255);
+			break;
+		}
 		fbl_set_prim_active(las.rayId, false);
 
 		// create the particles
