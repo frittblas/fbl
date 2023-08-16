@@ -323,6 +323,7 @@ void   fbl_delete_ui_elem(int id);
 void   fbl_set_ui_elem_xy(int id, int x, int y);
 int    fbl_get_ui_elem_x(int id);
 int    fbl_get_ui_elem_y(int id);
+void   fbl_set_ui_elem_color(int id, uint8_t r, uint8_t g, uint8_t b);
 int    fbl_get_ui_elem_val(int id);
 void   fbl_set_ui_elem_val(int id, int value);
 void   fbl_set_ui_elem_access(int id, int frames);

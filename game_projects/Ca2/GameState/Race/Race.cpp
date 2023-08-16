@@ -186,6 +186,7 @@ void Race::handleAddons(Game& g, Addon& add, Entity playingRobot, bool onOff) {
 			}
 			break;
 		case Addons::Type::Laser:
+		case Addons::Type::Laser2:
 			{
 				auto& las = g.mEcs->GetComponent<Laser>(playingRobot);
 				las.isFiring = onOff;

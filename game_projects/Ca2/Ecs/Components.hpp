@@ -124,7 +124,7 @@ struct Stats
     uint8_t maxHp;          // max hp
     float   hp;             // current hp
     uint8_t speed;          // speed
-    bool diag;              // can go diagonal?
+    bool diag;              // can go diagonally?
     uint8_t maxEnergy;      // max energy
     float   energy;         // current energy
     uint8_t weight;         // weight

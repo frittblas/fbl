@@ -108,6 +108,11 @@ int fbl_create_ui_elem(uint8_t type, int x, int y, int w, int h, int(*func)(int,
 	fbl_ui_elem->dest_rect.w = w;
 	fbl_ui_elem->dest_rect.h = h;
 
+    fbl_ui_elem->color.a = 255;	/* start as fully opaque */
+    fbl_ui_elem->color.r = 255;
+    fbl_ui_elem->color.g = 255;
+    fbl_ui_elem->color.b = 255;
+
     fbl_ui_elem->orig_x = x;
     fbl_ui_elem->value = 0;
 	fbl_ui_elem->active = true;
@@ -232,6 +237,28 @@ int fbl_get_ui_elem_y(int id)
 #endif
 
 	return 0;
+
+}
+
+void fbl_set_ui_elem_color(int id, uint8_t r, uint8_t g, uint8_t b)
+{
+
+    FBL_UI_ELEM* ui_elem = NULL;
+    DLLIST* item = get_ui_item_at_id(id);
+
+    if (item != NULL)
+    {
+
+        ui_elem = ((FBL_SPRITE*)item->Object);
+
+        ui_elem->color.r = r;
+        ui_elem->color.g = g;
+        ui_elem->color.b = b;
+
+    }
+#ifdef FBL_DEBUG
+    else fprintf(FBL_ERROR_OUT, "Tried to set color for ui element %d, that does not exist!\n", id);
+#endif
 
 }
 
@@ -462,6 +489,10 @@ int render_ui_elem(int tag, void *ui_elem, void *dummy)
         temp_rect.w = ui->dest_rect.w;
         temp_rect.h = ui->dest_rect.h;
 
+
+        /* set color */
+
+        SDL_SetTextureColorMod(fbl_ui_texture, ui->color.r, ui->color.g, ui->color.b);
 
         /* render */
         

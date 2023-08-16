@@ -247,6 +247,8 @@ typedef struct
 
 	SDL_Rect source_rect;
 	SDL_Rect dest_rect;
+
+	SDL_Color color;
 	
 	int orig_x;		/* original x position */
 	int value;		/* just a value : D */

@@ -55,43 +55,41 @@ void Addons::setupAddons(Coordinator* mEcs) {
 			mEcs->AddComponent(tmpAddon, Addon{ AutoAim, "Auto Aim", 0, 0, 96, 1, 1, true, notSet, 19});
 
 			break;
-
 		case Laser:
-											 // type    name   uiId tx ty lv rrty psv    eqp  price
-			mEcs->AddComponent(tmpAddon, Addon{ Laser, "Laser", 0, 0, 128, 1, 2, false, notSet, 20 });
+											 // type		name   uiId tx ty lv rrty psv    eqp  price
+			mEcs->AddComponent(tmpAddon, Addon{ Laser, "Red Laser", 0, 0, 128, 1, 2, false, notSet, 20 });
 
 			break;
+		case Laser2:
+											// type			name     uiId tx ty lv rrty  psv    eqp  price
+			mEcs->AddComponent(tmpAddon, Addon{ Laser2, "Green Laser", 0, 0, 128, 2, 3, false, notSet, 20 });
 
+			break;
 		case Magnet:
 											 // type    name   uiId tx ty	lv rrty psv     eqp  price
 			mEcs->AddComponent(tmpAddon, Addon{ Magnet, "Magnet", 0, 0, 160, 1, 2, true, notSet, 12 });
 
 			break;
-
 		case Turbo:
 											  // type   name  uiId tx ty  lv rrty psv   eqp  price
 			mEcs->AddComponent(tmpAddon, Addon{ Turbo, "Turbo", 0, 0, 320, 1, 2, false, notSet, 9 });
 
 			break;
-
 		case Shield:
 												// type   name  uiId tx ty	lv rrty psv     eqp  price
 			mEcs->AddComponent(tmpAddon, Addon{ Shield, "Shield", 0, 0, 256, 1, 2, false, notSet, 15 });
 
 			break;
-
 		case Heal:
 											  // type  name uiId tx ty  lv rrty psv   eqp  price
 			mEcs->AddComponent(tmpAddon, Addon{ Heal, "Heal", 0, 0, 288, 1, 2, false, notSet, 11 });
 
 			break;
-
 		case Diag:
 											  // type  name      uiId tx ty  lv rrty psv   eqp  price
 			mEcs->AddComponent(tmpAddon, Addon{ Diag, "Diagonals", 0, 0, 192, 1, 2, true, notSet, 5 });
 
 			break;
-
 		case RobotCtrl:
 											   // type	  	 name		  uiId tx ty   lv rrty psv  eqp  price
 			mEcs->AddComponent(tmpAddon, Addon{ RobotCtrl, "Robot Control", 0, 0, 224, 1, 2, true, notSet, 12 });
@@ -107,6 +105,7 @@ void Addons::setupAddons(Coordinator* mEcs) {
 
 	claimAddon(AutoAim);
 	claimAddon(Laser);
+	claimAddon(Laser2);
 	claimAddon(Magnet);
 	claimAddon(Turbo);
 	claimAddon(Shield);
@@ -124,6 +123,7 @@ void Addons::initAddons(Coordinator* mEcs) {
 		if (e != Unassigned) {
 			auto& add = mEcs->GetComponent<Addon>(e);
 			add.uiId = fbl_create_ui_elem(FBL_UI_CHECKBOX_INTERVAL, add.tx, add.ty, Game::TileSize, Game::TileSize, NULL);
+			setAddonColor(add.uiId, add.level);
 		}
 	}
 
@@ -131,6 +131,7 @@ void Addons::initAddons(Coordinator* mEcs) {
 		if (e != Unassigned) {
 			auto& add = mEcs->GetComponent<Addon>(e);
 			add.uiId = fbl_create_ui_elem(FBL_UI_CHECKBOX_INTERVAL, add.tx, add.ty, Game::TileSize, Game::TileSize, NULL);
+			setAddonColor(add.uiId, add.level);
 		}
 	}
 
@@ -147,6 +148,8 @@ void Addons::initRaceAddons(Coordinator* mEcs) {
 				add.uiId = fbl_create_ui_elem(FBL_UI_CHECKBOX_INTERVAL, add.tx, add.ty, Game::TileSize, Game::TileSize, NULL);
 			else
 				add.uiId = fbl_create_ui_elem(FBL_UI_BUTTON_HOLD, add.tx, add.ty, Game::TileSize, Game::TileSize, NULL);
+
+			setAddonColor(add.uiId, add.level);
 		}
 	}
 
@@ -159,7 +162,27 @@ void Addons::initRaceAddons(Coordinator* mEcs) {
 			}
 			else
 				add.uiId = fbl_create_ui_elem(FBL_UI_BUTTON_HOLD, add.tx, add.ty, Game::TileSize, Game::TileSize, NULL);
+
+			setAddonColor(add.uiId, add.level);
 		}
+	}
+
+}
+
+void Addons::setAddonColor(int uiId, int level) {
+
+	switch (level) {
+
+	case 1:
+		fbl_set_ui_elem_color(uiId, 255, 255, 255);
+		break;
+	case 2:
+		fbl_set_ui_elem_color(uiId, 200, 255, 200);
+		break;
+	case 3:
+		fbl_set_ui_elem_color(uiId, 255, 200, 200);
+		break;
+
 	}
 
 }

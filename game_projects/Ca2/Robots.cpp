@@ -141,6 +141,10 @@ void Robots::addAddonComponent(Coordinator* mEcs, Entity robot, uint8_t addonTyp
 										// rid pid cid len        dir	   dmg lv  isFiring
 			mEcs->AddComponent(robot, Laser{ 0, 0, 0, 800, Addons::Dir::Up, 15, 1, false });
 			break;
+		case Addons::Laser2:
+										// rid pid cid len        dir	   dmg lv  isFiring
+			mEcs->AddComponent(robot, Laser{ 0, 0, 0, 800, Addons::Dir::Up, 25, 2, false });
+			break;
 		case Addons::Magnet:
 										  // sid str active
 			mEcs->AddComponent(robot, Magnet{ 0, 64, true });
@@ -182,6 +186,7 @@ void Robots::removeAddonComponent(Coordinator* mEcs, Entity robot, uint8_t addon
 			}
 			break;
 		case Addons::Laser:
+		case Addons::Laser2:
 			mEcs->RemoveComponent<Laser>(robot);
 			break;
 		case Addons::Magnet:
