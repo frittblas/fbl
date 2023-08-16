@@ -145,25 +145,25 @@ void Robots::addAddonComponent(Coordinator* mEcs, Entity robot, uint8_t addonTyp
 										  // sid str active
 			mEcs->AddComponent(robot, Magnet{ 0, 64, true });
 			break;
-		case Addons::RobotCtrl:
-											// access active justSw
-			mEcs->AddComponent(robot, RobotCtrl{ 0, true, false });
+		case Addons::Turbo:
+										 // amnt eCost activated
+			mEcs->AddComponent(robot, Turbo{ 1.5, 2, false });
 			break;
 		case Addons::Shield:
 										// sid, eCost isShielding
 			mEcs->AddComponent(robot, Shield{ 0, 2, false });
 			break;
 		case Addons::Heal:
-									 // pid eCost amnt maxAmnt activated
+									  // pid eCost amnt maxAmnt activated
 			mEcs->AddComponent(robot, Heal{ 0, 5, 50, 50, false });
 			break;
 		case Addons::Diag:
-									// activated justSw
+									    // active justSw
 			mEcs->AddComponent(robot, Diag{ true, false });
 			break;
-		case Addons::Turbo:
-									// amnt eCost activated
-			mEcs->AddComponent(robot, Turbo{ 0.5, 2, false });
+		case Addons::RobotCtrl:
+										 // access active justSw
+			mEcs->AddComponent(robot, RobotCtrl{ 0, true, false });
 			break;
 
 	}
@@ -187,8 +187,8 @@ void Robots::removeAddonComponent(Coordinator* mEcs, Entity robot, uint8_t addon
 		case Addons::Magnet:
 			mEcs->RemoveComponent<Magnet>(robot);
 			break;
-		case Addons::RobotCtrl:
-			mEcs->RemoveComponent<RobotCtrl>(robot);
+		case Addons::Turbo:
+			mEcs->RemoveComponent<Turbo>(robot);
 			break;
 		case Addons::Shield:
 			mEcs->RemoveComponent<Shield>(robot);
@@ -199,8 +199,8 @@ void Robots::removeAddonComponent(Coordinator* mEcs, Entity robot, uint8_t addon
 		case Addons::Diag:
 			mEcs->RemoveComponent<Diag>(robot);
 			break;
-		case Addons::Turbo:
-			mEcs->RemoveComponent<Turbo>(robot);
+		case Addons::RobotCtrl:
+			mEcs->RemoveComponent<RobotCtrl>(robot);
 			break;
 
 	}

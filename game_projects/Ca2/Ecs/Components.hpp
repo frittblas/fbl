@@ -182,13 +182,13 @@ struct Magnet
 
 };
 
-// the mouse controller component (control a robot in race mode)
-struct RobotCtrl
+// the turbo component
+struct Turbo
 {
 
-    int16_t access;       // so the fbl_mouse function doesn't trigger too often.
-    bool    active;       // active on/off
-    bool    justSwitched; // just clicked the ctrl ui button (switching between active and off, used in PathLogic)
+    float   amount;       // how much speed boost in percent (1.3, 1.5 and 1.7) ish
+    uint8_t energyCost;   // how much energy does it cost? divided by 20
+    bool    activated;    // active on/off
 
 };
 
@@ -197,7 +197,7 @@ struct Shield
 {
 
     uint16_t spriteId;    // id for the white sprite circle that uses physics colissions (406, 214) 42x42 px
-    uint8_t  energyCost;  // how much energy does it cost?
+    uint8_t  energyCost;  // how much energy does it cost? divided by 20
     bool     isShielding; // are you shielding atm?
 
 };
@@ -207,7 +207,7 @@ struct Heal
 {
 
     uint16_t particleId;   // is for the healing particle effect (heart at 375, 288) 9x8 px
-    uint8_t  energyCost;   // how much energy does it cost?
+    uint8_t  energyCost;   // how much energy does it cost? divided by 20
     uint8_t  amountLeft;   // healing has one use (press the button and let healing go up slowly) amount goes down.
     uint8_t  maxAmount;    // total amount of healing to be done.
     bool     activated;    // can only activade once a round.
@@ -223,12 +223,12 @@ struct Diag
 
 };
 
-// the turbo component
-struct Turbo
+// the mouse controller component (control a robot in race mode)
+struct RobotCtrl
 {
 
-    float   amount;       // how much speed boost in percent (0.3, 0.5 and 0.7) ish
-    uint8_t energyCost;   // how much energy does it cost?
+    int16_t access;       // so the fbl_mouse function doesn't trigger too often.
     bool    active;       // active on/off
+    bool    justSwitched; // just clicked the ctrl ui button (switching between active and off, used in PathLogic)
 
 };

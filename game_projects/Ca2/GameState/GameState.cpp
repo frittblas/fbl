@@ -26,11 +26,11 @@
 #include "../Ecs/Systems/Race/AutoAimSystem.hpp"
 #include "../Ecs/Systems/Race/LaserSystem.hpp"
 #include "../Ecs/Systems/Race/MagnetSystem.hpp"
-#include "../Ecs/Systems/Race/RobotCtrlSystem.hpp"
+#include "../Ecs/Systems/Race/TurboSystem.hpp"
 #include "../Ecs/Systems/Race/ShieldSystem.hpp"
 #include "../Ecs/Systems/Race/HealSystem.hpp"
 #include "../Ecs/Systems/Race/DiagSystem.hpp"
-#include "../Ecs/Systems/Race/TurboSystem.hpp"
+#include "../Ecs/Systems/Race/RobotCtrlSystem.hpp"
 
 #include "GameState.hpp"
 #include "Title.hpp"
@@ -265,11 +265,11 @@ void GameState::setupRace(Game& g) {
 	g.mSysManager->mAutoAimSystem->Init(*g.mEcs);	// create rays for entities with AutoAim  component.
 	g.mSysManager->mLaserSystem->Init(*g.mEcs);		// create rays and particles for all entities with a Laser component.
 	g.mSysManager->mMagnetSystem->Init(*g.mEcs);	// create magnet sprites and stuff.
-	g.mSysManager->mRobotCtrlSystem->Init(*g.mEcs);	// set up robot control access time.
+	g.mSysManager->mTurboSystem->Init(*g.mEcs);		// set up turbo
 	g.mSysManager->mShieldSystem->Init(*g.mEcs);	// set up shield sprite etc.
 	g.mSysManager->mHealSystem->Init(*g.mEcs);		// set up healing particle system etc.
 	g.mSysManager->mDiagSystem->Init(*g.mEcs);	    // set up diagonal movement
-	g.mSysManager->mTurboSystem->Init(*g.mEcs);		// set up turbo
+	g.mSysManager->mRobotCtrlSystem->Init(*g.mEcs);	// set up robot control access time.
 
 	g.mRobots->mapSpriteIdToEntity(g.mEcs);
 	g.mRobots->hideRobots(g.mEcs);

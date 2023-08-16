@@ -156,10 +156,10 @@ void SysManager::setupEcs(Coordinator *mEcs) {
 	mEcs->SetSystemSignature<MagnetSystem>(sign);
 
 	sign.reset();
-	sign.set(mEcs->GetComponentType<Position>());
 	sign.set(mEcs->GetComponentType<Path>());
-	sign.set(mEcs->GetComponentType<RobotCtrl>());
-	mEcs->SetSystemSignature<RobotCtrlSystem>(sign);
+	sign.set(mEcs->GetComponentType<Stats>());
+	sign.set(mEcs->GetComponentType<Turbo>());
+	mEcs->SetSystemSignature<TurboSystem>(sign);
 
 	sign.reset();
 	sign.set(mEcs->GetComponentType<Position>());
@@ -179,8 +179,9 @@ void SysManager::setupEcs(Coordinator *mEcs) {
 	mEcs->SetSystemSignature<DiagSystem>(sign);
 
 	sign.reset();
+	sign.set(mEcs->GetComponentType<Position>());
 	sign.set(mEcs->GetComponentType<Path>());
-	sign.set(mEcs->GetComponentType<Turbo>());
-	mEcs->SetSystemSignature<TurboSystem>(sign);
+	sign.set(mEcs->GetComponentType<RobotCtrl>());
+	mEcs->SetSystemSignature<RobotCtrlSystem>(sign);
 
 }

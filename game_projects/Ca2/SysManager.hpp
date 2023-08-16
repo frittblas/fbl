@@ -28,11 +28,11 @@ class PathLogicSystem;
 class AutoAimSystem;
 class LaserSystem;
 class MagnetSystem;
-class RobotCtrlSystem;
+class TurboSystem;
 class ShieldSystem;
 class HealSystem;
 class DiagSystem;
-class TurboSystem;
+class RobotCtrlSystem;
 
 class Coordinator;
 
@@ -50,11 +50,11 @@ public:
     std::shared_ptr<AutoAimSystem> mAutoAimSystem;           // the auto aim system
     std::shared_ptr<LaserSystem> mLaserSystem;               // the laser system
     std::shared_ptr<MagnetSystem> mMagnetSystem;             // the magnet system
-    std::shared_ptr<RobotCtrlSystem> mRobotCtrlSystem;       // the robot control system
+    std::shared_ptr<TurboSystem> mTurboSystem;               // the turbo system
     std::shared_ptr<ShieldSystem> mShieldSystem;             // the shield system
     std::shared_ptr<HealSystem> mHealSystem;                 // the heal system
     std::shared_ptr<DiagSystem> mDiagSystem;                 // the diagonal system
-    std::shared_ptr<TurboSystem> mTurboSystem;               // the turbo system
+    std::shared_ptr<RobotCtrlSystem> mRobotCtrlSystem;       // the robot control system
 
     SysManager();
     ~SysManager();

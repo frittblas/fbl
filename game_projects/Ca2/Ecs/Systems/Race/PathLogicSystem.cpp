@@ -307,7 +307,6 @@ void PathLogicSystem::switchCtrl(Game& g) {
 				else {	// here it's active again
 
 					// make robot stop
-					
 					fbl_pathf_set_path_status(path.id, FBL_PATHF_NOT_STARTED);
 
 				}

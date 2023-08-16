@@ -28,7 +28,9 @@ void TurboSystem::Init(Coordinator& ecs) {
 	for (auto const& entity : mEntities)
 	{
 
-		auto& rCtrl = ecs.GetComponent<Turbo>(entity);
+		auto& turbo = ecs.GetComponent<Turbo>(entity);
+
+
 
 	}
 
@@ -42,10 +44,21 @@ void TurboSystem::Update(Coordinator& ecs) {
 	for (auto const& entity : mEntities)
 	{
 
-		auto& pos = ecs.GetComponent<Position>(entity);
 		auto& path = ecs.GetComponent<Path>(entity);
-		auto& rCtrl = ecs.GetComponent<Turbo>(entity);
+		auto& sta = ecs.GetComponent<Stats>(entity);
+		auto& turbo = ecs.GetComponent<Turbo>(entity);
 
+		if (turbo.activated && sta.energy > 0) {
+
+			float oldSpeed = (float)sta.speed / 10;
+			path.speed = oldSpeed * turbo.amount;
+
+			//std::cout << "Speed: " << path.speed << std::endl;
+
+			sta.energy -= static_cast<double>(turbo.energyCost) / 20;
+
+		}
+		else path.speed = (float)sta.speed / 10;
 
 	}
 

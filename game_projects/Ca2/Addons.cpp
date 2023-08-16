@@ -68,9 +68,9 @@ void Addons::setupAddons(Coordinator* mEcs) {
 
 			break;
 
-		case RobotCtrl:
-												// type		 name		 uiId tx ty	  lv rrty psv     eqp  price
-			mEcs->AddComponent(tmpAddon, Addon{ RobotCtrl, "Robot Control", 0, 0, 224, 1, 2, true, notSet, 12 });
+		case Turbo:
+											  // type   name  uiId tx ty  lv rrty psv   eqp  price
+			mEcs->AddComponent(tmpAddon, Addon{ Turbo, "Turbo", 0, 0, 320, 1, 2, false, notSet, 9 });
 
 			break;
 
@@ -92,9 +92,9 @@ void Addons::setupAddons(Coordinator* mEcs) {
 
 			break;
 
-		case Turbo:
-											  // type   name  uiId tx ty  lv rrty psv   eqp  price
-			mEcs->AddComponent(tmpAddon, Addon{ Turbo, "Turbo", 0, 0, 320, 1, 2, false, notSet, 9 });
+		case RobotCtrl:
+											   // type	  	 name		  uiId tx ty   lv rrty psv  eqp  price
+			mEcs->AddComponent(tmpAddon, Addon{ RobotCtrl, "Robot Control", 0, 0, 224, 1, 2, true, notSet, 12 });
 
 			break;
 
@@ -108,11 +108,11 @@ void Addons::setupAddons(Coordinator* mEcs) {
 	claimAddon(AutoAim);
 	claimAddon(Laser);
 	claimAddon(Magnet);
-	claimAddon(RobotCtrl);
+	claimAddon(Turbo);
 	claimAddon(Shield);
 	claimAddon(Heal);
 	claimAddon(Diag);
-	claimAddon(Turbo);
+	claimAddon(RobotCtrl);
 
 }
 

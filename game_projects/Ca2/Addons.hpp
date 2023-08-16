@@ -26,11 +26,11 @@ public:
         AutoAim,
         Laser,
         Magnet,
-        RobotCtrl,
+        Turbo,
         Shield,
         Heal,
         Diag,
-        Turbo,
+        RobotCtrl,
         NumAddons
 
     };

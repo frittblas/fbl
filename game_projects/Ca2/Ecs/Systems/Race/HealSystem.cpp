@@ -66,7 +66,7 @@ void HealSystem::Update(Game& g) {
 
 				stat.hp += 0.4;	// fixed rate
 				heal.amountLeft--;
-				stat.energy -= static_cast<double>(heal.energyCost) / 10;
+				stat.energy -= static_cast<double>(heal.energyCost) / 20;
 
 			}
 			else fbl_set_emitter_active(heal.particleId, false);

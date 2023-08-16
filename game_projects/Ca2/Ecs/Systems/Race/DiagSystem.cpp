@@ -42,10 +42,31 @@ void DiagSystem::Update(Coordinator& ecs) {
 	for (auto const& entity : mEntities)
 	{
 
-		auto& pos = ecs.GetComponent<Position>(entity);
 		auto& path = ecs.GetComponent<Path>(entity);
-		auto& rCtrl = ecs.GetComponent<Diag>(entity);
+		auto& diag = ecs.GetComponent<Diag>(entity);
 
+		if (diag.active) {
+
+			path.diag = true;
+
+			if (diag.justSwitched) {
+				path.newPath = true;
+				std::cout << "Just switched diagonal!" << std::endl;
+				diag.justSwitched = false;
+			}
+
+		}
+		else {
+
+			path.diag = false;
+
+			if (diag.justSwitched) {
+				path.newPath = true;
+				std::cout << "Just switched diagonal!" << std::endl;
+				diag.justSwitched = false;
+			}
+
+		}
 
 	}
 

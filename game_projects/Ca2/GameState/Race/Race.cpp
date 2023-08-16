@@ -26,9 +26,11 @@
 #include "../../Ecs/Systems/Race/AutoAimSystem.hpp"
 #include "../../Ecs/Systems/Race/LaserSystem.hpp"
 #include "../../Ecs/Systems/Race/MagnetSystem.hpp"
-#include "../../Ecs/Systems/Race/RobotCtrlSystem.hpp"
+#include "../../Ecs/Systems/Race/TurboSystem.hpp"
 #include "../../Ecs/Systems/Race/ShieldSystem.hpp"
 #include "../../Ecs/Systems/Race/HealSystem.hpp"
+#include "../../Ecs/Systems/Race/DiagSystem.hpp"
+#include "../../Ecs/Systems/Race/RobotCtrlSystem.hpp"
 
 #include "../../Chars.hpp"
 #include "../../Weather.hpp"
@@ -91,8 +93,9 @@ void Race::assignRobots(Game& g) {
 		auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mRacingRobots[i]);
 		float speed = (float)sta.speed / 10;
 		uint8_t diag = sta.diag ? FBL_PATHF_USE_DIAG : FBL_PATHF_NO_DIAG;
+		// NOTE: Add diag component check here aswell!
 															// id gX gY newPath speed diag pixelsPerFrame
-		g.mEcs->AddComponent(g.mRobots->mRacingRobots[i], Path{ 0, 0, 0, false, speed, diag, 1 }); // last param should be 10 if you wanna use speed
+		g.mEcs->AddComponent(g.mRobots->mRacingRobots[i], Path{ 0, 0, 0, false, speed, diag, 3 }); // last param should be 10 if you wanna use speed
 
 		// add mousectrl to a robot IF it has the skill!!!! (just testing now)
 				    												  // clicked
@@ -107,7 +110,7 @@ void Race::assignRobots(Game& g) {
 
 	//std::cout << "THE NEXT SPRITE ID IS : " << fbl_create_sprite(0, 0, 1, 1, 0) << std::endl;
 
-	int blockDensity = (rand() % 20) + 19;	// under 40 is ok under 35 is very fast
+	int blockDensity = (rand() % 20) + 15;	// under 40 is ok under 35 is very fast
 
 	std::cout << "Block density: " << blockDensity << std::endl;
 
@@ -209,25 +212,39 @@ void Race::handleAddons(Game& g, Addon& add, Entity playingRobot, bool onOff) {
 				mag.active = onOff;
 			}
 			break;
-		case Addons::Type::RobotCtrl:
-		{
-			auto& ctrl = g.mEcs->GetComponent<RobotCtrl>(playingRobot);
-			if(ctrl.active != onOff)
-				ctrl.justSwitched = true;
-			ctrl.active = onOff;
-		}
+		case Addons::Type::Turbo:
+			{
+				auto& turbo = g.mEcs->GetComponent<Turbo>(playingRobot);
+				turbo.activated = onOff;
+			}
 		break;
 		case Addons::Type::Shield:
-		{
-			auto& shield = g.mEcs->GetComponent<Shield>(playingRobot);
-			shield.isShielding = onOff;
-		}
+			{
+				auto& shield = g.mEcs->GetComponent<Shield>(playingRobot);
+				shield.isShielding = onOff;
+			}
 		break;
 		case Addons::Type::Heal:
-		{
-			auto& heal = g.mEcs->GetComponent<Heal>(playingRobot);
-			heal.activated = onOff;
-		}
+			{
+				auto& heal = g.mEcs->GetComponent<Heal>(playingRobot);
+				heal.activated = onOff;
+			}
+		break;
+		case Addons::Type::Diag:
+			{
+				auto& diag = g.mEcs->GetComponent<Diag>(playingRobot);
+				if (diag.active != onOff)
+					diag.justSwitched = true;
+				diag.active = onOff;
+			}
+		break;
+		case Addons::Type::RobotCtrl:
+			{
+				auto& ctrl = g.mEcs->GetComponent<RobotCtrl>(playingRobot);
+				if (ctrl.active != onOff)
+					ctrl.justSwitched = true;
+				ctrl.active = onOff;
+			}
 		break;
 
 	}
@@ -244,9 +261,11 @@ void Race::tick(Game& g) {
 	g.mSysManager->mAutoAimSystem->Update(g);				// update the AutoAim system
 	g.mSysManager->mLaserSystem->Update(g);					// update the Laser system
 	g.mSysManager->mMagnetSystem->Update(g);				// update the Magnet system
-	g.mSysManager->mRobotCtrlSystem->Update(*g.mEcs);		// update the robot control system
+	g.mSysManager->mTurboSystem->Update(*g.mEcs);			// update the turbo system
 	g.mSysManager->mShieldSystem->Update(g);				// update the shield system
 	g.mSysManager->mHealSystem->Update(g);					// update the heal system
+	g.mSysManager->mDiagSystem->Update(*g.mEcs);			// update the diagonal system
+	g.mSysManager->mRobotCtrlSystem->Update(*g.mEcs);		// update the robot control system
 
 	getInput(g);
 

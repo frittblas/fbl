@@ -62,7 +62,7 @@ void ShieldSystem::Update(Game& g) {
 				fbl_set_sprite_active(shield.spriteId, true);
 				fbl_set_sprite_xy(shield.spriteId, pos.x + 15, pos.y + 15);
 
-				stat.energy -= static_cast<double>(shield.energyCost) / 10;
+				stat.energy -= static_cast<double>(shield.energyCost) / 20;
 
 			}
 			else fbl_set_sprite_active(shield.spriteId, false);
