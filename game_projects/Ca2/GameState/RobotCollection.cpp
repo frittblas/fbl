@@ -211,6 +211,12 @@ void RobotCollection::selectAddon(Game& g) {
 
 					mSelectedAddon = g.mAddons->mOwnedAddons[i];		// set the selectedAddon to the current entity
 
+					// remove unequip button and text if selected addon is not equipped
+					if (add.equippedBy == notSet) {
+						fbl_set_ui_elem_active(fUnEquipAddon, false);
+						fbl_set_text_active(fUnEquipAddonText, false);
+					}
+
 					updateAddonInfo(g, false);
 					setFreeSlotsArrows(g, false);
 					std::cout << "Updated addon info." << std::endl;
@@ -291,7 +297,21 @@ void RobotCollection::equipAddon(Game& g) {
 					// test to add component! NOTE: call function to add the correct comp. based on add.type
 					if (!moveSlot) {
 						std::cout << "Adding addonComponent to current robot!" << std::endl;
-						g.mRobots->addAddonComponent(g.mEcs, g.mRobots->mOwnedRobots[mCurrentRobotPage], add.type);
+						bool ok = g.mRobots->addAddonComponent(g.mEcs, g.mRobots->mOwnedRobots[mCurrentRobotPage], add.type);
+						std::cout << "OK = " << ok << std::endl;
+						if(!ok) {
+
+							// put the addon back in the menu!
+							sta.slot[i] = notSet;
+							add.equippedBy = notSet;
+							updateAddonInfo(g, false);
+							fbl_set_ui_elem_val(fUnEquipAddon, 0);	// set the ui value to 0
+							// update graphics
+							cyclePages(g, 0);
+							updateContextHelp("Can't equip 2 addons of the same type!");
+							std::cout << "Can't equip 2 addons of the same type!" << std::endl;
+
+						}
 					}
 					else std::cout << "Moving peacefully between slots :)" << std::endl;
 
@@ -350,7 +370,7 @@ void RobotCollection::unEquipAddon(Game& g) {
 
 	}
 	else {
-		fbl_set_ui_elem_active(fUnEquipAddon, false);	// set the unequip button to active
+		fbl_set_ui_elem_active(fUnEquipAddon, false);	// set the unequip button to inactive
 		fbl_set_text_active(fUnEquipAddonText, false);
 	}
 
@@ -363,13 +383,15 @@ void RobotCollection::processInput(Game& g) {
 
 		cyclePages(g, -1);	// cycle back
 
+		updateContextHelp("Cycling through robots!");
+
 	}
 
 	if (fbl_get_ui_elem_val(fMenuButtonRight)) {
 
 		cyclePages(g, 1);	// cycle forward
 
-		updateContextHelp("You clicked the right arrow :)");
+		updateContextHelp("Cycling through robots!");
 
 	}
 

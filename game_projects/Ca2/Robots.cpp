@@ -126,7 +126,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 
 }
 
-void Robots::addAddonComponent(Coordinator* mEcs, Entity robot, uint8_t addonType) {
+bool Robots::addAddonComponent(Coordinator* mEcs, Entity robot, uint8_t addonType) {
 
 	switch (addonType) {
 
@@ -138,10 +138,12 @@ void Robots::addAddonComponent(Coordinator* mEcs, Entity robot, uint8_t addonTyp
 			}
 			break;
 		case Addons::Laser:
+			if (mEcs->HasComponent<Laser>(robot)) return false;
 										// rid pid cid len        dir	   dmg lv  isFiring
 			mEcs->AddComponent(robot, Laser{ 0, 0, 0, 800, Addons::Dir::Up, 15, 1, false });
 			break;
 		case Addons::Laser2:
+			if (mEcs->HasComponent<Laser>(robot)) return false;
 										// rid pid cid len        dir	   dmg lv  isFiring
 			mEcs->AddComponent(robot, Laser{ 0, 0, 0, 800, Addons::Dir::Up, 25, 2, false });
 			break;
@@ -171,6 +173,8 @@ void Robots::addAddonComponent(Coordinator* mEcs, Entity robot, uint8_t addonTyp
 			break;
 
 	}
+
+	return true;
 
 }
 
