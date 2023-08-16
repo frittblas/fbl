@@ -115,11 +115,13 @@ void LaserSystem::Update(Game& g) {
 		// only fire if (bool)firing is true
 		if (las.isFiring) {
 
-			if (sta.hp > 0.5) {
+			if (sta.hp > 0.5 && sta.energy > 0) {
 
 				fbl_set_prim_active(las.rayId, true);	// show the ray
 
 				setDirection(pos, las);
+
+				sta.energy -= static_cast<double>(las.energyCost) / 20;
 
 				// some ray hit detection
 				int id, x, y;

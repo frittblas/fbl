@@ -168,6 +168,7 @@ struct Laser
     uint8_t  dir;           // in what direction are you firing? can be 0 = up, 1 = right, 2 = left, 3 = down
     uint8_t  damage;        // damage dealt per frame / 10
     uint8_t  level;         // used to init the different laser colors.
+    uint8_t  energyCost;    // how much energy does it cost per frame? divided by 20
     bool     isFiring;      // are you firing atm?
 
 };
