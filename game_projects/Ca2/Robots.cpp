@@ -130,14 +130,20 @@ bool Robots::addAddonComponent(Coordinator* mEcs, Entity robot, uint8_t addonTyp
 
 	switch (addonType) {
 
-		case Addons::AutoAim :
+		case Addons::AutoAim1:
+		case Addons::AutoAim2:
+		case Addons::AutoAim3:
 			// in this case we only set the auto aim to active (component is always on)
 			{
 				auto& aim = mEcs->GetComponent<AutoAim>(robot);
 				aim.active = true;
+
+				if (addonType == Addons::AutoAim1) aim.intervalMax = 15;
+				else if (addonType == Addons::AutoAim2) aim.intervalMax = 10;
+				else if (addonType == Addons::AutoAim3) aim.intervalMax = 5;
 			}
 			break;
-		case Addons::Laser:
+		case Addons::Laser1:
 			if (mEcs->HasComponent<Laser>(robot)) return false;
 										// rid pid cid len        dir	   dmg lv eCost isFiring
 			mEcs->AddComponent(robot, Laser{ 0, 0, 0, 800, Addons::Dir::Up, 15, 1, 3, false });
@@ -147,28 +153,77 @@ bool Robots::addAddonComponent(Coordinator* mEcs, Entity robot, uint8_t addonTyp
 										// rid pid cid len        dir	   dmg lv eCost isFiring
 			mEcs->AddComponent(robot, Laser{ 0, 0, 0, 800, Addons::Dir::Up, 25, 2, 2, false });
 			break;
-		case Addons::Magnet:
+		case Addons::Laser3:
+			if (mEcs->HasComponent<Laser>(robot)) return false;
+										// rid pid cid len        dir	   dmg lv eCost isFiring
+			mEcs->AddComponent(robot, Laser{ 0, 0, 0, 800, Addons::Dir::Up, 25, 3, 1, false });
+			break;
+		case Addons::Magnet1:
+			if (mEcs->HasComponent<Magnet>(robot)) return false;
 										  // sid str active
+			mEcs->AddComponent(robot, Magnet{ 0, 32, true });
+			break;
+		case Addons::Magnet2:
+			if (mEcs->HasComponent<Magnet>(robot)) return false;
+										 // sid str active
 			mEcs->AddComponent(robot, Magnet{ 0, 64, true });
 			break;
-		case Addons::Turbo:
+		case Addons::Magnet3:
+			if (mEcs->HasComponent<Magnet>(robot)) return false;
+										 // sid str active
+			mEcs->AddComponent(robot, Magnet{ 0, 128, true });
+			break;
+		case Addons::Turbo1:
+			if (mEcs->HasComponent<Turbo>(robot)) return false;
 										 // amnt eCost activated
-			mEcs->AddComponent(robot, Turbo{ 1.5, 2, false });
+			mEcs->AddComponent(robot, Turbo{ 1.4, 3, false });
 			break;
-		case Addons::Shield:
+		case Addons::Turbo2:
+			if (mEcs->HasComponent<Turbo>(robot)) return false;
+										// amnt eCost activated
+			mEcs->AddComponent(robot, Turbo{ 1.7, 2, false });
+			break;
+		case Addons::Turbo3:
+			if (mEcs->HasComponent<Turbo>(robot)) return false;
+										 // amnt eCost activated
+			mEcs->AddComponent(robot, Turbo{ 2.0, 1, false });
+			break;
+		case Addons::Shield1:
+			if (mEcs->HasComponent<Shield>(robot)) return false;
 										// sid, eCost lv isShielding
-			mEcs->AddComponent(robot, Shield{ 0, 2, 1, false });
+			mEcs->AddComponent(robot, Shield{ 0, 3, 1, false });
 			break;
-		case Addons::Heal:
+		case Addons::Shield2:
+			if (mEcs->HasComponent<Shield>(robot)) return false;
+									    // sid, eCost lv isShielding
+			mEcs->AddComponent(robot, Shield{ 0, 2, 2, false });
+			break;
+		case Addons::Shield3:
+			if (mEcs->HasComponent<Shield>(robot)) return false;
+										// sid, eCost lv isShielding
+			mEcs->AddComponent(robot, Shield{ 0, 1, 3, false });
+			break;
+		case Addons::Heal1:
+			if (mEcs->HasComponent<Heal>(robot)) return false;
 									  // pid eCost amnt maxAmnt activated
 			mEcs->AddComponent(robot, Heal{ 0, 5, 50, 50, false });
+			break;
+		case Addons::Heal2:
+			if (mEcs->HasComponent<Heal>(robot)) return false;
+										// pid eCost amnt maxAmnt activated
+			mEcs->AddComponent(robot, Heal{ 0, 4, 70, 70, false });
+			break;
+		case Addons::Heal3:
+			if (mEcs->HasComponent<Heal>(robot)) return false;
+									   // pid eCost amnt maxAmnt activated
+			mEcs->AddComponent(robot, Heal{ 0, 3, 90, 90, false });
 			break;
 		case Addons::Diag:
 									    // active justSw
 			mEcs->AddComponent(robot, Diag{ true, false });
 			break;
 		case Addons::RobotCtrl:
-										 // access active justSw
+										// access active justSw
 			mEcs->AddComponent(robot, RobotCtrl{ 0, true, false });
 			break;
 
@@ -182,27 +237,38 @@ void Robots::removeAddonComponent(Coordinator* mEcs, Entity robot, uint8_t addon
 
 	switch (addonType) {
 
-		case Addons::AutoAim:
+		case Addons::AutoAim1:
+		case Addons::AutoAim2:
+		case Addons::AutoAim3:
 			// in this case we only set the auto aim to inactive (component is always on)
 			{
 				auto& aim = mEcs->GetComponent<AutoAim>(robot);
 				aim.active = false;
 			}
 			break;
-		case Addons::Laser:
+		case Addons::Laser1:
 		case Addons::Laser2:
+		case Addons::Laser3:
 			mEcs->RemoveComponent<Laser>(robot);
 			break;
-		case Addons::Magnet:
+		case Addons::Magnet1:
+		case Addons::Magnet2:
+		case Addons::Magnet3:
 			mEcs->RemoveComponent<Magnet>(robot);
 			break;
-		case Addons::Turbo:
+		case Addons::Turbo1:
+		case Addons::Turbo2:
+		case Addons::Turbo3:
 			mEcs->RemoveComponent<Turbo>(robot);
 			break;
-		case Addons::Shield:
+		case Addons::Shield1:
+		case Addons::Shield2:
+		case Addons::Shield3:
 			mEcs->RemoveComponent<Shield>(robot);
 			break;
-		case Addons::Heal:
+		case Addons::Heal1:
+		case Addons::Heal2:
+		case Addons::Heal3:
 			mEcs->RemoveComponent<Heal>(robot);
 			break;
 		case Addons::Diag:

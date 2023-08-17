@@ -179,14 +179,17 @@ void Race::handleAddons(Game& g, Addon& add, Entity playingRobot, bool onOff) {
 
 	switch (add.type) {
 
-		case Addons::Type::AutoAim:
+		case Addons::Type::AutoAim1:
+		case Addons::Type::AutoAim2:
+		case Addons::Type::AutoAim3:
 			{
 				auto& aim = g.mEcs->GetComponent<AutoAim>(playingRobot);
 				aim.active = onOff;
 			}
 			break;
-		case Addons::Type::Laser:
+		case Addons::Type::Laser1:
 		case Addons::Type::Laser2:
+		case Addons::Type::Laser3:
 			{
 				auto& las = g.mEcs->GetComponent<Laser>(playingRobot);
 				las.isFiring = onOff;
@@ -207,25 +210,33 @@ void Race::handleAddons(Game& g, Addon& add, Entity playingRobot, bool onOff) {
 
 			}
 			break;
-		case Addons::Type::Magnet:
+		case Addons::Type::Magnet1:
+		case Addons::Type::Magnet2:
+		case Addons::Type::Magnet3:
 			{
 				auto& mag = g.mEcs->GetComponent<Magnet>(playingRobot);
 				mag.active = onOff;
 			}
 			break;
-		case Addons::Type::Turbo:
+		case Addons::Type::Turbo1:
+		case Addons::Type::Turbo2:
+		case Addons::Type::Turbo3:
 			{
 				auto& turbo = g.mEcs->GetComponent<Turbo>(playingRobot);
 				turbo.activated = onOff;
 			}
 		break;
-		case Addons::Type::Shield:
+		case Addons::Type::Shield1:
+		case Addons::Type::Shield2:
+		case Addons::Type::Shield3:
 			{
 				auto& shield = g.mEcs->GetComponent<Shield>(playingRobot);
 				shield.isShielding = onOff;
 			}
 		break;
-		case Addons::Type::Heal:
+		case Addons::Type::Heal1:
+		case Addons::Type::Heal2:
+		case Addons::Type::Heal3:
 			{
 				auto& heal = g.mEcs->GetComponent<Heal>(playingRobot);
 				heal.activated = onOff;

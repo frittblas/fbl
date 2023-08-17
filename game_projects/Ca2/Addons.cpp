@@ -50,39 +50,94 @@ void Addons::setupAddons(Coordinator* mEcs) {
 		// add Addon-component with correct params to the entity
 		switch (i) {
 
-		case AutoAim:
-											   // type      name   uiId tx ty lv rrty psv    eqp  price
-			mEcs->AddComponent(tmpAddon, Addon{ AutoAim, "Auto Aim", 0, 0, 96, 1, 1, true, notSet, 19});
+		case AutoAim1:
+											   // type      name		 uiId tx ty lv rrty psv    eqp  price
+			mEcs->AddComponent(tmpAddon, Addon{ AutoAim1, "Auto Aim Slow", 0, 0, 96, 1, 1, true, notSet, 5});
 
 			break;
-		case Laser:
+		case AutoAim2:
+											  // type      name			 uiId tx ty lv rrty psv    eqp  price
+			mEcs->AddComponent(tmpAddon, Addon{ AutoAim2, "Auto Aim Quick", 0, 0, 96, 2, 2, true, notSet, 10 });
+
+			break;
+		case AutoAim3:
+												// type      name		 uiId tx ty lv rrty psv    eqp  price
+			mEcs->AddComponent(tmpAddon, Addon{ AutoAim3, "Auto Aim Super", 0, 0, 96, 3, 4, true, notSet, 20 });
+
+			break;
+		case Laser1:
 											 // type		name   uiId tx ty lv rrty psv    eqp  price
-			mEcs->AddComponent(tmpAddon, Addon{ Laser, "Red Laser", 0, 0, 128, 1, 2, false, notSet, 20 });
+			mEcs->AddComponent(tmpAddon, Addon{ Laser1, "Laser Red", 0, 0, 128, 1, 1, false, notSet, 5 });
 
 			break;
 		case Laser2:
 											// type			name     uiId tx ty lv rrty  psv    eqp  price
-			mEcs->AddComponent(tmpAddon, Addon{ Laser2, "Green Laser", 0, 0, 128, 2, 3, false, notSet, 20 });
+			mEcs->AddComponent(tmpAddon, Addon{ Laser2, "Laser Green", 0, 0, 128, 2, 2, false, notSet, 10 });
 
 			break;
-		case Magnet:
-											 // type    name   uiId tx ty	lv rrty psv     eqp  price
-			mEcs->AddComponent(tmpAddon, Addon{ Magnet, "Magnet", 0, 0, 160, 1, 2, true, notSet, 12 });
+		case Laser3:
+												// type		name     uiId tx ty lv rrty  psv    eqp  price
+			mEcs->AddComponent(tmpAddon, Addon{ Laser3, "Laser Blue", 0, 0, 128, 3, 3, false, notSet, 20 });
 
 			break;
-		case Turbo:
-											  // type   name  uiId tx ty  lv rrty psv   eqp  price
-			mEcs->AddComponent(tmpAddon, Addon{ Turbo, "Turbo", 0, 0, 320, 1, 2, false, notSet, 9 });
+		case Magnet1:
+											 // type           name   uiId tx ty  lv rrty psv    eqp  price
+			mEcs->AddComponent(tmpAddon, Addon{ Magnet1, "Magnet Weak", 0, 0, 160, 1, 1, true, notSet, 5 });
 
 			break;
-		case Shield:
-												// type   name  uiId tx ty	lv rrty psv     eqp  price
-			mEcs->AddComponent(tmpAddon, Addon{ Shield, "Shield", 0, 0, 256, 1, 2, false, notSet, 15 });
+		case Magnet2:
+											 // type      name   uiId tx ty	lv rrty psv     eqp  price
+			mEcs->AddComponent(tmpAddon, Addon{ Magnet2, "Magnet Strong", 0, 0, 160, 2, 2, true, notSet, 10 });
 
 			break;
-		case Heal:
-											  // type  name uiId tx ty  lv rrty psv   eqp  price
-			mEcs->AddComponent(tmpAddon, Addon{ Heal, "Heal", 0, 0, 288, 1, 2, false, notSet, 11 });
+		case Magnet3:
+												// type    name			uiId tx ty	lv rrty psv  eqp  price
+			mEcs->AddComponent(tmpAddon, Addon{ Magnet3, "Magnet Super", 0, 0, 160, 3, 3, true, notSet, 20 });
+
+			break;
+		case Turbo1:
+											  // type     name      uiId tx ty  lv rrty psv   eqp  price
+			mEcs->AddComponent(tmpAddon, Addon{ Turbo1, "Turbo Slow", 0, 0, 320, 1, 1, false, notSet, 5 });
+
+			break;
+		case Turbo2:
+											  // type      name     uiId tx ty  lv rrty psv   eqp  price
+			mEcs->AddComponent(tmpAddon, Addon{ Turbo2, "Turbo Fast", 0, 0, 320, 2, 2, false, notSet, 10 });
+
+			break;
+		case Turbo3:
+											  // type   name		 uiId tx ty  lv rrty psv   eqp  price
+			mEcs->AddComponent(tmpAddon, Addon{ Turbo3, "Turbo Super", 0, 0, 320, 3, 3, false, notSet, 20 });
+
+			break;
+		case Shield1:
+												// type     name	  uiId tx ty  lv rrty psv     eqp  price
+			mEcs->AddComponent(tmpAddon, Addon{ Shield1, "Shield Weak", 0, 0, 256, 1, 1, false, notSet, 5 });
+
+			break;
+		case Shield2:
+												// type		name	   uiId tx ty	lv rrty psv     eqp  price
+			mEcs->AddComponent(tmpAddon, Addon{ Shield2, "Shield Strong", 0, 0, 256, 2, 2, false, notSet, 10 });
+
+			break;
+		case Shield3:
+												// type    name       uiId tx ty	lv rrty psv     eqp  price
+			mEcs->AddComponent(tmpAddon, Addon{ Shield3, "Shield Super", 0, 0, 256, 3, 3, false, notSet, 20 });
+
+			break;
+		case Heal1:
+											  // type   name		uiId tx ty  lv rrty psv   eqp  price
+			mEcs->AddComponent(tmpAddon, Addon{ Heal1, "Heal Small", 0, 0, 288, 1, 1, false, notSet, 5 });
+
+			break;
+		case Heal2:
+											  // type  name		 uiId tx ty  lv rrty psv   eqp  price
+			mEcs->AddComponent(tmpAddon, Addon{ Heal2, "Heal Big", 0, 0, 288, 2, 2, false, notSet, 10 });
+
+			break;
+		case Heal3:
+											 // type  name  uiId tx ty  lv rrty psv   eqp  price
+			mEcs->AddComponent(tmpAddon, Addon{ Heal3, "Heal", 0, 0, 288, 3, 3, false, notSet, 20 });
 
 			break;
 		case Diag:
@@ -103,6 +158,10 @@ void Addons::setupAddons(Coordinator* mEcs) {
 
 	}
 
+	for (int i = AutoAim1; i < NumAddons; i++) {
+		claimAddon(i);
+	}
+	/*
 	claimAddon(AutoAim);
 	claimAddon(Laser);
 	claimAddon(Laser2);
@@ -112,7 +171,7 @@ void Addons::setupAddons(Coordinator* mEcs) {
 	claimAddon(Heal);
 	claimAddon(Diag);
 	claimAddon(RobotCtrl);
-
+	*/
 }
 
 void Addons::initAddons(Coordinator* mEcs) {
@@ -174,13 +233,13 @@ void Addons::setAddonColor(int uiId, int level) {
 	switch (level) {
 
 	case 1:
-		fbl_set_ui_elem_color(uiId, 255, 255, 255);
+		fbl_set_ui_elem_color(uiId, 255, 200, 200);
 		break;
 	case 2:
 		fbl_set_ui_elem_color(uiId, 200, 255, 200);
 		break;
 	case 3:
-		fbl_set_ui_elem_color(uiId, 255, 200, 200);
+		fbl_set_ui_elem_color(uiId, 200, 200, 255);
 		break;
 
 	}
