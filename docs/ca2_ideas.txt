@@ -200,10 +200,15 @@ All robots can go back to base at any time and recharge the energy (by clicking 
 - Make addons work in robot-collection aand in the race (correct addon as buttons) - Done!!
 
 10 different addons total (autoaim, laser, shield, magnet, mine, teleport, build/destroy blocks etc)
-5 levels to each addon! (same components/sprite just different stats/colors (make fbl_set_ui_elem_color(r, g, b)))
+3 levels to each addon! (same components/sprite just different stats/colors (make fbl_set_ui_elem_color(r, g, b)))
 total of 50 addons (don't do all of them, save some for updates :)
 
 Think about which addons are passive and active and how to use them in the best way.
+
+THIS IS MOSLTY DONE!
+
+New addon idea. A key (passive) that can be used to unlock blocks with keyholes (maybe 4 per race), changing the pathing and stuff.
+Can be used together w. rCtrl.
 
 Choose
 
@@ -251,6 +256,7 @@ ad- add a bunch of slimes. Story slime (green), info slime (yellow) and race-sli
 roadmap:
 finish all level 1 addons - done!
 make all the addons in 3 versions of each (level 1-3) except for the Rctrl and Diag thing. DONE!
+make BasicAISystem for the other robots (healing, shielding, turbo). magnet, laser/autoaim just works.
 make deathmatch on key 7 (get the flags on 6)
 race finishing touches (like recharging in base, win conditions)
 add more robots and make claimRobot and claimAddon callable from lua.
