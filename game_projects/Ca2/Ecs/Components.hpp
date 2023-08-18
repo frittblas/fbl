@@ -132,7 +132,7 @@ struct Stats
                             // AND active skills (like weapons, for the buttons to the left and right) as Entity (Addon) last 4!
 };
 
-// PathLogic (handles when new paths are assigned and stuff)
+// PathLogic (handles the flag capturing game mode)
 struct PathLogic
 {
 
@@ -140,6 +140,26 @@ struct PathLogic
     uint8_t  flags;         // keep track of how many flags collected
     uint8_t  coins;         // keep track of how many small coins collected
     bool     isAlive;       // is the robot alive?
+
+};
+
+// DeathMatch (handles wthe death match mode)
+struct DeathMatch
+{
+
+    uint16_t baseX, baseY;  // base coordinates
+    uint8_t  coins;         // coins collected
+    bool     isAlive;       // is alive?
+
+};
+
+// BasicAI (when to heal non player robots etc.)
+struct BasicAI
+{
+
+    uint8_t action;         // which action? (heal, shield, turbo etc.)
+    uint8_t duration;       // for how long should the action be carried out? in frames
+    uint8_t durationLeft;   // how much left of duration
 
 };
 

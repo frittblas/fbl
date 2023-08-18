@@ -24,6 +24,8 @@
 
 // robot specific
 #include "Ecs/Systems/Race/PathLogicSystem.hpp"
+#include "Ecs/Systems/Race/GameModes/DeathMatchSystem.hpp"
+#include "Ecs/Systems/Race/BasicAISystem.hpp"
 #include "Ecs/Systems/Race/AutoAimSystem.hpp"
 #include "Ecs/Systems/Race/LaserSystem.hpp"
 #include "Ecs/Systems/Race/MagnetSystem.hpp"
@@ -66,6 +68,8 @@ void SysManager::setupEcs(Coordinator *mEcs) {
 	// robot specific
 	mEcs->RegisterComponent<Stats>();
 	mEcs->RegisterComponent<PathLogic>();
+	mEcs->RegisterComponent<DeathMatch>();
+	mEcs->RegisterComponent<BasicAI>();
 	mEcs->RegisterComponent<AutoAim>();
 	mEcs->RegisterComponent<Laser>();
 	mEcs->RegisterComponent<Magnet>();
@@ -85,6 +89,8 @@ void SysManager::setupEcs(Coordinator *mEcs) {
 
 	// robot specific
 	mPathLogicSystem = mEcs->RegisterSystem<PathLogicSystem>();
+	mDeathMatchSystem = mEcs->RegisterSystem<DeathMatchSystem>();
+	mBasicAISystem = mEcs->RegisterSystem<BasicAISystem>();
 	mAutoAimSystem = mEcs->RegisterSystem<AutoAimSystem>();
 	mLaserSystem = mEcs->RegisterSystem<LaserSystem>();
 	mMagnetSystem = mEcs->RegisterSystem<MagnetSystem>();
@@ -129,10 +135,25 @@ void SysManager::setupEcs(Coordinator *mEcs) {
 	// robot specific
 	sign.reset();
 	sign.set(mEcs->GetComponentType<Position>());
+	sign.set(mEcs->GetComponentType<Path>());
 	sign.set(mEcs->GetComponentType<Sprite>());
 	sign.set(mEcs->GetComponentType<Stats>());
 	sign.set(mEcs->GetComponentType<PathLogic>());
 	mEcs->SetSystemSignature<PathLogicSystem>(sign);
+
+	sign.reset();
+	sign.set(mEcs->GetComponentType<Position>());
+	sign.set(mEcs->GetComponentType<Path>());
+	sign.set(mEcs->GetComponentType<Sprite>());
+	sign.set(mEcs->GetComponentType<Stats>());
+	sign.set(mEcs->GetComponentType<DeathMatch>());
+	mEcs->SetSystemSignature<DeathMatchSystem>(sign);
+
+	sign.reset();
+	sign.set(mEcs->GetComponentType<Position>());
+	sign.set(mEcs->GetComponentType<Stats>());
+	sign.set(mEcs->GetComponentType<BasicAI>());
+	mEcs->SetSystemSignature<BasicAISystem>(sign);
 
 	sign.reset();
 	sign.set(mEcs->GetComponentType<Position>());

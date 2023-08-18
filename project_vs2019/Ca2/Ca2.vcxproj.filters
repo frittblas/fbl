@@ -40,6 +40,9 @@
     <Filter Include="Source Files\GameState\Race">
       <UniqueIdentifier>{84db84dc-e601-4027-93fa-831299a14d69}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Ecs\Systems\Race\GameModes">
+      <UniqueIdentifier>{6d6b5534-e4ea-4175-a6d9-c118e705e71a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\a_star\a_star.c">
@@ -186,9 +189,6 @@
     <ClCompile Include="..\..\game_projects\Ca2\Efx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\Race\PathLogicSystem.cpp">
-      <Filter>Source Files\Ecs\Systems\Race</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\Race\MagnetSystem.cpp">
       <Filter>Source Files\Ecs\Systems\Race</Filter>
     </ClCompile>
@@ -205,6 +205,15 @@
       <Filter>Source Files\Ecs\Systems\Race</Filter>
     </ClCompile>
     <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\Race\TurboSystem.cpp">
+      <Filter>Source Files\Ecs\Systems\Race</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\Race\BasicAISystem.cpp">
+      <Filter>Source Files\Ecs\Systems\Race</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\Race\GameModes\DeathMatchSystem.cpp">
+      <Filter>Source Files\Ecs\Systems\Race\GameModes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\Race\PathLogicSystem.cpp">
       <Filter>Source Files\Ecs\Systems\Race</Filter>
     </ClCompile>
   </ItemGroup>
@@ -332,9 +341,6 @@
     <ClInclude Include="..\..\game_projects\Ca2\Efx.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\Race\PathLogicSystem.hpp">
-      <Filter>Source Files\Ecs\Systems\Race</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\Race\MagnetSystem.hpp">
       <Filter>Source Files\Ecs\Systems\Race</Filter>
     </ClInclude>
@@ -351,6 +357,15 @@
       <Filter>Source Files\Ecs\Systems\Race</Filter>
     </ClInclude>
     <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\Race\TurboSystem.hpp">
+      <Filter>Source Files\Ecs\Systems\Race</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\Race\BasicAISystem.hpp">
+      <Filter>Source Files\Ecs\Systems\Race</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\Race\GameModes\DeathMatchSystem.hpp">
+      <Filter>Source Files\Ecs\Systems\Race\GameModes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\Race\PathLogicSystem.hpp">
       <Filter>Source Files\Ecs\Systems\Race</Filter>
     </ClInclude>
   </ItemGroup>

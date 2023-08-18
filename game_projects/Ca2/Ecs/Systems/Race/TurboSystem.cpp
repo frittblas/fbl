@@ -20,22 +20,9 @@
 
 #include "TurboSystem.hpp"
 
-extern bool gStartingOut;
-
 void TurboSystem::Init(Coordinator& ecs) {
 
-
-	for (auto const& entity : mEntities)
-	{
-
-		auto& turbo = ecs.GetComponent<Turbo>(entity);
-
-
-
-	}
-
 	std::cout << "Turbo component system initialized." << std::endl;
-
 
 }
 
@@ -52,8 +39,6 @@ void TurboSystem::Update(Coordinator& ecs) {
 
 			float oldSpeed = (float)sta.speed / 10;
 			path.speed = oldSpeed * turbo.amount;
-
-			//std::cout << "Speed: " << path.speed << std::endl;
 
 			sta.energy -= static_cast<double>(turbo.energyCost) / 20;
 
