@@ -20,13 +20,18 @@
 #include "../../Addons.hpp"
 #include "Maze.hpp"
 
+// In order to connect PathLogicSystem, Laser, CaptureFlags, DeathMatch to Maze
+// I had to use these globals, it's not ideal but it works :)
 
-Maze::aFlag gFlag[Maze::cMaxFlags];    // the flag sprites, externed in PathLogicSystem
-Maze::aCoin gCoin[Maze::cMaxCoins];	   // the coins, also externed in PathLogicSystem
+Maze::aFlag gFlag[Maze::cMaxFlags];    // the flag sprites, externed in CaptureFlags and Laser.cpp
+Maze::aCoin gCoin[Maze::cMaxCoins];	   // the coins, externed in CaptureFlags, DeathMatch
 
 bool gPickDone;		// externed in LaserSystem, true if picking stage is complete.
 bool gStartingOut;	// externed in PathLogicSystem, takes waiting 3 secs into consideration (before the race starts)
+bool gUpdatePaths;	// externed in Laser, PathLogicSystem and CaptureFlags (if true, make all robots update paths)
+int  gGameMode;		// the currect game mode in use, like Race::CaptureFlags
 
+// all the game modes
 CaptureFlags *gCF;
 DeathMatch	 *gDM;
 
@@ -36,12 +41,20 @@ Maze::Maze() {
 
 	gPickDone = false;
 	gStartingOut = true;
+	gUpdatePaths = false;
+	gGameMode = 0;
+
+	gCF = new CaptureFlags();
+	gDM = new DeathMatch();
 
 	std::cout << "Maze constructor." << std::endl;
 
 }
 
 Maze::~Maze() {
+
+	delete gCF;
+	delete gDM;
 
 	std::cout << "Maze destructor." << std::endl;
 
@@ -229,7 +242,9 @@ void Maze::pickStartPosition(Game& g) {
 }
 
 
-void Maze::initMaze(Game& g, int density, int numRacers) {
+void Maze::initMaze(Game& g, int density, int numRacers, int gameMode) {
+
+	gGameMode = gameMode;
 
 	int tries = 0; // number of brute force tries
 

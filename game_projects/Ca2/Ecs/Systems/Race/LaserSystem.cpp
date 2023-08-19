@@ -25,10 +25,10 @@
 
 #include "LaserSystem.hpp"
 
-bool gUpdatePaths = false;	// externed in PathLogicSystem
-
-extern Maze::aFlag gFlag[Maze::cMaxFlags]; // externed from Maze.cpp
+// from Maze.cpp
+extern Maze::aFlag gFlag[Maze::cMaxFlags];
 extern bool gPickDone;
+extern bool gUpdatePaths;
 
 void LaserSystem::Init(Coordinator& ecs) {
 

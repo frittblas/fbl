@@ -60,7 +60,7 @@ public:
     void tick(Game& g);
     void setupPickStart();
     void pickStartPosition(Game& g);
-    void initMaze(Game& g, int density, int numRacers);
+    void initMaze(Game& g, int density, int numRacers, int gameMode);
     void stopPathing();
     void resetMaze();
     void randomizeMaze(int density);

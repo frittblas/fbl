@@ -24,6 +24,11 @@ public:
     Race();
     ~Race();
 
+    enum GameMode {
+        CaptureFlags,
+        DeathMatch
+    };
+
     void assignRobots(Game& g);
     void unassignRobots(Game& g);
     void getInput(Game& g);

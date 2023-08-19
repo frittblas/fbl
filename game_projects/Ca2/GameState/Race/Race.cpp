@@ -43,17 +43,11 @@
 
 #include "Race.hpp"
 
-extern CaptureFlags* gCF;
-extern DeathMatch* gDM;
-
 // Race-class implementation
 
 Race::Race() {
 
 	mMaze = new Maze();
-
-	gCF = new CaptureFlags();
-	gDM = new DeathMatch();
 
 	fbl_set_camera_xy(0, 0);
 
@@ -67,9 +61,6 @@ Race::~Race() {
 	fbl_set_sprite_align(FBL_SPRITE_ALIGN_UP_LEFT);	// in explore mode sprites are drawn from the top left
 
 	delete mMaze;
-
-	delete gCF;
-	delete gDM;
 
 	//fbl_destroy_all_emitters();
 
@@ -127,7 +118,7 @@ void Race::assignRobots(Game& g) {
 
 	std::cout << "Block density: " << blockDensity << std::endl;
 
-	mMaze->initMaze(g, blockDensity, mNumRacers);
+	mMaze->initMaze(g, blockDensity, mNumRacers, Race::GameMode::CaptureFlags);
 
 	fbl_sort_sprites(FBL_SORT_BY_LAYER);
 

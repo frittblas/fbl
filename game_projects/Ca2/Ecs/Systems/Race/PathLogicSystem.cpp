@@ -14,17 +14,18 @@
 #include "../../Components.hpp"
 
 #include "../../../Game.hpp"
-//#include "../../../GameState/GameState.hpp"
+#include "../../../../Ca2/GameState/Race/Race.hpp"
 
 #include "../../../../Ca2/GameState/Race/GameModes/CaptureFlags.hpp"
 #include "../../../../Ca2/GameState/Race/GameModes/DeathMatch.hpp"
 
 #include "PathLogicSystem.hpp"
 
-extern bool gUpdatePaths;	// from Laser.cpp
-
-extern CaptureFlags* gCF;	// from Maze.cpp
-extern DeathMatch* gDM;
+// from Maze.cpp
+extern bool gUpdatePaths;
+extern int  gGameMode;
+extern CaptureFlags* gCF;
+extern DeathMatch*   gDM;
 
 void PathLogicSystem::Init(Coordinator& ecs) {
 
@@ -45,7 +46,16 @@ void PathLogicSystem::Init(Coordinator& ecs) {
 
 void PathLogicSystem::Update(Game& g) {
 
-	tickCF(g);
+	switch (gGameMode) {
+
+	case Race::CaptureFlags:
+		tickCF(g);
+		break;
+	case Race::DeathMatch:
+		tickDM(g);
+		break;
+
+	}
 
 }
 
