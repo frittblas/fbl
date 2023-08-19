@@ -14,6 +14,8 @@
 #include "../../../../src/fbl.hpp"
 #include "../../Ecs/Ecs.hpp"
 #include "../../Ecs/Components.hpp"
+#include "../../../Ca2/GameState/Race/GameModes/CaptureFlags.hpp"
+#include "../../../Ca2/GameState/Race/GameModes/DeathMatch.hpp"
 #include "../../Game.hpp"
 #include "../../Addons.hpp"
 #include "Maze.hpp"
@@ -24,6 +26,9 @@ Maze::aCoin gCoin[Maze::cMaxCoins];	   // the coins, also externed in PathLogicS
 
 bool gPickDone;		// externed in LaserSystem, true if picking stage is complete.
 bool gStartingOut;	// externed in PathLogicSystem, takes waiting 3 secs into consideration (before the race starts)
+
+CaptureFlags *gCF;
+DeathMatch	 *gDM;
 
 // Maze-class implementation
 

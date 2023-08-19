@@ -160,7 +160,7 @@ void LaserSystem::Update(Game& g) {
 		if(gPickDone) fbl_set_prim_active(las.crossHairId, true);
 
 		// don't show the crosshair if robot's dead
-		if(sta.hp < 0.5) fbl_set_prim_active(las.crossHairId, false);
+		if(sta.hp < 0.1) fbl_set_prim_active(las.crossHairId, false);
 
 	}
 
@@ -213,7 +213,7 @@ void LaserSystem::dealDamage(Game &g, Entity attacker, Entity target) {
 				Efx::getInstance().shakeCamera(20, 40);						// shake camera
 				fbl_set_emitter_active(attackLas.particleId, false);		// turn off emitter making a cloud
 
-				// drop the flag
+				// drop the flag when dead (doesn't do anything in other game modes)
 				for (int j = 0; j < Maze::cMaxFlags; j++) {
 					if (gFlag[j].state == target) {
 						gFlag[j].state = Maze::FlagState::Dropped;
@@ -222,7 +222,6 @@ void LaserSystem::dealDamage(Game &g, Entity attacker, Entity target) {
 					}
 				}
 
-				//targetPlog.isAlive = false;	// deal with repair and respawning in PathLogicSystem
 
 			}
 			//std::cout << sta.name << " killed " << targetSta.name << std::endl;

@@ -33,6 +33,9 @@
 #include "../../Ecs/Systems/Race/DiagSystem.hpp"
 #include "../../Ecs/Systems/Race/RobotCtrlSystem.hpp"
 
+#include "GameModes/CaptureFlags.hpp"
+#include "GameModes/DeathMatch.hpp"
+
 #include "../../Chars.hpp"
 #include "../../Weather.hpp"
 #include "../../Robots.hpp"
@@ -40,11 +43,17 @@
 
 #include "Race.hpp"
 
+extern CaptureFlags* gCF;
+extern DeathMatch* gDM;
+
 // Race-class implementation
 
 Race::Race() {
 
 	mMaze = new Maze();
+
+	gCF = new CaptureFlags();
+	gDM = new DeathMatch();
 
 	fbl_set_camera_xy(0, 0);
 
@@ -58,6 +67,9 @@ Race::~Race() {
 	fbl_set_sprite_align(FBL_SPRITE_ALIGN_UP_LEFT);	// in explore mode sprites are drawn from the top left
 
 	delete mMaze;
+
+	delete gCF;
+	delete gDM;
 
 	//fbl_destroy_all_emitters();
 
