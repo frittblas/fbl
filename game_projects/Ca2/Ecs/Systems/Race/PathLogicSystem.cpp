@@ -46,22 +46,46 @@ void PathLogicSystem::Init(Coordinator& ecs) {
 
 void PathLogicSystem::Update(Game& g) {
 
+	tickCF(g);
+
+}
+
+void PathLogicSystem::tickCF(Game& g) {
+
 	for (auto const& entity : mEntities)
 	{
 		auto& pos = g.mEcs->GetComponent<Position>(entity);
 		auto& path = g.mEcs->GetComponent<Path>(entity);
 		auto& spr = g.mEcs->GetComponent<Sprite>(entity);
 		auto& plog = g.mEcs->GetComponent<PathLogic>(entity);
-		
+
 
 		handleFlags(entity, pos, spr, path, plog);
 		handleCoins(entity, spr, plog);
 		handleBases(g, entity, pos, spr, path, plog);
 
+		switchCtrl(g, entity, pos, path, plog);
+
 	}
 
-	updatePaths(g);
-	switchCtrl(g);
+	if (gUpdatePaths) {
+
+		for (auto const& entity : mEntities)
+		{
+
+			auto& pos = g.mEcs->GetComponent<Position>(entity);
+			auto& path = g.mEcs->GetComponent<Path>(entity);
+			auto& plog = g.mEcs->GetComponent<PathLogic>(entity);
+
+			updatePaths(g, entity, pos, path, plog);
+		}
+
+		gUpdatePaths = false;
+	}
+
+}
+
+void PathLogicSystem::tickDM(Game& g) {
 
 }
 
@@ -229,94 +253,73 @@ void PathLogicSystem::findClosestFlag(Position& pos, Path& path, PathLogic& plog
 
 }
 
-void PathLogicSystem::updatePaths(Game& g) {
-
-	if (gUpdatePaths) {
-
-		for (auto const& entity : mEntities)
-		{
-
-			auto& pos = g.mEcs->GetComponent<Position>(entity);
-			auto& path = g.mEcs->GetComponent<Path>(entity);
-			auto& plog = g.mEcs->GetComponent<PathLogic>(entity);
-
-			// this only applies to robots that are not carrying a flag
-			int flagIndex = hasFlag(entity);
-			if (flagIndex < 0) {
-
-				// update paths for robots without a MouseCtrl component
-				if (!g.mEcs->HasComponent<RobotCtrl>(entity)) {
-					findClosestFlag(pos, path, plog);
-				}
-				else {
-					auto& ctrl = g.mEcs->GetComponent<RobotCtrl>(entity);
-
-					if (!ctrl.active && !gStartingOut)
-						findClosestFlag(pos, path, plog);
-				}
-
-				std::cout << "New path for robot-entity: " << entity << std::endl;
-
-			}
-
-
-		}
-
-		gUpdatePaths = false;
-
-	}
-
-}
-
-void PathLogicSystem::switchCtrl(Game& g) {
+void PathLogicSystem::switchCtrl(Game& g, Entity e, Position& pos, Path& path, PathLogic& plog) {
 
 	// This is used for setting up the correct behaviour when the player
 	// clicks the passive RobotCtrl addon in a race.
 
-	for (auto const& entity : mEntities)
-	{
+	// update behaviour only for robots with a MouseCtrl component (i.e. the player)
+	if (g.mEcs->HasComponent<RobotCtrl>(e)) {
 
-		// update behaviour only for robots with a MouseCtrl component (i.e. the player)
-		if (g.mEcs->HasComponent<RobotCtrl>(entity)) {
+		auto& ctrl = g.mEcs->GetComponent<RobotCtrl>(e);
 
-			auto& pos = g.mEcs->GetComponent<Position>(entity);
-			auto& path = g.mEcs->GetComponent<Path>(entity);
-			auto& plog = g.mEcs->GetComponent<PathLogic>(entity);
-			auto& ctrl = g.mEcs->GetComponent<RobotCtrl>(entity);
+		if (ctrl.justSwitched) {
+			std::cout << "JUST SWITCHED! for robot-entity: " << e << std::endl;
+			if (!ctrl.active) {		// if the robot ctrl is deactivated, control goes back to auto
 
-			if (ctrl.justSwitched) {
-				std::cout << "JUST SWITCHED! for robot-entity: " << entity << std::endl;
-				if (!ctrl.active) {		// if the robot ctrl is deactivated, control goes back to auto
+				if (hasFlag(e) >= 0) {
 
-					if (hasFlag(entity) >= 0) {
-
-						// if carrying flag, set course to the base
-						if (!gStartingOut) {
-							path.goalX = plog.baseX;
-							path.goalY = plog.baseY;
-							path.newPath = true;
-						}
-
-					}
-					else {
-						if (!gStartingOut)
-							findClosestFlag(pos, path, plog);
+					// if carrying flag, set course to the base
+					if (!gStartingOut) {
+						path.goalX = plog.baseX;
+						path.goalY = plog.baseY;
+						path.newPath = true;
 					}
 
 				}
-				else {	// here it's active again
-
-					// make robot stop
-					fbl_pathf_set_path_status(path.id, FBL_PATHF_NOT_STARTED);
-
+				else {
+					if (!gStartingOut)
+						findClosestFlag(pos, path, plog);
 				}
-
-				ctrl.justSwitched = false;
 
 			}
+			else {	// here it's active again
+
+				// make robot stop
+				fbl_pathf_set_path_status(path.id, FBL_PATHF_NOT_STARTED);
+
+			}
+
+			ctrl.justSwitched = false;
 
 		}
 
 	}
+
+
+}
+
+void PathLogicSystem::updatePaths(Game& g, Entity e, Position& pos, Path& path, PathLogic& plog) {
+
+
+	// this only applies to robots that are not carrying a flag
+	int flagIndex = hasFlag(e);
+	if (flagIndex < 0) {
+
+		// update paths for robots without a MouseCtrl component
+		if (!g.mEcs->HasComponent<RobotCtrl>(e)) {
+			findClosestFlag(pos, path, plog);
+		}
+		else {
+			auto& ctrl = g.mEcs->GetComponent<RobotCtrl>(e);
+
+			if (!ctrl.active && !gStartingOut)
+				findClosestFlag(pos, path, plog);
+		}
+
+		std::cout << "New path for robot-entity: " << e << std::endl;
+
+	}
+
 
 }
