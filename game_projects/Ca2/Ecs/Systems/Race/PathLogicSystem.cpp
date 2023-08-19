@@ -49,8 +49,8 @@ void PathLogicSystem::Update(Game& g) {
 	for (auto const& entity : mEntities)
 	{
 		auto& pos = g.mEcs->GetComponent<Position>(entity);
-		auto& spr = g.mEcs->GetComponent<Sprite>(entity);
 		auto& path = g.mEcs->GetComponent<Path>(entity);
+		auto& spr = g.mEcs->GetComponent<Sprite>(entity);
 		auto& plog = g.mEcs->GetComponent<PathLogic>(entity);
 		
 

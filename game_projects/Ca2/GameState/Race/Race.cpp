@@ -23,6 +23,7 @@
 #include "../../Ecs/Systems/LightSystem.hpp"
 
 #include "../../Ecs/Systems/Race/PathLogicSystem.hpp"
+#include "../../Ecs/Systems/Race/BasicAISystem.hpp"
 #include "../../Ecs/Systems/Race/AutoAimSystem.hpp"
 #include "../../Ecs/Systems/Race/LaserSystem.hpp"
 #include "../../Ecs/Systems/Race/MagnetSystem.hpp"
@@ -270,6 +271,7 @@ void Race::tick(Game& g) {
 	g.mSysManager->mLightSystem->Update(g);					// update the light system
 	
 	g.mSysManager->mPathLogicSystem->Update(g);				// update the PathLogic system
+	g.mSysManager->mBasicAISystem->Update(*g.mEcs);			// update the basic non player AI
 	g.mSysManager->mAutoAimSystem->Update(g);				// update the AutoAim system
 	g.mSysManager->mLaserSystem->Update(g);					// update the Laser system
 	g.mSysManager->mMagnetSystem->Update(g);				// update the Magnet system

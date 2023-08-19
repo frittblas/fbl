@@ -195,7 +195,7 @@ void LaserSystem::dealDamage(Game &g, Entity attacker, Entity target) {
 
 			// if target dead
 			if (targetSta.hp <= 0) {
-				auto& targetPlog = g.mEcs->GetComponent<PathLogic>(target);
+				//auto& targetPlog = g.mEcs->GetComponent<PathLogic>(target);
 				auto& targetSpr = g.mEcs->GetComponent<Sprite>(target);
 				auto& targetAim = g.mEcs->GetComponent<AutoAim>(target);
 				Laser* targetLas = nullptr;
@@ -222,7 +222,7 @@ void LaserSystem::dealDamage(Game &g, Entity attacker, Entity target) {
 					}
 				}
 
-				targetPlog.isAlive = false;	// deal with repair and respawning in PathLogicSystem
+				//targetPlog.isAlive = false;	// deal with repair and respawning in PathLogicSystem
 
 			}
 			//std::cout << sta.name << " killed " << targetSta.name << std::endl;

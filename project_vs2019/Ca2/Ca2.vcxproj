@@ -146,7 +146,6 @@
     <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\Race\AutoAimSystem.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\Race\BasicAISystem.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\Race\DiagSystem.cpp" />
-    <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\Race\GameModes\DeathMatchSystem.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\Race\HealSystem.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\Race\LaserSystem.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\Race\MagnetSystem.cpp" />
@@ -160,6 +159,8 @@
     <ClCompile Include="..\..\game_projects\Ca2\GameState\Dialogue.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\GameState\Explore.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\GameState\GameState.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\GameState\Race\GameModes\CaptureFlags.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\GameState\Race\GameModes\DeathMatch.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\GameState\Race\Maze.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\GameState\Race\Race.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\GameState\RobotCollection.cpp" />
@@ -207,7 +208,6 @@
     <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\Race\AutoAimSystem.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\Race\BasicAISystem.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\Race\DiagSystem.hpp" />
-    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\Race\GameModes\DeathMatchSystem.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\Race\HealSystem.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\Race\LaserSystem.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\Race\MagnetSystem.hpp" />
@@ -223,6 +223,8 @@
     <ClInclude Include="..\..\game_projects\Ca2\GameState\Explore.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\GameState\GameState.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\GameState\IState.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\GameState\Race\GameModes\CaptureFlags.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\GameState\Race\GameModes\DeathMatch.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\GameState\Race\Maze.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\GameState\Race\Race.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\GameState\RobotCollection.hpp" />

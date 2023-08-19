@@ -25,7 +25,6 @@ class LightSystem;
 // robot specific
 // Stats does not have it's own system!
 class PathLogicSystem;
-class DeathMatchSystem;
 class BasicAISystem;
 class AutoAimSystem;
 class LaserSystem;
@@ -48,8 +47,7 @@ public:
     std::shared_ptr<DialogueTrigSystem> mDialogueTrigSystem; // the dialogue trigger system
     std::shared_ptr<LightSystem> mLightSystem;               // the light system
 
-    std::shared_ptr<PathLogicSystem> mPathLogicSystem;       // flag capturing!
-    std::shared_ptr<DeathMatchSystem> mDeathMatchSystem;     // death match
+    std::shared_ptr<PathLogicSystem> mPathLogicSystem;       // deals with race path logic and game modes
     std::shared_ptr<BasicAISystem> mBasicAISystem;           // basic non player AI
     std::shared_ptr<AutoAimSystem> mAutoAimSystem;           // the auto aim system
     std::shared_ptr<LaserSystem> mLaserSystem;               // the laser system

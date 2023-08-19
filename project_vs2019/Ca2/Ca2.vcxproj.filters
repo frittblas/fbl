@@ -40,8 +40,8 @@
     <Filter Include="Source Files\GameState\Race">
       <UniqueIdentifier>{84db84dc-e601-4027-93fa-831299a14d69}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Ecs\Systems\Race\GameModes">
-      <UniqueIdentifier>{6d6b5534-e4ea-4175-a6d9-c118e705e71a}</UniqueIdentifier>
+    <Filter Include="Source Files\GameState\Race\GameModes">
+      <UniqueIdentifier>{ca0c6310-a149-4eb5-9e99-4224f4b01121}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -210,11 +210,14 @@
     <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\Race\BasicAISystem.cpp">
       <Filter>Source Files\Ecs\Systems\Race</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\Race\GameModes\DeathMatchSystem.cpp">
-      <Filter>Source Files\Ecs\Systems\Race\GameModes</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\Race\PathLogicSystem.cpp">
       <Filter>Source Files\Ecs\Systems\Race</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game_projects\Ca2\GameState\Race\GameModes\DeathMatch.cpp">
+      <Filter>Source Files\GameState\Race\GameModes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game_projects\Ca2\GameState\Race\GameModes\CaptureFlags.cpp">
+      <Filter>Source Files\GameState\Race\GameModes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -362,11 +365,14 @@
     <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\Race\BasicAISystem.hpp">
       <Filter>Source Files\Ecs\Systems\Race</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\Race\GameModes\DeathMatchSystem.hpp">
-      <Filter>Source Files\Ecs\Systems\Race\GameModes</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\Race\PathLogicSystem.hpp">
       <Filter>Source Files\Ecs\Systems\Race</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\GameState\Race\GameModes\DeathMatch.hpp">
+      <Filter>Source Files\GameState\Race\GameModes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\GameState\Race\GameModes\CaptureFlags.hpp">
+      <Filter>Source Files\GameState\Race\GameModes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

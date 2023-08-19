@@ -143,16 +143,6 @@ struct PathLogic
 
 };
 
-// DeathMatch (handles wthe death match mode)
-struct DeathMatch
-{
-
-    uint16_t baseX, baseY;  // base coordinates
-    uint8_t  coins;         // coins collected
-    bool     isAlive;       // is alive?
-
-};
-
 // BasicAI (when to heal non player robots etc.)
 struct BasicAI
 {

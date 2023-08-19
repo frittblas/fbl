@@ -205,7 +205,7 @@ total of 50 addons (don't do all of them, save some for updates :)
 
 Think about which addons are passive and active and how to use them in the best way.
 
-THIS IS MOSLTY DONE!
+THIS IS MOSTLY DONE!
 
 New addon idea. A key (passive) that can be used to unlock blocks with keyholes (maybe 4 per race), changing the pathing and stuff.
 Can be used together w. rCtrl.
