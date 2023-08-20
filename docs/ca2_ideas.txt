@@ -21,27 +21,27 @@ Camera
 DialogTrig
 Light
 --
+(pathLogic, BasicAI)
 AutoAim (passive)
 Laser	(active)
 Magnet	(passive)
-Turbo (active)
 RobotCtrl (passive)
 Shield (active)
 Heal (active)
 Diag (passive)
-
+Turbo (active)
 
 - on the way -
-Shield (active, circle around the robot that blocks laser and saves hp)
-charge (active, replenish 100% energy - one use on level 1, 2 on 2 etc.)
-heal (active, replenish hp - one use)
-boost (active, hold button to go faster, costs energy.)
-teleport (active, dissapear and reappear randomly?)
+Shield (active, circle around the robot that blocks laser and saves hp) DONE!
+heal (active, replenish hp - one use) DONE!
+turbo (active, hold button to go faster, costs energy.) DONE!
+teleport (active, dissapear and reappear randomly?) - later
 
 these are in a special category (far right in addon collection):
-Diagonal (passive, let robot go diagonally)
-MouseCtrl (passive, let robot go wherever)
-build/destroy blocks (passive, takes 2 slots!, click map to build or remove a block (10 times or so))
+Diagonal (passive, let robot go diagonally) DONE!
+MouseCtrl (passive, let robot go wherever) DONE!
+build/destroy blocks (passive, takes 2 slots!, click map to build or remove a block (10 times or so)) later.
+IDEA: make this a key instead (4 blocks on each map has a keyhole that can be unlocked) DO THIS!
 
 Todo:
 Register components and systems in sysManager class. Done!
@@ -127,15 +127,9 @@ will be intact.
 }
 
 
-Cool thing:
-Make a "dungeon" with never ending races, player sets up a team of 3 robots with strategic addons, can't repair.
-Just go as far as you can.
-
-
 robot collection menu! - done!
 the actual game (race) - in progress..
 
-Team of 3 robots to compete? - later
 passive (i.e magnetic) and active (i.e laser) skills. - done.
 
 Sprite layers are:
@@ -162,19 +156,16 @@ Next:
 Some kind of meaningful powerup that the robots can pick up (also added during the race). Done! (coins)
 
 
-Maybe separate Path and RobotPath systems (esp. if the a.i gets more sophisticated). Yes I think so.
+Maybe separate Path and RobotPath systems (esp. if the a.i gets more sophisticated). No it's fine. Did this with RCtrl instead.
 
-Write some catchy synth-tunes.
+Write some catchy synth-tunes. on the way..
 
 Also later (maybe):
 
-Let player drop a bait that a.i-robots follow!
-Let player MouseCtrl the robot.
-What about teams? 3 races after one another?
-Just wipe all the fbl_-lists and call init race again.
-More stuff in explore mode: Shops, sokoban block pushing?, standard fetch quests.
+Let player drop a bait that a.i-robots follow! LATER!
+More stuff in explore mode: Shops, sokoban block pushing?, standard fetch quests. LATER!
 Add more vegetable-npcs tomato-man, pear-man (done!). old man (used to race robots in the 60's)
-Add three more distinct locations (explore), like winter (snow), city etc.
+Add three more distinct locations (explore), like winter (snow), city etc. LATER!
 
 
 Story idea:
@@ -199,16 +190,16 @@ All robots can go back to base at any time and recharge the energy (by clicking 
 
 - Make addons work in robot-collection aand in the race (correct addon as buttons) - Done!!
 
-10 different addons total (autoaim, laser, shield, magnet, mine, teleport, build/destroy blocks etc)
+10 different addons total
 3 levels to each addon! (same components/sprite just different stats/colors (make fbl_set_ui_elem_color(r, g, b)))
-total of 50 addons (don't do all of them, save some for updates :)
+total of 50 addons (don't do all of them, save some for updates :) DONE!
 
-Think about which addons are passive and active and how to use them in the best way.
+Think about which addons are passive and active and how to use them in the best way. DONE!
 
 THIS IS MOSTLY DONE!
 
 New addon idea. A key (passive) that can be used to unlock blocks with keyholes (maybe 4 per race), changing the pathing and stuff.
-Can be used together w. rCtrl.
+Can be used together w. rCtrl. YES LATER!
 
 Choose
 
@@ -256,8 +247,8 @@ ad- add a bunch of slimes. Story slime (green), info slime (yellow) and race-sli
 roadmap:
 finish all level 1 addons - done!
 make all the addons in 3 versions of each (level 1-3) except for the Rctrl and Diag thing. DONE!
-make BasicAISystem for the other robots (healing, shielding, turbo). magnet, laser/autoaim just works.
-make deathmatch on key 7 (get the flags on 6)
+make BasicAISystem for the other robots (healing, shielding, turbo). magnet, laser/autoaim just works. on the way!
+make deathmatch on key 7 (get the flags on 6) on the way!
 race finishing touches (like recharging in base, win conditions)
 add more robots and make claimRobot and claimAddon callable from lua.
 Start making the level with a bunch of dialogue and a couple of songs.

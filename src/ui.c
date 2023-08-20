@@ -249,7 +249,7 @@ void fbl_set_ui_elem_color(int id, uint8_t r, uint8_t g, uint8_t b)
     if (item != NULL)
     {
 
-        ui_elem = ((FBL_SPRITE*)item->Object);
+        ui_elem = ((FBL_UI_ELEM*)item->Object);
 
         ui_elem->color.r = r;
         ui_elem->color.g = g;

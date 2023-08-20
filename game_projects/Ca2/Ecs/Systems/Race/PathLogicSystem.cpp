@@ -4,7 +4,7 @@
 *
 *	PathLogicSystem.hpp
 *
-*	The path logic system header. Handles when robots get new paths and stuff.
+*	The path logic system header. Handles when robots get new paths and stuff. Became more of a game mode coordinator.
 *
 *	Hans Strömquist 2023
 *
