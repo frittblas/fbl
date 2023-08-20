@@ -27,11 +27,13 @@ void BasicAISystem::Init(Coordinator& ecs) {
 	for (auto const& entity : mEntities)
 	{
 
-		auto& ai = ecs.GetComponent<BasicAI>(entity);
+		auto& sta = ecs.GetComponent<Stats>(entity);
+		auto& ai  = ecs.GetComponent<BasicAI>(entity);
 
 		ai.action = Actions::None;
 		ai.duration = 20;
 		ai.durationLeft = 0;
+		ai.hpLastFrame = sta.hp;
 
 	}
 
@@ -61,6 +63,10 @@ void BasicAISystem::Update(Coordinator& ecs) {
 					}
 					break;
 				case Actions::Shielding:
+					{
+						auto& shield = ecs.GetComponent<Shield>(entity);
+						shield.isShielding = true;
+					}
 					break;
 				case Actions::Turbo:
 					break;
@@ -69,6 +75,7 @@ void BasicAISystem::Update(Coordinator& ecs) {
 			}
 
 			ai.durationLeft--;
+			if (ai.durationLeft == 0) ai.action = Actions::None;
 
 		}
 
@@ -89,6 +96,22 @@ void BasicAISystem::Update(Coordinator& ecs) {
 					ai.durationLeft = ai.duration;
 				}
 
+			}
+
+			// see if the robot has take damage since last frame
+			if (sta.hp < ai.hpLastFrame) {
+
+				std::cout << "Robot shot!!!" << std::endl;
+
+				if (ecs.HasComponent<Shield>(entity)) {
+				
+					ai.action = Actions::Shielding;
+					ai.duration = rand() % 10 + 15;
+					ai.durationLeft = ai.duration;
+				
+				}
+
+				ai.hpLastFrame = sta.hp;
 			}
 
 		}

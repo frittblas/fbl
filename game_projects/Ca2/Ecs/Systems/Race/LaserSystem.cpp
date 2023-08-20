@@ -176,7 +176,7 @@ void LaserSystem::dealDamage(Game &g, Entity attacker, Entity target) {
 			auto& targetSta = g.mEcs->GetComponent<Stats>(target);
 			auto& light = g.mEcs->GetComponent<Light>(target);
 
-			// if taret has shield
+			// if target has shield
 			Shield* targetShield = nullptr;
 			if (g.mEcs->HasComponent<Shield>(target))
 				targetShield = &g.mEcs->GetComponent<Shield>(target);
@@ -185,7 +185,8 @@ void LaserSystem::dealDamage(Game &g, Entity attacker, Entity target) {
 
 				if (targetShield->isShielding && targetSta.energy > 0 && targetSta.hp > 0) {
 				
-					// nothing (don't take damage)
+					// nothing (don't take damage) NOTE: match the different shields and lasers here
+					// red lasers can be blocked by red shield etc.
 				
 				}
 				else targetSta.hp -= static_cast<double>(attackLas.damage) / 10;
