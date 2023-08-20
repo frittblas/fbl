@@ -106,7 +106,7 @@ void RobotCollection::cyclePages(Game& g, int dir) {
 	fbl_update_text(fMenuHp, 255, 255, 255, 0, (char*)"Hp:  %d / %d", (int)sta.hp, sta.maxHp);
 	fbl_update_text(fMenuSpeed, 255, 255, 255, 0, (char*)"Speed:  %d", sta.speed);
 	fbl_update_text(fMenuDiag, 255, 255, 255, 0, (char*)"Diagonals:  %s", sta.diag ? "Yes" : "No");
-	fbl_update_text(fMenuEnergy, 255, 255, 255, 0, (char*)"Energy:  %d / %d", sta.energy, sta.maxEnergy);
+	fbl_update_text(fMenuEnergy, 255, 255, 255, 0, (char*)"Energy:  %d / %d", (int)sta.energy, sta.maxEnergy);
 
 	// show the addons in left menu (won't show equipped addons)
 	g.mAddons->showAddonsInMenu(g.mEcs);
@@ -142,7 +142,10 @@ void RobotCollection::updateAddonInfo(Game& g, bool empty) {
 
 		fbl_update_text(fAddonName, 255, 255, 255, 0, (char*)"Name: %s", add.name.c_str());
 		fbl_update_text(fAddonLevel, 255, 255, 255, 0, (char*)"Level:  %d", add.level);
-		fbl_update_text(fAddonRarity, 255, 255, 255, 0, (char*)"Rarity:  %d", add.rarity);
+		std::string rarity = "Common";
+		if(add.rarity == 2) rarity = "Rare";
+		if (add.rarity == 3) rarity = "Epic";
+		fbl_update_text(fAddonRarity, 255, 255, 255, 0, (char*)"Rarity:  %s", rarity.c_str());
 		fbl_update_text(fAddonPassive, 255, 255, 255, 0, (char*)"Type: %s", add.passive ? "Passive" : "Active");
 		//fbl_update_text(fAddonEquipped, 255, 255, 255, 0, (char*)"Equipped:  %s", add.equippedBy != g.mAddons->Unassigned ? "Yes" : "No");
 		fbl_update_text(fAddonEquipped, 255, 255, 255, 0, (char*)"Equipped:  %s", add.equippedBy != notSet ? "Yes" : "No");

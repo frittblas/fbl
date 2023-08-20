@@ -64,7 +64,7 @@ struct MouseCtrl
 struct Camera
 {
 
-    float x, y;    // camera position
+    float x, y;     // camera position
     float damp;     // camera smoothing amount
     uint8_t deadZoneW, deadZoneH;    // deadzone size in tiles
 
@@ -139,7 +139,7 @@ struct PathLogic
     uint16_t baseX, baseY;  // the robot's base coordinates
     uint8_t  flags;         // keep track of how many flags collected
     uint8_t  coins;         // keep track of how many small coins collected
-    bool     isAlive;       // is the robot alive?
+    uint8_t  kills;         // track how many kills the robot made
 
 };
 
@@ -150,6 +150,7 @@ struct BasicAI
     uint8_t action;         // which action? (heal, shield, turbo etc.)
     uint8_t duration;       // for how long should the action be carried out? in frames
     uint8_t durationLeft;   // how much left of duration
+    float   hpLastFrame;    // to see if the robot is under fire
 
 };
 

@@ -18,6 +18,14 @@ class Coordinator;
 class BasicAISystem : public System
 {
 public:
+
+    enum Actions {
+        None,
+        Healing,
+        Shielding,
+        Turbo
+    };
+
 	void Init(Coordinator& ecs);
 	void Update(Coordinator& ecs);
 };

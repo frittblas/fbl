@@ -7,7 +7,7 @@
 *	System base class.
 *
 *	I got this from https://austinmorlan.com/posts/entity_component_system/
-*	Rearanged it a bit for Ca2.
+*	Rearranged it a bit for Ca2.
 *
 */
 

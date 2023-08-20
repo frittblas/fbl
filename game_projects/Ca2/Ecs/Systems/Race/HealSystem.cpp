@@ -39,6 +39,8 @@ void HealSystem::Init(Coordinator& ecs) {
 		fbl_set_emitter_active(heal.particleId, false);
 
 
+		heal.amountLeft = heal.maxAmount;
+
 	}
 
 

@@ -37,6 +37,7 @@ void AutoAimSystem::Init(Coordinator& ecs) {
 		fbl_set_prim_active(aim.rayId, true);	// show the ray
 
 		aim.hasTarget = false;
+		//aim.active = true;	// NOTE: solve this thing!
 
 	}
 

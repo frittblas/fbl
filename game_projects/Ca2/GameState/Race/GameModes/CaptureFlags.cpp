@@ -105,6 +105,10 @@ void CaptureFlags::handleBases(Game& g, Entity e, Position& pos, Sprite& spr, Pa
 
 		//std::cout << "Collided with da base!" << std::endl;
 
+		// charge battery
+		auto& stat = g.mEcs->GetComponent<Stats>(e);
+		stat.energy = stat.maxEnergy;
+
 		int flagIndex = hasFlag(e);
 		if (flagIndex >= 0) {
 			plog.flags++;

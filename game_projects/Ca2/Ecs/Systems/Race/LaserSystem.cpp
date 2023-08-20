@@ -115,7 +115,7 @@ void LaserSystem::Update(Game& g) {
 		// only fire if (bool)firing is true
 		if (las.isFiring) {
 
-			if (sta.hp > 0.5 && sta.energy > 0) {
+			if (sta.hp > 0.1 && sta.energy > 0.1) {
 
 				fbl_set_prim_active(las.rayId, true);	// show the ray
 
