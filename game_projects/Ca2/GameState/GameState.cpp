@@ -23,6 +23,7 @@
 #include "../Ecs/Systems/LightSystem.hpp"
 
 #include "../Ecs/Systems/Race/PathLogicSystem.hpp"
+#include "../Ecs/Systems/Race/BasicAISystem.hpp"
 #include "../Ecs/Systems/Race/AutoAimSystem.hpp"
 #include "../Ecs/Systems/Race/LaserSystem.hpp"
 #include "../Ecs/Systems/Race/MagnetSystem.hpp"
@@ -262,6 +263,7 @@ void GameState::setupRace(Game& g) {
 	g.mSysManager->mLightSystem->Init(*g.mEcs);		// create lights for all entities with a light component
 
 	g.mSysManager->mPathLogicSystem->Init(*g.mEcs);	// set up path logic (flags and stuff)
+	g.mSysManager->mBasicAISystem->Init(*g.mEcs);	// set up ai
 	g.mSysManager->mAutoAimSystem->Init(*g.mEcs);	// create rays for entities with AutoAim  component.
 	g.mSysManager->mLaserSystem->Init(*g.mEcs);		// create rays and particles for all entities with a Laser component.
 	g.mSysManager->mMagnetSystem->Init(*g.mEcs);	// create magnet sprites and stuff.

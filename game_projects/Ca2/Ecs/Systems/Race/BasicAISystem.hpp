@@ -23,7 +23,7 @@ public:
         None,
         Healing,
         Shielding,
-        Turbo
+        Turboing
     };
 
 	void Init(Coordinator& ecs);

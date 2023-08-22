@@ -68,7 +68,11 @@ void BasicAISystem::Update(Coordinator& ecs) {
 						shield.isShielding = true;
 					}
 					break;
-				case Actions::Turbo:
+				case Actions::Turboing:
+					{
+						auto& turbo = ecs.GetComponent<Turbo>(entity);
+						turbo.activated = true;
+					}
 					break;
 
 
@@ -85,18 +89,17 @@ void BasicAISystem::Update(Coordinator& ecs) {
 
 			// check if the entity has any of the following components then do stuff
 
-			if (ecs.HasComponent<Heal>(entity)) {
+			// if hp is < 50%
+			if (sta.hp < (sta.maxHp / 2)) {
 
-				auto& heal = ecs.GetComponent<Heal>(entity);
-
-				// if hp is < 50%
-				if (sta.hp < (sta.maxHp / 2)) {
+				if (ecs.HasComponent<Heal>(entity)) {
 					ai.action = Actions::Healing;
 					ai.duration = rand() % 10 + 15;
 					ai.durationLeft = ai.duration;
 				}
 
 			}
+
 
 			// see if the robot has take damage since last frame
 			if (sta.hp < ai.hpLastFrame) {
@@ -106,15 +109,36 @@ void BasicAISystem::Update(Coordinator& ecs) {
 				if (ecs.HasComponent<Shield>(entity)) {
 				
 					ai.action = Actions::Shielding;
-					ai.duration = rand() % 10 + 15;
+					ai.duration = rand() % 10 + 10;
 					ai.durationLeft = ai.duration;
 				
 				}
 
-				ai.hpLastFrame = sta.hp;
+			}
+
+			// randomly use turbo if robot has > 50% charge
+			if (rand() % 100) {
+
+				if (sta.energy > (sta.maxEnergy / 2)) {
+
+					if (ecs.HasComponent<Turbo>(entity)) {
+
+						ai.action = Actions::Turboing;
+						ai.duration = rand() % 20 + 10;
+						ai.durationLeft = ai.duration;
+
+					}
+
+				}
+
 			}
 
 		}
+
+		if (rand() % 10)
+			std::cout << "hp : " << sta.hp << " lastF: " << ai.hpLastFrame << " Entity: " << entity << std::endl;
+
+		ai.hpLastFrame = sta.hp;
 
 	}
 

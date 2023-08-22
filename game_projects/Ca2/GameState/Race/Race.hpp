@@ -25,8 +25,8 @@ public:
     ~Race();
 
     enum GameMode {
-        CaptureFlags,
-        DeathMatch
+        GM_CaptureFlags,
+        GM_DeathMatch
     };
 
     void assignRobots(Game& g);

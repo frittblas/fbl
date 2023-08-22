@@ -48,10 +48,10 @@ void PathLogicSystem::Update(Game& g) {
 
 	switch (gGameMode) {
 
-	case Race::CaptureFlags:
+	case Race::GM_CaptureFlags:
 		tickCF(g);
 		break;
-	case Race::DeathMatch:
+	case Race::GM_DeathMatch:
 		tickDM(g);
 		break;
 
