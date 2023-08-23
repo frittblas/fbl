@@ -148,8 +148,7 @@ struct BasicAI
 {
 
     uint8_t action;         // which action? (heal, shield, turbo etc.)
-    uint8_t duration;       // for how long should the action be carried out? in frames
-    uint8_t durationLeft;   // how much left of duration
+    uint8_t durationLeft;   // how much left of duration in frames
     float   hpLastFrame;    // to see if the robot is under fire
 
 };

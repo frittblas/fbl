@@ -76,8 +76,8 @@ void Robots::setupRobots(Coordinator* mEcs) {
 				mEcs->AddComponent(tmpRobot, Stats{ "Alarmy", 1, 0, 4, 40, 40, 6, true, 20, 19, 17, -1, -1, -1, -1, -1, -1 });
 											   // baseX Y flg coin kills
 				mEcs->AddComponent(tmpRobot, PathLogic{ 0, 0, 0, 0, 0 });
-											   //   act dur durLeft hp
-				mEcs->AddComponent(tmpRobot, BasicAI{ 0, 0, 0, 0 });
+											   //   act durLeft hp
+				mEcs->AddComponent(tmpRobot, BasicAI{ 0, 0, 0 });
 												//  rid len dir ivalM ivalC hasTarg active
 				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, true });
 											   // rid pid cid len        dir	  dmg lv eCost isFiring
@@ -92,8 +92,8 @@ void Robots::setupRobots(Coordinator* mEcs) {
 				mEcs->AddComponent(tmpRobot, Stats{ "Boingy", 2, 0, 4, 30, 30, 4, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
 												  // baseX Y flg coin kills
 				mEcs->AddComponent(tmpRobot, PathLogic{ 0, 0, 0, 0, 0 });
-											  //   act dur durLeft hp
-				mEcs->AddComponent(tmpRobot, BasicAI{ 0, 0, 0, 0 });
+											  //   act durLeft hp
+				mEcs->AddComponent(tmpRobot, BasicAI{ 0, 0, 0 });
 												//  rid len dir ivalM ivalC hasTarg active
 				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, true });
 											   // rid pid cid len        dir	  dmg lv eCost isFiring
@@ -108,8 +108,8 @@ void Robots::setupRobots(Coordinator* mEcs) {
 				mEcs->AddComponent(tmpRobot, Stats{ "Chompy", 2, 0, 4, 30, 30, 5, true, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
 											   // baseX Y flg coin kills
 				mEcs->AddComponent(tmpRobot, PathLogic{ 0, 0, 0, 0, 0 });
-											   //   act dur durLeft hp
-				mEcs->AddComponent(tmpRobot, BasicAI{ 0, 0, 0, 0 });
+											   //   act durLeft hp
+				mEcs->AddComponent(tmpRobot, BasicAI{ 0, 0, 0 });
 												//  rid len dir ivalM ivalC hasTarg active
 				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, true });
 											   // rid pid cid len        dir	  dmg lv eCost isFiring

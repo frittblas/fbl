@@ -31,7 +31,6 @@ void BasicAISystem::Init(Coordinator& ecs) {
 		auto& ai  = ecs.GetComponent<BasicAI>(entity);
 
 		ai.action = Actions::None;
-		ai.duration = 20;
 		ai.durationLeft = 0;
 		ai.hpLastFrame = sta.hp;
 
@@ -59,19 +58,22 @@ void BasicAISystem::Update(Coordinator& ecs) {
 				case Actions::Healing:
 					{
 						auto& heal = ecs.GetComponent<Heal>(entity);
-						heal.activated = true;
+						if (ai.durationLeft > 1) heal.activated = true;
+						else heal.activated = false;
 					}
 					break;
 				case Actions::Shielding:
 					{
 						auto& shield = ecs.GetComponent<Shield>(entity);
-						shield.isShielding = true;
+						if (ai.durationLeft > 1) shield.isShielding = true;
+						else shield.isShielding = false;
 					}
 					break;
 				case Actions::Turboing:
 					{
 						auto& turbo = ecs.GetComponent<Turbo>(entity);
-						turbo.activated = true;
+						if (ai.durationLeft > 1) turbo.activated = true;
+						else turbo.activated = false;
 					}
 					break;
 
@@ -94,8 +96,7 @@ void BasicAISystem::Update(Coordinator& ecs) {
 
 				if (ecs.HasComponent<Heal>(entity)) {
 					ai.action = Actions::Healing;
-					ai.duration = rand() % 10 + 15;
-					ai.durationLeft = ai.duration;
+					ai.durationLeft = rand() % 10 + 15;
 				}
 
 			}
@@ -109,23 +110,23 @@ void BasicAISystem::Update(Coordinator& ecs) {
 				if (ecs.HasComponent<Shield>(entity)) {
 				
 					ai.action = Actions::Shielding;
-					ai.duration = rand() % 10 + 10;
-					ai.durationLeft = ai.duration;
+					ai.durationLeft = rand() % 10 + 10;
 				
 				}
 
 			}
 
 			// randomly use turbo if robot has > 50% charge
-			if (rand() % 100) {
+			if (rand() % 150 == 0) {
 
 				if (sta.energy > (sta.maxEnergy / 2)) {
+
+					std::cout << "Over 50% energy!" << std::endl;
 
 					if (ecs.HasComponent<Turbo>(entity)) {
 
 						ai.action = Actions::Turboing;
-						ai.duration = rand() % 20 + 10;
-						ai.durationLeft = ai.duration;
+						ai.durationLeft = rand() % 20 + 40;	// boost for a second ish
 
 					}
 
@@ -135,8 +136,12 @@ void BasicAISystem::Update(Coordinator& ecs) {
 
 		}
 
-		if (rand() % 10)
+		/*
+		if (rand() % 100 == 0) {
 			std::cout << "hp : " << sta.hp << " lastF: " << ai.hpLastFrame << " Entity: " << entity << std::endl;
+			std::cout << "durLeft : " << (int)ai.durationLeft << std::endl;
+		}
+		*/
 
 		ai.hpLastFrame = sta.hp;
 
