@@ -41,6 +41,7 @@
 #include "../../Robots.hpp"
 #include "../../Addons.hpp"
 
+#include "PostRace.hpp"
 #include "Race.hpp"
 
 // Race-class implementation
@@ -291,6 +292,7 @@ void Race::tick(Game& g) {
 	Efx::getInstance().tickCameraShake();
 
 	mMaze->tick(g);
+	mPostRace->tick(g);
 
 	if (fbl_get_mouse_click(FBLMB_RIGHT)) Efx::getInstance().shakeCamera(20, 40);
 

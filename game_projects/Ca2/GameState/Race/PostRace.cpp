@@ -46,7 +46,12 @@ PostRace::~PostRace() {
 
 void PostRace::tick(Game& g) {
 
+	static int col = 0;
+	static int step = 5;
+	fbl_set_sprite_color(fMenuBgSquareId, col, col, col);
 
+	col += step;
+	if (col > 254 || col < 1) step = -step;
 
 }
 
@@ -93,8 +98,8 @@ void PostRace::initPostRaceMenu() {
 	// set position and size of the text area
 	int x = Game::DeviceResW / 2;
 	int y = Game::DeviceResH / 2;
-	int width = 400;
-	int height = 200;
+	int width = 384;
+	int height = 203;
 
 	fbl_set_sprite_align(FBL_SPRITE_ALIGN_UP_LEFT);
 
@@ -110,9 +115,10 @@ void PostRace::initPostRaceMenu() {
 
 
 	// create gray menu area
-	fMenuBgSquareId = fbl_create_sprite(32, 480, 20, 11, 0);
-	fbl_set_sprite_xy(fMenuBgSquareId, x, y);
-	fbl_set_sprite_scale(fMenuBgSquareId, 40);
+	fMenuBgSquareId = fbl_create_sprite(32, 480, 12, 7, 0);
+	fbl_set_sprite_color(fMenuBgSquareId, 0, 255, 0);
+	fbl_set_sprite_xy(fMenuBgSquareId, x, y - 20);
+	fbl_set_sprite_scale(fMenuBgSquareId, 64);
 	fbl_set_sprite_layer(fMenuBgSquareId, 8);
 	fbl_fix_sprite_to_screen(fMenuBgSquareId, true);
 
@@ -172,20 +178,20 @@ void PostRace::initPostRaceMenu() {
 
 
 	// line separator down left
-	fMenuAddonInfoLine = fbl_create_prim(FBL_LINE, 80, 340, 480, 340, 0, false, false);
+	fMenuAddonInfoLine = fbl_create_prim(FBL_LINE, x - width, 340, 480, 340, 0, false, false);
 	fbl_set_prim_color(fMenuAddonInfoLine, 255, 255, 255, 255);
 	fbl_fix_prim_to_screen(fMenuAddonInfoLine, true);
 
 	// addon stats
 	fAddonName = fbl_create_text(255, 255, 255, 0, (char*)"Name:");
 	fbl_set_text_align(fAddonName, FBL_ALIGN_LEFT);
-	fbl_set_text_xy(fAddonName, 105, 370);
+	fbl_set_text_xy(fAddonName, 110, 370);
 	fAddonLevel = fbl_create_text(255, 255, 255, 0, (char*)"Level:");
 	fbl_set_text_align(fAddonLevel, FBL_ALIGN_LEFT);
-	fbl_set_text_xy(fAddonLevel, 105, 405);
+	fbl_set_text_xy(fAddonLevel, 110, 405);
 	fAddonRarity = fbl_create_text(255, 255, 255, 0, (char*)"Rarity:");
 	fbl_set_text_align(fAddonRarity, FBL_ALIGN_LEFT);
-	fbl_set_text_xy(fAddonRarity, 105, 440);
+	fbl_set_text_xy(fAddonRarity, 110, 440);
 	fAddonPassive = fbl_create_text(255, 255, 255, 0, (char*)"Type:");
 	fbl_set_text_align(fAddonPassive, FBL_ALIGN_LEFT);
 	fbl_set_text_xy(fAddonPassive, 300, 370);
