@@ -162,6 +162,7 @@
     <ClCompile Include="..\..\game_projects\Ca2\GameState\Race\GameModes\CaptureFlags.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\GameState\Race\GameModes\DeathMatch.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\GameState\Race\Maze.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\GameState\Race\PostRace.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\GameState\Race\Race.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\GameState\RobotCollection.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\GameState\Settings.cpp" />
@@ -226,6 +227,7 @@
     <ClInclude Include="..\..\game_projects\Ca2\GameState\Race\GameModes\CaptureFlags.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\GameState\Race\GameModes\DeathMatch.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\GameState\Race\Maze.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\GameState\Race\PostRace.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\GameState\Race\Race.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\GameState\RobotCollection.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\GameState\Settings.hpp" />

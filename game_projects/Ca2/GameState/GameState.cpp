@@ -85,6 +85,9 @@ void GameState::change(Game& g, StateType newState) {
 			if (mState == StateType::RobotCollection) {	// if coming from Robot menu
 				exploreToTitle(g);	// works, bc all resources are destroyed and that's what we want :)
 			}
+			if (mState == StateType::Race) {	// if coming from Race menu
+				exploreToTitle(g);	// works, bc all resources are destroyed and that's what we want :)
+			}
 
 			mCurrentStateInstance = new Title();
 

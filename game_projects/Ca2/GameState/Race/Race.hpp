@@ -14,6 +14,7 @@
 
 #include "../IState.hpp"
 #include "Maze.hpp"
+#include "PostRace.hpp"
 
 class Game;
 struct Addon;
@@ -38,6 +39,7 @@ public:
 
 private:
     Maze *mMaze;
+    PostRace* mPostRace;
     uint8_t mNumRacers;
 
 };

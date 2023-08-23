@@ -219,6 +219,9 @@
     <ClCompile Include="..\..\game_projects\Ca2\GameState\Race\GameModes\CaptureFlags.cpp">
       <Filter>Source Files\GameState\Race\GameModes</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\game_projects\Ca2\GameState\Race\PostRace.cpp">
+      <Filter>Source Files\GameState\Race</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\fbl.h">
@@ -373,6 +376,9 @@
     </ClInclude>
     <ClInclude Include="..\..\game_projects\Ca2\GameState\Race\GameModes\CaptureFlags.hpp">
       <Filter>Source Files\GameState\Race\GameModes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\GameState\Race\PostRace.hpp">
+      <Filter>Source Files\GameState\Race</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

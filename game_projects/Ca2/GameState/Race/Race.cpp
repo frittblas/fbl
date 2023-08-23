@@ -48,7 +48,7 @@
 Race::Race() {
 
 	mMaze = new Maze();
-
+	mPostRace = new PostRace(true);
 	fbl_set_camera_xy(0, 0);
 
 	std::cout << "Started Race state." << std::endl;

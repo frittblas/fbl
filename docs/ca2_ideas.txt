@@ -247,8 +247,9 @@ ad- add a bunch of slimes. Story slime (green), info slime (yellow) and race-sli
 roadmap:
 finish all level 1 addons - done!
 make all the addons in 3 versions of each (level 1-3) except for the Rctrl and Diag thing. DONE!
-make BasicAISystem for the other robots (healing, shielding, turbo). magnet, laser/autoaim, diag just work. on the way!
-race finishing touches (like recharging in base, win conditions)
+make BasicAISystem for the other robots (healing, shielding, turbo). magnet, laser/autoaim and Diag just work. Done!
+PostRace class, race finishing touches (win conditions, eventual level up, 3 items to buy.)
+Add smoke to robots with low hp! try atleast.
 make deathmatch on key 7 (get the flags on 6) on the way!
 add more robots and make claimRobot and claimAddon callable from lua.
 Start making the level with a bunch of dialogue and a couple of songs.

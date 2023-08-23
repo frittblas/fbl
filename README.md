@@ -93,7 +93,7 @@ Includes dependencies and projects for Windows (Msvc), webassembly version (Emsc
 The visual studio 2019 version works out of the box (vs2019 has x86 (release and debug) and x64-bit(release) versions),
 the Xcode version has been removed. Don't have a mac atm.
 RPI version works but you need to build all dependencies, which is not too hard. Start here:
-http://www.frittblas.se/misc/rpi-SDL2.html
+http://www.kastanjen.net/misc/rpi-SDL2.html
 Then check project_rpi for detailed insctuctions on how to build fbl for rpi.
 
 Ubuntu is easier (All dependencies can be apt-get installed (no need to build libs yourself))
@@ -108,7 +108,7 @@ then run-masta.bat
 
 The emscripten output is then located in emsdk-master\upstream\emscripten\fbl\project_emscripten\output
 
-A demo of the functionality: (cycle through demos with F1-F2): http://www.frittblas.se/fbl/output/fbl_test.html
+A demo of the functionality: (cycle through demos with F1-F2): http://www.kastanjen.net/fbl/output/fbl_test.html
 Try clicking on stuff and use WASD and arrow keys to control the sprite and the camera in demo 1 :)
 
 to be continued..
