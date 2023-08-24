@@ -254,6 +254,13 @@ make deathmatch on key 7 (get the flags on 6) on the way!
 add more robots and make claimRobot and claimAddon callable from lua.
 Start making the level with a bunch of dialogue and a couple of songs.
 
+notes about robot components:
+the All list contains robots with no weapons (only necessary comps.)
+The owned list contains robots with all components except Path, PathLogic and BasicAI.
+The alloted enemies get random addons then they are stripped after the race.
+Figure out how to not activate for ex. Magnet on a robot thats not racing.
+Maybe isRacing in Stats??
+
 BUGS:
 
 1. If you create an emitter before the first weather-call in Game.cpp, the fbl_set_lighting_tint() doesn't work!

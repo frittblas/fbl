@@ -4,7 +4,8 @@
 *
 *	Progress.cpp
 *
-*	Progress class implemetation, takes care of all game progress, how far the player has come, current location, quests etc.
+*	Progress class header, takes care of all game progress, how far the player has come,
+*   current location, quests, coins etc. Also save and load game.
 *
 *	Hans Strömquist 2022
 *
@@ -16,6 +17,7 @@
 
 Progress::Progress() {
 
+	mFunds = 0;
 	mCurrentLocation = 0;
 
 	std::cout << "Initialized Progress subsystem." << std::endl;

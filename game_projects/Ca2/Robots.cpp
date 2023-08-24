@@ -60,7 +60,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
 				mEcs->AddComponent(tmpRobot, Stats{ "Charmy", 1, 0, 4, 50, 50, 8, true, 40, 40, 7, -1, -1, -1, -1, -1, -1 });
 												  // baseX Y flg coin kills
-				mEcs->AddComponent(tmpRobot, PathLogic{ 0, 0, 0, 0, 0 });
+				//mEcs->AddComponent(tmpRobot, PathLogic{ 0, 0, 0, 0, 0 });
 												//  rid len dir ivalM ivalC hasTarg active
 				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, false });
 												// rid pid len        dir	    dmg lv  isFiring
@@ -75,9 +75,9 @@ void Robots::setupRobots(Coordinator* mEcs) {
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
 				mEcs->AddComponent(tmpRobot, Stats{ "Alarmy", 1, 0, 4, 40, 40, 6, true, 20, 19, 17, -1, -1, -1, -1, -1, -1 });
 											   // baseX Y flg coin kills
-				mEcs->AddComponent(tmpRobot, PathLogic{ 0, 0, 0, 0, 0 });
+				//mEcs->AddComponent(tmpRobot, PathLogic{ 0, 0, 0, 0, 0 });
 											   //   act durLeft hp
-				mEcs->AddComponent(tmpRobot, BasicAI{ 0, 0, 0 });
+				//mEcs->AddComponent(tmpRobot, BasicAI{ 0, 0, 0 });
 												//  rid len dir ivalM ivalC hasTarg active
 				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, true });
 											   // rid pid cid len        dir	  dmg lv eCost isFiring
@@ -91,9 +91,9 @@ void Robots::setupRobots(Coordinator* mEcs) {
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
 				mEcs->AddComponent(tmpRobot, Stats{ "Boingy", 2, 0, 4, 30, 30, 4, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
 												  // baseX Y flg coin kills
-				mEcs->AddComponent(tmpRobot, PathLogic{ 0, 0, 0, 0, 0 });
+				//mEcs->AddComponent(tmpRobot, PathLogic{ 0, 0, 0, 0, 0 });
 											  //   act durLeft hp
-				mEcs->AddComponent(tmpRobot, BasicAI{ 0, 0, 0 });
+				//mEcs->AddComponent(tmpRobot, BasicAI{ 0, 0, 0 });
 												//  rid len dir ivalM ivalC hasTarg active
 				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, true });
 											   // rid pid cid len        dir	  dmg lv eCost isFiring
@@ -107,12 +107,28 @@ void Robots::setupRobots(Coordinator* mEcs) {
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
 				mEcs->AddComponent(tmpRobot, Stats{ "Chompy", 2, 0, 4, 30, 30, 5, true, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
 											   // baseX Y flg coin kills
-				mEcs->AddComponent(tmpRobot, PathLogic{ 0, 0, 0, 0, 0 });
+				//mEcs->AddComponent(tmpRobot, PathLogic{ 0, 0, 0, 0, 0 });
 											   //   act durLeft hp
-				mEcs->AddComponent(tmpRobot, BasicAI{ 0, 0, 0 });
+				//mEcs->AddComponent(tmpRobot, BasicAI{ 0, 0, 0 });
 												//  rid len dir ivalM ivalC hasTarg active
 				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, true });
 											   // rid pid cid len        dir	  dmg lv eCost isFiring
+				mEcs->AddComponent(tmpRobot, Laser{ 0, 0, 0, 800, Addons::Dir::Up, 5, 1, 3, false });
+												// id  tx  ty   w    h  scale
+				mEcs->AddComponent(tmpRobot, Light{ 0, 384, 0, 128, 128, 2.0 });
+				break;
+			case Dancy:
+												  // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
+				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 256, 96, 32, 32, true, 4, 12, 0, 0, 7 });
+												   // name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
+				mEcs->AddComponent(tmpRobot, Stats{ "Dancy", 2, 0, 4, 30, 30, 5, true, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
+												  // baseX Y flg coin kills
+				//mEcs->AddComponent(tmpRobot, PathLogic{ 0, 0, 0, 0, 0 });
+												//   act dur hp
+				//mEcs->AddComponent(tmpRobot, BasicAI{ 0, 0, 0 });
+												//  rid len dir ivalM ivalC hasTarg active
+				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, false });
+												// rid pid cid len        dir	  dmg lv eCost isFiring
 				mEcs->AddComponent(tmpRobot, Laser{ 0, 0, 0, 800, Addons::Dir::Up, 5, 1, 3, false });
 												// id  tx  ty   w    h  scale
 				mEcs->AddComponent(tmpRobot, Light{ 0, 384, 0, 128, 128, 2.0 });
@@ -129,6 +145,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 	claimRobot(Alarmy);
 	claimRobot(Boingy);
 	claimRobot(Chompy);
+	claimRobot(Dancy);
 
 }
 
@@ -177,7 +194,7 @@ bool Robots::addAddonComponent(Coordinator* mEcs, Entity robot, uint8_t addonTyp
 		case Addons::Magnet3:
 			if (mEcs->HasComponent<Magnet>(robot)) return false;
 										 // sid str active
-			mEcs->AddComponent(robot, Magnet{ 0, 128, true });
+			mEcs->AddComponent(robot, Magnet{ 0, 128, false });
 			break;
 		case Addons::Turbo1:
 			if (mEcs->HasComponent<Turbo>(robot)) return false;

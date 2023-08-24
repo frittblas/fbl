@@ -239,16 +239,15 @@ void GameState::raceToExplore(Game& g) {
 	g.mSysManager->mSpriteSystem->Init(*g.mEcs);	// create sprites for all entities with a sprite component
 	g.mSysManager->mLightSystem->Init(*g.mEcs);		// create lights for all entities with a light component
 
-	// remove the path components from the racing robots
-	for(int i = 0; i < g.mRobots->mNumRacers; i++)
+	// remove the path and pathLogic components from the racing robots
+	for (int i = 0; i < g.mRobots->mNumRacers; i++) {
 		g.mEcs->RemoveComponent<Path>(g.mRobots->mRacingRobots[i]);
+		g.mEcs->RemoveComponent<PathLogic>(g.mRobots->mRacingRobots[i]);
+		if(i > 0) g.mEcs->RemoveComponent<BasicAI>(g.mRobots->mRacingRobots[i]);	// only remove for non players
+	}
 
 	// add path component back to the player
 	g.mEcs->AddComponent(g.mChars->mBrodo, Path{ 0, 0, 0, false, 2.0, FBL_PATHF_USE_DIAG, 1 });
-	//g.mEcs->AddComponent(g.mChars->mBrodo, MouseCtrl{ false });
-
-	// temporarily remove mousectrl component from a robot
-	//g.mEcs->RemoveComponent<MouseCtrl>(g.mRobots->mRacingRobots[0]);
 
 	g.mWeather->setWeather(Weather::TimeOfDay::Evening, 1, 0, 50, true);
 
@@ -265,8 +264,8 @@ void GameState::setupRace(Game& g) {
 	g.mSysManager->mSpriteSystem->Init(*g.mEcs);	// create sprites for all entities with a sprite component
 	g.mSysManager->mLightSystem->Init(*g.mEcs);		// create lights for all entities with a light component
 
-	g.mSysManager->mPathLogicSystem->Init(*g.mEcs);	// set up path logic (flags and stuff)
-	g.mSysManager->mBasicAISystem->Init(*g.mEcs);	// set up ai
+	//g.mSysManager->mPathLogicSystem->Init(*g.mEcs);	// set up path logic (flags and stuff)
+	//g.mSysManager->mBasicAISystem->Init(*g.mEcs);	// set up ai
 	g.mSysManager->mAutoAimSystem->Init(*g.mEcs);	// create rays for entities with AutoAim  component.
 	g.mSysManager->mLaserSystem->Init(*g.mEcs);		// create rays and particles for all entities with a Laser component.
 	g.mSysManager->mMagnetSystem->Init(*g.mEcs);	// create magnet sprites and stuff.

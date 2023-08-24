@@ -101,8 +101,6 @@ void PostRace::initPostRaceMenu() {
 	int width = 384;
 	int height = 203;
 
-	fbl_set_sprite_align(FBL_SPRITE_ALIGN_UP_LEFT);
-
 	fbl_load_ttf_font("font/roboto.ttf", 16);
 	fContextHelp = fbl_create_text(255, 255, 255, 0, (char*)"Congratulations! Please buy whatever you like.");
 	fbl_set_text_align(fContextHelp, FBL_ALIGN_CENTER);
@@ -150,7 +148,7 @@ void PostRace::initPostRaceMenu() {
 	fbl_set_text_xy(fMenuRobotDescr, x + 200, y - 170);
 	fMenuAddonsDescr = fbl_create_text(255, 255, 255, 0, (char*)"Shop");
 	fbl_set_text_align(fMenuAddonsDescr, FBL_ALIGN_CENTER);
-	fbl_set_text_xy(fMenuAddonsDescr, x - 200, y - 170);
+	fbl_set_text_xy(fMenuAddonsDescr, x - 190, y - 170);
 
 
 	fMenuName = fbl_create_text(255, 255, 255, 0, (char*)"Charmy");
@@ -185,32 +183,31 @@ void PostRace::initPostRaceMenu() {
 	// addon stats
 	fAddonName = fbl_create_text(255, 255, 255, 0, (char*)"Name:");
 	fbl_set_text_align(fAddonName, FBL_ALIGN_LEFT);
-	fbl_set_text_xy(fAddonName, 110, 370);
+	fbl_set_text_xy(fAddonName, 115, 370);
 	fAddonLevel = fbl_create_text(255, 255, 255, 0, (char*)"Level:");
 	fbl_set_text_align(fAddonLevel, FBL_ALIGN_LEFT);
-	fbl_set_text_xy(fAddonLevel, 110, 405);
+	fbl_set_text_xy(fAddonLevel, 115, 405);
 	fAddonRarity = fbl_create_text(255, 255, 255, 0, (char*)"Rarity:");
 	fbl_set_text_align(fAddonRarity, FBL_ALIGN_LEFT);
-	fbl_set_text_xy(fAddonRarity, 110, 440);
+	fbl_set_text_xy(fAddonRarity, 115, 440);
 	fAddonPassive = fbl_create_text(255, 255, 255, 0, (char*)"Type:");
 	fbl_set_text_align(fAddonPassive, FBL_ALIGN_LEFT);
-	fbl_set_text_xy(fAddonPassive, 300, 370);
+	fbl_set_text_xy(fAddonPassive, 305, 370);
 	fAddonEquipped = fbl_create_text(255, 255, 255, 0, (char*)"Equipped:");
 	fbl_set_text_align(fAddonEquipped, FBL_ALIGN_LEFT);
-	fbl_set_text_xy(fAddonEquipped, 300, 405);
+	fbl_set_text_xy(fAddonEquipped, 305, 405);
 	fAddonPrice = fbl_create_text(255, 255, 255, 0, (char*)"Price:");
 	fbl_set_text_align(fAddonPrice, FBL_ALIGN_LEFT);
-	fbl_set_text_xy(fAddonPrice, 300, 440);
+	fbl_set_text_xy(fAddonPrice, 305, 440);
 
 
 
 	// save and quit to menu
 	fContinue = fbl_create_ui_elem(FBL_UI_BUTTON_INTERVAL, 0, 0, 32, 32, NULL);
-	fbl_set_ui_elem_xy(fContinue, 123, 500);	// down left-ish
+	fbl_set_ui_elem_xy(fContinue, x, 500);	// down left-ish
 
-	fContinueText = fbl_create_text(255, 255, 255, 0, (char*)"Continue");
+	fContinueText = fbl_create_text(255, 255, 255, 0, (char*)"->");
 	fbl_set_text_align(fContinueText, FBL_ALIGN_LEFT);
-	fbl_set_text_xy(fContinueText, 155, 500);
-
+	fbl_set_text_xy(fContinueText, x + 32, 500);
 
 }

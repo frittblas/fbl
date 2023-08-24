@@ -158,7 +158,7 @@ void Addons::setupAddons(Coordinator* mEcs) {
 
 	}
 
-	for (int i = AutoAim1; i < NumAddons; i++) {
+	for (int i = AutoAim1; i < NumAddons - 5; i++) {
 		claimAddon(i);
 	}
 	/*

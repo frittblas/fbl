@@ -49,7 +49,7 @@
 Race::Race() {
 
 	mMaze = new Maze();
-	mPostRace = new PostRace(true);
+	//mPostRace = new PostRace(true);
 	fbl_set_camera_xy(0, 0);
 
 	std::cout << "Started Race state." << std::endl;
@@ -62,8 +62,7 @@ Race::~Race() {
 	fbl_set_sprite_align(FBL_SPRITE_ALIGN_UP_LEFT);	// in explore mode sprites are drawn from the top left
 
 	delete mMaze;
-
-	//fbl_destroy_all_emitters();
+	//delete mPostRace;
 
 	std::cout << "Destroyed Race state." << std::endl;
 
@@ -102,20 +101,26 @@ void Race::assignRobots(Game& g) {
 															// id gX gY newPath speed diag pixelsPerFrame
 		g.mEcs->AddComponent(g.mRobots->mRacingRobots[i], Path{ 0, 0, 0, false, speed, diag, 3 }); // last param should be 10 if you wanna use speed
 
-		// add mousectrl to a robot IF it has the skill!!!! (just testing now)
-				    												  // clicked
-		//g.mEcs->AddComponent(g.mRobots->mRacingRobots[0], MouseCtrl{ false });
 
 		// reset hp and energy
 		sta.hp = sta.maxHp;
 		sta.energy = sta.maxEnergy;
 	}
 
+	// add PathLogic and BasicAI components to the racing robots (these are also removed after the race.)
+	for (int i = 0; i < mNumRacers; i++) {
+																// baseX Y flg coin kills
+		g.mEcs->AddComponent(g.mRobots->mRacingRobots[i], PathLogic{ 0, 0, 0, 0, 0 });
+																	  //   act dur hp
+		if(i > 0) g.mEcs->AddComponent(g.mRobots->mRacingRobots[i], BasicAI{ 0, 0, 0 });	// basic AI to non players
+	}
+
 	g.mSysManager->mPathSystem->Init(*g.mEcs);		// assign a unique path id to the entities with a path component
+	g.mSysManager->mPathLogicSystem->Init(*g.mEcs);	// set flags coins and kills to 0
 
 	//std::cout << "THE NEXT SPRITE ID IS : " << fbl_create_sprite(0, 0, 1, 1, 0) << std::endl;
 
-	int blockDensity = (rand() % 20) + 15;	// under 40 is ok under 35 is very fast
+	int blockDensity = (rand() % 20) + 15;	// under 40 is ok under 35 is very fast (sparse mazes seem more fun)
 
 	std::cout << "Block density: " << blockDensity << std::endl;
 
@@ -127,6 +132,7 @@ void Race::assignRobots(Game& g) {
 
 void Race::unassignRobots(Game& g) {
 
+	// Robots get their Path and PathLogic components removed in GameState (RaceToExplore)
 
 }
 
@@ -292,7 +298,7 @@ void Race::tick(Game& g) {
 	Efx::getInstance().tickCameraShake();
 
 	mMaze->tick(g);
-	mPostRace->tick(g);
+	//mPostRace->tick(g);
 
 	if (fbl_get_mouse_click(FBLMB_RIGHT)) Efx::getInstance().shakeCamera(20, 40);
 

@@ -164,6 +164,7 @@ struct AutoAim
     uint8_t  intervalCur;   // keep track of interval ticking
     bool     hasTarget;     // do you have somebody in the crosshairs?
     bool     active;        // is auto aim active? Cpu robots have this on, player can choose
+    //bool     componentEqp;  // if this is true it's if robot "has" autoaim
 
 };
 

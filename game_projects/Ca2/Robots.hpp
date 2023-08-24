@@ -27,6 +27,7 @@ public:
         Alarmy,
 		Boingy,
         Chompy,
+        Dancy,
         NumRobots
     };
 

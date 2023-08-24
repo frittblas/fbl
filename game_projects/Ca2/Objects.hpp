@@ -4,7 +4,8 @@
 *
 *	Objects.hpp
 *
-*	Objects class header, keeps references to the game objects, movable rocks, shops etc.
+*	Objects class header, keeps references to the game objects, movable rocks
+*   and other interactable things in explore mode etc.
 *
 *	Hans Strömquist 2022
 *
@@ -18,9 +19,9 @@
 class Objects {
 
 public:
-    std::vector<Entity> mMoveBlock; // list of all the movable blocks in a scene
-
     Objects();
     ~Objects();
+
+    std::vector<Entity> mMoveBlock; // list of all the movable blocks in a scene
 
 };
