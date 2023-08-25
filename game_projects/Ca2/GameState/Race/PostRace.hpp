@@ -20,13 +20,13 @@ class Game;
 class PostRace {
 
 public:
-    PostRace(bool win);
+    PostRace();
     ~PostRace();
 
     void tick(Game& g);
     void gameOver();
     void PostRace::updateItemInfo(Game& g, bool empty);
-    void initPostRaceMenu();
+    void initPostRaceMenu(Game& g);
 
 private:
     // id's for the robot collection-menu

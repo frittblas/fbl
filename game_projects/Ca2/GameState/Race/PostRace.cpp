@@ -17,6 +17,7 @@
 #include "../../Ecs/Ecs.hpp"
 #include "../../Ecs/Components.hpp"
 #include "../../Game.hpp"
+#include "../../Progress.hpp"
 #include "../../Robots.hpp"
 #include "../../Addons.hpp"
 #include "PostRace.hpp"
@@ -25,13 +26,8 @@
 
 // PostRace-class implementation
 
-PostRace::PostRace(bool win) {
+PostRace::PostRace() {
 
-
-	if (win)
-		initPostRaceMenu();
-	else
-		gameOver();
 
 	std::cout << "PostRace constructor." << std::endl;
 
@@ -93,7 +89,7 @@ void PostRace::updateItemInfo(Game& g, bool empty) {
 
 }
 
-void PostRace::initPostRaceMenu() {
+void PostRace::initPostRaceMenu(Game& g) {
 
 	// set position and size of the text area
 	int x = Game::DeviceResW / 2;
@@ -114,7 +110,7 @@ void PostRace::initPostRaceMenu() {
 
 	// create gray menu area
 	fMenuBgSquareId = fbl_create_sprite(32, 480, 12, 7, 0);
-	fbl_set_sprite_color(fMenuBgSquareId, 0, 255, 0);
+	//fbl_set_sprite_color(fMenuBgSquareId, 0, 255, 0);
 	fbl_set_sprite_xy(fMenuBgSquareId, x, y - 20);
 	fbl_set_sprite_scale(fMenuBgSquareId, 64);
 	fbl_set_sprite_layer(fMenuBgSquareId, 8);
@@ -150,6 +146,20 @@ void PostRace::initPostRaceMenu() {
 	fbl_set_text_align(fMenuAddonsDescr, FBL_ALIGN_CENTER);
 	fbl_set_text_xy(fMenuAddonsDescr, x - 190, y - 170);
 
+	// add the N/A sprites in the shop
+	int tempId = fbl_create_sprite(384, 288, Game::TileSize, Game::TileSize, 0);
+	fbl_set_sprite_xy(tempId, x - 244, y - 94);
+	fbl_set_sprite_layer(tempId, 9);
+	tempId = fbl_create_sprite(384, 288, Game::TileSize, Game::TileSize, 0);
+	fbl_set_sprite_xy(tempId, x - 194, y - 94);
+	fbl_set_sprite_layer(tempId, 9);
+	tempId = fbl_create_sprite(384, 288, Game::TileSize, Game::TileSize, 0);
+	fbl_set_sprite_xy(tempId, x - 144, y - 94);
+	fbl_set_sprite_layer(tempId, 9);
+
+	tempId = fbl_create_sprite(384, 288, Game::TileSize, Game::TileSize, 0);
+	fbl_set_sprite_xy(tempId, x - 194, y - 30);
+	fbl_set_sprite_layer(tempId, 9);
 
 	fMenuName = fbl_create_text(255, 255, 255, 0, (char*)"Charmy");
 	fbl_set_text_align(fMenuName, FBL_ALIGN_CENTER);
@@ -200,14 +210,48 @@ void PostRace::initPostRaceMenu() {
 	fbl_set_text_align(fAddonPrice, FBL_ALIGN_LEFT);
 	fbl_set_text_xy(fAddonPrice, 305, 440);
 
-
-
-	// save and quit to menu
+	// Continue game button
 	fContinue = fbl_create_ui_elem(FBL_UI_BUTTON_INTERVAL, 0, 0, 32, 32, NULL);
 	fbl_set_ui_elem_xy(fContinue, x, 500);	// down left-ish
 
 	fContinueText = fbl_create_text(255, 255, 255, 0, (char*)"->");
 	fbl_set_text_align(fContinueText, FBL_ALIGN_LEFT);
 	fbl_set_text_xy(fContinueText, x + 32, 500);
+
+	// put the current racing robot in the circle :)
+	g.mRobots->showRobotInMenu(g.mEcs, -1, g.mRobots->mRacingRobots[0]);
+	auto& spr = g.mEcs->GetComponent<Sprite>(g.mRobots->mRacingRobots[0]);
+	fbl_set_sprite_layer((int)spr.id[0], 9);
+	fbl_sort_sprites(FBL_SORT_BY_LAYER);
+
+	// populate the shop with 3 addons (or less if there's not that many left) and 50% chance to get a robot.
+	switch (g.mProgress->mCompletedRaces) {
+
+		case 1:
+		case 2:
+		case 3:
+
+			break;
+		case 4:
+		case 5:
+		case 6:
+
+			break;
+		case 7:
+		case 8:
+		case 9:
+
+			break;
+		case 10:
+		case 11:
+		case 12:
+
+			break;
+
+		default:
+			break;
+
+
+	}
 
 }

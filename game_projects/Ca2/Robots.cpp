@@ -70,8 +70,8 @@ void Robots::setupRobots(Coordinator* mEcs) {
 
 				break;
 			case Alarmy :
-												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
-				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 32, 96, 32, 32, true, 2, 12, 0, 0, 7 });
+												 // id id id id num tx32 ty96   w   h   anim2 fr spd12 dir dirLast layer
+				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 224, 160, 32, 32, true, 4, 5, 0, 0, 7 });
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
 				mEcs->AddComponent(tmpRobot, Stats{ "Alarmy", 1, 0, 4, 40, 40, 6, true, 20, 19, 17, -1, -1, -1, -1, -1, -1 });
 											   // baseX Y flg coin kills
@@ -375,13 +375,17 @@ void Robots::hideRobots(Coordinator* mEcs) {
 
 }
 
-void Robots::showRobotInMenu(Coordinator* mEcs, int nameIndex) {
+void Robots::showRobotInMenu(Coordinator* mEcs, int nameIndex, int entity) {
 
 	int x = Game::DeviceResW / 2 + 185;
 	int y = Game::DeviceResH / 2 - 140;
+	Entity e;
 
-	auto& pos = mEcs->GetComponent<Position>(mOwnedRobots[nameIndex]);
-	auto& spr = mEcs->GetComponent<Sprite>(mOwnedRobots[nameIndex]);
+	if (nameIndex > -1) e = mOwnedRobots[nameIndex];
+	if (entity > -1) e = entity;
+
+	auto& pos = mEcs->GetComponent<Position>(e);
+	auto& spr = mEcs->GetComponent<Sprite>(e);
 
 	pos.x = x;
 	pos.y = y;

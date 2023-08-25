@@ -19,6 +19,7 @@ Progress::Progress() {
 
 	mFunds = 0;
 	mCurrentLocation = 0;
+	mCompletedRaces = 0;
 
 	std::cout << "Initialized Progress subsystem." << std::endl;
 

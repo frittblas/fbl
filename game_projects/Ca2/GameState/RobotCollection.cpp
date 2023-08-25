@@ -99,7 +99,7 @@ void RobotCollection::cyclePages(Game& g, int dir) {
 
 	// update the page
 	g.mRobots->hideRobots(g.mEcs);
-	g.mRobots->showRobotInMenu(g.mEcs, mCurrentRobotPage);
+	g.mRobots->showRobotInMenu(g.mEcs, mCurrentRobotPage, -1);
 
 	fbl_update_text(fMenuName, 255, 255, 255, 0, (char*)sta.name.c_str());
 	fbl_update_text(fMenuLevel, 255, 255, 255, 0, (char*)"Level:  %d  (xp: %d / %d)", sta.level, sta.xp, sta.nextLv);

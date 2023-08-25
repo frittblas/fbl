@@ -49,7 +49,7 @@
 Race::Race() {
 
 	mMaze = new Maze();
-	//mPostRace = new PostRace(true);
+	mPostRace = new PostRace();
 	fbl_set_camera_xy(0, 0);
 
 	std::cout << "Started Race state." << std::endl;
@@ -62,7 +62,7 @@ Race::~Race() {
 	fbl_set_sprite_align(FBL_SPRITE_ALIGN_UP_LEFT);	// in explore mode sprites are drawn from the top left
 
 	delete mMaze;
-	//delete mPostRace;
+	delete mPostRace;
 
 	std::cout << "Destroyed Race state." << std::endl;
 
@@ -125,6 +125,9 @@ void Race::assignRobots(Game& g) {
 	std::cout << "Block density: " << blockDensity << std::endl;
 
 	mMaze->initMaze(g, blockDensity, mNumRacers, Race::GameMode::GM_CaptureFlags);
+
+	// temp call, remove this
+	mPostRace->initPostRaceMenu(g);
 
 	fbl_sort_sprites(FBL_SORT_BY_LAYER);
 

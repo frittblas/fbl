@@ -161,8 +161,8 @@ void GameState::change(Game& g, StateType newState) {
 
 			showTalkButton(false);
 
-			g.mRobots->showRobotInMenu(g.mEcs, Robots::Name::Charmy);	// make the robots visible in the menu
-			g.mAddons->showAddonsInMenu(g.mEcs);						// same with addons
+			g.mRobots->showRobotInMenu(g.mEcs, Robots::Name::Charmy, -1);	// make the robots visible in the menu
+			g.mAddons->showAddonsInMenu(g.mEcs);							// same with addons
 
 			RobotCollection* rc = new RobotCollection();
 			fbl_load_ttf_font("font/roboto.ttf", 18);	// use this font for the menu
