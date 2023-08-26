@@ -30,6 +30,7 @@ public:
 	void handleCoins(Entity e, Sprite& spr, PathLogic& plog);
 	void handleBases(Game& g, Entity e, Position& pos, Sprite& spr, Path& path, PathLogic& plog);
 	void findClosestFlag(Position& pos, Path& path, PathLogic& plog);
+	void checkWinCondition(Game& g);
 	void switchCtrl(Game& g, Entity e, Position& pos, Path& path, PathLogic& plog);
 	void updatePaths(Game& g, Entity e, Position& pos, Path& path, PathLogic& plog);
 

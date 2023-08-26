@@ -39,7 +39,7 @@ public:
 
     Entity mTeam[3];        // the robots you're currently using
 
-    int mNumRacers;         // his many robots in a race at once (this gets the value from the sam variable in Maze.hpp)
+    int mNumRacers;         // this many robots in a race at once (this gets the value from the same variable in Maze.hpp)
 
     std::unordered_map<uint16_t, Entity> mSpriteIdToEntityMap; // map spriteId to an entity, used after fbl_ray_hit_sprite()
 

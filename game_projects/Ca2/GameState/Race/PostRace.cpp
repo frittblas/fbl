@@ -17,9 +17,12 @@
 #include "../../Ecs/Ecs.hpp"
 #include "../../Ecs/Components.hpp"
 #include "../../Game.hpp"
+#include "../../UserInput.hpp"
+#include "../../../Ca2/GameState/GameState.hpp"
 #include "../../Progress.hpp"
 #include "../../Robots.hpp"
 #include "../../Addons.hpp"
+#include "Race.hpp"
 #include "PostRace.hpp"
 
 
@@ -41,19 +44,52 @@ PostRace::~PostRace() {
 }
 
 void PostRace::tick(Game& g) {
-
+	/*
 	static int col = 0;
 	static int step = 5;
 	fbl_set_sprite_color(fMenuBgSquareId, col, col, col);
 
 	col += step;
-	if (col > 254 || col < 1) step = -step;
+	if (col > 254 || col < 1) step = -step; */
+
+
+	static int col = 120;
+	static int step = 2;
+	if(Race::sRaceState == Race::RaceState::Dead) {
+		fbl_set_lighting_tint(true, col, 120, 120);
+		col += step;
+		if (col > 253 || col < 120) step = -step;
+	}
+
+	// continue button down middle
+	if (fbl_get_ui_elem_val(fContinue) > 0) {
+		if (Race::sRaceState == Race::RaceState::Dead) {
+			g.mState->change(g, GameState::StateType::Title);
+			g.mInput->access = g.mInput->buttonDelay * 2;
+		} else {
+			g.mState->change(g, GameState::StateType::Explore);
+			g.mInput->access = g.mInput->buttonDelay;
+		}
+	}
 
 }
 
 void PostRace::gameOver() {
 
+	// game over text
+	fbl_load_ttf_font("font/garamond.ttf", 48);
+	int tmpId = fbl_create_text(255, 69, 0, 255, (char*)"GAME OVER");
+	fbl_set_text_align(tmpId, FBL_ALIGN_CENTER);
+	fbl_set_text_xy(tmpId, fbl_get_screen_w() / 2, fbl_get_screen_h() / 3);
 
+	// Continue game button
+	fbl_load_ttf_font("font/garamond.ttf", 20);
+	fContinue = fbl_create_ui_elem(FBL_UI_BUTTON_INTERVAL, 0, 0, 32, 32, NULL);
+	fbl_set_ui_elem_xy(fContinue, Game::DeviceResW / 2, 500);	// down middle
+
+	fContinueText = fbl_create_text(255, 255, 255, 0, (char*)"Quit");
+	fbl_set_text_align(fContinueText, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(fContinueText, Game::DeviceResW / 2 + 32, 500);
 
 }
 
@@ -98,7 +134,14 @@ void PostRace::initPostRaceMenu(Game& g) {
 	int height = 203;
 
 	fbl_load_ttf_font("font/roboto.ttf", 16);
-	fContextHelp = fbl_create_text(255, 255, 255, 0, (char*)"Congratulations! Please buy whatever you like.");
+	std::string msg = "";
+	switch (Race::sRaceState) {
+		case Race::RaceState::First:  msg = "Congratulations! You placed 1st! Buy something will ya!"; break;
+		case Race::RaceState::Second: msg = "Very nice you placed 2nd! Please buy whatever you like."; break;
+		case Race::RaceState::Third:  msg = "Hmm.. You placed 3rd. Not that great but please buy some stuff!"; break;
+		case Race::RaceState::Fourth: msg = "That was not good, you placed last! Please buy something anyway :)"; break;
+	}
+	fContextHelp = fbl_create_text(255, 255, 255, 0, (char*)msg.c_str());
 	fbl_set_text_align(fContextHelp, FBL_ALIGN_CENTER);
 	fbl_set_text_xy(fContextHelp, x, y - height - 20);
 
@@ -212,7 +255,7 @@ void PostRace::initPostRaceMenu(Game& g) {
 
 	// Continue game button
 	fContinue = fbl_create_ui_elem(FBL_UI_BUTTON_INTERVAL, 0, 0, 32, 32, NULL);
-	fbl_set_ui_elem_xy(fContinue, x, 500);	// down left-ish
+	fbl_set_ui_elem_xy(fContinue, x, 500);	// down middle
 
 	fContinueText = fbl_create_text(255, 255, 255, 0, (char*)"->");
 	fbl_set_text_align(fContinueText, FBL_ALIGN_LEFT);

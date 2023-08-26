@@ -92,6 +92,8 @@ void PathLogicSystem::tickCF(Game& g) {
 		gUpdatePaths = false;
 	}
 
+	gCF->checkWinCondition(g);
+
 }
 
 void PathLogicSystem::tickDM(Game& g) {

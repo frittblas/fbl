@@ -14,6 +14,7 @@
 #include "../../../Ecs/Ecs.hpp"
 #include "../../../Ecs/Components.hpp"
 #include "../../../../Ca2/Game.hpp"
+#include "../../../../Ca2/GameState/Race/Race.hpp"
 #include "../../../../Ca2/GameState/Race/Maze.hpp"
 
 #include "CaptureFlags.hpp"
@@ -22,6 +23,7 @@ extern Maze::aFlag gFlag[Maze::cMaxFlags];	// from Maze.cpp
 extern Maze::aCoin gCoin[Maze::cMaxCoins];
 extern bool gStartingOut;
 extern bool gUpdatePaths;	// from Laser.cpp
+//extern int  sRaceState;		// from Race.cpp
 
 void CaptureFlags::handleFlags(Entity e, Position& pos, Sprite& spr, Path& path, PathLogic& plog) {
 
@@ -186,6 +188,55 @@ void CaptureFlags::findClosestFlag(Position& pos, Path& path, PathLogic& plog) {
 		path.goalX = plog.baseX;
 		path.goalY = plog.baseY;
 		path.newPath = true;
+
+	}
+
+}
+
+void CaptureFlags::checkWinCondition(Game& g) {
+
+	if (Race::sRaceState == Race::Undecided) {
+
+		// first check if player is dead
+		auto& stat = g.mEcs->GetComponent<Stats>(g.mRobots->mRacingRobots[0]);
+
+		if (stat.hp < 0.1) {
+			Race::sRaceState = Race::Dead;
+		}
+
+
+		// now check if all flags are returned to base
+		bool allTaken = true;
+		for (int i = 0; i < Maze::cMaxFlags; i++) {
+			if (gFlag[i].state != Maze::FlagState::Base) {
+				allTaken = false;
+				break;
+			}
+		}
+
+		if (allTaken) {
+		
+			// find out how you placed
+			int flag[4] = {};
+			int playerFlags = 0;
+
+			for (int i = 0; i < g.mRobots->mNumRacers; i++) {
+				auto& plog = g.mEcs->GetComponent<PathLogic>(g.mRobots->mRacingRobots[i]);
+				flag[i] = plog.flags;
+				if (i == 0) playerFlags = plog.flags;
+			}
+
+			// Sort the array
+			std::sort(flag, flag + g.mRobots->mNumRacers);
+
+			if(playerFlags == flag[3]) Race::sRaceState = Race::First;
+			else if (playerFlags == flag[2]) Race::sRaceState = Race::Second;
+			else if (playerFlags == flag[1]) Race::sRaceState = Race::Third;
+			else if (playerFlags == flag[0]) Race::sRaceState = Race::Fourth;
+		
+		}
+
+
 
 	}
 

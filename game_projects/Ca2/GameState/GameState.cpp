@@ -86,7 +86,7 @@ void GameState::change(Game& g, StateType newState) {
 				exploreToTitle(g);	// works, bc all resources are destroyed and that's what we want :)
 			}
 			if (mState == StateType::Race) {	// if coming from Race menu
-				exploreToTitle(g);	// works, bc all resources are destroyed and that's what we want :)
+				exploreToTitle(g);	// rewrite this to toTitle() bs it works from anywhere :)
 			}
 
 			mCurrentStateInstance = new Title();
@@ -198,7 +198,7 @@ void GameState::exploreToTitle(Game& g) {
 	g.mChars->removeNpc(g.mEcs);	 // also delete all npcs in the current scene
 	g.mRobots->removeRobots(g.mEcs); // delete all the robots
 	g.mAddons->removeAddons(g.mEcs); // delete all addons
-	fbl_set_clear_color(11, 168, 230, 255);	// dark blue sky for the title
+	fbl_set_clear_color(11, 168, 230, 255);	// blue sky for the title
 	g.mWeather->setWeather(Weather::TimeOfDay::Day, 0, 14, 80, false);	// timeOfDay, rainLevel, snowLevel, numClouds, lightningOn
 	fbl_lua_shutdown();				 // so the dialogues get reset
 

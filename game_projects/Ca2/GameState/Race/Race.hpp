@@ -30,6 +30,15 @@ public:
         GM_DeathMatch
     };
 
+    enum RaceState {
+        Undecided,
+        First,
+        Second,
+        Third,
+        Fourth,
+        Dead
+    };
+
     void assignRobots(Game& g);
     void unassignRobots(Game& g);
     void getInput(Game& g);
@@ -37,9 +46,12 @@ public:
 
     virtual void tick(Game& g) override;
 
+    static int sRaceState;
+
 private:
     Maze *mMaze;
     PostRace* mPostRace;
+    int mPostRaceDelay;
     uint8_t mNumRacers;
 
 };

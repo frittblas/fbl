@@ -44,6 +44,8 @@
 #include "PostRace.hpp"
 #include "Race.hpp"
 
+int Race::sRaceState;
+
 // Race-class implementation
 
 Race::Race() {
@@ -51,6 +53,9 @@ Race::Race() {
 	mMaze = new Maze();
 	mPostRace = new PostRace();
 	fbl_set_camera_xy(0, 0);
+
+	sRaceState = Undecided;
+	mPostRaceDelay = 60;	// one secon delay before PostRace menu or game over is shown.
 
 	std::cout << "Started Race state." << std::endl;
 
@@ -127,7 +132,7 @@ void Race::assignRobots(Game& g) {
 	mMaze->initMaze(g, blockDensity, mNumRacers, Race::GameMode::GM_CaptureFlags);
 
 	// temp call, remove this
-	mPostRace->initPostRaceMenu(g);
+	//mPostRace->initPostRaceMenu(g);
 
 	fbl_sort_sprites(FBL_SORT_BY_LAYER);
 
@@ -279,29 +284,43 @@ void Race::handleAddons(Game& g, Addon& add, Entity playingRobot, bool onOff) {
 
 void Race::tick(Game& g) {
 
-	g.mSysManager->mSpriteSystem->Update(*g.mEcs);			// update the sprite system
-	g.mSysManager->mPathSystem->Update(g);					// update the path system, note the g as argument
-	g.mSysManager->mLightSystem->Update(g);					// update the light system
-	
-	g.mSysManager->mPathLogicSystem->Update(g);				// update the PathLogic system
-	g.mSysManager->mBasicAISystem->Update(*g.mEcs);			// update the basic non player AI
-	g.mSysManager->mAutoAimSystem->Update(g);				// update the AutoAim system
-	g.mSysManager->mLaserSystem->Update(g);					// update the Laser system
-	g.mSysManager->mMagnetSystem->Update(g);				// update the Magnet system
-	g.mSysManager->mTurboSystem->Update(*g.mEcs);			// update the turbo system
-	g.mSysManager->mShieldSystem->Update(g);				// update the shield system
-	g.mSysManager->mHealSystem->Update(g);					// update the heal system
-	g.mSysManager->mDiagSystem->Update(*g.mEcs);			// update the diagonal system
-	g.mSysManager->mRobotCtrlSystem->Update(*g.mEcs);		// update the robot control system
+	if (sRaceState == Undecided) {
 
-	getInput(g);
+		g.mSysManager->mSpriteSystem->Update(*g.mEcs);			// update the sprite system
+		g.mSysManager->mPathSystem->Update(g);					// update the path system, note the g as argument
+		g.mSysManager->mLightSystem->Update(g);					// update the light system
+
+		g.mSysManager->mPathLogicSystem->Update(g);				// update the PathLogic system
+		g.mSysManager->mBasicAISystem->Update(*g.mEcs);			// update the basic non player AI
+		g.mSysManager->mAutoAimSystem->Update(g);				// update the AutoAim system
+		g.mSysManager->mLaserSystem->Update(g);					// update the Laser system
+		g.mSysManager->mMagnetSystem->Update(g);				// update the Magnet system
+		g.mSysManager->mTurboSystem->Update(*g.mEcs);			// update the turbo system
+		g.mSysManager->mShieldSystem->Update(g);				// update the shield system
+		g.mSysManager->mHealSystem->Update(g);					// update the heal system
+		g.mSysManager->mDiagSystem->Update(*g.mEcs);			// update the diagonal system
+		g.mSysManager->mRobotCtrlSystem->Update(*g.mEcs);		// update the robot control system
+
+		mMaze->tick(g);
+		getInput(g);
+	}
+	else {
+		mPostRaceDelay--;
+		if (mPostRaceDelay == 0) {
+			if(sRaceState == Dead) mPostRace->gameOver();
+				else mPostRace->initPostRaceMenu(g);
+		}
+
+		if (mPostRaceDelay < 0) {
+			mPostRaceDelay = -1;
+			mPostRace->tick(g);
+		}
+	}
 
 	//g.mWeather->tick();
 
 	Efx::getInstance().tickCameraShake();
 
-	mMaze->tick(g);
-	//mPostRace->tick(g);
 
 	if (fbl_get_mouse_click(FBLMB_RIGHT)) Efx::getInstance().shakeCamera(20, 40);
 
