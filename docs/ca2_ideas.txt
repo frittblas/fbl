@@ -248,9 +248,10 @@ roadmap:
 finish all level 1 addons - done!
 make all the addons in 3 versions of each (level 1-3) except for the Rctrl and Diag thing. DONE!
 make BasicAISystem for the other robots (healing, shielding, turbo). magnet, laser/autoaim and Diag just work. Done!
-PostRace class, race finishing touches (win conditions, eventual level up, 3 items to buy.) in progress..
+PostRace class, race finishing touches (win conditions, eventual level up, 3 items to buy.) in nice progress..
 also skip externs in favor for class static. Done!
-Refactor laser and sound and stuff to use observer pattern. In progress..
+Refactor laser and sound and stuff to use observer pattern. DONE!
+Clean up header include stuff (remove unused). in progr.. done with base folder and gamestate folder (not subfolders)
 make deathmatch on key 7 (get the flags on 6) on the way!
 Add smoke to robots with low hp! YES!
 add more robots and make claimRobot and claimAddon callable from lua.
@@ -261,7 +262,7 @@ the All list contains robots with no weapons (only necessary comps.)
 The owned list contains robots with all components except Path, PathLogic and BasicAI.
 The alloted enemies get random addons then they are stripped after the race.
 Figure out how to not activate for ex. Magnet on a robot thats not racing.
-Maybe isRacing in Stats??
+Maybe isRacing in Stats?? no!
 
 BUGS:
 

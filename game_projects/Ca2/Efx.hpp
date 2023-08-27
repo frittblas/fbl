@@ -12,9 +12,9 @@
 
 #pragma once
 
-#include "Observer.hpp"
+#include "IObserver.hpp"
 
-class Efx : public Observer{
+class Efx : public IObserver{
 
     public:
 

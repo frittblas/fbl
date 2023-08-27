@@ -2,7 +2,7 @@
 *
 *	Charming Alarming 2: Reasonable Robots
 *
-*	Observer.hpp
+*	IObserver.hpp
 *
 *	Observer class header, observer interface that defines the methods to be called
 *   when an event occurs. This interface will be implemented by classes that want to receive notifications.
@@ -14,11 +14,11 @@
 #pragma once
 
 
-class Observer {
+class IObserver {
 
 public:
-    Observer();
-    ~Observer();
+    IObserver();
+    ~IObserver();
 
     virtual void onRobotDeath() = 0;
 

@@ -267,13 +267,13 @@ void LaserSystem::setDirection(Position& pos, Laser& las) {
 
 }
 
-void LaserSystem::attachObserver(Observer* observer) {
+void LaserSystem::attachObserver(IObserver* observer) {
 
 	observers.push_back(observer);
 
 }
 
-void LaserSystem::detachObserver(Observer* observer) {
+void LaserSystem::detachObserver(IObserver* observer) {
 
 	// Find the observer in the vector and remove it
 	auto obs = std::find(observers.begin(), observers.end(), observer);
@@ -292,7 +292,7 @@ void LaserSystem::freeObserverList() {
 void LaserSystem::robotDied() {
 
 	// Notify all attached observers
-	for (Observer* observer : observers) {
+	for (IObserver* observer : observers) {
 		observer->onRobotDeath();
 	}
 

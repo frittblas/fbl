@@ -13,10 +13,8 @@
 #include "../../tools/ScenEdit/ScenEdit.hpp"
 #include "Ecs/Ecs.hpp"
 #include "Ecs/Components.hpp"
-#include "Ecs/Systems/MouseCtrlSystem.hpp"
 #include "Game.hpp"
 #include "Chars.hpp"
-#include "SysManager.hpp"
 
 
 // Chars-class implementation

@@ -11,7 +11,6 @@
 */
 
 #include <iostream>
-//#include <math.h>
 #include "../../src/fbl.hpp"
 #include "Game.hpp"
 #include "Efx.hpp"

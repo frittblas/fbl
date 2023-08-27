@@ -19,7 +19,6 @@
 #include "../UserInput.hpp"
 #include "../Addons.hpp"
 #include "../Robots.hpp"
-#include "../Chars.hpp"
 #include "../Weather.hpp"
 #include "GameState.hpp"
 #include "RobotCollection.hpp"

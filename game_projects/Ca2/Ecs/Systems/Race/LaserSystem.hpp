@@ -13,7 +13,7 @@
 
 #include <vector>
 #include "../../System.hpp"
-#include "../.../../../../Observer.hpp"
+#include "../.../../../../IObserver.hpp"
 
 class Coordinator;
 class Game;
@@ -27,11 +27,11 @@ public:
 	void dealDamage(Game& g, Entity attacker, Entity target);
 	void setDirection(Position& pos, Laser& las);
 
-	void attachObserver(Observer* observer);
-	void detachObserver(Observer* observer);
+	void attachObserver(IObserver* observer);
+	void detachObserver(IObserver* observer);
 	void freeObserverList();
 	void robotDied();
 
 private:
-	std::vector<Observer*> observers;
+	std::vector<IObserver*> observers;
 };

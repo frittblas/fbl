@@ -11,6 +11,7 @@
 *
 */
 
+// Ecs
 #include "Ecs/Ecs.hpp"
 #include "Ecs/Components.hpp"
 #include "SysManager.hpp"
@@ -18,7 +19,7 @@
 // observer classes
 #include "Efx.hpp"
 
-// general
+// general components
 #include "Ecs/Systems/SpriteSystem.hpp"
 #include "Ecs/Systems/PathSystem.hpp"
 #include "Ecs/Systems/MouseCtrlSystem.hpp"

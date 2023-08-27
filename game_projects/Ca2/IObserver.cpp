@@ -11,16 +11,16 @@
 *
 */
 
-#include "Observer.hpp"
+#include "IObserver.hpp"
 
 // Observer-class implementation
 
-Observer::Observer() {
+IObserver::IObserver() {
 
 	//std::cout << "Initialized Observer interface." << std::endl;
 }
 
-Observer::~Observer() {
+IObserver::~IObserver() {
 
 	//std::cout << "Destroyed Observer interface." << std::endl;
 
