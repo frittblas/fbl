@@ -17,6 +17,7 @@
 #include "../../Ecs/Ecs.hpp"
 #include "../../Ecs/Components.hpp"
 #include "../../Game.hpp"
+#include "../../Chars.hpp"
 #include "../../UserInput.hpp"
 #include "../../../Ca2/GameState/GameState.hpp"
 #include "../../Progress.hpp"
@@ -24,7 +25,6 @@
 #include "../../Addons.hpp"
 #include "Race.hpp"
 #include "PostRace.hpp"
-
 
 
 // PostRace-class implementation
@@ -59,7 +59,7 @@ void PostRace::tick(Game& g) {
 			g.mInput->access = g.mInput->buttonDelay * 2;
 		} else {
 			g.mState->change(g, GameState::StateType::Explore);
-			g.mInput->access = g.mInput->buttonDelay;
+			g.mChars->stopPlayerPathing(g);
 		}
 	}
 

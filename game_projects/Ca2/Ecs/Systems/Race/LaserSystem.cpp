@@ -25,11 +25,6 @@
 
 #include "LaserSystem.hpp"
 
-// from Maze.cpp
-extern Maze::aFlag gFlag[Maze::cMaxFlags];
-extern bool gPickDone;
-extern bool gUpdatePaths;
-
 void LaserSystem::Init(Coordinator& ecs) {
 
 	for (auto const& entity : mEntities)
@@ -157,7 +152,7 @@ void LaserSystem::Update(Game& g) {
 		}
 
 		// only show the crosshair if the robots are showing
-		if(gPickDone) fbl_set_prim_active(las.crossHairId, true);
+		if(Maze::sPickDone) fbl_set_prim_active(las.crossHairId, true);
 
 		// don't show the crosshair if robot's dead
 		if(sta.hp < 0.1) fbl_set_prim_active(las.crossHairId, false);
@@ -216,9 +211,9 @@ void LaserSystem::dealDamage(Game &g, Entity attacker, Entity target) {
 
 				// drop the flag when dead (doesn't do anything in other game modes)
 				for (int j = 0; j < Maze::cMaxFlags; j++) {
-					if (gFlag[j].state == target) {
-						gFlag[j].state = Maze::FlagState::Dropped;
-						gUpdatePaths = true;
+					if (Maze::sFlag[j].state == target) {
+						Maze::sFlag[j].state = Maze::FlagState::Dropped;
+						Maze::sUpdatePaths = true;
 						break;
 					}
 				}

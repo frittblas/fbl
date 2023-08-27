@@ -15,6 +15,7 @@
 
 #include "../../../Game.hpp"
 #include "../../../../Ca2/GameState/Race/Race.hpp"
+#include "../../../../Ca2/GameState/Race/Maze.hpp"
 
 #include "../../../../Ca2/GameState/Race/GameModes/CaptureFlags.hpp"
 #include "../../../../Ca2/GameState/Race/GameModes/DeathMatch.hpp"
@@ -22,8 +23,6 @@
 #include "PathLogicSystem.hpp"
 
 // from Maze.cpp
-extern bool gUpdatePaths;
-extern int  gGameMode;
 extern CaptureFlags* gCF;
 extern DeathMatch*   gDM;
 
@@ -46,7 +45,7 @@ void PathLogicSystem::Init(Coordinator& ecs) {
 
 void PathLogicSystem::Update(Game& g) {
 
-	switch (gGameMode) {
+	switch (Maze::sGameMode) {
 
 	case Race::GM_CaptureFlags:
 		tickCF(g);
@@ -77,7 +76,7 @@ void PathLogicSystem::tickCF(Game& g) {
 
 	}
 
-	if (gUpdatePaths) {
+	if (Maze::sUpdatePaths) {
 
 		for (auto const& entity : mEntities)
 		{
@@ -89,7 +88,7 @@ void PathLogicSystem::tickCF(Game& g) {
 			gCF->updatePaths(g, entity, pos, path, plog);
 		}
 
-		gUpdatePaths = false;
+		Maze::sUpdatePaths = false;
 	}
 
 	gCF->checkWinCondition(g);

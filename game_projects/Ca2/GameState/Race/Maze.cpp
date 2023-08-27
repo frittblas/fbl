@@ -21,15 +21,13 @@
 #include "Maze.hpp"
 
 // In order to connect PathLogicSystem, Laser, CaptureFlags, DeathMatch to Maze
-// I had to use these globals, it's not ideal but it works :)
-
-Maze::aFlag gFlag[Maze::cMaxFlags];    // the flag sprites, externed in CaptureFlags and Laser.cpp
-Maze::aCoin gCoin[Maze::cMaxCoins];	   // the coins, externed in CaptureFlags, DeathMatch
-
-bool gPickDone;		// externed in LaserSystem, true if picking stage is complete.
-bool gStartingOut;	// externed in PathLogicSystem, takes waiting 3 secs into consideration (before the race starts)
-bool gUpdatePaths;	// externed in Laser, PathLogicSystem and CaptureFlags (if true, make all robots update paths)
-int  gGameMode;		// the currect game mode in use, like Race::CaptureFlags
+// I had to use these class statics
+Maze::aFlag Maze::sFlag[Maze::cMaxFlags];
+Maze::aCoin Maze::sCoin[Maze::cMaxCoins];
+bool Maze::sPickDone;
+bool Maze::sStartingOut;
+bool Maze::sUpdatePaths;
+int  Maze::sGameMode;
 
 // all the game modes
 CaptureFlags *gCF;
@@ -39,10 +37,10 @@ DeathMatch	 *gDM;
 
 Maze::Maze() {
 
-	gPickDone = false;
-	gStartingOut = true;
-	gUpdatePaths = false;
-	gGameMode = 0;
+	sPickDone = false;
+	sStartingOut = true;
+	sUpdatePaths = false;
+	sGameMode = 0;
 
 	gCF = new CaptureFlags();
 	gDM = new DeathMatch();
@@ -66,7 +64,7 @@ void Maze::tick(Game& g) {
 		pickStartPosition(g);
 	else {
 
-		gPickDone = true;
+		sPickDone = true;
 
 		if (mPickTimer == -240) { // wait a little before starting
 			// make robots move (this gets taken care of in handleBases instead (PathLogicSystem))
@@ -74,7 +72,7 @@ void Maze::tick(Game& g) {
 			std::cout << "Picked pos: " << mPickedPosition << std::endl;
 			std::cout << "Running! Num sprites: " << fbl_get_num_sprites() << std::endl;
 			mPickTimer--;
-			gStartingOut = false;
+			sStartingOut = false;
 		}
 		else if(mPickTimer > -250)
 			mPickTimer--;
@@ -246,7 +244,7 @@ void Maze::initMaze(Game& g, int density, int numRacers, int gameMode) {
 
 	int tries = 0; // number of brute force tries
 
-	gGameMode = gameMode;
+	sGameMode = gameMode;
 	mNumRacers = numRacers;
 
 	fbl_set_sprite_align(FBL_SPRITE_ALIGN_CENTER);	// in the race, sprites are drawn from the center bc. of physics :)
@@ -402,27 +400,27 @@ void Maze::addItems() {
 
 	// add flags in the middle
 	for (int i = 0; i < cMaxFlags; i++) {
-		gFlag[i].id = fbl_create_sprite(265, 324, 17, 24, 0);
-		fbl_set_sprite_xy(gFlag[i].id, cTargetX + 16, cTargetY + 16);	// drawn from the center
-		fbl_set_sprite_layer(gFlag[i].id, 6);
-		gFlag[i].state = FlagState::Center;	// start in the center
+		sFlag[i].id = fbl_create_sprite(265, 324, 17, 24, 0);
+		fbl_set_sprite_xy(sFlag[i].id, cTargetX + 16, cTargetY + 16);	// drawn from the center
+		fbl_set_sprite_layer(sFlag[i].id, 6);
+		sFlag[i].state = FlagState::Center;	// start in the center
 	}
 
 	// add random amount of coins (from 10 to 20)
-	for (int i = 0; i < Maze::cMaxCoins; i++) gCoin[i].id = -1;	// set all id's to -1
+	for (int i = 0; i < Maze::cMaxCoins; i++) sCoin[i].id = -1;	// set all id's to -1
 	int numCoins = rand() % (Maze::cMaxCoins / 2) + 10;
 	std::cout << "numCoins: " << numCoins << std::endl;
 	for (int i = 0; i < numCoins; i++) {
-		gCoin[i].id = fbl_create_sprite(320, 288, 16, 16, 0);
-		fbl_set_sprite_layer(gCoin[i].id, 5);
-		fbl_set_sprite_animation(gCoin[i].id, true, 320, 288, 16, 16, 2, 30, true);
+		sCoin[i].id = fbl_create_sprite(320, 288, 16, 16, 0);
+		fbl_set_sprite_layer(sCoin[i].id, 5);
+		fbl_set_sprite_animation(sCoin[i].id, true, 320, 288, 16, 16, 2, 30, true);
 		int x = 3 + rand() % (cMazeSizeX - 6);
 		int y = rand() % cMazeSizeY;
 		while (fbl_pathf_get_walkability(x, y) == FBL_PATHF_UNWALKABLE || (x * Game::TileSize == cTargetX && y * Game::TileSize == cTargetY)) {
 			int x = 3 + rand() % (cMazeSizeX - 6);
 			y = rand() % cMazeSizeY;
 		}
-		fbl_set_sprite_xy(gCoin[i].id, x * Game::TileSize + 16, y * Game::TileSize + 16);		// drawn from the center
+		fbl_set_sprite_xy(sCoin[i].id, x * Game::TileSize + 16, y * Game::TileSize + 16);		// drawn from the center
 	}
 
 }

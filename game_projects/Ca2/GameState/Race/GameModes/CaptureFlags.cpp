@@ -19,33 +19,27 @@
 
 #include "CaptureFlags.hpp"
 
-extern Maze::aFlag gFlag[Maze::cMaxFlags];	// from Maze.cpp
-extern Maze::aCoin gCoin[Maze::cMaxCoins];
-extern bool gStartingOut;
-extern bool gUpdatePaths;	// from Laser.cpp
-//extern int  sRaceState;		// from Race.cpp
-
 void CaptureFlags::handleFlags(Entity e, Position& pos, Sprite& spr, Path& path, PathLogic& plog) {
 
 	// if the current robot has a flag, let the flag follow the robot, otherwise check for flag collisions
 	int flagIndex = hasFlag(e);
 	if (flagIndex >= 0) {
-		fbl_set_sprite_xy(gFlag[flagIndex].id, pos.x, pos.y);
+		fbl_set_sprite_xy(Maze::sFlag[flagIndex].id, pos.x, pos.y);
 	}
 	else {
 
 		for (int i = 0; i < Maze::cMaxFlags; i++) {
 
 			// handle flag colissions
-			if (fbl_get_sprite_collision(spr.id[0], gFlag[i].id)) {
+			if (fbl_get_sprite_collision(spr.id[0], Maze::sFlag[i].id)) {
 
 				std::cout << "collided with flag = " << i << std::endl;
 
 				// if in center or dropped (not in base or held by a robot)
-				if (gFlag[i].state == Maze::FlagState::Center || gFlag[i].state == Maze::FlagState::Dropped) {
+				if (Maze::sFlag[i].state == Maze::FlagState::Center || Maze::sFlag[i].state == Maze::FlagState::Dropped) {
 
 					// pick up flag
-					gFlag[i].state = e;	// values equal to or over 0 is state == held by that robot entity
+					Maze::sFlag[i].state = e;	// values equal to or over 0 is state == held by that robot entity
 
 					// set course to the base
 					path.goalX = plog.baseX;
@@ -54,7 +48,7 @@ void CaptureFlags::handleFlags(Entity e, Position& pos, Sprite& spr, Path& path,
 
 					std::cout << "Picked up flag! entity: " << e << std::endl;
 
-					gUpdatePaths = true;	// the other robots may need to find new path now.
+					Maze::sUpdatePaths = true;	// the other robots may need to find new path now.
 
 					break; // break from the loop (already got a flag)
 
@@ -71,7 +65,7 @@ void CaptureFlags::handleFlags(Entity e, Position& pos, Sprite& spr, Path& path,
 int CaptureFlags::hasFlag(Entity e) {
 
 	for (int i = 0; i < Maze::cMaxFlags; i++)
-		if (gFlag[i].state == e) return i;
+		if (Maze::sFlag[i].state == e) return i;
 
 	return -1;
 
@@ -82,11 +76,11 @@ void CaptureFlags::handleCoins(Entity e, Sprite& spr, PathLogic& plog) {
 	// handle coin colissions
 	for (int i = 0; i < Maze::cMaxCoins; i++) {
 
-		if (gCoin[i].id != -1) {
-			if (fbl_get_sprite_collision(spr.id[0], gCoin[i].id)) {
+		if (Maze::sCoin[i].id != -1) {
+			if (fbl_get_sprite_collision(spr.id[0], Maze::sCoin[i].id)) {
 
-				fbl_set_sprite_active(gCoin[i].id, false);
-				gCoin[i].id = -1;
+				fbl_set_sprite_active(Maze::sCoin[i].id, false);
+				Maze::sCoin[i].id = -1;
 				plog.coins++;
 				std::cout << "Player " << e << " has " << (int)plog.coins << std::endl;
 
@@ -114,12 +108,12 @@ void CaptureFlags::handleBases(Game& g, Entity e, Position& pos, Sprite& spr, Pa
 		int flagIndex = hasFlag(e);
 		if (flagIndex >= 0) {
 			plog.flags++;
-			fbl_set_sprite_active(gFlag[flagIndex].id, false);
-			gFlag[flagIndex].state = Maze::FlagState::Base;
+			fbl_set_sprite_active(Maze::sFlag[flagIndex].id, false);
+			Maze::sFlag[flagIndex].state = Maze::FlagState::Base;
 			std::cout << "Dropped flag in base! entity: " << e << std::endl;
 		}
 
-		if (!gStartingOut) {
+		if (!Maze::sStartingOut) {
 			//findClosestFlag(pos, path, plog);
 			//std::cout << "Heading out from base! entity: " << e << std::endl;
 
@@ -152,12 +146,12 @@ void CaptureFlags::findClosestFlag(Position& pos, Path& path, PathLogic& plog) {
 	for (int i = 0; i < Maze::cMaxFlags; i++) {
 
 		// are any flags available?
-		if (gFlag[i].state == Maze::FlagState::Center || gFlag[i].state == Maze::FlagState::Dropped) {
+		if (Maze::sFlag[i].state == Maze::FlagState::Center || Maze::sFlag[i].state == Maze::FlagState::Dropped) {
 
 			flagsAvailable = true;
 
-			flagX = fbl_get_sprite_x(gFlag[i].id);
-			flagY = fbl_get_sprite_y(gFlag[i].id);
+			flagX = fbl_get_sprite_x(Maze::sFlag[i].id);
+			flagY = fbl_get_sprite_y(Maze::sFlag[i].id);
 
 			fbl_pathf_set_path_status(path.id, fbl_pathf_find_path(path.id, pos.x, pos.y, flagX, flagY, path.diag));
 
@@ -176,8 +170,8 @@ void CaptureFlags::findClosestFlag(Position& pos, Path& path, PathLogic& plog) {
 
 	if (flagsAvailable) {
 
-		path.goalX = fbl_get_sprite_x(gFlag[nearestFlagId].id);
-		path.goalY = fbl_get_sprite_y(gFlag[nearestFlagId].id);
+		path.goalX = fbl_get_sprite_x(Maze::sFlag[nearestFlagId].id);
+		path.goalY = fbl_get_sprite_y(Maze::sFlag[nearestFlagId].id);
 		path.newPath = true;
 
 	}
@@ -208,7 +202,7 @@ void CaptureFlags::checkWinCondition(Game& g) {
 		// now check if all flags are returned to base
 		bool allTaken = true;
 		for (int i = 0; i < Maze::cMaxFlags; i++) {
-			if (gFlag[i].state != Maze::FlagState::Base) {
+			if (Maze::sFlag[i].state != Maze::FlagState::Base) {
 				allTaken = false;
 				break;
 			}
@@ -259,7 +253,7 @@ void CaptureFlags::switchCtrl(Game& g, Entity e, Position& pos, Path& path, Path
 				if (hasFlag(e) >= 0) {
 
 					// if carrying flag, set course to the base
-					if (!gStartingOut) {
+					if (!Maze::sStartingOut) {
 						path.goalX = plog.baseX;
 						path.goalY = plog.baseY;
 						path.newPath = true;
@@ -267,7 +261,7 @@ void CaptureFlags::switchCtrl(Game& g, Entity e, Position& pos, Path& path, Path
 
 				}
 				else {
-					if (!gStartingOut)
+					if (!Maze::sStartingOut)
 						findClosestFlag(pos, path, plog);
 				}
 
@@ -302,7 +296,7 @@ void CaptureFlags::updatePaths(Game& g, Entity e, Position& pos, Path& path, Pat
 		else {
 			auto& ctrl = g.mEcs->GetComponent<RobotCtrl>(e);
 
-			if (!ctrl.active && !gStartingOut)
+			if (!ctrl.active && !Maze::sStartingOut)
 				findClosestFlag(pos, path, plog);
 		}
 

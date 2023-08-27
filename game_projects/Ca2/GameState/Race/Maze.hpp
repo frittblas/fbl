@@ -75,6 +75,13 @@ public:
     bool mazeHasAllPaths();
     void assignPaths(Game& g);
 
+    static Maze::aFlag sFlag[Maze::cMaxFlags];    // the flag sprites, used in CaptureFlags and LaserSystem
+    static Maze::aCoin sCoin[Maze::cMaxCoins];	  // the coins, used in CaptureFlags, DeathMatch and Magnet
+
+    static bool sPickDone;		// used in LaserSystem, true if picking stage is complete.
+    static bool sStartingOut;	// used in PathLogicSystem, RobotCtrl. Takes wait 3 sec into consid. (before the race starts)
+    static bool sUpdatePaths;	// used in Laser, PathLogicSystem and CaptureFlags (if true, make all robots update paths)
+    static int  sGameMode;		// the currect game mode in use, like Race::CaptureFlags
 
 private:
 

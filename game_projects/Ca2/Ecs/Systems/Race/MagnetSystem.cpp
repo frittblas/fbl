@@ -22,9 +22,6 @@
 
 #include "MagnetSystem.hpp"
 
-extern Maze::aCoin gCoin[Maze::cMaxCoins];	// from Maze.cpp
-extern bool gStartingOut;
-
 void MagnetSystem::Init(Coordinator& ecs) {
 
 	for (auto const& entity : mEntities)
@@ -57,23 +54,23 @@ void MagnetSystem::Update(Game& g) {
 
 		// check if any coins are in within the "strength" (distance in pixels) param and attract them to the player.
 		
-		if (sta.hp > 0.5 && !gStartingOut) {
+		if (sta.hp > 0.1 && !Maze::sStartingOut) {
 
 			if (mag.active) {
 
 				for (int i = 0; i < Maze::cMaxCoins; i++) {
 
-					if (gCoin[i].id != -1) {
+					if (Maze::sCoin[i].id != -1) {
 
-						int cx = fbl_get_sprite_x(gCoin[i].id);
-						int cy = fbl_get_sprite_y(gCoin[i].id);
+						int cx = fbl_get_sprite_x(Maze::sCoin[i].id);
+						int cy = fbl_get_sprite_y(Maze::sCoin[i].id);
 
 						if (distance(pos.x + 16, pos.y + 16, cx, cy) < mag.strength + 2) {
 
-							if (cx < pos.x + 16) fbl_set_sprite_xy(gCoin[i].id, cx + 1, cy);
-							if (cx > pos.x + 16) fbl_set_sprite_xy(gCoin[i].id, cx - 1, cy);
-							if (cy < pos.y + 16) fbl_set_sprite_xy(gCoin[i].id, fbl_get_sprite_x(gCoin[i].id), cy + 1);
-							if (cy > pos.y + 16) fbl_set_sprite_xy(gCoin[i].id, fbl_get_sprite_x(gCoin[i].id), cy - 1);
+							if (cx < pos.x + 16) fbl_set_sprite_xy(Maze::sCoin[i].id, cx + 1, cy);
+							if (cx > pos.x + 16) fbl_set_sprite_xy(Maze::sCoin[i].id, cx - 1, cy);
+							if (cy < pos.y + 16) fbl_set_sprite_xy(Maze::sCoin[i].id, fbl_get_sprite_x(Maze::sCoin[i].id), cy + 1);
+							if (cy > pos.y + 16) fbl_set_sprite_xy(Maze::sCoin[i].id, fbl_get_sprite_x(Maze::sCoin[i].id), cy - 1);
 
 							//std::cout << "Magnet active! distance: " << distance(pos.x + 16, pos.y + 16, cx, cy) << std::endl;
 

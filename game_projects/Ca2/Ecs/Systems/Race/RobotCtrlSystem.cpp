@@ -17,10 +17,9 @@
 #include "../../Components.hpp"
 
 #include "../../../Game.hpp"
+#include "../../../../Ca2/GameState/Race/Maze.hpp"
 
 #include "RobotCtrlSystem.hpp"
-
-extern bool gStartingOut;
 
 void RobotCtrlSystem::Init(Coordinator& ecs) {
 
@@ -50,7 +49,7 @@ void RobotCtrlSystem::Update(Coordinator& ecs) {
 
 		if (rCtrl.active) {
 
-			if (fbl_get_mouse_click(FBLMB_LEFT) && rCtrl.access == 0 && !gStartingOut) {
+			if (fbl_get_mouse_click(FBLMB_LEFT) && rCtrl.access == 0 && !Maze::sStartingOut) {
 
 				path.goalX = fbl_get_mouse_logical_x() + fbl_get_camera_x();
 				path.goalY = fbl_get_mouse_logical_y() + fbl_get_camera_y();
