@@ -22,10 +22,6 @@
 
 #include "PathLogicSystem.hpp"
 
-// from Maze.cpp
-extern CaptureFlags* gCF;
-extern DeathMatch*   gDM;
-
 void PathLogicSystem::Init(Coordinator& ecs) {
 
 	for (auto const& entity : mEntities)
@@ -68,11 +64,11 @@ void PathLogicSystem::tickCF(Game& g) {
 		auto& plog = g.mEcs->GetComponent<PathLogic>(entity);
 
 
-		gCF->handleFlags(entity, pos, spr, path, plog);
-		gCF->handleCoins(entity, spr, plog);
-		gCF->handleBases(g, entity, pos, spr, path, plog);
+		Maze::sCF->handleFlags(entity, pos, spr, path, plog);
+		Maze::sCF->handleCoins(entity, spr, plog);
+		Maze::sCF->handleBases(g, entity, pos, spr, path, plog);
 
-		gCF->switchCtrl(g, entity, pos, path, plog);
+		Maze::sCF->switchCtrl(g, entity, pos, path, plog);
 
 	}
 
@@ -85,13 +81,13 @@ void PathLogicSystem::tickCF(Game& g) {
 			auto& path = g.mEcs->GetComponent<Path>(entity);
 			auto& plog = g.mEcs->GetComponent<PathLogic>(entity);
 
-			gCF->updatePaths(g, entity, pos, path, plog);
+			Maze::sCF->updatePaths(g, entity, pos, path, plog);
 		}
 
 		Maze::sUpdatePaths = false;
 	}
 
-	gCF->checkWinCondition(g);
+	Maze::sCF->checkWinCondition(g);
 
 }
 

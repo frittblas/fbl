@@ -14,8 +14,6 @@
 #include "../../../../src/fbl.hpp"
 #include "../../Ecs/Ecs.hpp"
 #include "../../Ecs/Components.hpp"
-#include "../../../Ca2/GameState/Race/GameModes/CaptureFlags.hpp"
-#include "../../../Ca2/GameState/Race/GameModes/DeathMatch.hpp"
 #include "../../Game.hpp"
 #include "../../Addons.hpp"
 #include "Maze.hpp"
@@ -28,10 +26,8 @@ bool Maze::sPickDone;
 bool Maze::sStartingOut;
 bool Maze::sUpdatePaths;
 int  Maze::sGameMode;
-
-// all the game modes
-CaptureFlags *gCF;
-DeathMatch	 *gDM;
+CaptureFlags *Maze::sCF;
+DeathMatch	 *Maze::sDM;
 
 // Maze-class implementation
 
@@ -42,8 +38,8 @@ Maze::Maze() {
 	sUpdatePaths = false;
 	sGameMode = 0;
 
-	gCF = new CaptureFlags();
-	gDM = new DeathMatch();
+	sCF = new CaptureFlags();
+	sDM = new DeathMatch();
 
 	std::cout << "Maze constructor." << std::endl;
 
@@ -51,8 +47,8 @@ Maze::Maze() {
 
 Maze::~Maze() {
 
-	delete gCF;
-	delete gDM;
+	delete sCF;
+	delete sDM;
 
 	std::cout << "Maze destructor." << std::endl;
 

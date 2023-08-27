@@ -13,6 +13,8 @@
 #pragma once
 
 #include "../../Robots.hpp"
+#include "../../../Ca2/GameState/Race/GameModes/CaptureFlags.hpp"
+#include "../../../Ca2/GameState/Race/GameModes/DeathMatch.hpp"
 
 class Game;
 
@@ -82,6 +84,10 @@ public:
     static bool sStartingOut;	// used in PathLogicSystem, RobotCtrl. Takes wait 3 sec into consid. (before the race starts)
     static bool sUpdatePaths;	// used in Laser, PathLogicSystem and CaptureFlags (if true, make all robots update paths)
     static int  sGameMode;		// the currect game mode in use, like Race::CaptureFlags
+
+    // all the game modes
+    static CaptureFlags* sCF;
+    static DeathMatch*   sDM;
 
 private:
 

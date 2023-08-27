@@ -16,9 +16,8 @@
 #include "../../Ecs.hpp"
 #include "../../Components.hpp"
 
-#include "../../../GameState/Race/Maze.hpp"
-
 #include "../../../Game.hpp"
+#include "../../../GameState/Race/Maze.hpp"
 
 #include "MagnetSystem.hpp"
 

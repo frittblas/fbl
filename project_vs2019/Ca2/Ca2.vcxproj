@@ -120,7 +120,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -170,6 +170,7 @@
     <ClCompile Include="..\..\game_projects\Ca2\Location.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\LuaDialogue.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\Objects.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\Observer.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\Progress.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\Robots.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\SoundManager.cpp" />
@@ -235,6 +236,7 @@
     <ClInclude Include="..\..\game_projects\Ca2\Location.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\LuaDialogue.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\Objects.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\Observer.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\Progress.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\Robots.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\SoundManager.hpp" />
