@@ -62,5 +62,7 @@ public:
     ~SysManager();
 
     void setupEcs(Coordinator* mEcs);                        // register componets and systems
+    void setupObservers();
+    void freeObservers();
 
 };

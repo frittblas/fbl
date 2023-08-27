@@ -5,6 +5,7 @@
 *	SysManager.cpp
 *
 *	SysManager class implementation, keeps pointers to all systems in the Ecs.
+*	Also attaches observers.
 *
 *	Hans Strömquist 2022
 *
@@ -13,6 +14,9 @@
 #include "Ecs/Ecs.hpp"
 #include "Ecs/Components.hpp"
 #include "SysManager.hpp"
+
+// observer classes
+#include "Efx.hpp"
 
 // general
 #include "Ecs/Systems/SpriteSystem.hpp"
@@ -192,5 +196,21 @@ void SysManager::setupEcs(Coordinator *mEcs) {
 	sign.set(mEcs->GetComponentType<Path>());
 	sign.set(mEcs->GetComponentType<RobotCtrl>());
 	mEcs->SetSystemSignature<RobotCtrlSystem>(sign);
+
+
+}
+
+void SysManager::setupObservers() {
+
+	// attach instances of observer classes
+
+	Efx& efx = Efx::getInstance();
+	mLaserSystem->attachObserver(&efx);
+
+}
+
+void SysManager::freeObservers() {
+
+	mLaserSystem->freeObserverList();
 
 }

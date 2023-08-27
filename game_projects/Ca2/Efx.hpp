@@ -12,7 +12,9 @@
 
 #pragma once
 
-class Efx {
+#include "Observer.hpp"
+
+class Efx : public Observer{
 
     public:
 
@@ -40,6 +42,7 @@ class Efx {
         void setupFilmTransition(bool in);
         void tickFilmTransition();
 
+        void onRobotDeath() override;
 
     private:
 

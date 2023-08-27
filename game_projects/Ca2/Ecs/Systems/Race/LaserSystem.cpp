@@ -21,7 +21,6 @@
 #include "../../../Game.hpp"
 #include "../../../Robots.hpp"
 #include "../../../Addons.hpp"
-#include "../../../Efx.hpp"	// remove this (use observer pattern instead :)
 
 #include "LaserSystem.hpp"
 
@@ -206,8 +205,10 @@ void LaserSystem::dealDamage(Game &g, Entity attacker, Entity target) {
 				if (targetLas) fbl_set_prim_active(targetLas->crossHairId, false);	// turn off the crosshair for targetLaser
 				targetAim.active = false;									// can't target people when dead
 				if (targetLas) targetLas->isFiring = false;
-				Efx::getInstance().shakeCamera(20, 40);						// shake camera
-				fbl_set_emitter_active(attackLas.particleId, false);		// turn off emitter making a cloud
+				//Efx::getInstance().shakeCamera(20, 40);					// shake camera
+				fbl_set_emitter_active(attackLas.particleId, false);		// turn off emitter, making a cloud
+
+				robotDied();
 
 				// drop the flag when dead (doesn't do anything in other game modes)
 				for (int j = 0; j < Maze::cMaxFlags; j++) {
@@ -262,6 +263,37 @@ void LaserSystem::setDirection(Position& pos, Laser& las) {
 		fbl_set_prim_size(las.rayId, pos.x + Game::TileSize / 2, pos.y + las.length, 0);
 		break;
 
+	}
+
+}
+
+void LaserSystem::attachObserver(Observer* observer) {
+
+	observers.push_back(observer);
+
+}
+
+void LaserSystem::detachObserver(Observer* observer) {
+
+	// Find the observer in the vector and remove it
+	auto obs = std::find(observers.begin(), observers.end(), observer);
+	if (obs != observers.end()) {
+		observers.erase(obs);
+	}
+
+}
+
+void LaserSystem::freeObserverList() {
+
+	observers.clear();
+
+}
+
+void LaserSystem::robotDied() {
+
+	// Notify all attached observers
+	for (Observer* observer : observers) {
+		observer->onRobotDeath();
 	}
 
 }

@@ -146,3 +146,9 @@ void Efx::setupFilmTransition(bool in) {
 void Efx::tickFilmTransition() {
 
 }
+
+void Efx::onRobotDeath() {
+
+	shakeCamera(30, 50);
+
+}

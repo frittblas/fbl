@@ -96,9 +96,10 @@ bool Game::init() {
 	mWeather = new Weather();
 	mProgress = new Progress();
 
-	std::cout << "starting sysmanager setup: " << std::endl;
+	std::cout << "Starting sysmanager setup." << std::endl;
 	mSysManager->setupEcs(mEcs);
-	std::cout << "done with sysmanager setup: " << std::endl;
+	mSysManager->setupObservers();
+	std::cout << "Done with sysmanager setup. " << std::endl;
 
 	// start the snow particle effect
 	//mWeather->setWeather(Weather::TimeOfDay::Day, 0, 6, 50, false);
@@ -112,6 +113,8 @@ bool Game::init() {
 void Game::unInit() {
 
 	mMap->resetMap(0, 0);	// free tile-mem
+
+	mSysManager->freeObservers();
 
 	delete mEcs;
 	delete mMap;

@@ -11,7 +11,9 @@
 */
 #pragma once
 
+#include <vector>
 #include "../../System.hpp"
+#include "../.../../../../Observer.hpp"
 
 class Coordinator;
 class Game;
@@ -24,4 +26,12 @@ public:
 
 	void dealDamage(Game& g, Entity attacker, Entity target);
 	void setDirection(Position& pos, Laser& las);
+
+	void attachObserver(Observer* observer);
+	void detachObserver(Observer* observer);
+	void freeObserverList();
+	void robotDied();
+
+private:
+	std::vector<Observer*> observers;
 };

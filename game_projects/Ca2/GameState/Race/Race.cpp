@@ -33,8 +33,8 @@
 #include "../../Ecs/Systems/Race/DiagSystem.hpp"
 #include "../../Ecs/Systems/Race/RobotCtrlSystem.hpp"
 
-#include "GameModes/CaptureFlags.hpp"
-#include "GameModes/DeathMatch.hpp"
+//#include "GameModes/CaptureFlags.hpp"
+//#include "GameModes/DeathMatch.hpp"
 
 #include "../../Chars.hpp"
 #include "../../Weather.hpp"
