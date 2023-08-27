@@ -22,4 +22,8 @@ public:
 
     virtual void tick(Game& g) override;
 
+private:
+    int mTitleId, mSubTitleId, mAuthorTextId, mWebsiteTextId;
+    int mTweenIdTitle, mTweenIdSub;
+
 };

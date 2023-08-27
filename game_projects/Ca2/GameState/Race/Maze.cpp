@@ -244,16 +244,14 @@ void Maze::pickStartPosition(Game& g) {
 
 void Maze::initMaze(Game& g, int density, int numRacers, int gameMode) {
 
-	gGameMode = gameMode;
-
 	int tries = 0; // number of brute force tries
+
+	gGameMode = gameMode;
+	mNumRacers = numRacers;
 
 	fbl_set_sprite_align(FBL_SPRITE_ALIGN_CENTER);	// in the race, sprites are drawn from the center bc. of physics :)
 
 	setupPickStart();
-
-	mNumRacers = numRacers;
-
 	addBorder();
 	fbl_set_clear_color(50, 50, 50, 0);
 

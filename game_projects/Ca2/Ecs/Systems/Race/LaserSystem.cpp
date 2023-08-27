@@ -4,7 +4,7 @@
 *
 *	LaserSystem.cpp
 *
-*	The laser system. It's raycasting and possibly particle efx at the end.
+*	The laser system. It's raycasting, line primitives and particle efx at the end.
 *
 *
 *	Hans Strömquist 2022

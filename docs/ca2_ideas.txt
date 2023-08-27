@@ -248,8 +248,10 @@ roadmap:
 finish all level 1 addons - done!
 make all the addons in 3 versions of each (level 1-3) except for the Rctrl and Diag thing. DONE!
 make BasicAISystem for the other robots (healing, shielding, turbo). magnet, laser/autoaim and Diag just work. Done!
-PostRace class, race finishing touches (win conditions, eventual level up, 3 items to buy.)
-Add smoke to robots with low hp! try atleast.
+PostRace class, race finishing touches (win conditions, eventual level up, 3 items to buy.) in progress..
+Refactor laser and sound and stuff to use observer pattern, make robot collection id's class sprecific.
+also skip externs in favor for class static. in progress.
+Add smoke to robots with low hp! YES!
 make deathmatch on key 7 (get the flags on 6) on the way!
 add more robots and make claimRobot and claimAddon callable from lua.
 Start making the level with a bunch of dialogue and a couple of songs.

@@ -25,11 +25,11 @@ extern "C" {
 // game instance (only externed here)
 extern Game* gGame;
 
-// id's for the dialog-box f for filescope
-int fDiaBgSquareId, fDiaBgOutlineId, fDiaText1Id, fDiaText2Id, fDiaText3Id;
-int fDiaResponseYesId, fDiaResponseNoId;
-int fDiaButtonYes, fDiaButtonNo;
-int fDiaTextTalk;
+// id's for the dialog-box (f for filescope)
+static int fDiaBgSquareId, fDiaBgOutlineId, fDiaText1Id, fDiaText2Id, fDiaText3Id;
+static int fDiaResponseYesId, fDiaResponseNoId;
+static int fDiaButtonYes, fDiaButtonNo;
+static int fDiaTextTalk;
 
 int gButtonTalk; // externed in DialogueTrigSystem
 int gCurrentDialogueId = 0; // id of the current dialogue to start, externed in DialogueTrigSystem

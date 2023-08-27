@@ -30,15 +30,9 @@ public:
 
 private:
     // id's for the robot collection-menu
-    uint16_t fContextHelp, fContextLine;
-    uint16_t fMenuBgSquareId, fMenuBgOutlineId, fMenuRobotBgSquareId;
-    uint16_t fMenuDividerLine, fSmallMenuDividerLine;
-    uint16_t fMenuRobotDescr, fMenuAddonsDescr;
-    uint16_t fMenuName, fMenuLevel, fMenuXp, fMenuHp, fMenuSpeed;
-    uint16_t fMenuDiag, fMenuEnergy, fMenuWeight;
-    uint16_t fMenuAddonInfoLine;
-    uint16_t fAddonName, fAddonLevel, fAddonRarity, fAddonPassive, fAddonEquipped, fAddonPrice;
-    uint16_t fContinue, fContinueText;
+    uint16_t mRobotLevel, mRobotHp, mRobotSpeed, mRobotDiag, mRobotEnergy;
+    uint16_t mAddonName, mAddonLevel, mAddonRarity, mAddonPassive, mAddonEquipped, mAddonPrice;
+    uint16_t mContextHelp, mContinueButton;
 
     const int notSet = -1;
     int mSelectedAddon;     // currently selected addon in the shop

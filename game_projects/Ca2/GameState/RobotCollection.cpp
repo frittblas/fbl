@@ -27,21 +27,21 @@
 const uint16_t fNumSlots = 6;	// number of passive and active slots
 const uint16_t fNumLines = 17;	// lines for the grid to the left, 10x5 grid, 17 lines
 
-// id's for the robot collection-menu
-uint16_t fContextHelp, fContextLine;
-uint16_t fMenuBgSquareId, fMenuBgOutlineId, fMenuRobotBgSquareId, fFavRobotCheckBox;
-uint16_t fMenuDividerLine, fSmallMenuDividerLine;
-uint16_t fMenuButtonLeft, fMenuButtonRight;
-uint16_t fMenuRobotDescr, fMenuAddonsDescr;
-uint16_t fMenuName, fMenuLevel, fMenuXp, fMenuHp, fMenuSpeed;
-uint16_t fMenuDiag, fMenuEnergy, fMenuWeight;
-uint16_t fMenuSlotNr[fNumSlots], fMenuSlot[fNumSlots], fMenuSlotArrow[fNumSlots];
-uint16_t fMenuActive, fMenuPassive, fMenuPassiveActive;
-uint16_t fMenuAddonGrid[fNumLines];
-uint16_t fMenuAddonInfoLine;
-uint16_t fAddonName, fAddonLevel, fAddonRarity, fAddonPassive, fAddonEquipped, fAddonPrice;
-uint16_t fUnEquipAddon, fUnEquipAddonText;
-uint16_t fSaveAndQuit, fSaveAndQuitText;
+// id's for the robot collection-menu (f prefix for filescope)
+static uint16_t fContextHelp, fContextLine;
+static uint16_t fMenuBgSquareId, fMenuBgOutlineId, fMenuRobotBgSquareId, fFavRobotCheckBox;
+static uint16_t fMenuDividerLine, fSmallMenuDividerLine;
+static uint16_t fMenuButtonLeft, fMenuButtonRight;
+static uint16_t fMenuRobotDescr, fMenuAddonsDescr;
+static uint16_t fMenuName, fMenuLevel, fMenuHp, fMenuSpeed;
+static uint16_t fMenuDiag, fMenuEnergy;
+static uint16_t fMenuSlotNr[fNumSlots], fMenuSlot[fNumSlots], fMenuSlotArrow[fNumSlots];
+static uint16_t fMenuActive, fMenuPassive, fMenuPassiveActive;
+static uint16_t fMenuAddonGrid[fNumLines];
+static uint16_t fMenuAddonInfoLine;
+static uint16_t fAddonName, fAddonLevel, fAddonRarity, fAddonPassive, fAddonEquipped, fAddonPrice;
+static uint16_t fUnEquipAddon, fUnEquipAddonText;
+static uint16_t fSaveAndQuit, fSaveAndQuitText;
 
 // the menu button (always visible when in a game), externed in Explore.cpp and Dialogue.cpp
 uint16_t gRobotCollectionMenuButton;
