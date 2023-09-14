@@ -83,24 +83,20 @@ void Efx::tickTweens() {
 
 	for (int i = 0; i < MaxTweens; i++) {
 
-		//if (tweenList[i].curValue < tweenList[i].endValue - 0.02 || tweenList[i].curValue > tweenList[i].endValue + 0.02) { // don't update anymore if done
+		int elapsedTime = fbl_timer_get_ticks() - tweenList[i].tweenStartTime;
+		float t = (float)elapsedTime / tweenList[i].tweenDuration;
+		t = fmin(t, 1);
 
-			int elapsedTime = fbl_timer_get_ticks() - tweenList[i].tweenStartTime;
-			float t = (float)elapsedTime / tweenList[i].tweenDuration;
-			t = fmin(t, 1);
+		switch (tweenList[i].tweenType) {
 
-			switch (tweenList[i].tweenType) {
+		case Efx::Tweens::EaseOut:
+			tweenList[i].curValue = tweenList[i].endValue * Efx::easeOut(t);
+			break;
+		case Efx::Tweens::ElasticOut:
+			tweenList[i].curValue = tweenList[i].endValue * Efx::elasticOut(t);
+			break;
 
-			case Efx::Tweens::EaseOut:
-				tweenList[i].curValue = tweenList[i].endValue * Efx::easeOut(t);
-				break;
-			case Efx::Tweens::ElasticOut:
-				tweenList[i].curValue = tweenList[i].endValue * Efx::elasticOut(t);
-				break;
-
-			}
-
-		//}
+		}
 
 	}
 

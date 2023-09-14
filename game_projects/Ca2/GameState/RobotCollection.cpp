@@ -169,23 +169,23 @@ void RobotCollection::setFreeSlotsArrows(Game& g, bool empty) {
 	// begin by setting all arrows to inactive
 	for (int id : fMenuSlotArrow) fbl_set_sprite_active(id, false);
 
-	if (!empty) {
-		std::cout << "Set arrows" << std::endl;
-		auto& add = g.mEcs->GetComponent<Addon>(mSelectedAddon);
-		auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mOwnedRobots[mCurrentRobotPage]);
-
-		// take care of the passive slots (show an arrow if the selected addon is passive and the slot is free)
-		if (add.passive && sta.slot[0] == notSet) fbl_set_sprite_active(fMenuSlotArrow[0], true);
-		if (add.passive && sta.slot[1] == notSet) fbl_set_sprite_active(fMenuSlotArrow[1], true);
-
-		// active slots
-		for (int i = 2; i < fNumSlots; i++) {
-			if (!add.passive && sta.slot[i] == notSet) fbl_set_sprite_active(fMenuSlotArrow[i], true);
-		}
-
-	}
-	else if(empty)
+	if (empty) {
 		std::cout << "Set no arrows" << std::endl;
+		return;
+	}
+
+	std::cout << "Set arrows" << std::endl;
+	auto& add = g.mEcs->GetComponent<Addon>(mSelectedAddon);
+	auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mOwnedRobots[mCurrentRobotPage]);
+
+	// take care of the passive slots (show an arrow if the selected addon is passive and the slot is free)
+	if (add.passive && sta.slot[0] == notSet) fbl_set_sprite_active(fMenuSlotArrow[0], true);
+	if (add.passive && sta.slot[1] == notSet) fbl_set_sprite_active(fMenuSlotArrow[1], true);
+
+	// active slots
+	for (int i = 2; i < fNumSlots; i++) {
+		if (!add.passive && sta.slot[i] == notSet) fbl_set_sprite_active(fMenuSlotArrow[i], true);
+	}
 
 }
 

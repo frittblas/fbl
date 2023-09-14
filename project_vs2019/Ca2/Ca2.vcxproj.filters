@@ -222,9 +222,6 @@
     <ClCompile Include="..\..\game_projects\Ca2\GameState\Race\PostRace.cpp">
       <Filter>Source Files\GameState\Race</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\game_projects\Ca2\IObserver.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\fbl.h">

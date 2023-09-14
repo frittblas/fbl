@@ -17,9 +17,11 @@
 class IObserver {
 
 public:
-    IObserver();
-    ~IObserver();
 
-    virtual void onRobotDeath() = 0;
+    virtual void onRobotDeath() = 0;    // has to be implemented
+
+    virtual void onFireLaser() {
+        // default implementation does nothing.
+    }
 
 };

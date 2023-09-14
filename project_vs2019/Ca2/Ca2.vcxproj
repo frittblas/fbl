@@ -170,7 +170,6 @@
     <ClCompile Include="..\..\game_projects\Ca2\Location.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\LuaDialogue.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\Objects.cpp" />
-    <ClCompile Include="..\..\game_projects\Ca2\IObserver.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\Progress.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\Robots.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\SoundManager.cpp" />
