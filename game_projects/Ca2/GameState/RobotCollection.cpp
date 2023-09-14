@@ -195,41 +195,34 @@ void RobotCollection::selectAddon(Game& g) {
 
 	for (int i = 0; i < g.mAddons->NumAddons; i++) {	// loop through all buttons and check if one was pressed
 
-		if (g.mAddons->mOwnedAddons[i] != g.mAddons->Unassigned) {	// only bother with addons you actually own
+		if (g.mAddons->mOwnedAddons[i] == g.mAddons->Unassigned) continue;	// only bother with addons you actually own
 
-			auto& add = g.mEcs->GetComponent<Addon>(g.mAddons->mOwnedAddons[i]);	// get the component of each button
+		auto& add = g.mEcs->GetComponent<Addon>(g.mAddons->mOwnedAddons[i]);	// get the component of each button
 
-			if (fbl_get_ui_elem_val(add.uiId) > 0) {	// if the current button was pressed..
+		if (fbl_get_ui_elem_val(add.uiId) < 1) continue;	// if the current button was not pressed continue
 
-				allOff = false;		// this is not true anymore bc a button is pressed
+		allOff = false;		// this is not true anymore bc a button is pressed
 
-				if (mSelectedAddon != g.mAddons->mOwnedAddons[i]) {		// do the following only if the pressed button is a new one
+		if (mSelectedAddon == g.mAddons->mOwnedAddons[i]) continue;		// skip if the pressed button isn't a new one
 
-					// turn off the last pressed button in favor for the new one.
-					if (mSelectedAddon != notSet) {
-						auto& add2 = g.mEcs->GetComponent<Addon>(mSelectedAddon);
-						fbl_set_ui_elem_val(add2.uiId, 0);
-					}
-
-					mSelectedAddon = g.mAddons->mOwnedAddons[i];		// set the selectedAddon to the current entity
-
-					// remove unequip button and text if selected addon is not equipped
-					if (add.equippedBy == notSet) {
-						fbl_set_ui_elem_active(fUnEquipAddon, false);
-						fbl_set_text_active(fUnEquipAddonText, false);
-					}
-
-					updateAddonInfo(g, false);
-					setFreeSlotsArrows(g, false);
-					std::cout << "Updated addon info." << std::endl;
-					std::cout << "Selected: " << mSelectedAddon << ", i: " << g.mAddons->mOwnedAddons[i] << std::endl;
-
-				}
-
-
-			}
-
+		// turn off the last pressed button in favor for the new one.
+		if (mSelectedAddon != notSet) {
+			auto& add2 = g.mEcs->GetComponent<Addon>(mSelectedAddon);
+			fbl_set_ui_elem_val(add2.uiId, 0);
 		}
+
+		mSelectedAddon = g.mAddons->mOwnedAddons[i];		// set the selectedAddon to the current entity
+
+		// remove unequip button and text if selected addon is not equipped
+		if (add.equippedBy == notSet) {
+			fbl_set_ui_elem_active(fUnEquipAddon, false);
+			fbl_set_text_active(fUnEquipAddonText, false);
+		}
+
+		updateAddonInfo(g, false);
+		setFreeSlotsArrows(g, false);
+		std::cout << "Updated addon info." << std::endl;
+		std::cout << "Selected: " << mSelectedAddon << ", i: " << g.mAddons->mOwnedAddons[i] << std::endl;
 
 	}
 
@@ -259,69 +252,64 @@ void RobotCollection::equipAddon(Game& g) {
 			slotX = fbl_get_prim_x(fMenuSlot[i]) - Game::TileSize / 2;
 			slotY = fbl_get_prim_y(fMenuSlot[i]) - Game::TileSize / 2;
 
-			if (mouseX > slotX && mouseY > slotY && mouseX < (slotX + Game::TileSize) && mouseY < (slotY + Game::TileSize)) {	// if click is inside a slot
+			if (!(mouseX > slotX && mouseY > slotY && mouseX < (slotX + Game::TileSize) && mouseY < (slotY + Game::TileSize)))
+				continue; // skip if click is outside a slot
 
-				// do the following if an addon is selected
-				if (mSelectedAddon != notSet) {
+			if (mSelectedAddon == notSet) continue; // skip if an addon isn't selected
 
-					// get Addon and Stats components from the selected addon and the current robot
+			// get Addon and Stats components from the selected addon and the current robot
+			auto& add = g.mEcs->GetComponent<Addon>(mSelectedAddon);
+			auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mOwnedRobots[mCurrentRobotPage]);
 
-					auto& add = g.mEcs->GetComponent<Addon>(mSelectedAddon);
-					auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mOwnedRobots[mCurrentRobotPage]);
+			// just continue; in case of any error, check passive/active restrictions etc.
+			if (i < 2 && !add.passive) continue;
+			if (i > 1 && add.passive) continue;
+			if (sta.slot[i] == mSelectedAddon) continue;	// already in the correct place
 
-					// just continue; in case of any error, check passive/active restrictions etc.
-					if (i < 2 && !add.passive) continue;
-					if (i > 1 && add.passive) continue;
-					if (sta.slot[i] == mSelectedAddon) continue;	// already in the correct place
+			add.equippedBy = g.mRobots->mOwnedRobots[mCurrentRobotPage]; // the addon is now equipped by this robot (Entity id)
 
-					add.equippedBy = g.mRobots->mOwnedRobots[mCurrentRobotPage]; // the addon is now equipped by this robot (Entity id)
+			updateAddonInfo(g, false);
 
-					updateAddonInfo(g, false);
-
-					// check if this addon is just moved between equipped slots
-					// first set passive and active slots with a value of mSelectedAddon, to notSet, also set flag
-					bool moveSlot = false;
-					for (int j = 0; j < fNumSlots; j++)
-						if (sta.slot[j] == mSelectedAddon) {
-							sta.slot[j] = notSet;
-							moveSlot = true;
-						}
-
-					// then assign the passive or active slots
-					sta.slot[i] = mSelectedAddon;
-
-					g.mAddons->showAddonAsEquipped(g.mEcs, mSelectedAddon, i);	// move the addon to the correct slot
-					setFreeSlotsArrows(g, false);	// set arrows pointing correctly
-					// set the current access time if the "checkbox" to buttonDelay frames (so it doesn't get pushed immediately)
-					fbl_set_ui_elem_access_left(add.uiId, g.mInput->buttonDelay);
-
-					// NOTE: brodos pathing weirds out if you add path components to robots in the menu! goes well when you remove it again :)
-					// test to add component! NOTE: call function to add the correct comp. based on add.type
-					if (!moveSlot) {
-						std::cout << "Adding addonComponent to current robot!" << std::endl;
-						bool ok = g.mRobots->addAddonComponent(g.mEcs, g.mRobots->mOwnedRobots[mCurrentRobotPage], add.type);
-						std::cout << "OK = " << ok << std::endl;
-						if(!ok) {
-
-							// put the addon back in the menu!
-							sta.slot[i] = notSet;
-							add.equippedBy = notSet;
-							updateAddonInfo(g, false);
-							fbl_set_ui_elem_val(fUnEquipAddon, 0);	// set the ui value to 0
-							// update graphics
-							cyclePages(g, 0);
-							updateContextHelp("Can't equip 2 addons of the same type!");
-							std::cout << "Can't equip 2 addons of the same type!" << std::endl;
-
-						}
-					}
-					else std::cout << "Moving peacefully between slots :)" << std::endl;
-
-					break;
-
+			// check if this addon is just moved between equipped slots
+			// first set passive and active slots with a value of mSelectedAddon, to notSet, also set flag
+			bool moveSlot = false;
+			for (int j = 0; j < fNumSlots; j++)
+				if (sta.slot[j] == mSelectedAddon) {
+					sta.slot[j] = notSet;
+					moveSlot = true;
 				}
 
+			// then assign the passive or active slots
+			sta.slot[i] = mSelectedAddon;
+
+			g.mAddons->showAddonAsEquipped(g.mEcs, mSelectedAddon, i);	// move the addon to the correct slot
+			setFreeSlotsArrows(g, false);	// set arrows pointing correctly
+			// set the current access time if the "checkbox" to buttonDelay frames (so it doesn't get pushed immediately)
+			fbl_set_ui_elem_access_left(add.uiId, g.mInput->buttonDelay);
+
+			// Call function to add the correct comp. based on add.type
+			if (!moveSlot) {
+				std::cout << "Adding addonComponent to current robot!" << std::endl;
+				bool ok = g.mRobots->addAddonComponent(g.mEcs, g.mRobots->mOwnedRobots[mCurrentRobotPage], add.type);
+				std::cout << "OK = " << ok << std::endl;
+				if(!ok) {
+
+					// put the addon back in the menu!
+					sta.slot[i] = notSet;
+					add.equippedBy = notSet;
+					updateAddonInfo(g, false);
+					fbl_set_ui_elem_val(fUnEquipAddon, 0);	// set the ui value to 0
+					// update graphics
+					cyclePages(g, 0);
+					updateContextHelp("Can't equip 2 addons of the same type!");
+					std::cout << "Can't equip 2 addons of the same type!" << std::endl;
+
+				}
 			}
+			else std::cout << "Moving peacefully between slots :)" << std::endl;
+
+			break;
+
 
 		}
 
@@ -334,46 +322,42 @@ void RobotCollection::equipAddon(Game& g) {
 
 void RobotCollection::unEquipAddon(Game& g) {
 
-	if (mSelectedAddon != notSet) {
-
-		// check if the selected addon is equipped
-		auto& add = g.mEcs->GetComponent<Addon>(mSelectedAddon);
-
-		if (add.equippedBy != notSet) {		// if the selected addon is equipped by someone
-
-			fbl_set_ui_elem_active(fUnEquipAddon, true);	// set the unequip button to active
-			fbl_set_text_active(fUnEquipAddonText, true);
-
-			// now take care of the button press
-			if (fbl_get_ui_elem_val(fUnEquipAddon) > 0) {
-
-				auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mOwnedRobots[mCurrentRobotPage]);
-
-				for (int i = 0; i < fNumSlots; i++)
-					if (sta.slot[i] == mSelectedAddon) sta.slot[i] = notSet;
-
-				add.equippedBy = notSet;
-				updateAddonInfo(g, false);
-				fbl_set_ui_elem_val(fUnEquipAddon, 0);	// set the ui value to 0
-
-				// update graphics
-				cyclePages(g, 0);
-				setFreeSlotsArrows(g, false);
-				fbl_set_ui_elem_active(fUnEquipAddon, false);	// set the unequip button to inactive
-				fbl_set_text_active(fUnEquipAddonText, false);	// and text
-
-				// remove component NOTE: remove correct comp. based on add.type
-				std::cout << "Removing Path component from current robot!" << std::endl;
-				g.mRobots->removeAddonComponent(g.mEcs, g.mRobots->mOwnedRobots[mCurrentRobotPage], add.type);
-
-			}
-
-		}	
-
-	}
-	else {
+	if (mSelectedAddon == notSet) {
 		fbl_set_ui_elem_active(fUnEquipAddon, false);	// set the unequip button to inactive
 		fbl_set_text_active(fUnEquipAddonText, false);
+		return;
+	}
+
+	// check if the selected addon is equipped
+	auto& add = g.mEcs->GetComponent<Addon>(mSelectedAddon);
+
+	if (add.equippedBy == notSet) return;	// skip if the selected addon isn't equipped by someone
+
+	fbl_set_ui_elem_active(fUnEquipAddon, true);	// set the unequip button to active
+	fbl_set_text_active(fUnEquipAddonText, true);
+
+	// now take care of the button press
+	if (fbl_get_ui_elem_val(fUnEquipAddon) > 0) {
+
+		auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mOwnedRobots[mCurrentRobotPage]);
+
+		for (int i = 0; i < fNumSlots; i++)
+			if (sta.slot[i] == mSelectedAddon) sta.slot[i] = notSet;
+
+		add.equippedBy = notSet;
+		updateAddonInfo(g, false);
+		fbl_set_ui_elem_val(fUnEquipAddon, 0);	// set the ui value to 0
+
+		// update graphics
+		cyclePages(g, 0);
+		setFreeSlotsArrows(g, false);
+		fbl_set_ui_elem_active(fUnEquipAddon, false);	// set the unequip button to inactive
+		fbl_set_text_active(fUnEquipAddonText, false);	// and text
+
+		// remove component NOTE: remove correct comp. based on add.type
+		std::cout << "Removing Path component from current robot!" << std::endl;
+		g.mRobots->removeAddonComponent(g.mEcs, g.mRobots->mOwnedRobots[mCurrentRobotPage], add.type);
+
 	}
 
 }
