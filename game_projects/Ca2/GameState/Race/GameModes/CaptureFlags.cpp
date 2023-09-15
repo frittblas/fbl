@@ -26,38 +26,35 @@ void CaptureFlags::handleFlags(Entity e, Position& pos, Sprite& spr, Path& path,
 	int flagIndex = hasFlag(e);
 	if (flagIndex >= 0) {
 		fbl_set_sprite_xy(Maze::sFlag[flagIndex].id, pos.x, pos.y);
+		return;
 	}
-	else {
 
-		for (int i = 0; i < Maze::cMaxFlags; i++) {
+	for (int i = 0; i < Maze::cMaxFlags; i++) {
 
-			// handle flag colissions
-			if (fbl_get_sprite_collision(spr.id[0], Maze::sFlag[i].id)) {
+		// handle flag colissions, skip if no colission
+		if (!fbl_get_sprite_collision(spr.id[0], Maze::sFlag[i].id)) continue;
 
-				std::cout << "collided with flag = " << i << std::endl;
+		std::cout << "collided with flag = " << i << std::endl;
 
-				// if in center or dropped (not in base or held by a robot)
-				if (Maze::sFlag[i].state == Maze::FlagState::Center || Maze::sFlag[i].state == Maze::FlagState::Dropped) {
+		// if in center or dropped (not in base or held by a robot)
+		if (Maze::sFlag[i].state == Maze::FlagState::Center || Maze::sFlag[i].state == Maze::FlagState::Dropped) {
 
-					// pick up flag
-					Maze::sFlag[i].state = e;	// values equal to or over 0 is state == held by that robot entity
+			// pick up flag
+			Maze::sFlag[i].state = e;	// values equal to or over 0 is state == held by that robot entity
 
-					// set course to the base
-					path.goalX = plog.baseX;
-					path.goalY = plog.baseY;
-					path.newPath = true;
+			// set course to the base
+			path.goalX = plog.baseX;
+			path.goalY = plog.baseY;
+			path.newPath = true;
 
-					std::cout << "Picked up flag! entity: " << e << std::endl;
+			std::cout << "Picked up flag! entity: " << e << std::endl;
 
-					Maze::sUpdatePaths = true;	// the other robots may need to find new path now.
+			Maze::sUpdatePaths = true;	// the other robots may need to find new path now.
 
-					break; // break from the loop (already got a flag)
-
-				}
-
-			}
+			break; // break from the loop (already got a flag)
 
 		}
+
 
 	}
 
@@ -77,16 +74,13 @@ void CaptureFlags::handleCoins(Entity e, Sprite& spr, PathLogic& plog) {
 	// handle coin colissions
 	for (int i = 0; i < Maze::cMaxCoins; i++) {
 
-		if (Maze::sCoin[i].id != -1) {
-			if (fbl_get_sprite_collision(spr.id[0], Maze::sCoin[i].id)) {
+		if (Maze::sCoin[i].id == -1) continue;
+		if (!fbl_get_sprite_collision(spr.id[0], Maze::sCoin[i].id)) continue;
 
-				fbl_set_sprite_active(Maze::sCoin[i].id, false);
-				Maze::sCoin[i].id = -1;
-				plog.coins++;
-				std::cout << "Player " << e << " has " << (int)plog.coins << std::endl;
-
-			}
-		}
+		fbl_set_sprite_active(Maze::sCoin[i].id, false);
+		Maze::sCoin[i].id = -1;
+		plog.coins++;
+		std::cout << "Player " << e << " has " << (int)plog.coins << std::endl;
 
 	}
 
