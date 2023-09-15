@@ -169,9 +169,9 @@ void Addons::setupAddons(Coordinator* mEcs) {
 	claimAddon(Turbo);
 	claimAddon(Shield);
 	claimAddon(Heal);
-	claimAddon(Diag);
+	claimAddon(Diag);*/
 	claimAddon(RobotCtrl);
-	*/
+	
 }
 
 void Addons::initAddons(Coordinator* mEcs) {

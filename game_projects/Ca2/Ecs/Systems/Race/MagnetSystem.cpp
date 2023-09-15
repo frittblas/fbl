@@ -51,51 +51,42 @@ void MagnetSystem::Update(Game& g) {
 		
 		bool isClose = false;
 
-		// check if any coins are in within the "strength" (distance in pixels) param and attract them to the player.
-		
-		if (sta.hp > 0.1 && !Maze::sStartingOut) {
+		if (sta.hp < 0.1 || Maze::sStartingOut || !mag.active) {
+			fbl_set_sprite_active(mag.spriteId, false);
+			continue;
+		}
 
-			if (mag.active) {
+		for (int i = 0; i < Maze::cMaxCoins; i++) {
 
-				for (int i = 0; i < Maze::cMaxCoins; i++) {
+			if (Maze::sCoin[i].id == -1) continue;
 
-					if (Maze::sCoin[i].id != -1) {
+			int cx = fbl_get_sprite_x(Maze::sCoin[i].id);
+			int cy = fbl_get_sprite_y(Maze::sCoin[i].id);
 
-						int cx = fbl_get_sprite_x(Maze::sCoin[i].id);
-						int cy = fbl_get_sprite_y(Maze::sCoin[i].id);
+			// check if any coins are in within the "strength" (dist in px) param and attract them to the player.
+			if (distance(pos.x + 16, pos.y + 16, cx, cy) < mag.strength + 2) {
 
-						if (distance(pos.x + 16, pos.y + 16, cx, cy) < mag.strength + 2) {
+				if (cx < pos.x + 16) fbl_set_sprite_xy(Maze::sCoin[i].id, cx + 1, cy);
+				if (cx > pos.x + 16) fbl_set_sprite_xy(Maze::sCoin[i].id, cx - 1, cy);
+				if (cy < pos.y + 16) fbl_set_sprite_xy(Maze::sCoin[i].id, fbl_get_sprite_x(Maze::sCoin[i].id), cy + 1);
+				if (cy > pos.y + 16) fbl_set_sprite_xy(Maze::sCoin[i].id, fbl_get_sprite_x(Maze::sCoin[i].id), cy - 1);
 
-							if (cx < pos.x + 16) fbl_set_sprite_xy(Maze::sCoin[i].id, cx + 1, cy);
-							if (cx > pos.x + 16) fbl_set_sprite_xy(Maze::sCoin[i].id, cx - 1, cy);
-							if (cy < pos.y + 16) fbl_set_sprite_xy(Maze::sCoin[i].id, fbl_get_sprite_x(Maze::sCoin[i].id), cy + 1);
-							if (cy > pos.y + 16) fbl_set_sprite_xy(Maze::sCoin[i].id, fbl_get_sprite_x(Maze::sCoin[i].id), cy - 1);
+				//std::cout << "Magnet active! distance: " << distance(pos.x + 16, pos.y + 16, cx, cy) << std::endl;
 
-							//std::cout << "Magnet active! distance: " << distance(pos.x + 16, pos.y + 16, cx, cy) << std::endl;
-
-							isClose = true;
-
-						}
-
-					}
-
-				}
+				isClose = true;
 
 			}
-			else fbl_set_sprite_active(mag.spriteId, false);
-
-			if (isClose) {
-				fbl_set_sprite_xy(mag.spriteId, pos.x + 16, pos.y + 16);
-				fbl_set_sprite_active(mag.spriteId, true);
-			}
-			else fbl_set_sprite_active(mag.spriteId, false);
 
 		}
+
+
+		if (isClose) {
+			fbl_set_sprite_xy(mag.spriteId, pos.x + 16, pos.y + 16);
+			fbl_set_sprite_active(mag.spriteId, true);
+		}
 		else fbl_set_sprite_active(mag.spriteId, false);
-		
 
 	}
-
 	
 }
 

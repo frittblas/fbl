@@ -47,27 +47,24 @@ void RobotCtrlSystem::Update(Coordinator& ecs) {
 		auto& path = ecs.GetComponent<Path>(entity);
 		auto& rCtrl = ecs.GetComponent<RobotCtrl>(entity);
 
-		if (rCtrl.active) {
+		if (!rCtrl.active) continue;
 
-			if (fbl_get_mouse_click(FBLMB_LEFT) && rCtrl.access == 0 && !Maze::sStartingOut) {
+		if (fbl_get_mouse_click(FBLMB_LEFT) && rCtrl.access == 0 && !Maze::sStartingOut) {
 
-				path.goalX = fbl_get_mouse_logical_x() + fbl_get_camera_x();
-				path.goalY = fbl_get_mouse_logical_y() + fbl_get_camera_y();
+			path.goalX = fbl_get_mouse_logical_x() + fbl_get_camera_x();
+			path.goalY = fbl_get_mouse_logical_y() + fbl_get_camera_y();
 
-				// snap to grid
-				while (path.goalX % Game::TileSize != 0) path.goalX--;
-				while (path.goalY % Game::TileSize != 0) path.goalY--;
+			// snap to grid
+			while (path.goalX % Game::TileSize != 0) path.goalX--;
+			while (path.goalY % Game::TileSize != 0) path.goalY--;
 
-				// restrict clicking area to only the actual racing area (and not where the addons are)
+			// restrict clicking area to only the actual racing area (and not where the addons are)
+			if (path.goalX > (Game::TileSize * 3 - 2) && path.goalX < Game::LogicalResW - (Game::TileSize * 3)) {
 
-				if (path.goalX > (Game::TileSize * 3 - 2) && path.goalX < Game::LogicalResW - (Game::TileSize * 3)) {
+				if (!(pos.x == path.goalX && pos.y == path.goalY))	// can't click on yourself, doesn't count
+					path.newPath = true;
 
-					if (!(pos.x == path.goalX && pos.y == path.goalY))	// can't click on yourself, doesn't count
-						path.newPath = true;
-
-					rCtrl.access = 20;
-
-				}
+				rCtrl.access = 20;
 
 			}
 
@@ -75,7 +72,6 @@ void RobotCtrlSystem::Update(Coordinator& ecs) {
 
 		rCtrl.access--;
 		if (rCtrl.access < 0) rCtrl.access = 0;
-
 
 	}
 

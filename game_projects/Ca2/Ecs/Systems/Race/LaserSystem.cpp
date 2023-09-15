@@ -106,49 +106,46 @@ void LaserSystem::Update(Game& g) {
 				break;
 		}
 
-		// only fire if (bool)firing is true
-		if (las.isFiring) {
-
-			if (sta.hp > 0.1 && sta.energy > 0.1) {
-
-				fbl_set_prim_active(las.rayId, true);	// show the ray
-
-				setDirection(pos, las);
-
-				sta.energy -= static_cast<double>(las.energyCost) / 20;
-
-				// some ray hit detection
-				int id, x, y;
-				fbl_get_ray_hit_sprite(las.rayId, &id, &x, &y);
-				fbl_set_emitter_xy(las.particleId, x, y);	// position the particles where the ray hit
-
-				if (id != -1) {	// do the following if the laser didn't miss completely (didn't even hit a rock)
-
-					if (x > 25 && y > 25)	// avoid having the particles spawn at x == 0 and y == 0
-						fbl_set_emitter_active(las.particleId, true);	// only turn the particles on if the ray hit something
-
-					std::cout << "id hit = " << id << std::endl;
-
-					//printf("Ray 0 hit sprite: %d at x: %d, y: %d\n", id, x, y);
-
-					dealDamage(g, entity, g.mRobots->mSpriteIdToEntityMap[id]);
-
-				}
-				else fbl_set_emitter_active(las.particleId, false);	// turn off particles if ray didn't hit anything
-
-			}
-			else {
-				fbl_set_prim_active(las.rayId, false);
-				fbl_set_emitter_active(las.particleId, false);
-				fbl_set_prim_active(las.crossHairId, false);
-			}
-
-		}
-		else {
+		// only fire if (bool)isFiring is true
+		if (!las.isFiring) {
 			// turn these off if !firing, it's ok to call every frame
 			fbl_set_prim_active(las.rayId, false);
 			fbl_set_emitter_active(las.particleId, false);
+			continue;
 		}
+
+		// skip if dead or out of energy
+		if (sta.hp < 0.1 || sta.energy < 0.1) {
+			fbl_set_prim_active(las.rayId, false);
+			fbl_set_emitter_active(las.particleId, false);
+			fbl_set_prim_active(las.crossHairId, false);
+			continue;
+		}
+
+		fbl_set_prim_active(las.rayId, true);	// show the ray
+
+		setDirection(pos, las);
+
+		sta.energy -= static_cast<double>(las.energyCost) / 20;	// energy cost
+
+		// some ray hit detection
+		int id, x, y;
+		fbl_get_ray_hit_sprite(las.rayId, &id, &x, &y);
+		fbl_set_emitter_xy(las.particleId, x, y);	// position the particles where the ray hit
+
+		if (id != -1) {	// do the following if the laser didn't miss completely (didn't even hit a rock)
+
+			if (x > 25 && y > 25)	// avoid having the particles spawn at x == 0 and y == 0
+				fbl_set_emitter_active(las.particleId, true);	// only turn the particles on if the ray hit something
+
+			std::cout << "id hit = " << id << std::endl;
+
+			//printf("Ray 0 hit sprite: %d at x: %d, y: %d\n", id, x, y);
+
+			dealDamage(g, entity, g.mRobots->mSpriteIdToEntityMap[id]);
+
+		}
+		else fbl_set_emitter_active(las.particleId, false);	// turn off particles if ray didn't hit anything
 
 		// only show the crosshair if the robots are showing
 		if(Maze::sPickDone) fbl_set_prim_active(las.crossHairId, true);
@@ -163,67 +160,69 @@ void LaserSystem::Update(Game& g) {
 void LaserSystem::dealDamage(Game &g, Entity attacker, Entity target) {
 
 	// check if a laser has hit another robot
-	for (int i = 0; i < g.mRobots->mNumRacers; i++)
-		if (target == g.mRobots->mRacingRobots[i]) {
+	for (int i = 0; i < g.mRobots->mNumRacers; i++) {
 
-			auto& attackLas = g.mEcs->GetComponent<Laser>(attacker);
-			auto& targetSta = g.mEcs->GetComponent<Stats>(target);
-			auto& light = g.mEcs->GetComponent<Light>(target);
+		if (target != g.mRobots->mRacingRobots[i]) continue;	// skip if target is not a robot
 
-			// if target has shield
-			Shield* targetShield = nullptr;
-			if (g.mEcs->HasComponent<Shield>(target))
-				targetShield = &g.mEcs->GetComponent<Shield>(target);
+		auto& attackLas = g.mEcs->GetComponent<Laser>(attacker);
+		auto& targetSta = g.mEcs->GetComponent<Stats>(target);
+		auto& light = g.mEcs->GetComponent<Light>(target);
 
-			if (targetShield) {
+		// if target has shield
+		Shield* targetShield = nullptr;
+		if (g.mEcs->HasComponent<Shield>(target))
+			targetShield = &g.mEcs->GetComponent<Shield>(target);
 
-				if (targetShield->isShielding && targetSta.energy > 0 && targetSta.hp > 0) {
+		if (targetShield) {
+
+			if (targetShield->isShielding && targetSta.energy > 0 && targetSta.hp > 0) {
 				
-					// nothing (don't take damage) NOTE: match the different shields and lasers here
-					// red lasers can be blocked by red shield etc.
+				// nothing (don't take damage) NOTE: match the different shields and lasers here
+				// red lasers can be blocked by red shield etc.
 				
-				}
-				else targetSta.hp -= static_cast<double>(attackLas.damage) / 10;
-
 			}
 			else targetSta.hp -= static_cast<double>(attackLas.damage) / 10;
 
-			// if target dead
-			if (targetSta.hp <= 0) {
-				//auto& targetPlog = g.mEcs->GetComponent<PathLogic>(target);
-				auto& targetSpr = g.mEcs->GetComponent<Sprite>(target);
-				auto& targetAim = g.mEcs->GetComponent<AutoAim>(target);
-				Laser* targetLas = nullptr;
-				if (g.mEcs->HasComponent<Laser>(target))
-					targetLas = &g.mEcs->GetComponent<Laser>(target);
-
-				targetSta.hp = 0;	// keep hp at 0
-				fbl_set_sprite_active(targetSpr.id[0], false);				// turn off sprite (dead)
-				fbl_set_sprite_phys(targetSpr.id[0], false, 0, 0, false);	// turn off ray colission
-				fbl_set_sprite_active(light.id, false);						// turn off the light sprite (dead)
-				fbl_set_prim_active(targetAim.rayId, false);				// turn off the aim prim
-				if (targetLas) fbl_set_prim_active(targetLas->crossHairId, false);	// turn off the crosshair for targetLaser
-				targetAim.active = false;									// can't target people when dead
-				if (targetLas) targetLas->isFiring = false;
-				//Efx::getInstance().shakeCamera(20, 40);					// shake camera
-				fbl_set_emitter_active(attackLas.particleId, false);		// turn off emitter, making a cloud
-
-				robotDied();
-
-				// drop the flag when dead (doesn't do anything in other game modes)
-				for (int j = 0; j < Maze::cMaxFlags; j++) {
-					if (Maze::sFlag[j].state == target) {
-						Maze::sFlag[j].state = Maze::FlagState::Dropped;
-						Maze::sUpdatePaths = true;
-						break;
-					}
-				}
-
-
-			}
-			//std::cout << sta.name << " killed " << targetSta.name << std::endl;
-			break;	// no need to check the other robots after a hit
 		}
+		else targetSta.hp -= static_cast<double>(attackLas.damage) / 10;
+
+		// if target dead
+		if (targetSta.hp <= 0) {
+			//auto& targetPlog = g.mEcs->GetComponent<PathLogic>(target);
+			auto& targetSpr = g.mEcs->GetComponent<Sprite>(target);
+			auto& targetAim = g.mEcs->GetComponent<AutoAim>(target);
+			Laser* targetLas = nullptr;
+			if (g.mEcs->HasComponent<Laser>(target))
+				targetLas = &g.mEcs->GetComponent<Laser>(target);
+
+			targetSta.hp = 0;	// keep hp at 0
+			fbl_set_sprite_active(targetSpr.id[0], false);				// turn off sprite (dead)
+			fbl_set_sprite_phys(targetSpr.id[0], false, 0, 0, false);	// turn off ray colission
+			fbl_set_sprite_active(light.id, false);						// turn off the light sprite (dead)
+			fbl_set_prim_active(targetAim.rayId, false);				// turn off the aim prim
+			if (targetLas) fbl_set_prim_active(targetLas->crossHairId, false);	// turn off the crosshair for targetLaser
+			targetAim.active = false;									// can't target people when dead
+			if (targetLas) targetLas->isFiring = false;
+			//Efx::getInstance().shakeCamera(20, 40);					// shake camera
+			fbl_set_emitter_active(attackLas.particleId, false);		// turn off emitter, making a cloud
+
+			robotDied();
+
+			// drop the flag when dead (doesn't do anything in other game modes)
+			for (int j = 0; j < Maze::cMaxFlags; j++) {
+				if (Maze::sFlag[j].state == target) {
+					Maze::sFlag[j].state = Maze::FlagState::Dropped;
+					Maze::sUpdatePaths = true;
+					break;
+				}
+			}
+
+
+		}
+		//std::cout << sta.name << " killed " << targetSta.name << std::endl;
+		break;	// no need to check the other robots after a hit
+
+	}
 
 }
 

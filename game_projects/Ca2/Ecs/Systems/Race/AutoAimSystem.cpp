@@ -53,53 +53,52 @@ void AutoAimSystem::Update(Game& g) {
 		auto& sta = g.mEcs->GetComponent<Stats>(entity);
 		auto& aim = g.mEcs->GetComponent<AutoAim>(entity);
 
-		if(aim.active) {
+		if (!aim.active) continue;	// don't bother if aim is not active
 
-			aim.hasTarget = false;	// assume that a robot has not been seen
+		aim.hasTarget = false;	// assume that a robot has not been seen
 
-			// set the ray to point in current direction (aim.dir)
-			setDirection(pos, aim);
+		setDirection(pos, aim); // set the ray to point in current direction (aim.dir)
 
-			// some ray hit detection
-			int id, x, y;
-			fbl_get_ray_hit_sprite(aim.rayId, &id, &x, &y);
+		// some ray hit detection
+		int id, x, y;
+		fbl_get_ray_hit_sprite(aim.rayId, &id, &x, &y);
 
-			if (id >= 4 && id <= g.mRobots->NumRobots + 4) {// only check further if the sprite id that was hit, is a robot. (first 4 sprites is brodo :))
+		// only check further if the sprite id that was hit, is a robot. (first 4 sprites is brodo :))
+		if (id >= 4 && id <= g.mRobots->NumRobots + 4) {
 
-				// check if a ray has hit a robot
-				for (int i = 0; i < g.mRobots->mNumRacers; i++)
-					if (g.mRobots->mSpriteIdToEntityMap[id] == g.mRobots->mRacingRobots[i]) {
-						auto& targetSta = g.mEcs->GetComponent<Stats>(g.mRobots->mSpriteIdToEntityMap[id]);
-						//std::cout << sta.name << " saw " << targetSta.name << std::endl;
+			// check if a ray has hit a robot
+			for (int i = 0; i < g.mRobots->mNumRacers; i++) {
 
-						// check to see if you saw yourself :)
-						if (entity == g.mRobots->mSpriteIdToEntityMap[id]) {
-							std::cout << "Handled saw myself in theory!" << std::endl;
-							continue;	// just skip this weirdness :)
-						}
-						
-						aim.hasTarget = true;
-						break;	// no need to check the other robots after a hit
-					}
-				
+				if (g.mRobots->mSpriteIdToEntityMap[id] != g.mRobots->mRacingRobots[i]) continue;
 
-			}
+				auto& targetSta = g.mEcs->GetComponent<Stats>(g.mRobots->mSpriteIdToEntityMap[id]);
+				//std::cout << sta.name << " saw " << targetSta.name << std::endl;
 
-			// if no target was found in that direction, change direction (loop through directions continously)
-			// stay on each dir for intervalMax frames
-			if (!aim.hasTarget) {
-				if (aim.intervalCur > aim.intervalMax) {
-				
-					aim.dir++;
-					if (aim.dir > 3) aim.dir = 0;
-
-					aim.intervalCur = 0;
+				// check to see if you saw yourself :)
+				if (entity == g.mRobots->mSpriteIdToEntityMap[id]) {
+					std::cout << "Handled saw myself in theory!" << std::endl;
+					continue;	// just skip this weirdness :)
 				}
-			}
 
-			aim.intervalCur++;
+				aim.hasTarget = true;
+				break;	// no need to check the other robots after a hit
+			}	
 
 		}
+
+		// if no target was found in that direction, change direction (loop through directions continously)
+		// stay on each dir for intervalMax frames
+		if (!aim.hasTarget) {
+			if (aim.intervalCur > aim.intervalMax) {
+				
+				aim.dir++;
+				if (aim.dir > 3) aim.dir = 0;
+
+				aim.intervalCur = 0;
+			}
+		}
+
+		aim.intervalCur++;
 
 	}
 

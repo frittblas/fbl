@@ -90,42 +90,38 @@ void CaptureFlags::handleBases(Game& g, Entity e, Position& pos, Sprite& spr, Pa
 
 	// if a robot collides with it's base, drop any flags carried, charge the battery and set out for nearest flag
 
-	// check to see if a robot has collided with a 20x20 square around the base coords.
-	if (pos.x < (plog.baseX + 10) && pos.x >(plog.baseX - 10) &&
-		pos.y < (plog.baseY + 10) && pos.y >(plog.baseY - 10)) {
+	// check to see if a robot has collided with a 20x20 square around the base coords, otherwise skip
+	if (!(pos.x < (plog.baseX + 10) && pos.x >(plog.baseX - 10) &&
+		pos.y < (plog.baseY + 10) && pos.y >(plog.baseY - 10))) return;
 
-		//std::cout << "Collided with da base!" << std::endl;
+	//std::cout << "Collided with da base!" << std::endl;
 
-		// charge battery
-		auto& stat = g.mEcs->GetComponent<Stats>(e);
-		stat.energy = stat.maxEnergy;
+	// charge battery
+	auto& stat = g.mEcs->GetComponent<Stats>(e);
+	stat.energy = stat.maxEnergy;
 
-		int flagIndex = hasFlag(e);
-		if (flagIndex >= 0) {
-			plog.flags++;
-			fbl_set_sprite_active(Maze::sFlag[flagIndex].id, false);
-			Maze::sFlag[flagIndex].state = Maze::FlagState::Base;
-			std::cout << "Dropped flag in base! entity: " << e << std::endl;
-		}
-
-		if (!Maze::sStartingOut) {
-			//findClosestFlag(pos, path, plog);
-			//std::cout << "Heading out from base! entity: " << e << std::endl;
-
-			if (!g.mEcs->HasComponent<RobotCtrl>(e)) {
-				findClosestFlag(pos, path, plog);
-			}
-			else {
-				auto& ctrl = g.mEcs->GetComponent<RobotCtrl>(e);
-
-				if (!ctrl.active)
-					findClosestFlag(pos, path, plog);
-			}
-
-		}
-
+	int flagIndex = hasFlag(e);
+	if (flagIndex >= 0) {
+		plog.flags++;
+		fbl_set_sprite_active(Maze::sFlag[flagIndex].id, false);
+		Maze::sFlag[flagIndex].state = Maze::FlagState::Base;
+		std::cout << "Dropped flag in base! entity: " << e << std::endl;
 	}
 
+	if (Maze::sStartingOut) return;
+
+	//findClosestFlag(pos, path, plog);
+	//std::cout << "Heading out from base! entity: " << e << std::endl;
+
+	if (!g.mEcs->HasComponent<RobotCtrl>(e)) {
+		findClosestFlag(pos, path, plog);
+	}
+	else {
+		auto& ctrl = g.mEcs->GetComponent<RobotCtrl>(e);
+
+		if (!ctrl.active)
+			findClosestFlag(pos, path, plog);
+	}
 
 }
 
@@ -164,21 +160,16 @@ void CaptureFlags::findClosestFlag(Position& pos, Path& path, PathLogic& plog) {
 	}
 
 	if (flagsAvailable) {
-
 		path.goalX = fbl_get_sprite_x(Maze::sFlag[nearestFlagId].id);
 		path.goalY = fbl_get_sprite_y(Maze::sFlag[nearestFlagId].id);
-		path.newPath = true;
-
 	}
-
-	if (!flagsAvailable) {
-
+	else {
 		// if no flags available, set course to the base
 		path.goalX = plog.baseX;
 		path.goalY = plog.baseY;
-		path.newPath = true;
-
 	}
+
+	path.newPath = true;
 
 }
 
@@ -237,43 +228,40 @@ void CaptureFlags::switchCtrl(Game& g, Entity e, Position& pos, Path& path, Path
 	// clicks the passive RobotCtrl addon in a race.
 
 	// update behaviour only for robots with a MouseCtrl component (i.e. the player)
-	if (g.mEcs->HasComponent<RobotCtrl>(e)) {
+	if (!g.mEcs->HasComponent<RobotCtrl>(e)) return;
 
-		auto& ctrl = g.mEcs->GetComponent<RobotCtrl>(e);
+	auto& ctrl = g.mEcs->GetComponent<RobotCtrl>(e);
 
-		if (ctrl.justSwitched) {
-			std::cout << "JUST SWITCHED! for robot-entity: " << e << std::endl;
-			if (!ctrl.active) {		// if the robot ctrl is deactivated, control goes back to auto
+	if (!ctrl.justSwitched) return;		// don't bother is player didn't just switch (from ctrl to automatic)
 
-				if (hasFlag(e) >= 0) {
+	std::cout << "JUST SWITCHED! for robot-entity: " << e << std::endl;
 
-					// if carrying flag, set course to the base
-					if (!Maze::sStartingOut) {
-						path.goalX = plog.baseX;
-						path.goalY = plog.baseY;
-						path.newPath = true;
-					}
+	if (!ctrl.active) {		// if the robot ctrl is deactivated, control goes back to auto
 
-				}
-				else {
-					if (!Maze::sStartingOut)
-						findClosestFlag(pos, path, plog);
-				}
+		if (hasFlag(e) >= 0) {
 
-			}
-			else {	// here it's active again
-
-				// make robot stop
-				fbl_pathf_set_path_status(path.id, FBL_PATHF_NOT_STARTED);
-
+			// if carrying flag, set course to the base
+			if (!Maze::sStartingOut) {
+				path.goalX = plog.baseX;
+				path.goalY = plog.baseY;
+				path.newPath = true;
 			}
 
-			ctrl.justSwitched = false;
-
+		}
+		else {
+			if (!Maze::sStartingOut)
+				findClosestFlag(pos, path, plog);
 		}
 
 	}
+	else {	// here it's active again
 
+		// make robot stop
+		fbl_pathf_set_path_status(path.id, FBL_PATHF_NOT_STARTED);
+
+	}
+
+	ctrl.justSwitched = false;
 
 }
 
