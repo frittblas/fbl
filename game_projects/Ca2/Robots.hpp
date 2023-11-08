@@ -17,6 +17,7 @@
 
 
 class Coordinator;
+class Game;
 
 class Robots {
 
@@ -55,5 +56,8 @@ public:
     void showRobotInMenu(Coordinator* mEcs, int nameIndex, int entity);
     void showRobotInRace(Coordinator* mEcs, Entity robot, int position);
     void claimRobot(int nameIndex);    // call this to "own" a robot
+    int* levelUpRobot(Game& g, int nameIndex, bool owned);
+    void levelUpAllFreeRobots(Game& g);
+    bool assignRobotXP(Game& g, int nameIndex);
 
 };

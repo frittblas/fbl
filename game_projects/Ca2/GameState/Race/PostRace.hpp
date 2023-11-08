@@ -25,12 +25,15 @@ public:
 
     void tick(Game& g);
     void gameOver();
-    void PostRace::updateItemInfo(Game& g, bool empty);
+    void updateContextHelp(std::string msg);
+    void updateItemInfo(Game& g, bool empty);
     void initPostRaceMenu(Game& g);
 
 private:
     // id's for the robot collection-menu
     uint16_t mRobotLevel, mRobotHp, mRobotSpeed, mRobotDiag, mRobotEnergy;
+    uint16_t mRobotLevelBonus, mRobotHpBonus, mRobotSpeedBonus, mRobotDiagBonus, mRobotEnergyBonus;
+    uint16_t mRobotLevelUp;
     uint16_t mAddonName, mAddonLevel, mAddonRarity, mAddonPassive, mAddonEquipped, mAddonPrice;
     uint16_t mContextHelp, mContinueButton;
 

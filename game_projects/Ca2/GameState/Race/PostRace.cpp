@@ -86,6 +86,13 @@ void PostRace::gameOver() {
 
 }
 
+void PostRace::updateContextHelp(std::string msg) {
+
+	fbl_load_ttf_font("font/roboto.ttf", 16);
+	fbl_update_text(mContextHelp, 255, 255, 255, 255, (char*)msg.c_str());
+	fbl_load_ttf_font("font/roboto.ttf", 18);
+}
+
 void PostRace::updateItemInfo(Game& g, bool empty) {
 
 
@@ -129,11 +136,23 @@ void PostRace::initPostRaceMenu(Game& g) {
 
 	fbl_load_ttf_font("font/roboto.ttf", 16);
 	std::string msg = "";
+	auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mRacingRobots[0]);	// replace with current racing robot
 	switch (Race::sRaceState) {
-		case Race::RaceState::First:  msg = "Congratulations! You placed 1st! Buy something will ya!"; break;
-		case Race::RaceState::Second: msg = "Very nice you placed 2nd! Please buy whatever you like."; break;
-		case Race::RaceState::Third:  msg = "Hmm.. You placed 3rd. Not that great but please buy some stuff!"; break;
-		case Race::RaceState::Fourth: msg = "That was not good, you placed last! Please buy something anyway :)"; break;
+		case Race::RaceState::First:
+			msg = "Congratulations! You placed 1st! Buy something will ya!";
+			sta.xp += 8;
+			break;
+		case Race::RaceState::Second:
+			msg = "Very nice you placed 2nd! Please buy whatever you like.";
+			sta.xp += 2;
+			break;
+		case Race::RaceState::Third:
+			msg = "Hmm.. You placed 3rd. Not that great but please buy some stuff!";
+			sta.xp += 1;
+			break;
+		case Race::RaceState::Fourth:
+			msg = "That was not good, you placed last! Please buy something anyway :)";
+			break;
 	}
 	mContextHelp = fbl_create_text(255, 255, 255, 0, (char*)msg.c_str());
 	fbl_set_text_align(mContextHelp, FBL_ALIGN_CENTER);
@@ -204,22 +223,63 @@ void PostRace::initPostRaceMenu(Game& g) {
 
 	fbl_load_ttf_font("font/roboto.ttf", 18);
 
+	int* bonus = nullptr;
+
+	if (g.mRobots->assignRobotXP(g, Robots::Charmy)) {
+
+		bonus = g.mRobots->levelUpRobot(g, Robots::Charmy, true);
+
+	}
+
+
 	// stats
-	mRobotLevel = fbl_create_text(255, 255, 255, 0, (char*)"Level:  %d  (xp: %d / %d)", 1, 0, 4);
+	mRobotLevel = fbl_create_text(255, 255, 255, 0, (char*)"Level:  %d  (xp: %d / %d)", sta.level, sta.xp, sta.nextLv);
 	fbl_set_text_align(mRobotLevel, FBL_ALIGN_LEFT);
 	fbl_set_text_xy(mRobotLevel, x + 140, y - 30);
-	mRobotHp = fbl_create_text(255, 255, 255, 0, (char*)"Hp:  %d / %d", 10, 10);
+	mRobotHp = fbl_create_text(255, 255, 255, 0, (char*)"Hp:  %d / %d", (int)sta.hp, sta.maxHp);
 	fbl_set_text_align(mRobotHp, FBL_ALIGN_LEFT);
 	fbl_set_text_xy(mRobotHp, x + 140, y);
-	mRobotSpeed = fbl_create_text(255, 255, 255, 0, (char*)"Speed:  %d", 1);
+	mRobotSpeed = fbl_create_text(255, 255, 255, 0, (char*)"Speed:  %d", sta.speed);
 	fbl_set_text_align(mRobotSpeed, FBL_ALIGN_LEFT);
 	fbl_set_text_xy(mRobotSpeed, x + 140, y + 30);
-	mRobotDiag = fbl_create_text(255, 255, 255, 0, (char*)"Diagonals:  %s", "Yes");
+	if(sta.diag)
+		mRobotDiag = fbl_create_text(255, 255, 255, 0, (char*)"Diagonals:  %s", "Yes");
+	else
+		mRobotDiag = fbl_create_text(255, 255, 255, 0, (char*)"Diagonals:  %s", "No");
 	fbl_set_text_align(mRobotDiag, FBL_ALIGN_LEFT);
 	fbl_set_text_xy(mRobotDiag, x + 140, y + 60);
-	mRobotEnergy = fbl_create_text(255, 255, 255, 0, (char*)"Energy:  %d / %d", 5, 10);
+	mRobotEnergy = fbl_create_text(255, 255, 255, 0, (char*)"Energy:  %d / %d", (int)sta.energy, sta.maxEnergy);
 	fbl_set_text_align(mRobotEnergy, FBL_ALIGN_LEFT);
 	fbl_set_text_xy(mRobotEnergy, x + 140, y + 90);
+
+	// bonus stats as +1 etc
+	if (bonus) {
+
+		mRobotLevelBonus = fbl_create_text(83, 240, 87, 0, (char*)"+ %d", bonus[0]);
+		fbl_set_text_align(mRobotLevelBonus, FBL_ALIGN_LEFT);
+		fbl_set_text_xy(mRobotLevelBonus, x + 310, y - 30);
+		mRobotHpBonus = fbl_create_text(83, 240, 87, 0, (char*)"+ %d", bonus[1]);
+		fbl_set_text_align(mRobotHpBonus, FBL_ALIGN_LEFT);
+		fbl_set_text_xy(mRobotHpBonus, x + 310, y);
+		mRobotSpeedBonus = fbl_create_text(83, 240, 87, 0, (char*)"+ %d", bonus[2]);
+		fbl_set_text_align(mRobotSpeedBonus, FBL_ALIGN_LEFT);
+		fbl_set_text_xy(mRobotSpeedBonus, x + 310, y + 30);
+		if (bonus[3]) {
+			mRobotDiagBonus = fbl_create_text(83, 240, 87, 0, (char*)"Active");
+			fbl_set_text_align(mRobotDiagBonus, FBL_ALIGN_LEFT);
+			fbl_set_text_xy(mRobotDiagBonus, x + 310, y + 60);
+		}
+		mRobotEnergyBonus = fbl_create_text(83, 240, 87, 0, (char*)"+ %d", bonus[4]);
+		fbl_set_text_align(mRobotEnergyBonus, FBL_ALIGN_LEFT);
+		fbl_set_text_xy(mRobotEnergyBonus, x + 310, y + 90);
+
+		mRobotLevelUp = fbl_create_text(83, 240, 87, 0, (char*)"LEVEL UP!");
+		fbl_set_text_align(mRobotLevelUp, FBL_ALIGN_LEFT);
+		fbl_set_text_xy(mRobotLevelUp, x + 140, y + 140);
+
+		delete[] bonus;
+
+	}
 
 
 	// line separator down left
@@ -251,7 +311,7 @@ void PostRace::initPostRaceMenu(Game& g) {
 	mContinueButton = fbl_create_ui_elem(FBL_UI_BUTTON_INTERVAL, 0, 0, 32, 32, NULL);
 	fbl_set_ui_elem_xy(mContinueButton, x, 500);	// down middle
 
-	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"->");
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"Continue");
 	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
 	fbl_set_text_xy(tmpId, x + 32, 500);
 

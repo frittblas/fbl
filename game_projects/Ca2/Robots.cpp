@@ -58,7 +58,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 0, 96, 32, 32, false, 0, 0, 0, 0, 7 });	// robots are on layer 7
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
-				mEcs->AddComponent(tmpRobot, Stats{ "Charmy", 1, 0, 4, 15, 50, 8, true, 40, 40, 7, -1, -1, -1, -1, -1, -1 });
+				mEcs->AddComponent(tmpRobot, Stats{ "Charmy", 1, 0, 7, 25, 25, 8, false, 25, 25, 7, -1, -1, -1, -1, -1, -1 });
 												  // baseX Y flg coin kills
 				//mEcs->AddComponent(tmpRobot, PathLogic{ 0, 0, 0, 0, 0 });
 												//  rid len dir ivalM ivalC hasTarg active
@@ -70,10 +70,10 @@ void Robots::setupRobots(Coordinator* mEcs) {
 
 				break;
 			case Alarmy :
-												 // id id id id num tx32 ty96   w   h   anim2 fr spd12 dir dirLast layer
-				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 224, 160, 32, 32, true, 4, 5, 0, 0, 7 });
+												 // id id id id num tx 96   w   h   anim fr spd dir dirLast layer
+				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 32, 96, 32, 32, true, 2, 12, 0, 0, 7 });
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
-				mEcs->AddComponent(tmpRobot, Stats{ "Alarmy", 1, 0, 4, 40, 40, 6, true, 20, 19, 17, -1, -1, -1, -1, -1, -1 });
+				mEcs->AddComponent(tmpRobot, Stats{ "Alarmy", 1, 0, 7, 25, 25, 6, true, 25, 25, 17, -1, -1, -1, -1, -1, -1 });
 											   // baseX Y flg coin kills
 				//mEcs->AddComponent(tmpRobot, PathLogic{ 0, 0, 0, 0, 0 });
 											   //   act durLeft hp
@@ -89,7 +89,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 96, 96, 32, 32, true, 2, 12, 0, 0, 7 });
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
-				mEcs->AddComponent(tmpRobot, Stats{ "Boingy", 2, 0, 4, 30, 30, 4, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
+				mEcs->AddComponent(tmpRobot, Stats{ "Boingy", 2, 0, 7, 20, 20, 4, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
 												  // baseX Y flg coin kills
 				//mEcs->AddComponent(tmpRobot, PathLogic{ 0, 0, 0, 0, 0 });
 											  //   act durLeft hp
@@ -105,7 +105,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 160, 96, 32, 32, true, 3, 12, 0, 0, 7 });
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
-				mEcs->AddComponent(tmpRobot, Stats{ "Chompy", 2, 0, 4, 30, 30, 5, true, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
+				mEcs->AddComponent(tmpRobot, Stats{ "Chompy", 2, 0, 7, 25, 25, 5, true, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
 											   // baseX Y flg coin kills
 				//mEcs->AddComponent(tmpRobot, PathLogic{ 0, 0, 0, 0, 0 });
 											   //   act durLeft hp
@@ -121,7 +121,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 												  // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 256, 96, 32, 32, true, 4, 12, 0, 0, 7 });
 												   // name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
-				mEcs->AddComponent(tmpRobot, Stats{ "Dancy", 2, 0, 4, 30, 30, 5, true, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
+				mEcs->AddComponent(tmpRobot, Stats{ "Dancy", 2, 0, 7, 30, 20, 20, true, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
 												  // baseX Y flg coin kills
 				//mEcs->AddComponent(tmpRobot, PathLogic{ 0, 0, 0, 0, 0 });
 												//   act dur hp
@@ -449,5 +449,102 @@ void Robots::claimRobot(int nameIndex) {
 	}
 
 	for (Entity e : mOwnedRobots) std::cout << "Owned robot entity-id: " << e << std::endl;
+
+}
+
+int* Robots::levelUpRobot(Game& g, int nameIndex, bool owned) {
+
+	Stats* sta = nullptr;
+
+	if(owned)
+		sta = &g.mEcs->GetComponent<Stats>(g.mRobots->mOwnedRobots[nameIndex]);
+	else
+		sta = &g.mEcs->GetComponent<Stats>(g.mRobots->mAllRobots[nameIndex]);
+
+	// if the robot already is at the max level just return
+	if (sta->level > 4)
+		return nullptr;
+
+	int* bonus = new int[5]; // Create an array of 5 integers
+
+	sta->level++;
+	bonus[0] = 1;
+
+	bonus[1] = rand() % 3 + 3;
+	sta->maxHp += bonus[1];
+	sta->hp = sta->maxHp;	// refill life at level up = nice!
+
+	bonus[2] = rand() % 3 + 2;
+	sta->speed += bonus[2];
+
+	if (sta->level == 2) {
+		sta->diag = true;	// all robots will get diag at level 2
+		bonus[3] = 1;
+	}
+	else bonus[3] = 0;
+
+	bonus[4] = rand() % 3 + 3;
+	sta->maxEnergy += bonus[4];
+	sta->energy = sta->maxEnergy;	// refill energy (this gets done anyway in Race.cpp)
+
+	std::cout << "Leveled up!" << std::endl;
+
+	// now return the changed values to be shown in the post race menu
+	return bonus;
+
+}
+
+void Robots::levelUpAllFreeRobots(Game& g) {
+
+	// level up all the robots one level, the ones that are not owned, for difficulty
+
+	for (int i = 0; i < NumRobots; i++) {
+
+		if (mAllRobots[i] != Unassigned)
+			levelUpRobot(g, i, false);
+
+	}
+
+}
+
+bool Robots::assignRobotXP(Game& g, int nameIndex) {
+
+	auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mOwnedRobots[nameIndex]);
+
+	// already max level
+	if (sta.level > 4) {
+		std::cout << "Already max level! " << std::endl;
+		return false;
+	}
+
+	// check level up, skip if no level up
+	if (sta.xp < sta.nextLv) {
+		std::cout << "xp lower than nextLv" << std::endl;
+		return false;
+	}
+
+	sta.xp = sta.xp - sta.nextLv;
+
+	switch (sta.level) {
+
+		// on level 1 nextLv = 7
+		case 1:
+			sta.nextLv = 10;
+			break;
+		case 2:
+			sta.nextLv = 15;
+			break;
+		case 3:
+			sta.nextLv = 20;
+			break;
+		case 4:
+			sta.nextLv = 25;
+			break;
+
+	}
+
+	std::cout << "Enough xp to level up!" << std::endl;
+
+	return true;
 
 }

@@ -189,6 +189,7 @@ void LaserSystem::dealDamage(Game &g, Entity attacker, Entity target) {
 		// if target dead
 		if (targetSta.hp <= 0) {
 			//auto& targetPlog = g.mEcs->GetComponent<PathLogic>(target);
+			auto& attackSta = g.mEcs->GetComponent<Stats>(attacker);
 			auto& targetSpr = g.mEcs->GetComponent<Sprite>(target);
 			auto& targetAim = g.mEcs->GetComponent<AutoAim>(target);
 			Laser* targetLas = nullptr;
@@ -217,6 +218,7 @@ void LaserSystem::dealDamage(Game &g, Entity attacker, Entity target) {
 				}
 			}
 
+			attackSta.xp++;	// 1 XP for killing a robot
 
 		}
 		//std::cout << sta.name << " killed " << targetSta.name << std::endl;

@@ -264,6 +264,10 @@ The alloted enemies get random addons then they are stripped after the race.
 Figure out how to not activate for ex. Magnet on a robot thats not racing.
 Maybe isRacing in Stats?? no!
 
+ScenEdit:
+Sort sprites after map load to make drawing sprite visible.
+Stretch to fit in fullscreen.
+
 BUGS:
 
 1. If you create an emitter before the first weather-call in Game.cpp, the fbl_set_lighting_tint() doesn't work!
