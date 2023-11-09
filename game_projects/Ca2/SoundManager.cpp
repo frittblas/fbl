@@ -43,13 +43,15 @@ SoundManager& SoundManager::getInstance() {
 void SoundManager::loadSfx() {
 
 	// load all the sound effects in the game and assign id's
-	mSfxLaser1 = fbl_load_sound("sfx/laser3.ogg");
-	mSfxExplosion = fbl_load_sound("sfx/explosion.ogg");
+	mSfxLaser1 = fbl_load_sound("sfx/laser1.ogg");
+	mSfxExplosion = fbl_load_sound("sfx/explosion1.ogg");
+	fbl_set_sound_volume(mSfxExplosion, 40); // max is 128
 
 	mSfxRainstorm = fbl_load_sound("sfx/rain.ogg");
 	mSfxSummer = fbl_load_sound("sfx/summer.ogg");
 
 	fbl_play_sound(mSfxSummer, 0, -1);
+	loadAndPlayMusic("music/title.ogg");
 
 }
 
@@ -65,7 +67,7 @@ void SoundManager::onRobotDeath() {
 
 	fbl_play_sound(mSfxExplosion, 1, 0);
 
-	std::cout << "EXPLOSION SOUND!!!!!!!!" << std::endl;
+	//std::cout << "EXPLOSION SOUND!!!!!!!!" << std::endl;
 
 }
 

@@ -15,6 +15,7 @@
 #include "../../Ecs/Ecs.hpp"
 #include "../../Ecs/Components.hpp"
 #include "../../Game.hpp"
+#include "../../Progress.hpp"
 #include "../../SysManager.hpp"
 #include "../../Efx.hpp"
 
@@ -78,7 +79,7 @@ void Race::assignRobots(Game& g) {
 
 	// for now just assign the robots we have (should be assigned fom teams and loop to find != Unassigned from mAll)
 
-	g.mRobots->mRacingRobots[0] = g.mRobots->mOwnedRobots[Robots::Charmy];
+	g.mRobots->mRacingRobots[0] = g.mRobots->mOwnedRobots[g.mProgress->mFavRobot];
 	g.mRobots->mRacingRobots[1] = g.mRobots->mOwnedRobots[Robots::Alarmy];
 	g.mRobots->mRacingRobots[2] = g.mRobots->mOwnedRobots[Robots::Boingy];
 	g.mRobots->mRacingRobots[3] = g.mRobots->mOwnedRobots[Robots::Chompy];

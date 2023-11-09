@@ -160,6 +160,7 @@ int lua_destroy_all_ui_elems(lua_State *lua_env);
 int lua_load_sound(lua_State *lua_env);
 int lua_delete_sound(lua_State *lua_env);
 int lua_play_sound(lua_State *lua_env);
+int lua_set_sound_volume(lua_State* lua_env);
 int lua_pause_sound(lua_State *lua_env);
 int lua_resume_sound(lua_State *lua_env);
 int lua_destroy_all_sounds(lua_State *lua_env);
@@ -507,6 +508,7 @@ void register_fbl_functions_to_lua()
 	lua_register(fbl_lua_env, "fbl_load_sound", lua_load_sound);
 	lua_register(fbl_lua_env, "fbl_delete_sound", lua_delete_sound);
 	lua_register(fbl_lua_env, "fbl_play_sound", lua_play_sound);
+	lua_register(fbl_lua_env, "fbl_set_sound_volume", lua_set_sound_volume);
 	lua_register(fbl_lua_env, "fbl_pause_sound", lua_pause_sound);
 	lua_register(fbl_lua_env, "fbl_resume_sound", lua_resume_sound);
 	lua_register(fbl_lua_env, "fbl_destroy_all_sounds", lua_destroy_all_sounds);
@@ -1990,6 +1992,18 @@ int lua_play_sound(lua_State *lua_env)
 	int loops = (int)lua_tonumber(lua_env, 3);
 
 	fbl_play_sound(id, channel, loops);
+
+	return 1;
+
+}
+
+int lua_set_sound_volume(lua_State* lua_env)
+{
+
+	int id = (int)lua_tonumber(lua_env, 1);
+	int volume = (int)lua_tonumber(lua_env, 2);
+
+	fbl_set_sound_volume(id, volume);
 
 	return 1;
 

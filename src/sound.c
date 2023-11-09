@@ -130,7 +130,7 @@ void fbl_play_sound(int id, int channel, int loops)
 
 		sound = ((FBL_SOUND *)item->Object);
 
-		sound->channel = Mix_PlayChannel(channel, sound->sample, loops);	/* play sample and store channel, NOTE: check if this really works (many samples with same channel working?) */
+		sound->channel = Mix_PlayChannel(channel, sound->sample, loops);
 
 		if (sound->channel == -1) {
 			printf("Mix_PlayChannel error: %s\n", Mix_GetError());
@@ -139,6 +139,24 @@ void fbl_play_sound(int id, int channel, int loops)
 	}
 #ifdef FBL_DEBUG
 	else fprintf(FBL_ERROR_OUT, "Tried to play sound %d, that does not exist!\n", id);
+#endif
+
+}
+
+void fbl_set_sound_volume(int id, int volume) {
+
+	FBL_SOUND* sound = NULL;
+	DLLIST* item = get_sound_item_at_id(id);
+
+	if (item != NULL)
+	{
+
+		sound = ((FBL_SOUND*)item->Object);
+		Mix_VolumeChunk(sound->sample, volume);	// MIX_MAX_VOLUME = 128
+
+	}
+#ifdef FBL_DEBUG
+	else fprintf(FBL_ERROR_OUT, "Tried to set volume on sound %d, that does not exist!\n", id);
 #endif
 
 }

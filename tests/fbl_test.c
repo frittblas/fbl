@@ -389,7 +389,7 @@ void setup_demo_2(void)
 
 	ping_sound = fbl_load_sound("ping.ogg");
 
-	fbl_load_music("song_99.ogg");	// only one piece of music is loaded at a time
+	fbl_load_music("music/title.ogg");	// only one piece of music is loaded at a time
 
 	x = 0;
 

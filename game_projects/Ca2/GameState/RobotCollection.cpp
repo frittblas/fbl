@@ -392,7 +392,7 @@ void RobotCollection::processInput(Game& g) {
 	if (fbl_get_ui_elem_val(fFavRobotCheckBox))
 		g.mProgress->mFavRobot = mCurrentRobotPage;
 
-	if (!fbl_get_ui_elem_val(fFavRobotCheckBox))	
+	if (!fbl_get_ui_elem_val(fFavRobotCheckBox) && g.mProgress->mFavRobot == mCurrentRobotPage)
 		fbl_set_ui_elem_val(fFavRobotCheckBox, 1);	// can't uncheck!
 
 
