@@ -136,7 +136,7 @@ void PostRace::initPostRaceMenu(Game& g) {
 
 	fbl_load_ttf_font("font/roboto.ttf", 16);
 	std::string msg = "";
-	auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mRacingRobots[0]);	// replace with current racing robot
+	auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mOwnedRobots[g.mProgress->mFavRobot]);
 	switch (Race::sRaceState) {
 		case Race::RaceState::First:
 			msg = "Congratulations! You placed 1st! Buy something will ya!";
@@ -225,9 +225,9 @@ void PostRace::initPostRaceMenu(Game& g) {
 
 	int* bonus = nullptr;
 
-	if (g.mRobots->assignRobotXP(g, Robots::Charmy)) {
+	if (g.mRobots->assignRobotXP(g, g.mProgress->mFavRobot)) {
 
-		bonus = g.mRobots->levelUpRobot(g, Robots::Charmy, true);
+		bonus = g.mRobots->levelUpRobot(g, g.mProgress->mFavRobot, true);
 
 	}
 

@@ -18,6 +18,7 @@
 #include "../Game.hpp"
 #include "../UserInput.hpp"
 #include "../Addons.hpp"
+#include "../Progress.hpp"
 #include "../Robots.hpp"
 #include "../Weather.hpp"
 #include "GameState.hpp"
@@ -95,6 +96,12 @@ void RobotCollection::cyclePages(Game& g, int dir) {
 
 	// get stats component
 	auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mOwnedRobots[mCurrentRobotPage]);
+
+	// set checkbox
+	if(g.mProgress->mFavRobot == mCurrentRobotPage)
+		fbl_set_ui_elem_val(fFavRobotCheckBox, 1);	// set correct robot as fav
+	else
+		fbl_set_ui_elem_val(fFavRobotCheckBox, 0);
 
 	// update the page
 	g.mRobots->hideRobots(g.mEcs);
@@ -381,6 +388,15 @@ void RobotCollection::processInput(Game& g) {
 
 	}
 
+	// deal with the fav robot checkbox
+	if (fbl_get_ui_elem_val(fFavRobotCheckBox))
+		g.mProgress->mFavRobot = mCurrentRobotPage;
+
+	if (!fbl_get_ui_elem_val(fFavRobotCheckBox))	
+		fbl_set_ui_elem_val(fFavRobotCheckBox, 1);	// can't uncheck!
+
+
+
 	selectAddon(g);
 	equipAddon(g);
 	unEquipAddon(g);
@@ -645,7 +661,7 @@ void initCollectionMenu() {
 	fSaveAndQuit = fbl_create_ui_elem(FBL_UI_BUTTON_INTERVAL, 0, 0, 32, 32, NULL);
 	fbl_set_ui_elem_xy(fSaveAndQuit, 123, 500);	// down left-ish
 
-	fSaveAndQuitText = fbl_create_text(255, 255, 255, 0, (char*)"Save and Quit");
+	fSaveAndQuitText = fbl_create_text(255, 255, 255, 0, (char*)"Quit");	// implement save later :)
 	fbl_set_text_align(fSaveAndQuitText, FBL_ALIGN_LEFT);
 	fbl_set_text_xy(fSaveAndQuitText, 155, 500);
 

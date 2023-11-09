@@ -22,6 +22,7 @@ public:
     ~Progress();
 
     uint16_t mFunds;            // total amount of coins
+    uint16_t mFavRobot;         // the selected robot in the menu (racing robot)
     uint8_t  mCurrentLocation;  // current location
     uint16_t mCompletedRaces;   // how many races have been completed in total
 

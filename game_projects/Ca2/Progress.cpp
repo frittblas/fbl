@@ -11,6 +11,7 @@
 *
 */
 
+//#include "Robots.hpp"
 #include "Progress.hpp"
 
 // Progress-class implementation
@@ -18,6 +19,7 @@
 Progress::Progress() {
 
 	mFunds = 0;
+	mFavRobot = 0;	// always start with charmy as fav (Robots::Charmy == 0)
 	mCurrentLocation = 0;
 	mCompletedRaces = 0;
 
