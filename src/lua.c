@@ -2063,9 +2063,10 @@ int lua_destroy_music(lua_State *lua_env)
 int lua_play_music(lua_State *lua_env)
 {
 
-	int loops = (int)lua_tonumber(lua_env, 1);
+	int volume = (int)lua_tonumber(lua_env, 1);
+	int loops = (int)lua_tonumber(lua_env, 2);
 
-	fbl_play_music(loops);
+	fbl_play_music(volume, loops);
 
 	return 1;
 

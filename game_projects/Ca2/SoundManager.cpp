@@ -59,7 +59,7 @@ void SoundManager::loadAndPlayMusic(std::string filename) {
 
 	fbl_destroy_music();
 	fbl_load_music(filename.c_str());
-	fbl_play_music(-1);
+	fbl_play_music(40, -1);
 
 }
 

@@ -407,7 +407,7 @@ void fbl_destroy_all_sounds(void);
 
 int  fbl_load_music(const char *song_file);
 void fbl_destroy_music(void);
-void fbl_play_music(int loops);
+void fbl_play_music(int volume, int loops);
 void fbl_pause_music(void);
 void fbl_resume_music(void);
 void fbl_stop_music(void);

@@ -246,8 +246,10 @@ void fbl_destroy_music(void)
 }
 
 
-void fbl_play_music(int loops)
+void fbl_play_music(int volume, int loops)
 {
+
+	Mix_VolumeMusic(volume); // MIX_MAX_VOLUME = 128
 
 	if (Mix_PlayMusic(fbl_music, loops) == -1) {
 		fprintf(FBL_ERROR_OUT, "Failed to play music file! SDL_mixer Error: %s\n", Mix_GetError());

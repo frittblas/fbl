@@ -339,14 +339,14 @@ void   fbl_destroy_all_ui_elems(void);
 int  fbl_load_sound(const char *sample_file);
 void fbl_delete_sound(int id);
 void fbl_play_sound(int id, int channel, int loops);
-void fbl_set_sound_volume(int id, int volume);
+void fbl_set_sound_volume(int id, int volume); // max volume is 128
 void fbl_pause_sound(int id);
 void fbl_resume_sound(int id);
 void fbl_destroy_all_sounds(void);
 
 int  fbl_load_music(const char *song_file);
 void fbl_destroy_music(void);
-void fbl_play_music(int loops);
+void fbl_play_music(int volume, int loops); // max volume is 128
 void fbl_pause_music(void);
 void fbl_resume_music(void);
 void fbl_stop_music(void);
