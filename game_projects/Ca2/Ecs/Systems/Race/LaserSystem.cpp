@@ -122,6 +122,8 @@ void LaserSystem::Update(Game& g) {
 			continue;
 		}
 
+		firedLaser();
+
 		fbl_set_prim_active(las.rayId, true);	// show the ray
 
 		setDirection(pos, las);
@@ -293,8 +295,14 @@ void LaserSystem::freeObserverList() {
 void LaserSystem::robotDied() {
 
 	// Notify all attached observers
-	for (IObserver* observer : observers) {
+	for (IObserver* observer : observers)
 		observer->onRobotDeath();
-	}
+
+}
+
+void LaserSystem::firedLaser() {
+
+	for (IObserver* observer : observers)
+		observer->onFireLaser();
 
 }

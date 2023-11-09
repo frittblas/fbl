@@ -16,7 +16,7 @@
 // forward declarations
 class Coordinator;
 class SysManager;
-class SoundManager;
+//class SoundManager;
 class ScenEdit;
 class GameState;
 class UserInput;
@@ -33,7 +33,7 @@ class Game {
 public:
     Coordinator* mEcs;	    // the Entity Component System
     SysManager* mSysManager;// keeps pointers to all systems in the Ecs.
-    SoundManager* mSound;   // The sound system :)
+    //SoundManager* mSound;   // The sound system :)
     ScenEdit* mMap;         // the game map, this points to gEditor
     GameState* mState;  	// current game state
     UserInput* mInput;	    // keyboard and mouse input from the user

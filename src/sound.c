@@ -119,7 +119,7 @@ void fbl_delete_sound(int id)
 }
 
 
-void fbl_play_sound(int id, int loops)
+void fbl_play_sound(int id, int channel, int loops)
 {
 
 	FBL_SOUND *sound = NULL;
@@ -130,7 +130,11 @@ void fbl_play_sound(int id, int loops)
 
 		sound = ((FBL_SOUND *)item->Object);
 
-		sound->channel = Mix_PlayChannel(-1, sound->sample, loops);	/* play sample and store channel, NOTE: check if this really works (many samples with same channel working?) */
+		sound->channel = Mix_PlayChannel(channel, sound->sample, loops);	/* play sample and store channel, NOTE: check if this really works (many samples with same channel working?) */
+
+		if (sound->channel == -1) {
+			printf("Mix_PlayChannel error: %s\n", Mix_GetError());
+		}
 
 	}
 #ifdef FBL_DEBUG

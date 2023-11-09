@@ -32,12 +32,24 @@ SoundManager::~SoundManager() {
 
 }
 
+SoundManager SoundManager::instance;
+
+SoundManager& SoundManager::getInstance() {
+
+	return instance;
+
+}
+
 void SoundManager::loadSfx() {
 
 	// load all the sound effects in the game and assign id's
+	mSfxLaser1 = fbl_load_sound("sfx/laser3.ogg");
+	mSfxExplosion = fbl_load_sound("sfx/explosion.ogg");
 
-	fbl_load_sound("sfx/summer.ogg");
-	fbl_load_sound("sfx/rain.ogg");
+	mSfxRainstorm = fbl_load_sound("sfx/rain.ogg");
+	mSfxSummer = fbl_load_sound("sfx/summer.ogg");
+
+	fbl_play_sound(mSfxSummer, 0, -1);
 
 }
 
@@ -46,5 +58,19 @@ void SoundManager::loadAndPlayMusic(std::string filename) {
 	fbl_destroy_music();
 	fbl_load_music(filename.c_str());
 	fbl_play_music(-1);
+
+}
+
+void SoundManager::onRobotDeath() {
+
+	fbl_play_sound(mSfxExplosion, 1, 0);
+
+	std::cout << "EXPLOSION SOUND!!!!!!!!" << std::endl;
+
+}
+
+void SoundManager::onFireLaser() {
+
+	fbl_play_sound(mSfxLaser1, 2, 0);
 
 }

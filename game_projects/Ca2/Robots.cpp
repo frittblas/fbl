@@ -169,17 +169,17 @@ bool Robots::addAddonComponent(Coordinator* mEcs, Entity robot, uint8_t addonTyp
 		case Addons::Laser1:
 			if (mEcs->HasComponent<Laser>(robot)) return false;
 										// rid pid cid len        dir	   dmg lv eCost isFiring
-			mEcs->AddComponent(robot, Laser{ 0, 0, 0, 800, Addons::Dir::Up, 15, 1, 3, false });
+			mEcs->AddComponent(robot, Laser{ 0, 0, 0, 800, Addons::Dir::Up, 5, 1, 3, false });
 			break;
 		case Addons::Laser2:
 			if (mEcs->HasComponent<Laser>(robot)) return false;
 										// rid pid cid len        dir	   dmg lv eCost isFiring
-			mEcs->AddComponent(robot, Laser{ 0, 0, 0, 800, Addons::Dir::Up, 25, 2, 2, false });
+			mEcs->AddComponent(robot, Laser{ 0, 0, 0, 800, Addons::Dir::Up, 10, 2, 2, false });
 			break;
 		case Addons::Laser3:
 			if (mEcs->HasComponent<Laser>(robot)) return false;
 										// rid pid cid len        dir	   dmg lv eCost isFiring
-			mEcs->AddComponent(robot, Laser{ 0, 0, 0, 800, Addons::Dir::Up, 25, 3, 1, false });
+			mEcs->AddComponent(robot, Laser{ 0, 0, 0, 800, Addons::Dir::Up, 15, 3, 1, false });
 			break;
 		case Addons::Magnet1:
 			if (mEcs->HasComponent<Magnet>(robot)) return false;

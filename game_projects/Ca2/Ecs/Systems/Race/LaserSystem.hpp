@@ -31,6 +31,7 @@ public:
 	void detachObserver(IObserver* observer);
 	void freeObserverList();
 	void robotDied();
+	void firedLaser();
 
 private:
 	std::vector<IObserver*> observers;

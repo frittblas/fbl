@@ -18,7 +18,11 @@ class IObserver {
 
 public:
 
-    virtual void onRobotDeath() = 0;    // has to be implemented
+    //virtual void onRobotDeath() = 0;    // has to be implemented
+
+    virtual void onRobotDeath() {
+
+    }
 
     virtual void onFireLaser() {
         // default implementation does nothing.

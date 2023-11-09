@@ -1986,9 +1986,10 @@ int lua_play_sound(lua_State *lua_env)
 {
 
 	int id = (int)lua_tonumber(lua_env, 1);
-	int loops = (int)lua_tonumber(lua_env, 2);
+	int channel = (int)lua_tonumber(lua_env, 2);
+	int loops = (int)lua_tonumber(lua_env, 3);
 
-	fbl_play_sound(id, loops);
+	fbl_play_sound(id, channel, loops);
 
 	return 1;
 

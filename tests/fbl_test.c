@@ -437,7 +437,7 @@ void run_demo_2()
 
 	if (fbl_get_ui_elem_val(sound_button)) {
 		printf("ui button pressed (not function pointer)\n");
-		fbl_play_sound(ping_sound, 0);
+		fbl_play_sound(ping_sound, 0, 0);
 	}
 	if (fbl_get_ui_elem_val(music_button)) {
 		printf("ui button pressed (not function pointer)\n");

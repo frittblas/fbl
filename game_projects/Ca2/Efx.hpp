@@ -52,13 +52,12 @@ class Efx : public IObserver{
         };
 
         static Efx instance;
+        Efx();                              // private constructor, so we can't instantiate
 
         Tween tweenList[MaxTweens] = {};    // can have 10 tweens going on at the same time
         uint32_t nextTweenId;               // next free id
 
         uint16_t shakeIntensity, shakeDuration;  // camera shake stuff :)
-
-        Efx();                              // private constructor, so we can't instantiate
 
         // add more of these
         float easeOut(float t);

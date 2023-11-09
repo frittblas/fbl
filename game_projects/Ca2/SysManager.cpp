@@ -18,6 +18,7 @@
 
 // observer classes
 #include "Efx.hpp"
+#include "SoundManager.hpp"
 
 // general components
 #include "Ecs/Systems/SpriteSystem.hpp"
@@ -206,7 +207,10 @@ void SysManager::setupObservers() {
 	// attach instances of observer classes
 
 	Efx& efx = Efx::getInstance();
+	SoundManager& snd = SoundManager::getInstance();
+
 	mLaserSystem->attachObserver(&efx);
+	mLaserSystem->attachObserver(&snd);
 
 }
 

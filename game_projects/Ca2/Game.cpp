@@ -85,7 +85,7 @@ bool Game::init() {
 	mMap = gEditor;					// assign gEditor pointer to mMap, so we can avoid global state. Only use mMap after this.
 	mEcs = new Coordinator();
 	mSysManager = new SysManager();
-	mSound = new SoundManager();
+	//mSound = new SoundManager();
 	mState = new GameState();
 	mInput = new UserInput();
 	mChars = new Chars();
@@ -95,6 +95,8 @@ bool Game::init() {
 	mObjects = new Objects();
 	mWeather = new Weather();
 	mProgress = new Progress();
+
+	SoundManager::getInstance().loadSfx();
 
 	std::cout << "Starting sysmanager setup." << std::endl;
 	mSysManager->setupEcs(mEcs);
@@ -119,7 +121,7 @@ void Game::unInit() {
 	delete mEcs;
 	delete mMap;
 	delete mSysManager;
-	delete mSound;
+	//delete mSound;
 	delete mState;
 	delete mInput;
 	delete mChars;

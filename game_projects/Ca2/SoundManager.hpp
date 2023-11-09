@@ -12,16 +12,31 @@
 
 #pragma once
 
+#include "IObserver.hpp"
 #include <iostream>
 
-class SoundManager {
+class SoundManager : public IObserver {
 
 public:
 
-    SoundManager();
     ~SoundManager();
+
+    static SoundManager& getInstance();
 
     void loadSfx();
     void loadAndPlayMusic(std::string filename);
+
+    void onRobotDeath() override;
+    void onFireLaser() override;
+
+private:
+
+    static SoundManager instance;
+    SoundManager();
+
+    uint16_t mSfxLaser1, mSfxLaser2, mSfxLaser3;
+    uint16_t mSfxMagnet, mSfxHealing, mSfxTurbo, mShield;
+    uint16_t mSfxExplosion;
+    uint16_t mSfxRainstorm, mSfxSummer;
 
 };
