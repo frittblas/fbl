@@ -14,6 +14,7 @@
 #include "Ecs/Ecs.hpp"
 #include "Ecs/Components.hpp"
 #include "Game.hpp"
+#include "Progress.hpp"
 #include "Robots.hpp"
 #include "Addons.hpp"
 
@@ -59,12 +60,8 @@ void Robots::setupRobots(Coordinator* mEcs) {
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 0, 96, 32, 32, false, 0, 0, 0, 0, 7 });	// robots are on layer 7
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
 				mEcs->AddComponent(tmpRobot, Stats{ "Charmy", 1, 0, 7, 25, 25, 8, false, 25, 25, 7, -1, -1, -1, -1, -1, -1 });
-												  // baseX Y flg coin kills
-				//mEcs->AddComponent(tmpRobot, PathLogic{ 0, 0, 0, 0, 0 });
 												//  rid len dir ivalM ivalC hasTarg active
 				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, false });
-												// rid pid len        dir	    dmg lv  isFiring
-				//mEcs->AddComponent(tmpRobot, Laser{ 0, 0, 800, Addons::Dir::Up, 1, 1, false });
 											  // id  tx  ty   w    h  scale
 				mEcs->AddComponent(tmpRobot, Light{ 0, 384, 0, 128, 128, 2.0 });
 
@@ -73,15 +70,9 @@ void Robots::setupRobots(Coordinator* mEcs) {
 												 // id id id id num tx 96   w   h   anim fr spd dir dirLast layer
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 32, 96, 32, 32, true, 2, 12, 0, 0, 7 });
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
-				mEcs->AddComponent(tmpRobot, Stats{ "Alarmy", 1, 0, 7, 25, 25, 6, true, 25, 25, 17, -1, -1, -1, -1, -1, -1 });
-											   // baseX Y flg coin kills
-				//mEcs->AddComponent(tmpRobot, PathLogic{ 0, 0, 0, 0, 0 });
-											   //   act durLeft hp
-				//mEcs->AddComponent(tmpRobot, BasicAI{ 0, 0, 0 });
+				mEcs->AddComponent(tmpRobot, Stats{ "Alarmy", 1, 0, 7, 25, 25, 6, false, 25, 25, 17, -1, -1, -1, -1, -1, -1 });
 												//  rid len dir ivalM ivalC hasTarg active
-				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, true });
-											   // rid pid cid len        dir	  dmg lv eCost isFiring
-				mEcs->AddComponent(tmpRobot, Laser{ 0, 0, 0, 800, Addons::Dir::Up, 5, 1, 3, false });
+				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, false });
 												// id  tx  ty   w    h  scale
 				mEcs->AddComponent(tmpRobot, Light{ 0, 384, 0, 128, 128, 2.0 });
 				break;
@@ -89,15 +80,9 @@ void Robots::setupRobots(Coordinator* mEcs) {
 												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 96, 96, 32, 32, true, 2, 12, 0, 0, 7 });
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
-				mEcs->AddComponent(tmpRobot, Stats{ "Boingy", 2, 0, 7, 20, 20, 4, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
-												  // baseX Y flg coin kills
-				//mEcs->AddComponent(tmpRobot, PathLogic{ 0, 0, 0, 0, 0 });
-											  //   act durLeft hp
-				//mEcs->AddComponent(tmpRobot, BasicAI{ 0, 0, 0 });
+				mEcs->AddComponent(tmpRobot, Stats{ "Boingy", 1, 0, 7, 20, 20, 4, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
 												//  rid len dir ivalM ivalC hasTarg active
-				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, true });
-											   // rid pid cid len        dir	  dmg lv eCost isFiring
-				mEcs->AddComponent(tmpRobot, Laser{ 0, 0, 0, 800, Addons::Dir::Up, 5, 1, 3, false });
+				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, false });
 												// id  tx  ty   w    h  scale
 				mEcs->AddComponent(tmpRobot, Light{ 0, 384, 0, 128, 128, 2.0 });
 				break;
@@ -105,31 +90,69 @@ void Robots::setupRobots(Coordinator* mEcs) {
 												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 160, 96, 32, 32, true, 3, 12, 0, 0, 7 });
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
-				mEcs->AddComponent(tmpRobot, Stats{ "Chompy", 2, 0, 7, 25, 25, 5, true, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
-											   // baseX Y flg coin kills
-				//mEcs->AddComponent(tmpRobot, PathLogic{ 0, 0, 0, 0, 0 });
-											   //   act durLeft hp
-				//mEcs->AddComponent(tmpRobot, BasicAI{ 0, 0, 0 });
+				mEcs->AddComponent(tmpRobot, Stats{ "Chompy", 1, 0, 7, 25, 25, 5, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
 												//  rid len dir ivalM ivalC hasTarg active
-				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, true });
-											   // rid pid cid len        dir	  dmg lv eCost isFiring
-				mEcs->AddComponent(tmpRobot, Laser{ 0, 0, 0, 800, Addons::Dir::Up, 5, 1, 3, false });
+				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, false });
 												// id  tx  ty   w    h  scale
 				mEcs->AddComponent(tmpRobot, Light{ 0, 384, 0, 128, 128, 2.0 });
 				break;
 			case Dancy:
 												  // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 256, 96, 32, 32, true, 4, 12, 0, 0, 7 });
-												   // name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
-				mEcs->AddComponent(tmpRobot, Stats{ "Dancy", 2, 0, 7, 30, 20, 20, true, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
-												  // baseX Y flg coin kills
-				//mEcs->AddComponent(tmpRobot, PathLogic{ 0, 0, 0, 0, 0 });
-												//   act dur hp
-				//mEcs->AddComponent(tmpRobot, BasicAI{ 0, 0, 0 });
+												   // name  lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
+				mEcs->AddComponent(tmpRobot, Stats{ "Dancy", 1, 0, 7, 30, 20, 20, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
 												//  rid len dir ivalM ivalC hasTarg active
 				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, false });
-												// rid pid cid len        dir	  dmg lv eCost isFiring
-				//mEcs->AddComponent(tmpRobot, Laser{ 0, 0, 0, 800, Addons::Dir::Up, 5, 1, 3, false });
+												// id  tx  ty   w    h  scale
+				mEcs->AddComponent(tmpRobot, Light{ 0, 384, 0, 128, 128, 2.0 });
+				break;
+			case Floppy:
+												  // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
+				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 0, 128, 32, 32, true, 2, 12, 0, 0, 7 });
+												   // name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
+				mEcs->AddComponent(tmpRobot, Stats{ "Floppy", 1, 0, 7, 30, 20, 20, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
+												//  rid len dir ivalM ivalC hasTarg active
+				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, false });
+												// id  tx  ty   w    h  scale
+				mEcs->AddComponent(tmpRobot, Light{ 0, 384, 0, 128, 128, 2.0 });
+				break;
+			case Levitaty:
+												  // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
+				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 64, 128, 32, 32, true, 8, 12, 0, 0, 7 });
+												   // name     lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
+				mEcs->AddComponent(tmpRobot, Stats{ "Levitaty", 1, 0, 7, 30, 20, 20, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
+												//  rid len dir ivalM ivalC hasTarg active
+				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, false });
+												// id  tx  ty   w    h  scale
+				mEcs->AddComponent(tmpRobot, Light{ 0, 384, 0, 128, 128, 2.0 });
+				break;
+			case Necky:
+												  // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
+				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 320, 128, 32, 32, true, 8, 12, 0, 0, 7 });
+												   // name  lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
+				mEcs->AddComponent(tmpRobot, Stats{ "Necky", 1, 0, 7, 30, 20, 20, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
+												//  rid len dir ivalM ivalC hasTarg active
+				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, false });
+												// id  tx  ty   w    h  scale
+				mEcs->AddComponent(tmpRobot, Light{ 0, 384, 0, 128, 128, 2.0 });
+				break;
+			case Partybot:
+												  // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
+				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 0, 160, 32, 32, true, 8, 12, 0, 0, 7 });
+												    // name    lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
+				mEcs->AddComponent(tmpRobot, Stats{ "Partybot", 1, 0, 7, 30, 20, 20, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
+												//  rid len dir ivalM ivalC hasTarg active
+				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, false });
+												// id  tx  ty   w    h  scale
+				mEcs->AddComponent(tmpRobot, Light{ 0, 384, 0, 128, 128, 2.0 });
+				break;
+			case Sprinty:
+												  // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
+				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 224, 160, 32, 32, true, 8, 12, 0, 0, 7 });
+													// name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
+				mEcs->AddComponent(tmpRobot, Stats{ "Sprinty", 1, 0, 7, 30, 20, 20, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
+												//  rid len dir ivalM ivalC hasTarg active
+				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, false });
 												// id  tx  ty   w    h  scale
 				mEcs->AddComponent(tmpRobot, Light{ 0, 384, 0, 128, 128, 2.0 });
 				break;
@@ -449,6 +472,48 @@ void Robots::claimRobot(int nameIndex) {
 	}
 
 	for (Entity e : mOwnedRobots) std::cout << "Owned robot entity-id: " << e << std::endl;
+
+}
+
+void Robots::assignAIrobots(Game& g) {
+
+	// select randomly which robots from the mAllRobots array should be racing.
+	// Also set an appropriate level fore the robots based on mProgress->completedRaces.
+	// Also give the robots random addons appropriate to their level.
+
+												   // rid pid cid len        dir	  dmg lv eCost isFiring
+	//mEcs->AddComponent(tmpRobot, Laser{ 0, 0, 0, 800, Addons::Dir::Up, 5, 1, 3, false });
+
+	// now set levels and addons for the AI robots based on progress
+	switch (g.mProgress->mCompletedRaces) {
+
+	case 0:
+	case 1:
+	case 2:
+	case 3:
+
+		break;
+	case 4:
+	case 5:
+	case 6:
+
+		break;
+	case 7:
+	case 8:
+	case 9:
+
+		break;
+	case 10:
+	case 11:
+	case 12:
+
+		break;
+
+	default:
+		break;
+
+
+	}
 
 }
 

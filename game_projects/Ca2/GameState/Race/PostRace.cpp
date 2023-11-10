@@ -459,36 +459,7 @@ void PostRace::initPostRaceMenu(Game& g) {
 	fbl_set_sprite_layer((int)spr.id[0], 9);
 	fbl_sort_sprites(FBL_SORT_BY_LAYER);
 
-	// populate the shop with 3 addons (or less if there's not that many left) and 50% chance to get a robot.
-	switch (g.mProgress->mCompletedRaces) {
-
-		case 1:
-		case 2:
-		case 3:
-
-			break;
-		case 4:
-		case 5:
-		case 6:
-
-			break;
-		case 7:
-		case 8:
-		case 9:
-
-			break;
-		case 10:
-		case 11:
-		case 12:
-
-			break;
-
-		default:
-			break;
-
-
-	}
-
+	// set up shop
 	g.mAddons->initAddons(g.mEcs);
 	g.mAddons->hideAddons(g.mEcs);
 	prepShop(g);	// set up the items in the shop

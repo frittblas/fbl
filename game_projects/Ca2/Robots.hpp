@@ -29,6 +29,11 @@ public:
 		Boingy,
         Chompy,
         Dancy,
+        Floppy,
+        Levitaty,
+        Necky,
+        Partybot,
+        Sprinty,
         NumRobots
     };
 
@@ -56,6 +61,7 @@ public:
     void showRobotInMenu(Coordinator* mEcs, int nameIndex, int entity);
     void showRobotInRace(Coordinator* mEcs, Entity robot, int position);
     void claimRobot(int nameIndex);    // call this to "own" a robot
+    void assignAIrobots(Game& g);
     int* levelUpRobot(Game& g, int nameIndex, bool owned);
     void levelUpAllFreeRobots(Game& g);
     bool assignRobotXP(Game& g, int nameIndex);

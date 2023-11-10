@@ -80,9 +80,10 @@ void Race::assignRobots(Game& g) {
 	// for now just assign the robots we have (should be assigned fom teams and loop to find != Unassigned from mAll)
 
 	g.mRobots->mRacingRobots[0] = g.mRobots->mOwnedRobots[g.mProgress->mFavRobot];
-	g.mRobots->mRacingRobots[1] = g.mRobots->mOwnedRobots[Robots::Alarmy];
-	g.mRobots->mRacingRobots[2] = g.mRobots->mOwnedRobots[Robots::Boingy];
-	g.mRobots->mRacingRobots[3] = g.mRobots->mOwnedRobots[Robots::Chompy];
+	g.mRobots->assignAIrobots(g);
+	//g.mRobots->mRacingRobots[1] = g.mRobots->mOwnedRobots[Robots::Alarmy];
+	//g.mRobots->mRacingRobots[2] = g.mRobots->mOwnedRobots[Robots::Boingy];
+	//g.mRobots->mRacingRobots[3] = g.mRobots->mOwnedRobots[Robots::Chompy];
 
 	// set one of the robots as your team-member
 	g.mRobots->mTeam[0] = g.mRobots->mOwnedRobots[Robots::Charmy];
