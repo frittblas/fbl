@@ -59,6 +59,7 @@ public:
 
     Entity mAllAddons[NumAddons];          // all the addons
     Entity mOwnedAddons[NumAddons];        // all the addons you own
+    Entity mShopAddons[NumAddons];         // temporary 3 addons in the shop as copies from mAllAddons
 
     Addons();
     ~Addons();
@@ -70,6 +71,7 @@ public:
     void removeAddons(Coordinator* mEcs);
     void hideAddons(Coordinator* mEcs);
     void showAddonsInMenu(Coordinator* mEcs);
+    void showAddonsInShop(Coordinator* mEcs);
     void showAddonAsEquipped(Coordinator* mEcs, Entity addon, int position);
     void showAddonInRace(Coordinator* mEcs, Entity addon, int position);
     void claimAddon(int nameIndex);    // call this to "own" an Addon

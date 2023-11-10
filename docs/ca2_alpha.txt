@@ -2,10 +2,10 @@ Checklist to finish ca2 alpha in 5 days.
 
 1. Finish leveling system. - DONE!
 2. Finish functionality for current racing robot. - DONE!
-3. Finish the shop after a race.
+3. Finish the shop after a race. - DONE!
 4. Add all robots and finish the ai robot's addon and level assignments
 5. Finish the map with npc's and races (event-slime!).
-6. Add music and sfx
+6. Finish music and sfx
 7. Release alpha for Robofobe to play and critique.
 
 Checklist for beta:

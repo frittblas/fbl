@@ -42,6 +42,7 @@ static uint16_t fMenuAddonInfoLine;
 static uint16_t fAddonName, fAddonLevel, fAddonRarity, fAddonPassive, fAddonEquipped, fAddonPrice;
 static uint16_t fUnEquipAddon, fUnEquipAddonText;
 static uint16_t fSaveAndQuit, fSaveAndQuitText;
+static uint16_t fFundsText;
 
 // the menu button (always visible when in a game), externed in Explore.cpp and Dialogue.cpp
 uint16_t gRobotCollectionMenuButton;
@@ -133,6 +134,10 @@ void RobotCollection::cyclePages(Game& g, int dir) {
 	for (int i = 0; i < fNumSlots; i++)
 		if (sta.slot[i] != notSet)
 			g.mAddons->showAddonAsEquipped(g.mEcs, sta.slot[i], i);
+
+
+	// update funds to match the value in mProgress
+	fbl_update_text(fFundsText, 255, 255, 255, 255, "Coins: %d", g.mProgress->mFunds);
 
 	std::cout << mCurrentRobotPage << std::endl;
 	std::cout << sta.name << std::endl;
@@ -665,6 +670,11 @@ void initCollectionMenu() {
 	fbl_set_text_align(fSaveAndQuitText, FBL_ALIGN_LEFT);
 	fbl_set_text_xy(fSaveAndQuitText, 155, 500);
 
+	// funds
+	fFundsText = fbl_create_text(255, 255, 255, 0, (char*)"Coins: %d", 0);
+	fbl_set_text_align(fFundsText, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(fFundsText, 780, 500);
+
 	// hide
 	hideCollectionMenu();
 
@@ -739,6 +749,9 @@ void showCollectionMenu() {
 	fbl_set_ui_elem_active(fSaveAndQuit, true);
 	fbl_set_text_active(fSaveAndQuitText, true);
 
+	// funds
+	fbl_set_text_active(fFundsText, true);
+
 }
 
 void hideCollectionMenu() {
@@ -809,5 +822,8 @@ void hideCollectionMenu() {
 	// save and quit
 	fbl_set_ui_elem_active(fSaveAndQuit, false);
 	fbl_set_text_active(fSaveAndQuitText, false);
+
+	// funds
+	fbl_set_text_active(fFundsText, false);
 
 }

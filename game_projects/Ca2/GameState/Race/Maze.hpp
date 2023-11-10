@@ -97,7 +97,7 @@ private:
 
     guiItems gui[Robots::NumRobots] = {};
 
-    int mNumRacers;     // his many robots in a race at once
+    int mNumRacers;     // this many robots in a race at once
 
     int mGetReadyTextId = 0;    // get ready text id
 

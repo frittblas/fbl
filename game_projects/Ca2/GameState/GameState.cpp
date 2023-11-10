@@ -13,6 +13,7 @@
 #include "../../../src/fbl.hpp"
 
 #include "../Game.hpp"
+#include "../SoundManager.hpp"
 
 #include "../Ecs/Ecs.hpp"
 #include "../Ecs/Components.hpp"
@@ -202,6 +203,8 @@ void GameState::exploreToTitle(Game& g) {
 	g.mWeather->setWeather(Weather::TimeOfDay::Day, 0, 14, 80, false);	// timeOfDay, rainLevel, snowLevel, numClouds, lightningOn
 	fbl_lua_shutdown();				 // so the dialogues get reset
 
+	SoundManager::getInstance().loadAndPlayMusic("music/title.ogg", 40);
+
 }
 
 void GameState::titleToExplore(Game& g) {
@@ -229,6 +232,8 @@ void GameState::titleToExplore(Game& g) {
 
 	std::cout << "player id(e): " << g.mChars->mBrodo << std::endl;
 
+	SoundManager::getInstance().loadAndPlayMusic("music/overworld1.ogg", 100);
+
 }
 
 void GameState::raceToExplore(Game& g) {
@@ -254,6 +259,7 @@ void GameState::raceToExplore(Game& g) {
 	initCollectionMenu();	// set up prims and text and ui for the collection-menu, sprite draw-order is important
 	g.mAddons->initAddons(g.mEcs); // create the addon ui elements (buttons)
 
+	SoundManager::getInstance().loadAndPlayMusic("music/overworld1.ogg", 100);
 
 }
 
@@ -290,5 +296,7 @@ void GameState::setupRace(Game& g) {
 
 
 	g.mWeather->setWeather(Weather::TimeOfDay::Evening, 0, 0, 0, false);
+
+	SoundManager::getInstance().loadAndPlayMusic("music/overworld2.ogg", 80);
 
 }

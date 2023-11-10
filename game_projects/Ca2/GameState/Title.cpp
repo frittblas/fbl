@@ -34,11 +34,11 @@ Title::Title() {
 	fbl_set_text_align(mSubTitleId, FBL_ALIGN_CENTER);
 
 	fbl_load_ttf_font("font/garamond.ttf", 17);
-	mAuthorTextId = fbl_create_text(255, 255, 255, 255, (char*)"Hans Stromquist 2022");
+	mAuthorTextId = fbl_create_text(255, 255, 255, 255, (char*)"Hans Stromquist 2023");
 	fbl_set_text_xy(mAuthorTextId, 10, Game::DeviceResH - 20);
 
-	mWebsiteTextId = fbl_create_text(255, 255, 255, 255, (char*)"www.frittblas.se");
-	fbl_set_text_xy(mWebsiteTextId, Game::DeviceResW - 140, Game::DeviceResH - 20);
+	mWebsiteTextId = fbl_create_text(255, 255, 255, 255, (char*)"www.charmingalarming.se");
+	fbl_set_text_xy(mWebsiteTextId, Game::DeviceResW - 200, Game::DeviceResH - 20);
 
 	std::cout << "Started Title state." << std::endl;
 

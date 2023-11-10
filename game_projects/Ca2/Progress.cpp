@@ -18,7 +18,7 @@
 
 Progress::Progress() {
 
-	mFunds = 0;
+	mFunds = 20;
 	mFavRobot = 0;	// always start with charmy as fav (Robots::Charmy == 0)
 	mCurrentLocation = 0;
 	mCompletedRaces = 0;

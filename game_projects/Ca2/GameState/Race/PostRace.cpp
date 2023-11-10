@@ -18,6 +18,7 @@
 #include "../../Ecs/Components.hpp"
 #include "../../Game.hpp"
 #include "../../Chars.hpp"
+#include "../../SoundManager.hpp"
 #include "../../UserInput.hpp"
 #include "../../../Ca2/GameState/GameState.hpp"
 #include "../../Progress.hpp"
@@ -31,6 +32,8 @@
 
 PostRace::PostRace() {
 
+	mSelectedAddon = notSet;
+	mKeyAccess = 0;
 
 	std::cout << "PostRace constructor." << std::endl;
 
@@ -51,6 +54,13 @@ void PostRace::tick(Game& g) {
 		col += step;
 		if (col > 253 || col < 120) step = -step;
 	}
+	else {
+		// buy button
+		if (fbl_get_ui_elem_val(mBuyButton) > 0)
+			buySelectedItem(g);
+
+		selectAddon(g);
+	}
 
 	// continue button down middle
 	if (fbl_get_ui_elem_val(mContinueButton) > 0) {
@@ -62,6 +72,7 @@ void PostRace::tick(Game& g) {
 			g.mChars->stopPlayerPathing(g);
 		}
 	}
+
 
 }
 
@@ -93,7 +104,7 @@ void PostRace::updateContextHelp(std::string msg) {
 	fbl_load_ttf_font("font/roboto.ttf", 18);
 }
 
-void PostRace::updateItemInfo(Game& g, bool empty) {
+void PostRace::updateAddonInfo(Game& g, bool empty) {
 
 
 	// get s component
@@ -125,6 +136,114 @@ void PostRace::updateItemInfo(Game& g, bool empty) {
 
 }
 
+void PostRace::selectAddon(Game& g) {
+
+	bool allOff = true;
+
+	for (int i = 0; i < g.mAddons->NumAddons; i++) {	// loop through all buttons and check if one was pressed
+
+		if (g.mAddons->mShopAddons[i] == g.mAddons->Unassigned) continue;	// only bother with addons actually in the shop
+
+		auto& add = g.mEcs->GetComponent<Addon>(g.mAddons->mShopAddons[i]);	// get the component of each button
+
+		if (fbl_get_ui_elem_val(add.uiId) < 1) continue;	// if the current button was not pressed continue
+
+		allOff = false;		// this is not true anymore bc a button is pressed
+
+		if (mSelectedAddon == g.mAddons->mShopAddons[i]) continue;		// skip if the pressed button isn't a new one
+
+		// turn off the last pressed button in favor for the new one.
+		if (mSelectedAddon != notSet) {
+			auto& add2 = g.mEcs->GetComponent<Addon>(mSelectedAddon);
+			fbl_set_ui_elem_val(add2.uiId, 0);
+		}
+
+		mSelectedAddon = g.mAddons->mShopAddons[i];		// set the selectedAddon to the current entity
+
+
+		updateAddonInfo(g, false);
+
+		std::cout << "Updated addon info." << std::endl;
+		std::cout << "Selected: " << mSelectedAddon << ", i: " << g.mAddons->mShopAddons[i] << std::endl;
+
+	}
+
+	if (allOff && mSelectedAddon != notSet) {	// if all buttons are off, show empty info
+		updateAddonInfo(g, true);
+		mSelectedAddon = notSet;
+		std::cout << "All off." << std::endl;
+	}
+
+}
+
+void PostRace::prepShop(Game& g) {
+
+	// populate the mShopAddons array with up to 3 random addons from mAllAddons
+
+	// init shop array to unassigned
+	for (int i = 0; i < g.mAddons->NumAddons; i++)
+		g.mAddons->mShopAddons[i] = g.mAddons->Unassigned;
+
+	copyRandomValues(g);
+
+	g.mAddons->showAddonsInShop(g.mEcs);
+
+}
+
+void PostRace::copyRandomValues(Game& g) {
+
+	std::vector<int> availableIndices;
+
+	// 1
+	for (int i = 0; i < g.mAddons->NumAddons; ++i)
+		if (g.mAddons->mAllAddons[i] != g.mAddons->Unassigned)
+			availableIndices.push_back(i);
+
+	// 2
+	std::random_shuffle(availableIndices.begin(), availableIndices.end());
+	int numCopies = std::min(3, static_cast<int>(availableIndices.size()));
+
+	// 3
+	for (int i = 0; i < numCopies; ++i)
+		g.mAddons->mShopAddons[availableIndices[i]] = g.mAddons->mAllAddons[availableIndices[i]];
+
+}
+
+void PostRace::buySelectedItem(Game& g) {
+
+	// has to select an item
+	if (mSelectedAddon == notSet) {
+		updateContextHelp("Please select an item to buy!");
+		return;
+	}
+
+	auto& add = g.mEcs->GetComponent<Addon>(mSelectedAddon);
+
+	// has to afford
+	if(add.price >  g.mProgress->mFunds) {
+		updateContextHelp("You can't afford that!");
+		return;
+	}
+
+	// all went well, claim the addon and remove it from the shop array, and deactivate the ui element
+	g.mAddons->claimAddon(add.type);
+	g.mAddons->mShopAddons[add.type] = g.mAddons->Unassigned;
+
+	fbl_set_ui_elem_active(add.uiId, false);
+
+	// nothing selected now
+	mSelectedAddon = notSet;
+
+	// pay
+	g.mProgress->mFunds -= add.price;
+
+	// update gui
+	fbl_update_text(mFundsText, 255, 255, 255, 255, "Coins: ", g.mProgress->mFunds);
+
+	updateContextHelp("Thank you for your purchase!");
+
+}
+
 void PostRace::initPostRaceMenu(Game& g) {
 
 	// set position and size of the text area
@@ -134,9 +253,14 @@ void PostRace::initPostRaceMenu(Game& g) {
 	int height = 203;
 	int tmpId = -1;		// used by text, sprite and prim-object that do not need to be accessed later.
 
+	// first get rid of the ui elements (race addons have hold AND click buttons)
+	fbl_destroy_all_ui_elems();
+
 	fbl_load_ttf_font("font/roboto.ttf", 16);
+
 	std::string msg = "";
 	auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mOwnedRobots[g.mProgress->mFavRobot]);
+
 	switch (Race::sRaceState) {
 		case Race::RaceState::First:
 			msg = "Congratulations! You placed 1st! Buy something will ya!";
@@ -154,6 +278,7 @@ void PostRace::initPostRaceMenu(Game& g) {
 			msg = "That was not good, you placed last! Please buy something anyway :)";
 			break;
 	}
+
 	mContextHelp = fbl_create_text(255, 255, 255, 0, (char*)msg.c_str());
 	fbl_set_text_align(mContextHelp, FBL_ALIGN_CENTER);
 	fbl_set_text_xy(mContextHelp, x, y - height - 20);
@@ -217,7 +342,7 @@ void PostRace::initPostRaceMenu(Game& g) {
 	fbl_set_sprite_xy(tmpId, x - 194, y - 30);
 	fbl_set_sprite_layer(tmpId, 9);
 
-	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"Charmy");
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)sta.name.c_str());
 	fbl_set_text_align(tmpId, FBL_ALIGN_CENTER);
 	fbl_set_text_xy(tmpId, x + 200, y - 80);
 
@@ -315,9 +440,22 @@ void PostRace::initPostRaceMenu(Game& g) {
 	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
 	fbl_set_text_xy(tmpId, x + 32, 500);
 
+	// Buy selected items button
+	mBuyButton = fbl_create_ui_elem(FBL_UI_BUTTON_INTERVAL, 0, 352, 64, 32, NULL);
+	fbl_set_ui_elem_xy(mBuyButton, 440, 315);
+
+	auto& plog = g.mEcs->GetComponent<PathLogic>(g.mRobots->mOwnedRobots[g.mProgress->mFavRobot]);
+	g.mProgress->mFunds += plog.coins;
+
+	// funds
+	mFundsText = fbl_create_text(255, 255, 255, 0, (char*)"Coins: %d", g.mProgress->mFunds);
+	fbl_set_text_align(mFundsText, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(mFundsText, 115, 315);
+
 	// put the current racing robot in the circle :)
-	g.mRobots->showRobotInMenu(g.mEcs, -1, g.mRobots->mRacingRobots[0]);
-	auto& spr = g.mEcs->GetComponent<Sprite>(g.mRobots->mRacingRobots[0]);
+	g.mRobots->showRobotInMenu(g.mEcs, -1, g.mRobots->mOwnedRobots[g.mProgress->mFavRobot]);
+	auto& spr = g.mEcs->GetComponent<Sprite>(g.mRobots->mOwnedRobots[g.mProgress->mFavRobot]);
+	fbl_set_sprite_xy(spr.id[0], fbl_get_sprite_x(spr.id[0]) + 16, fbl_get_sprite_y(spr.id[0]) + 16);
 	fbl_set_sprite_layer((int)spr.id[0], 9);
 	fbl_sort_sprites(FBL_SORT_BY_LAYER);
 
@@ -350,5 +488,11 @@ void PostRace::initPostRaceMenu(Game& g) {
 
 
 	}
+
+	g.mAddons->initAddons(g.mEcs);
+	g.mAddons->hideAddons(g.mEcs);
+	prepShop(g);	// set up the items in the shop
+
+	SoundManager::getInstance().loadAndPlayMusic("music/postrace.ogg", 60);
 
 }

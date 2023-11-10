@@ -56,7 +56,7 @@ Race::Race() {
 	fbl_set_camera_xy(0, 0);
 
 	sRaceState = Undecided;
-	mPostRaceDelay = 60;	// one secon delay before PostRace menu or game over is shown.
+	mPostRaceDelay = 60;	// one second delay before PostRace menu or game over is shown.
 
 	std::cout << "Started Race state." << std::endl;
 

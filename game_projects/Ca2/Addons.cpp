@@ -39,6 +39,7 @@ void Addons::setupAddons(Coordinator* mEcs) {
 	for (int i = 0; i < NumAddons; i++) {
 		mAllAddons[i] = Unassigned;
 		mOwnedAddons[i] = Unassigned;
+		mShopAddons[i] = Unassigned;
 	}
 
 	// create all the addon entities
@@ -158,7 +159,7 @@ void Addons::setupAddons(Coordinator* mEcs) {
 
 	}
 
-	for (int i = AutoAim1; i < NumAddons; i++) {
+	for (int i = AutoAim1; i < NumAddons - 10; i++) {
 		claimAddon(i);
 	}
 	/*
@@ -289,20 +290,44 @@ void Addons::showAddonsInMenu(Coordinator* mEcs) {
 
 
 	for (Entity e : mOwnedAddons) {
-		if (e != Unassigned) {
-			auto& add = mEcs->GetComponent<Addon>(e);
-			if (add.equippedBy == notSet) {
-				fbl_set_ui_elem_xy(add.uiId, x, y);			// position it
-				fbl_set_ui_elem_active(add.uiId, true);		// set to active
-			}
-			else fbl_set_ui_elem_active(add.uiId, false);   // set to inactive if equipped (these are set in robotcollection)
-			fbl_set_ui_elem_val(add.uiId, 0);				// uncheck it
-			x += 35;
-			if (x > 440) {	// if one row is filled continue on the next row
-				x = 123;
-				y += 36;
-			}
+
+		if (e == Unassigned) continue;
+
+		auto& add = mEcs->GetComponent<Addon>(e);
+
+		if (add.equippedBy == notSet) {
+			fbl_set_ui_elem_xy(add.uiId, x, y);			// position it
+			fbl_set_ui_elem_active(add.uiId, true);		// set to active
 		}
+		else fbl_set_ui_elem_active(add.uiId, false);   // set to inactive if equipped (these are set in robotcollection)
+		fbl_set_ui_elem_val(add.uiId, 0);				// uncheck it
+		x += 35;
+		if (x > 440) {	// if one row is filled continue on the next row
+			x = 123;
+			y += 36;
+		}
+		
+
+	}
+
+}
+
+void Addons::showAddonsInShop(Coordinator* mEcs) {
+
+	int x = 236;
+	int y = 176;
+
+
+	for (Entity e : mShopAddons) {
+
+		if (e == Unassigned) continue;
+
+		auto& add = mEcs->GetComponent<Addon>(e);
+
+		fbl_set_ui_elem_xy(add.uiId, x, y);			// position it
+		fbl_set_ui_elem_active(add.uiId, true);		// set to active
+
+		x += 50;
 
 	}
 

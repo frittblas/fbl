@@ -389,7 +389,7 @@ void setup_demo_2(void)
 
 	ping_sound = fbl_load_sound("ping.ogg");
 
-	fbl_load_music("music/title.ogg");	// only one piece of music is loaded at a time
+	fbl_load_music("music/postrace.ogg");	// only one piece of music is loaded at a time
 
 	x = 0;
 
@@ -441,7 +441,7 @@ void run_demo_2()
 	}
 	if (fbl_get_ui_elem_val(music_button)) {
 		printf("ui button pressed (not function pointer)\n");
-		fbl_play_music(1);	// play the loaded song 1 time
+		fbl_play_music(70, 1);	// play the loaded song 1 time, (-1 for loop)
 	}
 
 	x++;

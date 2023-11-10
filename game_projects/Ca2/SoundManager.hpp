@@ -24,7 +24,7 @@ public:
     static SoundManager& getInstance();
 
     void loadSfx();
-    void loadAndPlayMusic(std::string filename);
+    void loadAndPlayMusic(std::string filename, int volume);
 
     void onRobotDeath() override;
     void onFireLaser() override;

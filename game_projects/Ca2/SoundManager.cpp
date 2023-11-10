@@ -18,9 +18,6 @@
 
 SoundManager::SoundManager() {
 
-	//loadSfx();
-	//fbl_play_sound(1, -1);
-	//loadAndPlayMusic("music/harp.ogg");
 
 	std::cout << "Initialized SoundManager subsystem." << std::endl;
 
@@ -41,7 +38,7 @@ SoundManager& SoundManager::getInstance() {
 }
 
 void SoundManager::loadSfx() {
-
+	/*
 	// load all the sound effects in the game and assign id's
 	mSfxLaser1 = fbl_load_sound("sfx/laser1.ogg");
 	mSfxExplosion = fbl_load_sound("sfx/explosion1.ogg");
@@ -51,21 +48,21 @@ void SoundManager::loadSfx() {
 	mSfxSummer = fbl_load_sound("sfx/summer.ogg");
 
 	fbl_play_sound(mSfxSummer, 0, -1);
-	loadAndPlayMusic("music/title.ogg");
-
+	loadAndPlayMusic("music/title.ogg", 40);
+	*/
 }
 
-void SoundManager::loadAndPlayMusic(std::string filename) {
+void SoundManager::loadAndPlayMusic(std::string filename, int volume) {
 
-	fbl_destroy_music();
-	fbl_load_music(filename.c_str());
-	fbl_play_music(40, -1);
+	//fbl_destroy_music();
+	//fbl_load_music(filename.c_str());
+	//fbl_play_music(volume, -1);	// max volume = 128
 
 }
 
 void SoundManager::onRobotDeath() {
 
-	fbl_play_sound(mSfxExplosion, 1, 0);
+	//fbl_play_sound(mSfxExplosion, 1, 0);
 
 	//std::cout << "EXPLOSION SOUND!!!!!!!!" << std::endl;
 
@@ -73,6 +70,6 @@ void SoundManager::onRobotDeath() {
 
 void SoundManager::onFireLaser() {
 
-	fbl_play_sound(mSfxLaser1, 2, 0);
+	//fbl_play_sound(mSfxLaser1, 2, 0);
 
 }

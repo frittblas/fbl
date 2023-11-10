@@ -26,7 +26,11 @@ public:
     void tick(Game& g);
     void gameOver();
     void updateContextHelp(std::string msg);
-    void updateItemInfo(Game& g, bool empty);
+    void updateAddonInfo(Game& g, bool empty);
+    void selectAddon(Game& g);
+    void prepShop(Game& g);
+    void copyRandomValues(Game& g);
+    void buySelectedItem(Game& g);
     void initPostRaceMenu(Game& g);
 
 private:
@@ -35,7 +39,7 @@ private:
     uint16_t mRobotLevelBonus, mRobotHpBonus, mRobotSpeedBonus, mRobotDiagBonus, mRobotEnergyBonus;
     uint16_t mRobotLevelUp;
     uint16_t mAddonName, mAddonLevel, mAddonRarity, mAddonPassive, mAddonEquipped, mAddonPrice;
-    uint16_t mContextHelp, mContinueButton;
+    uint16_t mContextHelp, mContinueButton, mBuyButton, mFundsText;
 
     const int notSet = -1;
     int mSelectedAddon;     // currently selected addon in the shop
