@@ -181,7 +181,16 @@ void CaptureFlags::checkWinCondition(Game& g) {
 		auto& stat = g.mEcs->GetComponent<Stats>(g.mRobots->mRacingRobots[0]);
 
 		if (stat.hp < 0.1) {
-			Race::sRaceState = Race::Dead;
+
+			// if you still have robots that are alive left put them in the race!
+
+			if (g.mRobots->ownedRobotsLeft(g) > 0) {
+
+
+
+			}
+			else
+				Race::sRaceState = Race::Dead;
 		}
 
 

@@ -478,7 +478,7 @@ void Robots::claimRobot(int nameIndex) {
 void Robots::assignAIrobots(Game& g) {
 
 	// select randomly which robots from the mAllRobots array should be racing.
-	// Also set an appropriate level fore the robots based on mProgress->completedRaces.
+	// Also set an appropriate level for the robots based on mProgress->completedRaces.
 	// Also give the robots random addons appropriate to their level.
 
 												   // rid pid cid len        dir	  dmg lv eCost isFiring
@@ -487,7 +487,7 @@ void Robots::assignAIrobots(Game& g) {
 	// populate the racing robots array with random robots from all-robots array
 	std::vector<int> availableIndices;
 	// 1
-	for (int i = 0; i < g.mRobots->NumRobots; ++i)
+	for (int i = 0; i < NumRobots; ++i)
 		if (g.mRobots->mAllRobots[i] != g.mRobots->Unassigned)
 			availableIndices.push_back(i);
 	// 2
@@ -507,18 +507,26 @@ void Robots::assignAIrobots(Game& g) {
 	switch (g.mProgress->mCompletedRaces) {
 
 		case 0:
+		case 1:
+		case 2:
+		case 3:
+		case 4:
 
 
 			// 50/50 chance of getting some addons
 			for (int i = 1; i < 4; i++) {
-				/*if (rand() % 2 == 0) */
-				res = addAddonComponent(g.mEcs, g.mRobots->mRacingRobots[i], Addons::Magnet3);
+
+				if (rand() % 2 == 0) {
+					res = addAddonComponent(g.mEcs, g.mRobots->mRacingRobots[i], Addons::Laser1);
+
+				}
+
 				std::cout << "res: " << res << std::endl;
-				if(g.mEcs->HasComponent<Magnet>(g.mRobots->mRacingRobots[i]))
-					std::cout << "Magnet on!" << std::endl;
+				if(g.mEcs->HasComponent<Laser>(g.mRobots->mRacingRobots[i]))
+					std::cout << "Laser on!" << std::endl;
 			}
 
-			std::cout << "COMPLETED RACES::::::::::::::::::::::::::::::::::::::::: " << g.mProgress->mCompletedRaces << std::endl;
+
 
 			break;
 
@@ -547,6 +555,20 @@ void Robots::assignAIrobots(Game& g) {
 
 
 	}
+
+	std::cout << "COMPLETED RACES:::::::::::::::::::: " << g.mProgress->mCompletedRaces << std::endl;
+
+}
+
+int Robots::ownedRobotsLeft(Game& g) {
+
+	int count = 0;
+
+	for (int i = 0; i < NumRobots; i++)
+		if (mOwnedRobots[i] != Unassigned)
+			count++;
+
+	return count;
 
 }
 
