@@ -18,7 +18,7 @@
 
 Progress::Progress() {
 
-	mFunds = 20;
+	mFunds = 0;
 	mFavRobot = 0;	// always start with charmy as fav (Robots::Charmy == 0)
 	mCurrentLocation = 0;
 	mCompletedRaces = 0;
@@ -30,5 +30,14 @@ Progress::Progress() {
 Progress::~Progress() {
 
 	std::cout << "Destroyed Progress subsystem." << std::endl;
+
+}
+
+void Progress::resetProgress() {
+
+	mFunds = 20;
+	mFavRobot = 0;
+	mCurrentLocation = 0;
+	mCompletedRaces = 0;
 
 }

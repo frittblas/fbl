@@ -70,6 +70,7 @@ void PostRace::tick(Game& g) {
 		} else {
 			g.mState->change(g, GameState::StateType::Explore);
 			g.mChars->stopPlayerPathing(g);
+			g.mProgress->mCompletedRaces++;	// successfully completed a race!
 		}
 	}
 
@@ -184,28 +185,21 @@ void PostRace::prepShop(Game& g) {
 	for (int i = 0; i < g.mAddons->NumAddons; i++)
 		g.mAddons->mShopAddons[i] = g.mAddons->Unassigned;
 
-	copyRandomValues(g);
-
-	g.mAddons->showAddonsInShop(g.mEcs);
-
-}
-
-void PostRace::copyRandomValues(Game& g) {
-
+	// populate the shop-addons array woth random addons from the all-addons array
 	std::vector<int> availableIndices;
-
 	// 1
 	for (int i = 0; i < g.mAddons->NumAddons; ++i)
 		if (g.mAddons->mAllAddons[i] != g.mAddons->Unassigned)
 			availableIndices.push_back(i);
-
 	// 2
 	std::random_shuffle(availableIndices.begin(), availableIndices.end());
 	int numCopies = std::min(3, static_cast<int>(availableIndices.size()));
-
 	// 3
-	for (int i = 0; i < numCopies; ++i)
+	for (int i = 0; i < numCopies; i++)
 		g.mAddons->mShopAddons[availableIndices[i]] = g.mAddons->mAllAddons[availableIndices[i]];
+
+	// position the addons correctly and activate ui elements
+	g.mAddons->showAddonsInShop(g.mEcs);
 
 }
 
@@ -238,7 +232,7 @@ void PostRace::buySelectedItem(Game& g) {
 	g.mProgress->mFunds -= add.price;
 
 	// update gui
-	fbl_update_text(mFundsText, 255, 255, 255, 255, "Coins: ", g.mProgress->mFunds);
+	fbl_update_text(mFundsText, 255, 255, 255, 255, "Coins: %d", g.mProgress->mFunds);
 
 	updateContextHelp("Thank you for your purchase!");
 

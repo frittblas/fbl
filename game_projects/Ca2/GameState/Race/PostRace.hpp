@@ -29,7 +29,6 @@ public:
     void updateAddonInfo(Game& g, bool empty);
     void selectAddon(Game& g);
     void prepShop(Game& g);
-    void copyRandomValues(Game& g);
     void buySelectedItem(Game& g);
     void initPostRaceMenu(Game& g);
 

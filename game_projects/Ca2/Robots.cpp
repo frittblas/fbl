@@ -128,7 +128,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 				break;
 			case Necky:
 												  // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
-				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 320, 128, 32, 32, true, 8, 12, 0, 0, 7 });
+				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 320, 128, 32, 32, true, 2, 12, 0, 0, 7 });
 												   // name  lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
 				mEcs->AddComponent(tmpRobot, Stats{ "Necky", 1, 0, 7, 30, 20, 20, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
 												//  rid len dir ivalM ivalC hasTarg active
@@ -138,7 +138,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 				break;
 			case Partybot:
 												  // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
-				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 0, 160, 32, 32, true, 8, 12, 0, 0, 7 });
+				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 0, 160, 32, 32, true, 7, 12, 0, 0, 7 });
 												    // name    lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
 				mEcs->AddComponent(tmpRobot, Stats{ "Partybot", 1, 0, 7, 30, 20, 20, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
 												//  rid len dir ivalM ivalC hasTarg active
@@ -148,7 +148,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 				break;
 			case Sprinty:
 												  // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
-				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 224, 160, 32, 32, true, 8, 12, 0, 0, 7 });
+				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 224, 160, 32, 32, true, 4, 4, 0, 0, 7 });
 													// name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
 				mEcs->AddComponent(tmpRobot, Stats{ "Sprinty", 1, 0, 7, 30, 20, 20, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
 												//  rid len dir ivalM ivalC hasTarg active
@@ -217,7 +217,7 @@ bool Robots::addAddonComponent(Coordinator* mEcs, Entity robot, uint8_t addonTyp
 		case Addons::Magnet3:
 			if (mEcs->HasComponent<Magnet>(robot)) return false;
 										 // sid str active
-			mEcs->AddComponent(robot, Magnet{ 0, 128, false });
+			mEcs->AddComponent(robot, Magnet{ 0, 128, true });
 			break;
 		case Addons::Turbo1:
 			if (mEcs->HasComponent<Turbo>(robot)) return false;
@@ -484,33 +484,66 @@ void Robots::assignAIrobots(Game& g) {
 												   // rid pid cid len        dir	  dmg lv eCost isFiring
 	//mEcs->AddComponent(tmpRobot, Laser{ 0, 0, 0, 800, Addons::Dir::Up, 5, 1, 3, false });
 
+	// populate the racing robots array with random robots from all-robots array
+	std::vector<int> availableIndices;
+	// 1
+	for (int i = 0; i < g.mRobots->NumRobots; ++i)
+		if (g.mRobots->mAllRobots[i] != g.mRobots->Unassigned)
+			availableIndices.push_back(i);
+	// 2
+	std::random_shuffle(availableIndices.begin(), availableIndices.end());
+	int numCopies = std::min(3, static_cast<int>(availableIndices.size()));
+	// 3
+	for (int i = 0; i < numCopies; i++)
+		g.mRobots->mRacingRobots[i + 1] = g.mRobots->mAllRobots[availableIndices[i]];
+
+	//g.mRobots->mRacingRobots[1] = g.mRobots->mAllRobots[Robots::Necky];
+	//g.mRobots->mRacingRobots[2] = g.mRobots->mAllRobots[Robots::Partybot];
+	//g.mRobots->mRacingRobots[3] = g.mRobots->mAllRobots[Robots::Sprinty];
+
+
 	// now set levels and addons for the AI robots based on progress
+	bool res = false;
 	switch (g.mProgress->mCompletedRaces) {
 
-	case 0:
-	case 1:
-	case 2:
-	case 3:
+		case 0:
 
-		break;
-	case 4:
-	case 5:
-	case 6:
 
-		break;
-	case 7:
-	case 8:
-	case 9:
+			// 50/50 chance of getting some addons
+			for (int i = 1; i < 4; i++) {
+				/*if (rand() % 2 == 0) */
+				res = addAddonComponent(g.mEcs, g.mRobots->mRacingRobots[i], Addons::Magnet3);
+				std::cout << "res: " << res << std::endl;
+				if(g.mEcs->HasComponent<Magnet>(g.mRobots->mRacingRobots[i]))
+					std::cout << "Magnet on!" << std::endl;
+			}
 
-		break;
-	case 10:
-	case 11:
-	case 12:
+			std::cout << "COMPLETED RACES::::::::::::::::::::::::::::::::::::::::: " << g.mProgress->mCompletedRaces << std::endl;
 
-		break;
+			break;
 
-	default:
-		break;
+		case 5:
+
+			levelUpAllFreeRobots(g);
+
+
+
+			break;
+		case 6:
+		case 7:
+		case 8:
+		case 9:
+
+
+			break;
+		case 10:
+		case 11:
+		case 12:
+
+			break;
+
+		default:
+			break;
 
 
 	}

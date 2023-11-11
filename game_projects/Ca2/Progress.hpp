@@ -26,4 +26,6 @@ public:
     uint8_t  mCurrentLocation;  // current location
     uint16_t mCompletedRaces;   // how many races have been completed in total
 
+    void resetProgress();       // reset funds and completed races etc.
+
 };

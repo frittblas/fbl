@@ -23,8 +23,8 @@
 #include "../Ecs/Systems/CameraSystem.hpp"
 #include "../Ecs/Systems/LightSystem.hpp"
 
-//#include "../Ecs/Systems/Race/PathLogicSystem.hpp"
-//#include "../Ecs/Systems/Race/BasicAISystem.hpp"
+#include "../Ecs/Systems/Race/PathLogicSystem.hpp"
+#include "../Ecs/Systems/Race/BasicAISystem.hpp"
 #include "../Ecs/Systems/Race/AutoAimSystem.hpp"
 #include "../Ecs/Systems/Race/LaserSystem.hpp"
 #include "../Ecs/Systems/Race/MagnetSystem.hpp"
@@ -46,6 +46,7 @@
 #include "../Robots.hpp"
 #include "../Addons.hpp"
 #include "../Location.hpp"
+#include "../Progress.hpp"
 #include "../Weather.hpp"
 #include "../SysManager.hpp"
 #include "../LuaDialogue.hpp"
@@ -151,6 +152,18 @@ void GameState::change(Game& g, StateType newState) {
 				mCurrentStateInstance = race;
 			}
 
+			g.mSysManager->mPathLogicSystem->Init(*g.mEcs);		// set up path logic (flags and stuff)
+			g.mSysManager->mBasicAISystem->Init(*g.mEcs);		// set up ai
+			g.mSysManager->mAutoAimSystem->Init(*g.mEcs);		// create rays for entities with AutoAim  component.
+			g.mSysManager->mLaserSystem->Init(*g.mEcs);			// create rays and particles for all entities with a Laser component.
+			g.mSysManager->mMagnetSystem->Init(*g.mEcs);		// create magnet sprites and stuff.
+			g.mSysManager->mTurboSystem->Init(*g.mEcs);			// set up turbo
+			g.mSysManager->mShieldSystem->Init(*g.mEcs);		// set up shield sprite etc.
+			g.mSysManager->mHealSystem->Init(*g.mEcs);			// set up healing particle system etc.
+			g.mSysManager->mDiagSystem->Init(*g.mEcs);			// set up diagonal movement
+			g.mSysManager->mRobotCtrlSystem->Init(*g.mEcs);		// set up robot control access time.
+
+
 			break;
 
 		case StateType::RobotCollection:
@@ -215,6 +228,8 @@ void GameState::titleToExplore(Game& g) {
 	g.mChars->setupPlayer(g.mEcs);	// create the player entity and add the right components
 	g.mChars->setupNpc(g);			// add all npcs based on the map file
 
+	g.mProgress->resetProgress();	// reset funds and completed races etc.
+
 	g.mRobots->setupRobots(g.mEcs); // create the robot entities and add the basic components
 	g.mAddons->setupAddons(g.mEcs); // create the addon entities
 
@@ -248,7 +263,23 @@ void GameState::raceToExplore(Game& g) {
 	for (int i = 0; i < g.mRobots->mNumRacers; i++) {
 		g.mEcs->RemoveComponent<Path>(g.mRobots->mRacingRobots[i]);
 		g.mEcs->RemoveComponent<PathLogic>(g.mRobots->mRacingRobots[i]);
-		if(i > 0) g.mEcs->RemoveComponent<BasicAI>(g.mRobots->mRacingRobots[i]);	// only remove for non players
+		if (i > 0) {	// only remove for non players
+			g.mEcs->RemoveComponent<BasicAI>(g.mRobots->mRacingRobots[i]);
+			// also remove any addons they might have (not Sprite, Stats, AutoAim, Light)
+			if(g.mEcs->HasComponent<Laser>(g.mRobots->mRacingRobots[i]))
+				g.mEcs->RemoveComponent<Laser>(g.mRobots->mRacingRobots[i]);
+			if (g.mEcs->HasComponent<Magnet>(g.mRobots->mRacingRobots[i]))
+				g.mEcs->RemoveComponent<Magnet>(g.mRobots->mRacingRobots[i]);
+			if (g.mEcs->HasComponent<Turbo>(g.mRobots->mRacingRobots[i]))
+				g.mEcs->RemoveComponent<Turbo>(g.mRobots->mRacingRobots[i]);
+			if (g.mEcs->HasComponent<Shield>(g.mRobots->mRacingRobots[i]))
+				g.mEcs->RemoveComponent<Shield>(g.mRobots->mRacingRobots[i]);
+			if (g.mEcs->HasComponent<Heal>(g.mRobots->mRacingRobots[i]))
+				g.mEcs->RemoveComponent<Heal>(g.mRobots->mRacingRobots[i]);
+			// turn off auto aim
+			auto& aim = g.mEcs->GetComponent<AutoAim>(g.mRobots->mRacingRobots[i]);
+			aim.active = false;
+		}
 	}
 
 	// add path component back to the player
@@ -270,16 +301,7 @@ void GameState::setupRace(Game& g) {
 	g.mSysManager->mSpriteSystem->Init(*g.mEcs);	// create sprites for all entities with a sprite component
 	g.mSysManager->mLightSystem->Init(*g.mEcs);		// create lights for all entities with a light component
 
-	//g.mSysManager->mPathLogicSystem->Init(*g.mEcs);	// set up path logic (flags and stuff)
-	//g.mSysManager->mBasicAISystem->Init(*g.mEcs);	// set up ai
-	g.mSysManager->mAutoAimSystem->Init(*g.mEcs);	// create rays for entities with AutoAim  component.
-	g.mSysManager->mLaserSystem->Init(*g.mEcs);		// create rays and particles for all entities with a Laser component.
-	g.mSysManager->mMagnetSystem->Init(*g.mEcs);	// create magnet sprites and stuff.
-	g.mSysManager->mTurboSystem->Init(*g.mEcs);		// set up turbo
-	g.mSysManager->mShieldSystem->Init(*g.mEcs);	// set up shield sprite etc.
-	g.mSysManager->mHealSystem->Init(*g.mEcs);		// set up healing particle system etc.
-	g.mSysManager->mDiagSystem->Init(*g.mEcs);	    // set up diagonal movement
-	g.mSysManager->mRobotCtrlSystem->Init(*g.mEcs);	// set up robot control access time.
+	// systems init was here
 
 	g.mRobots->mapSpriteIdToEntity(g.mEcs);
 	g.mRobots->hideRobots(g.mEcs);

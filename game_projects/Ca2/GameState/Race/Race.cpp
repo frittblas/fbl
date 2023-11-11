@@ -22,7 +22,6 @@
 #include "../../Ecs/Systems/SpriteSystem.hpp"
 #include "../../Ecs/Systems/PathSystem.hpp"
 #include "../../Ecs/Systems/LightSystem.hpp"
-
 #include "../../Ecs/Systems/Race/PathLogicSystem.hpp"
 #include "../../Ecs/Systems/Race/BasicAISystem.hpp"
 #include "../../Ecs/Systems/Race/AutoAimSystem.hpp"
@@ -81,9 +80,6 @@ void Race::assignRobots(Game& g) {
 
 	g.mRobots->mRacingRobots[0] = g.mRobots->mOwnedRobots[g.mProgress->mFavRobot];
 	g.mRobots->assignAIrobots(g);
-	//g.mRobots->mRacingRobots[1] = g.mRobots->mOwnedRobots[Robots::Alarmy];
-	//g.mRobots->mRacingRobots[2] = g.mRobots->mOwnedRobots[Robots::Boingy];
-	//g.mRobots->mRacingRobots[3] = g.mRobots->mOwnedRobots[Robots::Chompy];
 
 	// set one of the robots as your team-member
 	g.mRobots->mTeam[0] = g.mRobots->mOwnedRobots[Robots::Charmy];
@@ -123,7 +119,6 @@ void Race::assignRobots(Game& g) {
 	}
 
 	g.mSysManager->mPathSystem->Init(*g.mEcs);		// assign a unique path id to the entities with a path component
-	g.mSysManager->mPathLogicSystem->Init(*g.mEcs);	// set flags coins and kills to 0
 
 	//std::cout << "THE NEXT SPRITE ID IS : " << fbl_create_sprite(0, 0, 1, 1, 0) << std::endl;
 
@@ -133,8 +128,6 @@ void Race::assignRobots(Game& g) {
 
 	mMaze->initMaze(g, blockDensity, mNumRacers, Race::GameMode::GM_CaptureFlags);
 
-	// temp call, remove this
-	//mPostRace->initPostRaceMenu(g);
 
 	fbl_sort_sprites(FBL_SORT_BY_LAYER);
 
