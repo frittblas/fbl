@@ -37,9 +37,10 @@ public:
 
     virtual void tick(Game& g) override;
 
+    int mCurrentRobotPage;  // what robot-page are you at? It's an index to the owned robot array
+
 private:
     const int notSet = -1;
-    int mCurrentRobotPage;  // what robot-page are you at? It's an index to the owned robot array
     int mSelectedAddon;     // currently selected addon on the grid (as entity id)
     int mKeyAccess;
 

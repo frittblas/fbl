@@ -180,7 +180,15 @@ void GameState::change(Game& g, StateType newState) {
 
 			RobotCollection* rc = new RobotCollection();
 			fbl_load_ttf_font("font/roboto.ttf", 18);	// use this font for the menu
-			rc->cyclePages(g, 0);			// call this to update the first robots stats in the menu
+			//rc->cyclePages(g, 0);			// call this to update the first robots stats in the menu
+
+			// always start showing the fav robot
+			for (int i = 0; i < g.mRobots->ownedRobotsLeft(g); i++) {
+				rc->cyclePages(g, 1);
+				if (rc->mCurrentRobotPage == g.mProgress->mFavRobot)
+					break;
+			}
+
 			rc->updateAddonInfo(g, true);	// update addon info to empty
 			mCurrentStateInstance = rc;
 
@@ -319,6 +327,6 @@ void GameState::setupRace(Game& g) {
 
 	g.mWeather->setWeather(Weather::TimeOfDay::Evening, 0, 0, 0, false);
 
-	SoundManager::getInstance().loadAndPlayMusic("music/overworld2.ogg", 80);
+	SoundManager::getInstance().loadAndPlayMusic("music/race.ogg", 80);
 
 }
