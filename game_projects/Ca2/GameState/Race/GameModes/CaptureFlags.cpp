@@ -181,18 +181,6 @@ void CaptureFlags::checkWinCondition(Game& g) {
 		// first check if player is dead
 		auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mRacingRobots[0]);
 
-		if (sta.hp < 0.1) {
-
-			// if you still have robots that are alive left it's not game over.
-			if (g.mRobots->ownedRobotsLeft(g) > 0) {
-
-				Race::sRaceState = Race::Fourth;
-
-			}
-			else
-				Race::sRaceState = Race::Dead;
-		}
-
 
 		// now check if all flags are returned to base
 		bool allTaken = true;
@@ -235,7 +223,27 @@ void CaptureFlags::checkWinCondition(Game& g) {
 				break;
 			}
 		}
-		if (allDead) Race::sRaceState = Race::First;
+		if (allDead) {
+			Race::sRaceState = Race::First;
+			if (g.mEcs->HasComponent<Laser>(g.mRobots->mRacingRobots[0])) {
+				auto& las = g.mEcs->GetComponent<Laser>(g.mRobots->mRacingRobots[0]);
+				fbl_set_prim_active(las.rayId, false);				// turn off ray
+				fbl_set_emitter_active(las.particleId, false);		// turn off emitter
+			}
+		}
+
+		// check if player is dead
+		if (sta.hp < 0.1) {
+
+			// if you still have robots that are alive left it's not game over.
+			if (g.mRobots->ownedRobotsLeft(g) > 0) {
+
+				Race::sRaceState = Race::Fourth;
+
+			}
+			else
+				Race::sRaceState = Race::Dead;
+		}
 
 	}
 
