@@ -155,7 +155,7 @@ void LaserSystem::Update(Game& g) {
 		else fbl_set_emitter_active(las.particleId, false);	// turn off particles if ray didn't hit anything
 
 		// only show the crosshair if the robots are showing
-		//if(Maze::sPickDone) fbl_set_prim_active(las.crossHairId, true);
+		if(Maze::sPickDone) fbl_set_prim_active(las.crossHairId, true);
 
 		// don't show the crosshair if robot's dead
 		if(sta.hp < 0.1) fbl_set_prim_active(las.crossHairId, false);

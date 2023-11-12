@@ -15,6 +15,7 @@
 #include "../../../Ecs/Components.hpp"
 
 #include "../../../../Ca2/Game.hpp"
+#include "../../../../Ca2/Progress.hpp"
 #include "../../../../Ca2/GameState/Race/Race.hpp"
 #include "../../../../Ca2/GameState/Race/Maze.hpp"
 
@@ -178,15 +179,14 @@ void CaptureFlags::checkWinCondition(Game& g) {
 	if (Race::sRaceState == Race::Undecided) {
 
 		// first check if player is dead
-		auto& stat = g.mEcs->GetComponent<Stats>(g.mRobots->mRacingRobots[0]);
+		auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mRacingRobots[0]);
 
-		if (stat.hp < 0.1) {
+		if (sta.hp < 0.1) {
 
-			// if you still have robots that are alive left put them in the race!
-
+			// if you still have robots that are alive left it's not game over.
 			if (g.mRobots->ownedRobotsLeft(g) > 0) {
 
-
+				Race::sRaceState = Race::Fourth;
 
 			}
 			else
@@ -226,6 +226,16 @@ void CaptureFlags::checkWinCondition(Game& g) {
 		}
 
 
+		// also check if all other robots are dead = win
+		bool allDead = true;
+		for (int i = 1; i < g.mRobots->mNumRacers; i++) {
+			auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mRacingRobots[i]);
+			if (sta.hp > 0.1) {
+				allDead = false;
+				break;
+			}
+		}
+		if (allDead) Race::sRaceState = Race::First;
 
 	}
 

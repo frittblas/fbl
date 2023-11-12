@@ -163,15 +163,10 @@ void Addons::setupAddons(Coordinator* mEcs) {
 		claimAddon(i);
 	}
 	
-	claimAddon(AutoAim);
-	claimAddon(Laser);
-	claimAddon(Laser2);
-	claimAddon(Magnet);
-	claimAddon(Turbo);
-	claimAddon(Shield);
-	claimAddon(Heal);
-	claimAddon(Diag);
-	claimAddon(RobotCtrl);*/
+*/
+
+	//claimAddon(Laser1);
+	claimAddon(RobotCtrl);
 	
 }
 

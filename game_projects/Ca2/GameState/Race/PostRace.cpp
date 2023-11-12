@@ -71,6 +71,25 @@ void PostRace::tick(Game& g) {
 			g.mState->change(g, GameState::StateType::Explore);
 			g.mChars->stopPlayerPathing(g);
 			g.mProgress->mCompletedRaces++;	// successfully completed a race!
+
+			// first check if player is dead, and assign new robot as fav
+			auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mRacingRobots[0]);
+			if (sta.hp < 0.1) {
+				// find your next available robot
+				for (int i = 0; i < Robots::NumRobots; i++) {
+					if (g.mRobots->mOwnedRobots[i] != g.mRobots->Unassigned) {
+						auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mOwnedRobots[i]);
+						if (sta.hp > 0.1) {
+							g.mProgress->mFavRobot = i;
+							std::cout << "NEW FAV::::::::::::::::::: " << sta.name << std::endl;
+							break;
+						}
+
+					}
+				}
+			}
+
+
 		}
 	}
 
@@ -273,7 +292,7 @@ void PostRace::initPostRaceMenu(Game& g) {
 			break;
 	}
 
-	mContextHelp = fbl_create_text(255, 255, 255, 0, (char*)msg.c_str());
+	mContextHelp = fbl_create_text(255, 255, 255, 0, (char*)"%s (Race %d)", msg.c_str(), g.mProgress->mCompletedRaces + 1);
 	fbl_set_text_align(mContextHelp, FBL_ALIGN_CENTER);
 	fbl_set_text_xy(mContextHelp, x, y - height - 20);
 
@@ -299,6 +318,13 @@ void PostRace::initPostRaceMenu(Game& g) {
 	fbl_fix_sprite_to_screen(tmpId, true);
 	fbl_set_sprite_is_light(tmpId, true);
 
+	// red cross
+	if (sta.hp < 0.1) {
+		tmpId = fbl_create_sprite(192, 480, 32, 32, 0);
+		fbl_set_sprite_xy(tmpId, x + 200, y - 123);
+		fbl_set_sprite_layer(tmpId, 10);
+		fbl_fix_sprite_to_screen(tmpId, true);
+	}
 
 	// create the white outline
 	tmpId = fbl_create_prim(FBL_RECT, x, y - 20, width, height + 20, 0, false, false);

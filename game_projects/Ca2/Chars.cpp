@@ -94,8 +94,10 @@ void Chars::setupNpc(Game& g) {
 
 					switch (g.mMap->tile[index]->type) {
 
-						case 10 :	// Npc with type 10 (-10) = 0 = slime
+						case 10:	// Npc with type 10 (-10) = 0 = slime
 						case 11:	// type 11 (-10) = 1 = also slime :)
+						case 30:
+						case 50:
 
 							int id = g.mEcs->CreateEntity();
 							g.mChars->mNpc.push_back(id);

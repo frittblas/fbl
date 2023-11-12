@@ -36,7 +36,8 @@ public:
         Second,
         Third,
         Fourth,
-        Dead
+        Dead,
+        GameOver
     };
 
     void assignRobots(Game& g);

@@ -100,7 +100,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 												  // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 256, 96, 32, 32, true, 4, 12, 0, 0, 7 });
 												   // name  lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
-				mEcs->AddComponent(tmpRobot, Stats{ "Dancy", 1, 0, 7, 21, 21, 11, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
+				mEcs->AddComponent(tmpRobot, Stats{ "Dancy", 1, 0, 7, 21, 21, 10, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
 												//  rid len dir ivalM ivalC hasTarg active
 				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, false });
 												// id  tx  ty   w    h  scale
@@ -110,7 +110,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 												  // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 0, 128, 32, 32, true, 2, 12, 0, 0, 7 });
 												   // name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
-				mEcs->AddComponent(tmpRobot, Stats{ "Floppy", 1, 0, 7, 20, 20, 10, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
+				mEcs->AddComponent(tmpRobot, Stats{ "Floppy", 1, 0, 7, 20, 20, 9, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
 												//  rid len dir ivalM ivalC hasTarg active
 				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, false });
 												// id  tx  ty   w    h  scale
@@ -140,7 +140,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 												  // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 0, 160, 32, 32, true, 7, 12, 0, 0, 7 });
 												    // name    lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
-				mEcs->AddComponent(tmpRobot, Stats{ "Partybot", 1, 0, 7, 21, 21, 10, false, 21, 21, 7, -1, -1, -1, -1, -1, -1 });
+				mEcs->AddComponent(tmpRobot, Stats{ "Partybot", 1, 0, 7, 21, 21, 9, false, 21, 21, 7, -1, -1, -1, -1, -1, -1 });
 												//  rid len dir ivalM ivalC hasTarg active
 				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, false });
 												// id  tx  ty   w    h  scale
@@ -150,7 +150,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 												  // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 224, 160, 32, 32, true, 4, 4, 0, 0, 7 });
 													// name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
-				mEcs->AddComponent(tmpRobot, Stats{ "Sprinty", 1, 0, 7, 15, 15, 13, false, 25, 25, 7, -1, -1, -1, -1, -1, -1 });
+				mEcs->AddComponent(tmpRobot, Stats{ "Sprinty", 1, 0, 7, 15, 15, 11, false, 25, 25, 7, -1, -1, -1, -1, -1, -1 });
 												//  rid len dir ivalM ivalC hasTarg active
 				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, false });
 												// id  tx  ty   w    h  scale
@@ -165,12 +165,11 @@ void Robots::setupRobots(Coordinator* mEcs) {
 	}
 
 	claimRobot(Charmy);
-	/*
-	claimRobot(Alarmy);
+	//claimRobot(Alarmy);
 	claimRobot(Boingy);
-	claimRobot(Chompy);
-	claimRobot(Dancy);
-	*/
+	//claimRobot(Chompy);
+	//claimRobot(Dancy);
+
 }
 
 bool Robots::addAddonComponent(Coordinator* mEcs, Entity robot, uint8_t addonType) {
@@ -557,7 +556,7 @@ void Robots::assignAIrobots(Game& g) {
 
 			equipAIaddon(g, 1, Addons::Laser2);
 			equipAIaddon(g, 2, Addons::Magnet2);
-			equipAIaddon(g, 2, Addons::Turbo2);
+			equipAIaddon(g, 2, Addons::Turbo1);
 			equipAIaddon(g, 2, Addons::Shield2);
 			equipAIaddon(g, 1, Addons::Heal2);
 
@@ -569,7 +568,7 @@ void Robots::assignAIrobots(Game& g) {
 
 			equipAIaddon(g, 1, Addons::Laser2);
 			equipAIaddon(g, 1, Addons::Magnet2);
-			equipAIaddon(g, 1, Addons::Turbo2);
+			equipAIaddon(g, 2, Addons::Turbo1);
 			equipAIaddon(g, 1, Addons::Shield2);
 			equipAIaddon(g, 1, Addons::Heal2);
 
@@ -647,9 +646,13 @@ int Robots::ownedRobotsLeft(Game& g) {
 
 	int count = 0;
 
-	for (int i = 0; i < NumRobots; i++)
-		if (mOwnedRobots[i] != Unassigned)
-			count++;
+	for (int i = 0; i < NumRobots; i++) {
+		if (mOwnedRobots[i] != Unassigned) {
+			auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mOwnedRobots[i]);
+			if (sta.hp > 0.1)
+				count++;
+		}
+	}
 
 	return count;
 

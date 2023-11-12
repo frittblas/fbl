@@ -402,7 +402,7 @@ void Maze::addItems() {
 		sFlag[i].state = FlagState::Center;	// start in the center
 	}
 
-	// add random amount of coins (from 10 to 20)
+	// add random amount of coins (from 12 to 25)
 	for (int i = 0; i < Maze::cMaxCoins; i++) sCoin[i].id = -1;	// set all id's to -1
 	int numCoins = rand() % (Maze::cMaxCoins / 2) + 10;
 	std::cout << "numCoins: " << numCoins << std::endl;

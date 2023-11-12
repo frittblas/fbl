@@ -128,7 +128,7 @@ local iter = 1
 while true do
 	if iter == 1 then
 		if not g_wait_response then
-			disp_dw("Greetings! I am the first slime", "I'm reasonable", "Go ahead and ask the other slime", "Ok..", " ")
+			disp_dw("Greetings, and welcome to Ca2", "I'm the story-slime", "I will narrate this game!", "Ok..", " ")
 		elseif getResponse() == OK then
 			iter = advance(Explore, iter + 1) -- advance to next dialog and go to Explore state
 		end
@@ -203,6 +203,40 @@ while true do
 			disp_dw("You chose Blue!", " ", " ", "Ok", "")
 		elseif getResponse() == OK then
 			iter = advance(Explore, 1) -- reset dialogue and go to Explore state
+		end
+	end
+
+	coroutine.yield()
+	
+end
+end)
+
+g_dialogue[20] = coroutine.create(function ()
+local iter = 1
+while true do
+	if iter == 1 then
+		if not g_wait_response then
+			disp_dw("Hello! I am the info-slime", "I will inform you about", "important things..", "Good stuff..", " ")
+		elseif getResponse() == OK then
+			iter = advance(Explore, 1) -- reset dialogue and go to Explore state
+		end
+	end
+
+	coroutine.yield()
+	
+end
+end)
+
+g_dialogue[40] = coroutine.create(function ()
+local iter = 1
+while true do
+	if iter == 1 then
+		if not g_wait_response then
+			disp_dw("I am the event-slime.", "I can arrange a race event.", "Do you want to race?", "Yes", "No")
+		elseif getResponse() == YES then
+			iter = advance(Race, 1)
+		elseif getResponse() == NO then
+			iter = advance(Explore, 1) -- reset and go to explore
 		end
 	end
 

@@ -29,7 +29,7 @@ const uint16_t fNumLines = 17;	// lines for the grid to the left, 10x5 grid, 17 
 
 // id's for the robot collection-menu (f prefix for filescope)
 static uint16_t fContextHelp, fContextLine;
-static uint16_t fMenuBgSquareId, fMenuBgOutlineId, fMenuRobotBgSquareId, fFavRobotCheckBox;
+static uint16_t fMenuBgSquareId, fMenuBgOutlineId, fMenuRobotBgSquareId, fFavRobotCheckBox, fRedCross;
 static uint16_t fMenuDividerLine, fSmallMenuDividerLine;
 static uint16_t fMenuButtonLeft, fMenuButtonRight;
 static uint16_t fMenuRobotDescr, fMenuAddonsDescr;
@@ -97,6 +97,12 @@ void RobotCollection::cyclePages(Game& g, int dir) {
 
 	// get stats component
 	auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mOwnedRobots[mCurrentRobotPage]);
+
+	// show red cross over dead robots
+	if (sta.hp < 0.1)
+		fbl_set_sprite_active(fRedCross, true);
+	else
+		fbl_set_sprite_active(fRedCross, false);
 
 	// set checkbox
 	if(g.mProgress->mFavRobot == mCurrentRobotPage)
@@ -393,9 +399,14 @@ void RobotCollection::processInput(Game& g) {
 
 	}
 
+	// get stats component
+	auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mOwnedRobots[mCurrentRobotPage]);
+
 	// deal with the fav robot checkbox
-	if (fbl_get_ui_elem_val(fFavRobotCheckBox))
+	if (fbl_get_ui_elem_val(fFavRobotCheckBox) && sta.hp > 0.1)
 		g.mProgress->mFavRobot = mCurrentRobotPage;
+	else
+		fbl_set_ui_elem_val(fFavRobotCheckBox, 0);	// can't check dead robot!
 
 	if (!fbl_get_ui_elem_val(fFavRobotCheckBox) && g.mProgress->mFavRobot == mCurrentRobotPage)
 		fbl_set_ui_elem_val(fFavRobotCheckBox, 1);	// can't uncheck!
@@ -470,6 +481,12 @@ void initCollectionMenu() {
 	fbl_set_sprite_layer(fMenuRobotBgSquareId, 5);
 	fbl_fix_sprite_to_screen(fMenuRobotBgSquareId, true);
 	fbl_set_sprite_is_light(fMenuRobotBgSquareId, true);
+
+	// red cross
+	fRedCross = fbl_create_sprite(192, 480, 32, 32, 0);
+	fbl_set_sprite_xy(fRedCross, x + 184, y - 139);
+	fbl_set_sprite_layer(fRedCross, 8);
+	fbl_fix_sprite_to_screen(fRedCross, true);
 
 	// checkbox for the favourite robot
 	fFavRobotCheckBox = fbl_create_ui_elem(FBL_UI_CHECKBOX_INTERVAL, 0, 32, 24, 24, NULL);
@@ -691,6 +708,9 @@ void showCollectionMenu() {
 	fbl_set_sprite_active(fMenuRobotBgSquareId, true);
 	fbl_set_prim_active(fMenuBgOutlineId, true);
 
+	// red cross
+	fbl_set_sprite_active(fRedCross, true);
+
 	// favourite robot checkbox
 	fbl_set_ui_elem_active(fFavRobotCheckBox, true);
 
@@ -764,6 +784,9 @@ void hideCollectionMenu() {
 	fbl_set_sprite_active(fMenuBgSquareId, false);
 	fbl_set_sprite_active(fMenuRobotBgSquareId, false);
 	fbl_set_prim_active(fMenuBgOutlineId, false);
+
+	// red cross
+	fbl_set_sprite_active(fRedCross, false);
 
 	// favourite robot checkbox
 	fbl_set_ui_elem_active(fFavRobotCheckBox, false);

@@ -105,9 +105,9 @@ void Race::assignRobots(Game& g) {
 		g.mEcs->AddComponent(g.mRobots->mRacingRobots[i], Path{ 0, 0, 0, false, speed, diag, 3 }); // last param should be 10 if you wanna use speed
 
 
-		// reset hp and energy
-		sta.hp = sta.maxHp;
-		sta.energy = sta.maxEnergy;
+		// reset stuff? maybe not
+		// sta.hp = sta.maxHp;
+		// sta.energy = sta.maxEnergy;
 	}
 
 	// add PathLogic and BasicAI components to the racing robots (these are also removed after the race.)
