@@ -20,6 +20,7 @@
 
 #include "../../../Game.hpp"
 #include "../../../Robots.hpp"
+#include "../../../Progress.hpp"
 #include "../../../Addons.hpp"
 
 #include "LaserSystem.hpp"
@@ -224,7 +225,8 @@ void LaserSystem::dealDamage(Game &g, Entity attacker, Entity target) {
 				}
 			}
 
-			attackSta.xp++;	// 1 XP for killing a robot
+			if(attacker == g.mProgress->mFavRobot)
+				attackSta.xp++;	// 1 XP for killing a robot, only for player
 
 		}
 		//std::cout << sta.name << " killed " << targetSta.name << std::endl;
