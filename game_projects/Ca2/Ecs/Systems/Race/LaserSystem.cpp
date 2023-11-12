@@ -31,6 +31,7 @@ void LaserSystem::Init(Coordinator& ecs) {
 		auto& pos = ecs.GetComponent<Position>(entity);
 		auto& sta = ecs.GetComponent<Stats>(entity);
 		auto& las = ecs.GetComponent<Laser>(entity);
+		auto& aim = ecs.GetComponent<AutoAim>(entity);
 
 		// create crosshair
 		las.crossHairId = fbl_create_prim(FBL_NORMAL_RECT, 0, 0, 2, 2, 0, 0, true);
@@ -79,6 +80,9 @@ void LaserSystem::Update(Game& g) {
 		auto& sta = g.mEcs->GetComponent<Stats>(entity);
 		auto& aim = g.mEcs->GetComponent<AutoAim>(entity);
 		auto& las = g.mEcs->GetComponent<Laser>(entity);
+
+		// only show the crosshair if the robots are showing
+		if (Maze::sPickDone && aim.active) fbl_set_prim_active(las.crossHairId, true);
 
 		// get info from autoAim component if there is a target (and if auto-aim is active)
 		if (aim.active) {
@@ -150,7 +154,7 @@ void LaserSystem::Update(Game& g) {
 		else fbl_set_emitter_active(las.particleId, false);	// turn off particles if ray didn't hit anything
 
 		// only show the crosshair if the robots are showing
-		if(Maze::sPickDone) fbl_set_prim_active(las.crossHairId, true);
+		//if(Maze::sPickDone) fbl_set_prim_active(las.crossHairId, true);
 
 		// don't show the crosshair if robot's dead
 		if(sta.hp < 0.1) fbl_set_prim_active(las.crossHairId, false);

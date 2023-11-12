@@ -62,6 +62,7 @@ public:
     void showRobotInRace(Coordinator* mEcs, Entity robot, int position);
     void claimRobot(int nameIndex);    // call this to "own" a robot
     void assignAIrobots(Game& g);
+    void equipAIaddon(Game& g, int probability, int type);
     int  ownedRobotsLeft(Game& g);
     int* levelUpRobot(Game& g, int nameIndex, bool owned);
     void levelUpAllFreeRobots(Game& g);

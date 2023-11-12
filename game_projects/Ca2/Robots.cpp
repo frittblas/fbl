@@ -80,7 +80,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 96, 96, 32, 32, true, 2, 12, 0, 0, 7 });
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
-				mEcs->AddComponent(tmpRobot, Stats{ "Boingy", 1, 0, 7, 20, 20, 4, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
+				mEcs->AddComponent(tmpRobot, Stats{ "Boingy", 1, 0, 7, 20, 20, 6, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
 												//  rid len dir ivalM ivalC hasTarg active
 				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, false });
 												// id  tx  ty   w    h  scale
@@ -90,7 +90,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 160, 96, 32, 32, true, 3, 12, 0, 0, 7 });
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
-				mEcs->AddComponent(tmpRobot, Stats{ "Chompy", 1, 0, 7, 25, 25, 5, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
+				mEcs->AddComponent(tmpRobot, Stats{ "Chompy", 1, 0, 7, 25, 25, 7, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
 												//  rid len dir ivalM ivalC hasTarg active
 				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, false });
 												// id  tx  ty   w    h  scale
@@ -100,7 +100,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 												  // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 256, 96, 32, 32, true, 4, 12, 0, 0, 7 });
 												   // name  lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
-				mEcs->AddComponent(tmpRobot, Stats{ "Dancy", 1, 0, 7, 30, 20, 20, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
+				mEcs->AddComponent(tmpRobot, Stats{ "Dancy", 1, 0, 7, 30, 20, 11, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
 												//  rid len dir ivalM ivalC hasTarg active
 				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, false });
 												// id  tx  ty   w    h  scale
@@ -110,7 +110,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 												  // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 0, 128, 32, 32, true, 2, 12, 0, 0, 7 });
 												   // name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
-				mEcs->AddComponent(tmpRobot, Stats{ "Floppy", 1, 0, 7, 30, 20, 20, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
+				mEcs->AddComponent(tmpRobot, Stats{ "Floppy", 1, 0, 7, 30, 20, 10, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
 												//  rid len dir ivalM ivalC hasTarg active
 				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, false });
 												// id  tx  ty   w    h  scale
@@ -120,7 +120,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 												  // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 64, 128, 32, 32, true, 8, 12, 0, 0, 7 });
 												   // name     lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
-				mEcs->AddComponent(tmpRobot, Stats{ "Levitaty", 1, 0, 7, 30, 20, 20, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
+				mEcs->AddComponent(tmpRobot, Stats{ "Levitaty", 1, 0, 7, 30, 20, 9, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
 												//  rid len dir ivalM ivalC hasTarg active
 				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, false });
 												// id  tx  ty   w    h  scale
@@ -130,7 +130,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 												  // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 320, 128, 32, 32, true, 2, 12, 0, 0, 7 });
 												   // name  lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
-				mEcs->AddComponent(tmpRobot, Stats{ "Necky", 1, 0, 7, 30, 20, 20, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
+				mEcs->AddComponent(tmpRobot, Stats{ "Necky", 1, 0, 7, 30, 20, 9, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
 												//  rid len dir ivalM ivalC hasTarg active
 				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, false });
 												// id  tx  ty   w    h  scale
@@ -140,7 +140,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 												  // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 0, 160, 32, 32, true, 7, 12, 0, 0, 7 });
 												    // name    lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
-				mEcs->AddComponent(tmpRobot, Stats{ "Partybot", 1, 0, 7, 30, 20, 20, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
+				mEcs->AddComponent(tmpRobot, Stats{ "Partybot", 1, 0, 7, 30, 20, 12, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
 												//  rid len dir ivalM ivalC hasTarg active
 				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, false });
 												// id  tx  ty   w    h  scale
@@ -150,7 +150,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 												  // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 224, 160, 32, 32, true, 4, 4, 0, 0, 7 });
 													// name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
-				mEcs->AddComponent(tmpRobot, Stats{ "Sprinty", 1, 0, 7, 30, 20, 20, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
+				mEcs->AddComponent(tmpRobot, Stats{ "Sprinty", 1, 0, 7, 30, 20, 14, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
 												//  rid len dir ivalM ivalC hasTarg active
 				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, false });
 												// id  tx  ty   w    h  scale
@@ -481,8 +481,6 @@ void Robots::assignAIrobots(Game& g) {
 	// Also set an appropriate level for the robots based on mProgress->completedRaces.
 	// Also give the robots random addons appropriate to their level.
 
-												   // rid pid cid len        dir	  dmg lv eCost isFiring
-	//mEcs->AddComponent(tmpRobot, Laser{ 0, 0, 0, 800, Addons::Dir::Up, 5, 1, 3, false });
 
 	// populate the racing robots array with random robots from all-robots array
 	std::vector<int> availableIndices;
@@ -497,36 +495,19 @@ void Robots::assignAIrobots(Game& g) {
 	for (int i = 0; i < numCopies; i++)
 		g.mRobots->mRacingRobots[i + 1] = g.mRobots->mAllRobots[availableIndices[i]];
 
-	//g.mRobots->mRacingRobots[1] = g.mRobots->mAllRobots[Robots::Necky];
-	//g.mRobots->mRacingRobots[2] = g.mRobots->mAllRobots[Robots::Partybot];
-	//g.mRobots->mRacingRobots[3] = g.mRobots->mAllRobots[Robots::Sprinty];
-
 
 	// now set levels and addons for the AI robots based on progress
-	bool res = false;
 	switch (g.mProgress->mCompletedRaces) {
 
 		case 0:
 		case 1:
+			break;
 		case 2:
 		case 3:
 		case 4:
 
 
-			// 50/50 chance of getting some addons
-			for (int i = 1; i < 4; i++) {
-
-				if (rand() % 2 == 0) {
-					res = addAddonComponent(g.mEcs, g.mRobots->mRacingRobots[i], Addons::Laser1);
-
-				}
-
-				std::cout << "res: " << res << std::endl;
-				if(g.mEcs->HasComponent<Laser>(g.mRobots->mRacingRobots[i]))
-					std::cout << "Laser on!" << std::endl;
-			}
-
-
+			equipAIaddon(g, 2, Addons::Laser1);
 
 			break;
 
@@ -557,6 +538,23 @@ void Robots::assignAIrobots(Game& g) {
 	}
 
 	std::cout << "COMPLETED RACES:::::::::::::::::::: " << g.mProgress->mCompletedRaces << std::endl;
+
+}
+
+void Robots::equipAIaddon(Game& g, int probability, int type) {
+
+	for (int i = 1; i < 4; i++) {
+		if (rand() % probability == 0) {
+
+			addAddonComponent(g.mEcs, g.mRobots->mRacingRobots[i], type);
+
+			// turn on auto aim
+			if (type == Addons::Laser1 || type == Addons::Laser2 || type == Addons::Laser3) {
+				auto& aim = g.mEcs->GetComponent<AutoAim>(g.mRobots->mRacingRobots[i]);
+				aim.active = true;
+			}
+		}
+	}
 
 }
 
