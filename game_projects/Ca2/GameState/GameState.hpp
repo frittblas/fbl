@@ -27,10 +27,10 @@ public:
         Settings,
         Tutorial,
         Race,
+        Maintenance,
         // these share resources
         Explore,
         Dialogue,
-        Shop,
         RobotCollection
     };
 

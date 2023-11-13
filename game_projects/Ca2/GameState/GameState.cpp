@@ -139,9 +139,6 @@ void GameState::change(Game& g, StateType newState) {
 
 			break;
 
-		case StateType::Shop:
-			break;
-
 		case StateType::Race:
 
 			setupRace(g);
@@ -164,6 +161,9 @@ void GameState::change(Game& g, StateType newState) {
 			g.mSysManager->mRobotCtrlSystem->Init(*g.mEcs);		// set up robot control access time.
 
 
+			break;
+
+		case StateType::Maintenance:
 			break;
 
 		case StateType::RobotCollection:
@@ -310,8 +310,6 @@ void GameState::setupRace(Game& g) {
 	g.mLocation->unLoadLocation(g.mMap);			// this destroys ALL sprites
 	g.mSysManager->mSpriteSystem->Init(*g.mEcs);	// create sprites for all entities with a sprite component
 	g.mSysManager->mLightSystem->Init(*g.mEcs);		// create lights for all entities with a light component
-
-	// systems init was here
 
 	g.mRobots->mapSpriteIdToEntity(g.mEcs);
 	g.mRobots->hideRobots(g.mEcs);
