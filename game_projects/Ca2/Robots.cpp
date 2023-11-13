@@ -227,12 +227,12 @@ bool Robots::addAddonComponent(Coordinator* mEcs, Entity robot, uint8_t addonTyp
 		case Addons::Turbo2:
 			if (mEcs->HasComponent<Turbo>(robot)) return false;
 										// amnt eCost activated
-			mEcs->AddComponent(robot, Turbo{ 1.7, 2, false });
+			mEcs->AddComponent(robot, Turbo{ 1.6, 2, false });
 			break;
 		case Addons::Turbo3:
 			if (mEcs->HasComponent<Turbo>(robot)) return false;
 										 // amnt eCost activated
-			mEcs->AddComponent(robot, Turbo{ 2.0, 1, false });
+			mEcs->AddComponent(robot, Turbo{ 1.8, 2, false });
 			break;
 		case Addons::Shield1:
 			if (mEcs->HasComponent<Shield>(robot)) return false;
@@ -517,7 +517,7 @@ void Robots::assignAIrobots(Game& g) {
 
 			equipAIaddon(g, 1, Addons::Laser1);
 			equipAIaddon(g, 2, Addons::Magnet1);
-			equipAIaddon(g, 2, Addons::Turbo1);
+			equipAIaddon(g, 3, Addons::Turbo1);
 
 
 			break;
@@ -530,8 +530,8 @@ void Robots::assignAIrobots(Game& g) {
 
 			equipAIaddon(g, 1, Addons::Laser1);
 			equipAIaddon(g, 2, Addons::Magnet1);
-			equipAIaddon(g, 2, Addons::Turbo1);
-			equipAIaddon(g, 2, Addons::Shield1);
+			equipAIaddon(g, 3, Addons::Turbo1);
+			equipAIaddon(g, 3, Addons::Shield1);
 			equipAIaddon(g, 2, Addons::Heal1);
 
 		case 12:
@@ -540,8 +540,8 @@ void Robots::assignAIrobots(Game& g) {
 
 			equipAIaddon(g, 1, Addons::Laser2);
 			equipAIaddon(g, 2, Addons::Magnet2);
-			equipAIaddon(g, 2, Addons::Turbo2);
-			equipAIaddon(g, 2, Addons::Shield2);
+			equipAIaddon(g, 3, Addons::Turbo2);
+			equipAIaddon(g, 3, Addons::Shield2);
 			equipAIaddon(g, 2, Addons::Heal2);
 
 			break;
@@ -556,8 +556,8 @@ void Robots::assignAIrobots(Game& g) {
 
 			equipAIaddon(g, 1, Addons::Laser2);
 			equipAIaddon(g, 2, Addons::Magnet2);
-			equipAIaddon(g, 2, Addons::Turbo1);
-			equipAIaddon(g, 2, Addons::Shield2);
+			equipAIaddon(g, 3, Addons::Turbo1);
+			equipAIaddon(g, 3, Addons::Shield2);
 			equipAIaddon(g, 1, Addons::Heal2);
 
 			break;
@@ -569,7 +569,7 @@ void Robots::assignAIrobots(Game& g) {
 			equipAIaddon(g, 1, Addons::Laser2);
 			equipAIaddon(g, 1, Addons::Magnet2);
 			equipAIaddon(g, 2, Addons::Turbo1);
-			equipAIaddon(g, 1, Addons::Shield2);
+			equipAIaddon(g, 2, Addons::Shield2);
 			equipAIaddon(g, 1, Addons::Heal2);
 
 			break;

@@ -40,7 +40,7 @@ void TurboSystem::Update(Coordinator& ecs) {
 			float oldSpeed = (float)sta.speed / 10;
 			path.speed = oldSpeed * turbo.amount;
 
-			sta.energy -= static_cast<double>(turbo.energyCost) / 20;
+			sta.energy -= static_cast<double>(turbo.energyCost) / 15;
 
 		}
 		else path.speed = (float)sta.speed / 10;

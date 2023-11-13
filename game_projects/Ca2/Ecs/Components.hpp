@@ -199,7 +199,7 @@ struct Turbo
 {
 
     float   amount;       // how much speed boost in percent (1.3, 1.5 and 1.7) ish
-    uint8_t energyCost;   // how much energy does it cost? divided by 20
+    uint8_t energyCost;   // how much energy does it cost? divided by 15
     bool    activated;    // active on/off
 
 };

@@ -226,7 +226,7 @@ void LaserSystem::dealDamage(Game &g, Entity attacker, Entity target) {
 			}
 
 			if(attacker == g.mProgress->mFavRobot)
-				attackSta.xp++;	// 1 XP for killing a robot, only for player
+				attackSta.xp += 2;	// 2 XP for killing a robot, only for player
 
 		}
 		//std::cout << sta.name << " killed " << targetSta.name << std::endl;

@@ -277,15 +277,15 @@ void PostRace::initPostRaceMenu(Game& g) {
 	switch (Race::sRaceState) {
 		case Race::RaceState::First:
 			msg = "Congratulations! You placed 1st! Buy something will ya!";
-			sta.xp += 3;
+			sta.xp += 4;
 			break;
 		case Race::RaceState::Second:
 			msg = "Very nice you placed 2nd! Please buy whatever you like.";
-			sta.xp += 2;
+			sta.xp += 3;
 			break;
 		case Race::RaceState::Third:
 			msg = "Hmm.. You placed 3rd. Not that great but please buy some stuff!";
-			sta.xp += 1;
+			sta.xp += 2;
 			break;
 		case Race::RaceState::Fourth:
 			msg = "That was not good, you placed last! Please buy something anyway :)";

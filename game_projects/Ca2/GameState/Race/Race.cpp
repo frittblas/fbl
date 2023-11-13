@@ -105,8 +105,8 @@ void Race::assignRobots(Game& g) {
 		g.mEcs->AddComponent(g.mRobots->mRacingRobots[i], Path{ 0, 0, 0, false, speed, diag, 3 }); // last param should be 10 if you wanna use speed
 
 
-		// reset stuff? maybe not
-		// sta.hp = sta.maxHp;
+		// reset ai robots hp each race
+		if(i > 0) sta.hp = sta.maxHp;
 		// sta.energy = sta.maxEnergy;
 	}
 
