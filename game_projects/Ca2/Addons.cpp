@@ -165,8 +165,9 @@ void Addons::setupAddons(Coordinator* mEcs) {
 	
 */
 
-	//claimAddon(Laser1);
-	//claimAddon(RobotCtrl);
+	claimAddon(Laser1);
+	claimAddon(AutoAim1);
+	claimAddon(RobotCtrl);
 	
 }
 

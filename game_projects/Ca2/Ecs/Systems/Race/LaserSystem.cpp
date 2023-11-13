@@ -111,6 +111,16 @@ void LaserSystem::Update(Game& g) {
 				break;
 		}
 
+		// skip if dead or out of energy
+		if (sta.hp < 0.1 || sta.energy < 0.1) {
+			fbl_set_prim_active(las.rayId, false);
+			fbl_set_emitter_active(las.particleId, false);
+			fbl_set_prim_active(las.crossHairId, false);
+			continue;
+		}
+		else if(sta.hp > 0.1 && sta.energy > 0.1 && Maze::sPickDone)
+			fbl_set_prim_active(las.crossHairId, true);
+
 		// only fire if (bool)isFiring is true
 		if (!las.isFiring) {
 			// turn these off if !firing, it's ok to call every frame
@@ -119,13 +129,6 @@ void LaserSystem::Update(Game& g) {
 			continue;
 		}
 
-		// skip if dead or out of energy
-		if (sta.hp < 0.1 || sta.energy < 0.1) {
-			fbl_set_prim_active(las.rayId, false);
-			fbl_set_emitter_active(las.particleId, false);
-			fbl_set_prim_active(las.crossHairId, false);
-			continue;
-		}
 
 		firedLaser();
 
@@ -174,6 +177,9 @@ void LaserSystem::dealDamage(Game &g, Entity attacker, Entity target) {
 		auto& attackLas = g.mEcs->GetComponent<Laser>(attacker);
 		auto& targetSta = g.mEcs->GetComponent<Stats>(target);
 		auto& light = g.mEcs->GetComponent<Light>(target);
+
+		// avoid shooting yourself
+		if (attacker == target) continue;
 
 		// if target has shield
 		Shield* targetShield = nullptr;

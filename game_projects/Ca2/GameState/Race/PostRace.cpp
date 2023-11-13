@@ -486,4 +486,13 @@ void PostRace::initPostRaceMenu(Game& g) {
 
 	SoundManager::getInstance().loadAndPlayMusic("music/postrace.ogg", 60);
 
+	// remove all lasers and particles and crosshairs
+	for(int i = 0; i < 4; i++)
+		if (g.mEcs->HasComponent<Laser>(g.mRobots->mRacingRobots[i])) {
+			auto& las = g.mEcs->GetComponent<Laser>(g.mRobots->mRacingRobots[i]);
+			fbl_set_prim_active(las.rayId, false);				// turn off ray
+			fbl_set_emitter_active(las.particleId, false);		// turn off emitter
+			fbl_set_prim_active(las.crossHairId, false);		// turn off crosshair
+		}
+
 }
