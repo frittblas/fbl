@@ -24,6 +24,7 @@ public:
     ~PostRace();
 
     void tick(Game& g);
+    void setNextRobotasFav(const Game& g);
     void gameOver();
     void updateContextHelp(std::string msg);
     void updateAddonInfo(Game& g, bool empty);

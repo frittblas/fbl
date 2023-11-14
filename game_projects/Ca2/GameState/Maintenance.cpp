@@ -34,11 +34,12 @@ Maintenance::Maintenance() {
 
 	mPostRace = new PostRace();
 	fbl_set_camera_xy(0, 0);
+	fbl_set_clear_color(50, 50, 50, 0);
 
 	Race::sRaceState = Undecided;
 	mPostRaceDelay = 60;	// one second delay before PostRace menu or game over is shown.
 
-	fbl_set_clear_color(50, 50, 50, 0);
+
 
 	std::cout << "Started Maintenance state." << std::endl;
 
@@ -53,6 +54,9 @@ Maintenance::~Maintenance() {
 }
 
 void Maintenance::setupMaintenance(Game& g) {
+
+	// replace this with the lowest level robot in your collection.
+	g.mRobots->mRacingRobots[0] = g.mRobots->mOwnedRobots[g.mProgress->mFavRobot];
 
 	// create all the ui elements for
 

@@ -53,17 +53,17 @@ void Addons::setupAddons(Coordinator* mEcs) {
 
 		case AutoAim1:
 											   // type      name		 uiId tx ty lv rrty psv    eqp  price
-			mEcs->AddComponent(tmpAddon, Addon{ AutoAim1, "Auto Aim Slow", 0, 0, 96, 1, 1, true, notSet, 5});
+			mEcs->AddComponent(tmpAddon, Addon{ AutoAim1, "Auto Aim Slow", 0, 0, 96, 1, 1, true, notSet, 4});
 
 			break;
 		case AutoAim2:
 											  // type      name			 uiId tx ty lv rrty psv    eqp  price
-			mEcs->AddComponent(tmpAddon, Addon{ AutoAim2, "Auto Aim Quick", 0, 0, 96, 2, 2, true, notSet, 10 });
+			mEcs->AddComponent(tmpAddon, Addon{ AutoAim2, "Auto Aim Quick", 0, 0, 96, 2, 2, true, notSet, 8 });
 
 			break;
 		case AutoAim3:
 												// type      name		 uiId tx ty lv rrty psv    eqp  price
-			mEcs->AddComponent(tmpAddon, Addon{ AutoAim3, "Auto Aim Super", 0, 0, 96, 3, 4, true, notSet, 20 });
+			mEcs->AddComponent(tmpAddon, Addon{ AutoAim3, "Auto Aim Super", 0, 0, 96, 3, 4, true, notSet, 12 });
 
 			break;
 		case Laser1:
@@ -93,7 +93,7 @@ void Addons::setupAddons(Coordinator* mEcs) {
 			break;
 		case Magnet3:
 												// type    name			uiId tx ty	lv rrty psv  eqp  price
-			mEcs->AddComponent(tmpAddon, Addon{ Magnet3, "Magnet Super", 0, 0, 160, 3, 3, true, notSet, 20 });
+			mEcs->AddComponent(tmpAddon, Addon{ Magnet3, "Magnet Super", 0, 0, 160, 3, 3, true, notSet, 18 });
 
 			break;
 		case Turbo1:
@@ -103,12 +103,12 @@ void Addons::setupAddons(Coordinator* mEcs) {
 			break;
 		case Turbo2:
 											  // type      name     uiId tx ty  lv rrty psv   eqp  price
-			mEcs->AddComponent(tmpAddon, Addon{ Turbo2, "Turbo Fast", 0, 0, 320, 2, 2, false, notSet, 10 });
+			mEcs->AddComponent(tmpAddon, Addon{ Turbo2, "Turbo Fast", 0, 0, 320, 2, 2, false, notSet, 9 });
 
 			break;
 		case Turbo3:
 											  // type   name		 uiId tx ty  lv rrty psv   eqp  price
-			mEcs->AddComponent(tmpAddon, Addon{ Turbo3, "Turbo Super", 0, 0, 320, 3, 3, false, notSet, 20 });
+			mEcs->AddComponent(tmpAddon, Addon{ Turbo3, "Turbo Super", 0, 0, 320, 3, 3, false, notSet, 14 });
 
 			break;
 		case Shield1:
@@ -128,27 +128,27 @@ void Addons::setupAddons(Coordinator* mEcs) {
 			break;
 		case Heal1:
 											  // type   name		uiId tx ty  lv rrty psv   eqp  price
-			mEcs->AddComponent(tmpAddon, Addon{ Heal1, "Heal Small", 0, 0, 288, 1, 1, false, notSet, 5 });
+			mEcs->AddComponent(tmpAddon, Addon{ Heal1, "Heal Small", 0, 0, 288, 1, 1, false, notSet, 6 });
 
 			break;
 		case Heal2:
 											  // type  name		 uiId tx ty  lv rrty psv   eqp  price
-			mEcs->AddComponent(tmpAddon, Addon{ Heal2, "Heal Big", 0, 0, 288, 2, 2, false, notSet, 10 });
+			mEcs->AddComponent(tmpAddon, Addon{ Heal2, "Heal Big", 0, 0, 288, 2, 2, false, notSet, 11 });
 
 			break;
 		case Heal3:
 											 // type  name  uiId tx ty  lv rrty psv   eqp  price
-			mEcs->AddComponent(tmpAddon, Addon{ Heal3, "Heal", 0, 0, 288, 3, 3, false, notSet, 20 });
+			mEcs->AddComponent(tmpAddon, Addon{ Heal3, "Heal", 0, 0, 288, 3, 3, false, notSet, 17 });
 
 			break;
 		case Diag:
 											  // type  name      uiId tx ty  lv rrty psv   eqp  price
-			mEcs->AddComponent(tmpAddon, Addon{ Diag, "Diagonals", 0, 0, 192, 1, 2, true, notSet, 5 });
+			mEcs->AddComponent(tmpAddon, Addon{ Diag, "Diagonals", 0, 0, 192, 1, 2, true, notSet, 3 });
 
 			break;
 		case RobotCtrl:
 											   // type	  	 name		  uiId tx ty   lv rrty psv  eqp  price
-			mEcs->AddComponent(tmpAddon, Addon{ RobotCtrl, "Robot Control", 0, 0, 224, 1, 2, true, notSet, 12 });
+			mEcs->AddComponent(tmpAddon, Addon{ RobotCtrl, "Robot Control", 0, 0, 224, 1, 2, true, notSet, 7 });
 
 			break;
 

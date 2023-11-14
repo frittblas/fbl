@@ -72,27 +72,31 @@ void PostRace::tick(Game& g) {
 			g.mChars->stopPlayerPathing(g);
 			g.mProgress->mCompletedRaces++;	// successfully completed a race!
 
-			// first check if player is dead, and assign new robot as fav
+			// check if player is dead, and if so, assign new robot as fav
 			auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mRacingRobots[0]);
-			if (sta.hp < 0.1) {
-				// find your next available robot
-				for (int i = 0; i < Robots::NumRobots; i++) {
-					if (g.mRobots->mOwnedRobots[i] != g.mRobots->Unassigned) {
-						auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mOwnedRobots[i]);
-						if (sta.hp > 0.1) {
-							g.mProgress->mFavRobot = i;
-							std::cout << "NEW FAV::::::::::::::::::: " << sta.name << std::endl;
-							break;
-						}
-
-					}
-				}
-			}
-
+			if (sta.hp < 0.1)
+				setNextRobotasFav(g);
 
 		}
 	}
 
+
+}
+
+void PostRace::setNextRobotasFav(const Game& g) {
+
+	// find your next available robot
+	for (int i = 0; i < Robots::NumRobots; i++) {
+		if (g.mRobots->mOwnedRobots[i] != g.mRobots->Unassigned) {
+			auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mOwnedRobots[i]);
+			if (sta.hp > 0.1) {
+				g.mProgress->mFavRobot = i;
+				std::cout << "NEW FAV::::::::::::::::::: " << sta.name << std::endl;
+				break;
+			}
+
+		}
+	}
 
 }
 
@@ -464,8 +468,11 @@ void PostRace::initPostRaceMenu(Game& g) {
 	mBuyButton = fbl_create_ui_elem(FBL_UI_BUTTON_INTERVAL, 0, 352, 64, 32, NULL);
 	fbl_set_ui_elem_xy(mBuyButton, 440, 315);
 
-	auto& plog = g.mEcs->GetComponent<PathLogic>(g.mRobots->mOwnedRobots[g.mProgress->mFavRobot]);
-	g.mProgress->mFunds += plog.coins;
+	// if coming from maintenance the robots doesn't have path logic
+	if (g.mEcs->HasComponent<PathLogic>(g.mRobots->mOwnedRobots[g.mProgress->mFavRobot])) {
+		auto& plog = g.mEcs->GetComponent<PathLogic>(g.mRobots->mOwnedRobots[g.mProgress->mFavRobot]);
+		g.mProgress->mFunds += plog.coins;
+	}
 
 	// funds
 	mFundsText = fbl_create_text(255, 255, 255, 0, (char*)"Coins: %d", g.mProgress->mFunds);

@@ -374,7 +374,7 @@ void GameState::setupMaintenance(Game& g) {
 	// temporarily remove path component from the player
 	g.mEcs->RemoveComponent<Path>(g.mChars->mBrodo);
 
-	g.mWeather->setWeather(Weather::TimeOfDay::Evening, 0, 0, 0, false);
+	g.mWeather->setWeather(Weather::TimeOfDay::Day, 0, 0, 0, false);
 
 	SoundManager::getInstance().loadAndPlayMusic("music/race.ogg", 80);
 
