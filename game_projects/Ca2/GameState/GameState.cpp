@@ -370,9 +370,12 @@ void GameState::setupMaintenance(Game& g) {
 
 	destroyAllGfx();								// remove resources (ALL sprites, prims, text, ui and emitters)
 	g.mLocation->unLoadLocation(g.mMap);			// this destroys ALL sprites
+	g.mSysManager->mSpriteSystem->Init(*g.mEcs);	// create sprites for all entities with a sprite component
+	g.mRobots->hideRobots(g.mEcs);
 
 	// temporarily remove path component from the player
 	g.mEcs->RemoveComponent<Path>(g.mChars->mBrodo);
+	g.mChars->hidePlayer(g.mEcs);
 
 	g.mWeather->setWeather(Weather::TimeOfDay::Day, 0, 0, 0, false);
 

@@ -33,6 +33,7 @@ Maintenance::Maintenance() {
 
 
 	mPostRace = new PostRace();
+	fbl_set_sprite_align(FBL_SPRITE_ALIGN_CENTER);
 	fbl_set_camera_xy(0, 0);
 	fbl_set_clear_color(50, 50, 50, 0);
 
@@ -46,6 +47,8 @@ Maintenance::Maintenance() {
 }
 
 Maintenance::~Maintenance() {
+
+	fbl_set_sprite_align(FBL_SPRITE_ALIGN_UP_LEFT);	// in explore mode sprites are drawn from the top left
 
 	delete mPostRace;
 
