@@ -159,6 +159,7 @@
     <ClCompile Include="..\..\game_projects\Ca2\GameState\Dialogue.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\GameState\Explore.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\GameState\GameState.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\GameState\Maintenance.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\GameState\Race\GameModes\CaptureFlags.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\GameState\Race\GameModes\DeathMatch.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\GameState\Race\Maze.cpp" />
@@ -224,6 +225,7 @@
     <ClInclude Include="..\..\game_projects\Ca2\GameState\Explore.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\GameState\GameState.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\GameState\IState.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\GameState\Maintenance.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\GameState\Race\GameModes\CaptureFlags.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\GameState\Race\GameModes\DeathMatch.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\GameState\Race\Maze.hpp" />

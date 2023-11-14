@@ -60,6 +60,10 @@ void UserInput::tick(Game& g) {
 		g.mState->change(g, GameState::StateType::Race);
 		access = buttonDelay;
 	}
+	if (fbl_get_key_down(FBLK_BACKSPACE) && access == 0) {
+		g.mState->change(g, GameState::StateType::Maintenance);
+		access = buttonDelay;
+	}
 
 
 	// for android, temporary :)

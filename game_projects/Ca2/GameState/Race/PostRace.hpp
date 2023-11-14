@@ -4,7 +4,7 @@
 *
 *	PostRace.hpp
 *
-*	PostRace class header, takes care of what happens after the race.
+*	PostRace class header, takes care of what happens after the race (and after maintenance).
 *	Either GAME OVER (if all your robots are dead) or eventual level up
 *	and opportunity to buy one of 3 items (2 addons and a robot.)
 *

@@ -127,7 +127,7 @@ void PostRace::updateContextHelp(std::string msg) {
 void PostRace::updateAddonInfo(Game& g, bool empty) {
 
 
-	// get s component
+	// get selected addon component
 	if (mSelectedAddon != notSet && !empty) {
 		auto& add = g.mEcs->GetComponent<Addon>(mSelectedAddon);
 

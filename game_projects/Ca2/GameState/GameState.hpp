@@ -41,10 +41,12 @@ public:
     StateType get();
     void tick(Game& g);
 
-    void exploreToTitle(Game& g);
+    void toTitle(Game& g);
     void titleToExplore(Game& g);
     void raceToExplore(Game& g);
+    void maintenanceToExplore(Game& g);
     void setupRace(Game& g);
+    void setupMaintenance(Game& g);
 
 
 private:

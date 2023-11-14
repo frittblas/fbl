@@ -40,7 +40,10 @@
 #include "Explore.hpp"
 #include "Dialogue.hpp"
 #include "RobotCollection.hpp"
+
 #include "Race/Race.hpp"
+
+#include "Maintenance.hpp"
 
 #include "../Chars.hpp"
 #include "../Robots.hpp"
@@ -82,13 +85,13 @@ void GameState::change(Game& g, StateType newState) {
 		case StateType::Title:
 
 			if (mState == StateType::Explore) {	// if coming from explore state
-				exploreToTitle(g);
+				toTitle(g);
 			}
 			if (mState == StateType::RobotCollection) {	// if coming from Robot menu
-				exploreToTitle(g);	// works, bc all resources are destroyed and that's what we want :)
+				toTitle(g);	// works, bc all resources are destroyed and that's what we want :)
 			}
 			if (mState == StateType::Race) {	// if coming from Race menu
-				exploreToTitle(g);	// rewrite this to toTitle() bs it works from anywhere :)
+				toTitle(g);						// toTitle() works from anywhere
 			}
 
 			mCurrentStateInstance = new Title();
@@ -114,6 +117,9 @@ void GameState::change(Game& g, StateType newState) {
 			}
 			else if (mState == StateType::Race) {	// if coming from a race
 				raceToExplore(g);
+			}
+			else if (mState == StateType::Maintenance) {	// if coming from maintenance
+				maintenanceToExplore(g);
 			}
 			else if (mState == StateType::Dialogue) {	// if coming from dialogue
 				auto& mctrl = g.mEcs->GetComponent<MouseCtrl>(g.mChars->mBrodo);
@@ -164,6 +170,15 @@ void GameState::change(Game& g, StateType newState) {
 			break;
 
 		case StateType::Maintenance:
+
+			setupMaintenance(g);
+
+			{
+				Maintenance* maintenance = new Maintenance();
+				maintenance->setupMaintenance(g);
+				mCurrentStateInstance = maintenance;
+			}
+
 			break;
 
 		case StateType::RobotCollection:
@@ -214,7 +229,7 @@ void GameState::tick(Game& g) {
 
 }
 
-void GameState::exploreToTitle(Game& g) {
+void GameState::toTitle(Game& g) {
 
 	destroyAllGfx();				 // remove resources (ALL sprites, prims, text, ui and emitters)
 	g.mLocation->unLoadLocation(g.mMap);
@@ -304,6 +319,26 @@ void GameState::raceToExplore(Game& g) {
 
 }
 
+void GameState::maintenanceToExplore(Game& g) {
+
+	destroyAllGfx();					// remove resources
+	g.mLocation->loadLocation(g.mMap);
+	initLuaDialog();
+	g.mSysManager->mSpriteSystem->Init(*g.mEcs);	// create sprites for all entities with a sprite component
+	g.mSysManager->mLightSystem->Init(*g.mEcs);		// create lights for all entities with a light component
+
+	// add path component back to the player
+	g.mEcs->AddComponent(g.mChars->mBrodo, Path{ 0, 0, 0, false, 2.0, FBL_PATHF_USE_DIAG, 1 });
+
+	g.mWeather->setWeather(Weather::TimeOfDay::Evening, 1, 0, 50, true);
+
+	initCollectionMenu();
+	g.mAddons->initAddons(g.mEcs);
+
+	SoundManager::getInstance().loadAndPlayMusic("music/overworld2.ogg", 100);
+
+}
+
 void GameState::setupRace(Game& g) {
 
 	destroyAllGfx();								// remove resources (ALL sprites, prims, text, ui and emitters)
@@ -324,6 +359,20 @@ void GameState::setupRace(Game& g) {
 	auto& light = g.mEcs->GetComponent<Light>(g.mChars->mBrodo);
 	fbl_set_sprite_active(light.id, false);
 
+
+	g.mWeather->setWeather(Weather::TimeOfDay::Evening, 0, 0, 0, false);
+
+	SoundManager::getInstance().loadAndPlayMusic("music/race.ogg", 80);
+
+}
+
+void GameState::setupMaintenance(Game& g) {
+
+	destroyAllGfx();								// remove resources (ALL sprites, prims, text, ui and emitters)
+	g.mLocation->unLoadLocation(g.mMap);			// this destroys ALL sprites
+
+	// temporarily remove path component from the player
+	g.mEcs->RemoveComponent<Path>(g.mChars->mBrodo);
 
 	g.mWeather->setWeather(Weather::TimeOfDay::Evening, 0, 0, 0, false);
 
