@@ -21,18 +21,95 @@
 
 #include "DeathMatch.hpp"
 
+DeathMatch::DeathMatch() {
 
-void DeathMatch::handleTargets(Entity e, Position& pos, Sprite& spr, Path& path, PathLogic& plog) {
+	// first clear the map
+	mEntityToSpriteIdMap.clear();
 
+	std::cout << "Initialized Deathmatch game mode." << std::endl;
+
+}
+
+DeathMatch::~DeathMatch() {
+
+	std::cout << "Destroyed Deathmatch game mode." << std::endl;
+
+}
+
+void DeathMatch::handleTargets(Game& g, Entity e, Position& pos, Sprite& spr, Path& path, PathLogic& plog) {
+
+	// if energy is out, head back to the base!
+	auto& sta = g.mEcs->GetComponent<Stats>(e);
+	if (sta.energy < 0.1) {
+		if (!g.mEcs->HasComponent<RobotCtrl>(e)) {
+			path.goalX = plog.baseX;
+			path.goalY = plog.baseY;
+			path.newPath = true;
+			return;
+		}
+		else {
+			auto& ctrl = g.mEcs->GetComponent<RobotCtrl>(e);
+
+			if (!ctrl.active) {
+				path.goalX = plog.baseX;
+				path.goalY = plog.baseY;
+				path.newPath = true;
+				return;
+			}
+		}
+	}
+
+	//std::cout << "ROBOT " << e << " at x: " << pos.x << " and y: " << pos.y << std::endl;
+	std::cout << "starting out: " << Maze::sStartingOut << std::endl;
+
+	// path to the target
+	if (!g.mEcs->HasComponent<RobotCtrl>(e)) {
+		if (getTargetSpriteId(e) == -1) {
+			findClosestTarget(g, e, pos, path, plog);
+			return;
+		}
+		path.goalX = fbl_get_sprite_x(getTargetSpriteId(e));
+		path.goalY = fbl_get_sprite_y(getTargetSpriteId(e));
+		snapToGrid(path.goalX, path.goalY);
+		path.newPath = true;
+		return;
+	}
+	else {
+		auto& ctrl = g.mEcs->GetComponent<RobotCtrl>(e);
+
+		if (!ctrl.active) {
+			if (getTargetSpriteId(e) == -1) {
+				findClosestTarget(g, e, pos, path, plog);
+				return;
+			}
+			path.goalX = fbl_get_sprite_x(getTargetSpriteId(e));
+			path.goalY = fbl_get_sprite_y(getTargetSpriteId(e));
+			snapToGrid(path.goalX, path.goalY);
+			path.newPath = true;
+			return;
+		}
+	}
 
 
 }
 
-int DeathMatch::hasTarget(Entity e) {
+int DeathMatch::getTargetSpriteId(Entity e) {
 
+	// Accessing a key using find
+	auto it = mEntityToSpriteIdMap.find(e);
+	if (it != mEntityToSpriteIdMap.end()) {
+		return it->second;
+	}
+	else {
+		return -1;
+	}
 
+}
 
-	return -1;
+void DeathMatch::snapToGrid(uint16_t& x, uint16_t& y) {
+
+	while (x % 32 != 0) x--;
+	while (y % 32 != 0) y--;
 
 }
 
@@ -86,7 +163,7 @@ void DeathMatch::findClosestTarget(Game& g, Entity e, Position& pos, Path& path,
 	bool targetsAvailable = false;
 	int  targetX, targetY;
 	int  shortestDistance = 1000;	// start with a very high number
-	int  nearestTargetId;
+	int  nearestTargetId = 0;
 
 	// first check the distance to all the targets and pick the shortest path.
 
@@ -97,13 +174,15 @@ void DeathMatch::findClosestTarget(Game& g, Entity e, Position& pos, Path& path,
 
 		auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mRacingRobots[i]);
 
-		// are any targets available?
-		if (Maze::sFlag[i].state == Maze::FlagState::Center || Maze::sFlag[i].state == Maze::FlagState::Dropped) {
+		// are any targets still alive?
+		if (sta.hp > 0.1) {
 
 			targetsAvailable = true;
 
-			targetX = fbl_get_sprite_x(Maze::sFlag[i].id);
-			targetY = fbl_get_sprite_y(Maze::sFlag[i].id);
+			auto& spr = g.mEcs->GetComponent<Sprite>(g.mRobots->mRacingRobots[i]);
+
+			targetX = fbl_get_sprite_x(spr.id[0]);
+			targetY = fbl_get_sprite_y(spr.id[0]);
 
 			fbl_pathf_set_path_status(path.id, fbl_pathf_find_path(path.id, pos.x, pos.y, targetX, targetY, path.diag));
 
@@ -111,7 +190,7 @@ void DeathMatch::findClosestTarget(Game& g, Entity e, Position& pos, Path& path,
 
 			if (pathLen < shortestDistance) {
 				shortestDistance = pathLen;	// update this
-				nearestTargetId = i;
+				nearestTargetId = spr.id[0];
 			}
 
 			//std::cout << "Distance to target: " << pathLen << std::endl;
@@ -121,15 +200,17 @@ void DeathMatch::findClosestTarget(Game& g, Entity e, Position& pos, Path& path,
 	}
 
 	if (targetsAvailable) {
-		path.goalX = fbl_get_sprite_x(Maze::sFlag[nearestTargetId].id);
-		path.goalY = fbl_get_sprite_y(Maze::sFlag[nearestTargetId].id);
+		path.goalX = fbl_get_sprite_x(nearestTargetId);
+		path.goalY = fbl_get_sprite_y(nearestTargetId);
+		mEntityToSpriteIdMap[e] = nearestTargetId;
 	}
 	else {
-		// if no flags available, set course to the base
+		// if no targets available, go to base for now
 		path.goalX = plog.baseX;
 		path.goalY = plog.baseY;
 	}
 
+	snapToGrid(path.goalX, path.goalY);
 	path.newPath = true;
 
 }
@@ -138,43 +219,8 @@ void DeathMatch::checkWinCondition(Game& g) {
 
 	if (Race::sRaceState == Race::Undecided) {
 
-		// first check if player is dead
-		auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mRacingRobots[0]);
 
-
-		// now check if all flags are returned to base
-		bool allTaken = true;
-		for (int i = 0; i < Maze::cMaxFlags; i++) {
-			if (Maze::sFlag[i].state != Maze::FlagState::Base) {
-				allTaken = false;
-				break;
-			}
-		}
-
-		if (allTaken) {
-
-			// find out how you placed
-			int flag[4] = {};
-			int playerFlags = 0;
-
-			for (int i = 0; i < g.mRobots->mNumRacers; i++) {
-				auto& plog = g.mEcs->GetComponent<PathLogic>(g.mRobots->mRacingRobots[i]);
-				flag[i] = plog.flags;
-				if (i == 0) playerFlags = plog.flags;
-			}
-
-			// Sort the array
-			std::sort(flag, flag + g.mRobots->mNumRacers);
-
-			if (playerFlags == flag[3]) Race::sRaceState = Race::First;
-			else if (playerFlags == flag[2]) Race::sRaceState = Race::Second;
-			else if (playerFlags == flag[1]) Race::sRaceState = Race::Third;
-			else if (playerFlags == flag[0]) Race::sRaceState = Race::Fourth;
-
-		}
-
-
-		// also check if all other robots are dead = win
+		// check if all other robots are dead = win
 		bool allDead = true;
 		for (int i = 1; i < g.mRobots->mNumRacers; i++) {
 			auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mRacingRobots[i]);
@@ -188,6 +234,8 @@ void DeathMatch::checkWinCondition(Game& g) {
 		}
 
 		// check if player is dead
+		auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mRacingRobots[0]);
+
 		if (sta.hp < 0.1) {
 
 			// if you still have robots that are alive left it's not game over.
@@ -220,20 +268,8 @@ void DeathMatch::switchCtrl(Game& g, Entity e, Position& pos, Path& path, PathLo
 
 	if (!ctrl.active) {		// if the robot ctrl is deactivated, control goes back to auto
 
-		if (hasTarget(e) >= 0) {
-
-			// if carrying flag, set course to the base
-			if (!Maze::sStartingOut) {
-				path.goalX = plog.baseX;
-				path.goalY = plog.baseY;
-				path.newPath = true;
-			}
-
-		}
-		else {
-			if (!Maze::sStartingOut)
-				findClosestTarget(g, e, pos, path, plog);
-		}
+		if (!Maze::sStartingOut)
+			findClosestTarget(g, e, pos, path, plog);
 
 	}
 	else {	// here it's active again
@@ -250,24 +286,17 @@ void DeathMatch::switchCtrl(Game& g, Entity e, Position& pos, Path& path, PathLo
 void DeathMatch::updatePaths(Game& g, Entity e, Position& pos, Path& path, PathLogic& plog) {
 
 
-	// this only applies to robots that are not carrying a flag
-	int flagIndex = hasTarget(e);
-	if (flagIndex < 0) {
+	// update paths for robots without a MouseCtrl component
+	if (!g.mEcs->HasComponent<RobotCtrl>(e)) {
+		findClosestTarget(g, e, pos, path, plog);
+	}
+	else {
+		auto& ctrl = g.mEcs->GetComponent<RobotCtrl>(e);
 
-		// update paths for robots without a MouseCtrl component
-		if (!g.mEcs->HasComponent<RobotCtrl>(e)) {
+		if (!ctrl.active && !Maze::sStartingOut)
 			findClosestTarget(g, e, pos, path, plog);
-		}
-		else {
-			auto& ctrl = g.mEcs->GetComponent<RobotCtrl>(e);
-
-			if (!ctrl.active && !Maze::sStartingOut)
-				findClosestTarget(g, e, pos, path, plog);
-		}
-
-		std::cout << "New path for robot-entity: " << e << std::endl;
-
 	}
 
+	std::cout << "New path for robot-entity: " << e << std::endl;
 
 }

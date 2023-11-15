@@ -24,14 +24,20 @@ struct PathLogic;
 class DeathMatch
 {
 public:
+	DeathMatch();
+	~DeathMatch();
 
-	void handleTargets(Entity e, Position& pos, Sprite& spr, Path& path, PathLogic& plog);
-	int  hasTarget(Entity e);
+	void handleTargets(Game& g, Entity e, Position& pos, Sprite& spr, Path& path, PathLogic& plog);
+	int  getTargetSpriteId(Entity e);
+	void snapToGrid(uint16_t& x, uint16_t& y);
 	void handleCoins(Entity e, Sprite& spr, PathLogic& plog);
 	void handleBases(Game& g, Entity e, Position& pos, Sprite& spr, Path& path, PathLogic& plog);
 	void findClosestTarget(Game& g, Entity e, Position& pos, Path& path, PathLogic& plog);
 	void checkWinCondition(Game& g);
 	void switchCtrl(Game& g, Entity e, Position& pos, Path& path, PathLogic& plog);
 	void updatePaths(Game& g, Entity e, Position& pos, Path& path, PathLogic& plog);
+
+private:
+	std::unordered_map<Entity, uint16_t> mEntityToSpriteIdMap; // map entity to spriteId
 
 };

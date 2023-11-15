@@ -101,7 +101,7 @@ void PathLogicSystem::tickDM(Game& g) {
 		auto& plog = g.mEcs->GetComponent<PathLogic>(entity);
 
 
-		Maze::sDM->handleTargets(entity, pos, spr, path, plog);
+		Maze::sDM->handleTargets(g, entity, pos, spr, path, plog);
 		Maze::sDM->handleCoins(entity, spr, plog);
 		Maze::sDM->handleBases(g, entity, pos, spr, path, plog);
 

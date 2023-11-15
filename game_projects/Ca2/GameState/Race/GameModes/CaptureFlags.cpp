@@ -178,9 +178,6 @@ void CaptureFlags::checkWinCondition(Game& g) {
 
 	if (Race::sRaceState == Race::Undecided) {
 
-		// first check if player is dead
-		auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mRacingRobots[0]);
-
 
 		// now check if all flags are returned to base
 		bool allTaken = true;
@@ -228,6 +225,8 @@ void CaptureFlags::checkWinCondition(Game& g) {
 		}
 
 		// check if player is dead
+		auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mRacingRobots[0]);
+
 		if (sta.hp < 0.1) {
 
 			// if you still have robots that are alive left it's not game over.

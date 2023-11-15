@@ -80,7 +80,7 @@ public:
 
     static Maze::aFlag sFlag[Maze::cMaxFlags];     // the flag sprites, used in CaptureFlags and LaserSystem
     static Maze::aCoin sCoin[Maze::cMaxCoins];	   // the coins, used in CaptureFlags, DeathMatch and Magnet
-    static uint32_t    sTarget[Maze::cMaxTargets]; // the targets (3 robots you can attack in DM)
+    //static uint32_t    sTarget[Maze::cMaxTargets]; // the targets (3 robots you can attack in DM)
 
     static bool sPickDone;		// used in LaserSystem, true if picking stage is complete.
     static bool sStartingOut;	// used in PathLogicSystem, RobotCtrl. Takes wait 3 sec into consid. (before the race starts)

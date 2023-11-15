@@ -39,10 +39,6 @@ Maze::Maze() {
 	sUpdatePaths = false;
 	sGameMode = 0;
 
-	sTarget[0] = -1;
-	sTarget[1] = -1;
-	sTarget[2] = -1;
-
 	sCF = new CaptureFlags();
 	sDM = new DeathMatch();
 

@@ -126,8 +126,8 @@ void Race::assignRobots(Game& g) {
 
 	std::cout << "Block density: " << blockDensity << std::endl;
 
-	//mMaze->initMaze(g, blockDensity, mNumRacers, Race::GameMode::GM_CaptureFlags);
-	mMaze->initMaze(g, blockDensity - 5, mNumRacers, Race::GameMode::GM_DeathMatch);
+	mMaze->initMaze(g, blockDensity, mNumRacers, Race::GameMode::GM_CaptureFlags);
+	//mMaze->initMaze(g, blockDensity - 5, mNumRacers, Race::GameMode::GM_DeathMatch);
 
 
 	fbl_sort_sprites(FBL_SORT_BY_LAYER);
