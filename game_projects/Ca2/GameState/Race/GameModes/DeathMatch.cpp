@@ -23,8 +23,6 @@
 
 DeathMatch::DeathMatch() {
 
-	// first clear the map
-	mEntityToSpriteIdMap.clear();
 
 	std::cout << "Initialized Deathmatch game mode." << std::endl;
 
@@ -38,78 +36,37 @@ DeathMatch::~DeathMatch() {
 
 void DeathMatch::handleTargets(Game& g, Entity e, Position& pos, Sprite& spr, Path& path, PathLogic& plog) {
 
+
+	// don't start directly
+	if (Maze::sStartingOut) return;
+
 	// if energy is out, head back to the base!
 	auto& sta = g.mEcs->GetComponent<Stats>(e);
 	if (sta.energy < 0.1) {
-		if (!g.mEcs->HasComponent<RobotCtrl>(e)) {
-			path.goalX = plog.baseX;
-			path.goalY = plog.baseY;
-			path.newPath = true;
-			return;
-		}
-		else {
-			auto& ctrl = g.mEcs->GetComponent<RobotCtrl>(e);
-
-			if (!ctrl.active) {
-				path.goalX = plog.baseX;
-				path.goalY = plog.baseY;
-				path.newPath = true;
-				return;
-			}
-		}
+		plog.state = CheckPointBase;
 	}
 
-	//std::cout << "ROBOT " << e << " at x: " << pos.x << " and y: " << pos.y << std::endl;
-	std::cout << "starting out: " << Maze::sStartingOut << std::endl;
-
-	// path to the target
-	if (!g.mEcs->HasComponent<RobotCtrl>(e)) {
-		if (getTargetSpriteId(e) == -1) {
-			findClosestTarget(g, e, pos, path, plog);
-			return;
-		}
-		path.goalX = fbl_get_sprite_x(getTargetSpriteId(e));
-		path.goalY = fbl_get_sprite_y(getTargetSpriteId(e));
-		snapToGrid(path.goalX, path.goalY);
-		path.newPath = true;
+	if (plog.state == CheckPointBase) {
+		goToBase(g, e, path, plog);
 		return;
 	}
-	else {
-		auto& ctrl = g.mEcs->GetComponent<RobotCtrl>(e);
 
-		if (!ctrl.active) {
-			if (getTargetSpriteId(e) == -1) {
-				findClosestTarget(g, e, pos, path, plog);
-				return;
-			}
-			path.goalX = fbl_get_sprite_x(getTargetSpriteId(e));
-			path.goalY = fbl_get_sprite_y(getTargetSpriteId(e));
-			snapToGrid(path.goalX, path.goalY);
-			path.newPath = true;
-			return;
-		}
+	if (plog.state < 0) return;
+
+
+	if (rand() % 100 == 0) {
+		findClosestTarget(g, e, pos, path, plog);
+		std::cout << "GETTING NEW PATH " << std::endl;
 	}
 
 
-}
-
-int DeathMatch::getTargetSpriteId(Entity e) {
-
-	// Accessing a key using find
-	auto it = mEntityToSpriteIdMap.find(e);
-	if (it != mEntityToSpriteIdMap.end()) {
-		return it->second;
+	// if getting too close to the target head to the base
+	int targetX = fbl_get_sprite_x(plog.state);
+	int targetY = fbl_get_sprite_y(plog.state);
+	if (distance((int)pos.x, (int)pos.x, targetX, targetY) < 64) {
+		plog.state = CheckPointBase;
+		std::cout << "TOO CLOSE! HEADING TO BASE!" << std::endl;
 	}
-	else {
-		return -1;
-	}
-
-}
-
-void DeathMatch::snapToGrid(uint16_t& x, uint16_t& y) {
-
-	while (x % 32 != 0) x--;
-	while (y % 32 != 0) y--;
 
 }
 
@@ -127,6 +84,29 @@ void DeathMatch::handleCoins(Entity e, Sprite& spr, PathLogic& plog) {
 		std::cout << "Player " << e << " has " << (int)plog.coins << std::endl;
 
 	}
+
+}
+
+void DeathMatch::goToBase(Game& g, Entity e, Path& path, PathLogic& plog) {
+
+	if (!g.mEcs->HasComponent<RobotCtrl>(e)) {
+		path.goalX = plog.baseX;
+		path.goalY = plog.baseY;
+		path.newPath = true;
+		return;
+	}
+	else {
+		auto& ctrl = g.mEcs->GetComponent<RobotCtrl>(e);
+
+		if (!ctrl.active) {
+			path.goalX = plog.baseX;
+			path.goalY = plog.baseY;
+			path.newPath = true;
+			return;
+		}
+	}
+
+	plog.state = GoingToBase;
 
 }
 
@@ -202,7 +182,7 @@ void DeathMatch::findClosestTarget(Game& g, Entity e, Position& pos, Path& path,
 	if (targetsAvailable) {
 		path.goalX = fbl_get_sprite_x(nearestTargetId);
 		path.goalY = fbl_get_sprite_y(nearestTargetId);
-		mEntityToSpriteIdMap[e] = nearestTargetId;
+		plog.state = nearestTargetId;
 	}
 	else {
 		// if no targets available, go to base for now
@@ -285,6 +265,7 @@ void DeathMatch::switchCtrl(Game& g, Entity e, Position& pos, Path& path, PathLo
 
 void DeathMatch::updatePaths(Game& g, Entity e, Position& pos, Path& path, PathLogic& plog) {
 
+	plog.state = CheckPointBase;
 
 	// update paths for robots without a MouseCtrl component
 	if (!g.mEcs->HasComponent<RobotCtrl>(e)) {
@@ -299,4 +280,19 @@ void DeathMatch::updatePaths(Game& g, Entity e, Position& pos, Path& path, PathL
 
 	std::cout << "New path for robot-entity: " << e << std::endl;
 
+}
+
+void DeathMatch::snapToGrid(uint16_t& x, uint16_t& y) {
+
+	while (x % 32 != 0) x--;
+	while (y % 32 != 0) y--;
+
+}
+
+int DeathMatch::distance(int px, int py, int cx, int cy) {
+
+	int dx = cx - px;
+	int dy = cy - py;
+
+	return std::sqrt(dx * dx + dy * dy);
 }

@@ -528,13 +528,24 @@ void PostRace::initPostRaceMenu(Game& g, bool fromRace) {
 
 	if (fromRace) {
 		// remove all lasers and particles and crosshairs
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < 4; i++) {
 			if (g.mEcs->HasComponent<Laser>(g.mRobots->mRacingRobots[i])) {
 				auto& las = g.mEcs->GetComponent<Laser>(g.mRobots->mRacingRobots[i]);
 				fbl_set_prim_active(las.rayId, false);				// turn off ray
 				fbl_set_emitter_active(las.particleId, false);		// turn off emitter
 				fbl_set_prim_active(las.crossHairId, false);		// turn off crosshair
 			}
+			// also shields
+			if (g.mEcs->HasComponent<Shield>(g.mRobots->mRacingRobots[i])) {
+				auto& shi = g.mEcs->GetComponent<Shield>(g.mRobots->mRacingRobots[i]);
+				fbl_set_sprite_active(shi.spriteId, false);			// turn off shield sprite
+			}
+		}
+
+
+		// remove physics from player so the sprite doesn't move in the shop :)
+		auto& spr = g.mEcs->GetComponent<Sprite>(g.mRobots->mRacingRobots[0]);
+		fbl_set_sprite_phys(spr.id[0], false, FBL_RECT_PHYS, FBL_PHYS_DYNAMIC, false);
 
 	}
 

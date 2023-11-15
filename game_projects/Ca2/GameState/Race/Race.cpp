@@ -112,8 +112,8 @@ void Race::assignRobots(Game& g) {
 
 	// add PathLogic and BasicAI components to the racing robots (these are also removed after the race.)
 	for (int i = 0; i < mNumRacers; i++) {
-																// baseX Y flg coin kills
-		g.mEcs->AddComponent(g.mRobots->mRacingRobots[i], PathLogic{ 0, 0, 0, 0, 0 });
+																// baseX Y flg coin kills state
+		g.mEcs->AddComponent(g.mRobots->mRacingRobots[i], PathLogic{ 0, 0, 0, 0, 0, -1 });
 																	  //   act dur hp
 		if(i > 0) g.mEcs->AddComponent(g.mRobots->mRacingRobots[i], BasicAI{ 0, 0, 0 });	// basic AI to non players
 	}
@@ -126,8 +126,8 @@ void Race::assignRobots(Game& g) {
 
 	std::cout << "Block density: " << blockDensity << std::endl;
 
-	mMaze->initMaze(g, blockDensity, mNumRacers, Race::GameMode::GM_CaptureFlags);
-	//mMaze->initMaze(g, blockDensity - 5, mNumRacers, Race::GameMode::GM_DeathMatch);
+	//mMaze->initMaze(g, blockDensity, mNumRacers, Race::GameMode::GM_CaptureFlags);
+	mMaze->initMaze(g, blockDensity - 5, mNumRacers, Race::GameMode::GM_DeathMatch);
 
 
 	fbl_sort_sprites(FBL_SORT_BY_LAYER);

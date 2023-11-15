@@ -362,7 +362,7 @@ void GameState::setupRace(Game& g) {
 
 	g.mWeather->setWeather(Weather::TimeOfDay::Evening, 0, 0, 0, false);
 
-	SoundManager::getInstance().loadAndPlayMusic("music/race.ogg", 80);
+	SoundManager::getInstance().loadAndPlayMusic("music/boss.ogg", 80);
 
 }
 

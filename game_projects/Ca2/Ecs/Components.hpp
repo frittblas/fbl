@@ -140,6 +140,7 @@ struct PathLogic
     uint8_t  flags;         // keep track of how many flags collected
     uint8_t  coins;         // keep track of how many small coins collected
     uint8_t  kills;         // track how many kills the robot made
+    int16_t  state;         // fsm of DM ai behaviour
 
 };
 
