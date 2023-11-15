@@ -658,6 +658,26 @@ int Robots::ownedRobotsLeft(Game& g) {
 
 }
 
+int Robots::getNameIndexFromEntity(Game& g, uint32_t entity, bool owned) {
+
+	int i = 0;
+
+	if (owned) {
+		// find nameIndex of robot
+		for (i = 0; i < Robots::NumRobots; i++) {
+			if (g.mRobots->mOwnedRobots[i] == entity)
+				return i;
+		}
+	}
+	else {
+		for (i = 0; i < Robots::NumRobots; i++) {
+			if (g.mRobots->mAllRobots[i] == entity)
+				return i;
+		}
+	}
+
+}
+
 int* Robots::levelUpRobot(Game& g, int nameIndex, bool owned) {
 
 	Stats* sta = nullptr;
@@ -668,7 +688,7 @@ int* Robots::levelUpRobot(Game& g, int nameIndex, bool owned) {
 		sta = &g.mEcs->GetComponent<Stats>(g.mRobots->mAllRobots[nameIndex]);
 
 	// if the robot already is at the max level just return
-	if (sta->level > 4)
+	if (sta->level == cMaxRobotLevel)
 		return nullptr;
 
 	int* bonus = new int[5]; // Create an array of 5 integers
@@ -718,7 +738,7 @@ bool Robots::assignRobotXP(Game& g, int nameIndex) {
 	auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mOwnedRobots[nameIndex]);
 
 	// already max level
-	if (sta.level > 4) {
+	if (sta.level == cMaxRobotLevel) {
 		std::cout << "Already max level! " << std::endl;
 		return false;
 	}

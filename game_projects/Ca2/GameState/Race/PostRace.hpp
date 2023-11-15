@@ -31,7 +31,7 @@ public:
     void selectAddon(Game& g);
     void prepShop(Game& g);
     void buySelectedItem(Game& g);
-    void initPostRaceMenu(Game& g);
+    void initPostRaceMenu(Game& g, bool fromRace);
 
 private:
     // id's for the robot collection-menu

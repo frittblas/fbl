@@ -93,4 +93,37 @@ void PathLogicSystem::tickCF(Game& g) {
 
 void PathLogicSystem::tickDM(Game& g) {
 
+	for (auto const& entity : mEntities)
+	{
+		auto& pos = g.mEcs->GetComponent<Position>(entity);
+		auto& path = g.mEcs->GetComponent<Path>(entity);
+		auto& spr = g.mEcs->GetComponent<Sprite>(entity);
+		auto& plog = g.mEcs->GetComponent<PathLogic>(entity);
+
+
+		Maze::sDM->handleTargets(entity, pos, spr, path, plog);
+		Maze::sDM->handleCoins(entity, spr, plog);
+		Maze::sDM->handleBases(g, entity, pos, spr, path, plog);
+
+		Maze::sDM->switchCtrl(g, entity, pos, path, plog);
+
+	}
+
+	if (Maze::sUpdatePaths) {
+
+		for (auto const& entity : mEntities)
+		{
+
+			auto& pos = g.mEcs->GetComponent<Position>(entity);
+			auto& path = g.mEcs->GetComponent<Path>(entity);
+			auto& plog = g.mEcs->GetComponent<PathLogic>(entity);
+
+			Maze::sDM->updatePaths(g, entity, pos, path, plog);
+		}
+
+		Maze::sUpdatePaths = false;
+	}
+
+	Maze::sDM->checkWinCondition(g);
+
 }

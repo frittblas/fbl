@@ -94,7 +94,7 @@ void Maintenance::tick(Game& g) {
 		mPostRaceDelay--;
 		if (mPostRaceDelay == 0) {
 			if(Race::sRaceState == Dead) mPostRace->gameOver();
-				else mPostRace->initPostRaceMenu(g);
+				else mPostRace->initPostRaceMenu(g, false);
 		}
 
 		if (mPostRaceDelay < 0) {

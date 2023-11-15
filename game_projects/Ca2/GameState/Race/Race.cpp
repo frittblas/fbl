@@ -126,7 +126,8 @@ void Race::assignRobots(Game& g) {
 
 	std::cout << "Block density: " << blockDensity << std::endl;
 
-	mMaze->initMaze(g, blockDensity, mNumRacers, Race::GameMode::GM_CaptureFlags);
+	//mMaze->initMaze(g, blockDensity, mNumRacers, Race::GameMode::GM_CaptureFlags);
+	mMaze->initMaze(g, blockDensity - 5, mNumRacers, Race::GameMode::GM_DeathMatch);
 
 
 	fbl_sort_sprites(FBL_SORT_BY_LAYER);
@@ -303,7 +304,7 @@ void Race::tick(Game& g) {
 		mPostRaceDelay--;
 		if (mPostRaceDelay == 0) {
 			if(sRaceState == Dead) mPostRace->gameOver();
-				else mPostRace->initPostRaceMenu(g);
+				else mPostRace->initPostRaceMenu(g, true);
 		}
 
 		if (mPostRaceDelay < 0) {

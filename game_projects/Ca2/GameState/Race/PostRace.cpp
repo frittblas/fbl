@@ -261,7 +261,7 @@ void PostRace::buySelectedItem(Game& g) {
 
 }
 
-void PostRace::initPostRaceMenu(Game& g) {
+void PostRace::initPostRaceMenu(Game& g, bool fromRace) {
 
 	// set position and size of the text area
 	int x = Game::DeviceResW / 2;
@@ -276,9 +276,10 @@ void PostRace::initPostRaceMenu(Game& g) {
 	fbl_load_ttf_font("font/roboto.ttf", 16);
 
 	std::string msg = "";
-	auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mOwnedRobots[g.mProgress->mFavRobot]);
+	auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mRacingRobots[0]);
 
-	switch (Race::sRaceState) {
+	if (fromRace) {
+		switch (Race::sRaceState) {
 		case Race::RaceState::First:
 			msg = "Congratulations! You placed 1st! Buy something will ya!";
 			sta.xp += 4;
@@ -294,11 +295,38 @@ void PostRace::initPostRaceMenu(Game& g) {
 		case Race::RaceState::Fourth:
 			msg = "That was not good, you placed last! Please buy something anyway :)";
 			break;
-	}
+		}
 
-	mContextHelp = fbl_create_text(255, 255, 255, 0, (char*)"%s (Race %d)", msg.c_str(), g.mProgress->mCompletedRaces + 1);
-	fbl_set_text_align(mContextHelp, FBL_ALIGN_CENTER);
-	fbl_set_text_xy(mContextHelp, x, y - height - 20);
+		mContextHelp = fbl_create_text(255, 255, 255, 0, (char*)"%s (Race %d)", msg.c_str(), g.mProgress->mCompletedRaces + 1);
+		fbl_set_text_align(mContextHelp, FBL_ALIGN_CENTER);
+		fbl_set_text_xy(mContextHelp, x, y - height - 20);
+
+	}
+	else {
+
+		switch (Race::sRaceState) {
+		case Race::RaceState::First:
+			msg = "Perfect! You maintained a robot! Buy something will ya!";
+			sta.xp += 4;
+			break;
+		case Race::RaceState::Second:
+			msg = "Very nice you did a good job maintaining! Buy whatever you like.";
+			sta.xp += 3;
+			break;
+		case Race::RaceState::Third:
+			msg = "You almost destroyed that poor robot. Not great but please buy some stuff.";
+			sta.xp += 2;
+			break;
+		case Race::RaceState::Fourth:
+			msg = "That was not good, you wrecked your robot! Please buy something anyway :)";
+			break;
+		}
+
+		mContextHelp = fbl_create_text(255, 255, 255, 0, (char*)"%s (Runs: %d)", msg.c_str(), g.mProgress->mCompletedMaint + 1);
+		fbl_set_text_align(mContextHelp, FBL_ALIGN_CENTER);
+		fbl_set_text_xy(mContextHelp, x, y - height - 20);
+
+	}
 
 	// create the context help white divider line
 	tmpId = fbl_create_prim(FBL_LINE, x - width, y - height, x + width, y - height, 0, false, false);
@@ -373,13 +401,17 @@ void PostRace::initPostRaceMenu(Game& g) {
 	fbl_load_ttf_font("font/roboto.ttf", 18);
 
 	int* bonus = nullptr;
+	// find nameIndex of mRacingRobots[0]
+	int nameIndex = g.mRobots->getNameIndexFromEntity(g, g.mRobots->mRacingRobots[0], true);
 
-	if (g.mRobots->assignRobotXP(g, g.mProgress->mFavRobot)) {
+	if (g.mRobots->assignRobotXP(g, nameIndex)) {
 
-		bonus = g.mRobots->levelUpRobot(g, g.mProgress->mFavRobot, true);
+		bonus = g.mRobots->levelUpRobot(g, nameIndex, true);
 
 	}
 
+
+	std::cout << "nameIndex of mRacingRobots[0] == " << nameIndex << std::endl;
 
 	// stats
 	mRobotLevel = fbl_create_text(255, 255, 255, 0, (char*)"Level:  %d  (xp: %d / %d)", sta.level, sta.xp, sta.nextLv);
@@ -469,8 +501,8 @@ void PostRace::initPostRaceMenu(Game& g) {
 	fbl_set_ui_elem_xy(mBuyButton, 440, 315);
 
 	// if coming from maintenance the robots doesn't have path logic
-	if (g.mEcs->HasComponent<PathLogic>(g.mRobots->mOwnedRobots[g.mProgress->mFavRobot])) {
-		auto& plog = g.mEcs->GetComponent<PathLogic>(g.mRobots->mOwnedRobots[g.mProgress->mFavRobot]);
+	if (fromRace) {
+		auto& plog = g.mEcs->GetComponent<PathLogic>(g.mRobots->mRacingRobots[0]);
 		g.mProgress->mFunds += plog.coins;
 	}
 
@@ -480,8 +512,8 @@ void PostRace::initPostRaceMenu(Game& g) {
 	fbl_set_text_xy(mFundsText, 115, 315);
 
 	// put the current racing robot in the circle :)
-	g.mRobots->showRobotInMenu(g.mEcs, -1, g.mRobots->mOwnedRobots[g.mProgress->mFavRobot]);
-	auto& spr = g.mEcs->GetComponent<Sprite>(g.mRobots->mOwnedRobots[g.mProgress->mFavRobot]);
+	g.mRobots->showRobotInMenu(g.mEcs, -1, g.mRobots->mRacingRobots[0]);
+	auto& spr = g.mEcs->GetComponent<Sprite>(g.mRobots->mRacingRobots[0]);
 	fbl_set_sprite_xy(spr.id[0], fbl_get_sprite_x(spr.id[0]) + 16, fbl_get_sprite_y(spr.id[0]) + 16);
 	fbl_set_sprite_layer((int)spr.id[0], 9);
 	fbl_sort_sprites(FBL_SORT_BY_LAYER);
@@ -493,13 +525,17 @@ void PostRace::initPostRaceMenu(Game& g) {
 
 	SoundManager::getInstance().loadAndPlayMusic("music/postrace.ogg", 60);
 
-	// remove all lasers and particles and crosshairs
-	for(int i = 0; i < 4; i++)
-		if (g.mEcs->HasComponent<Laser>(g.mRobots->mRacingRobots[i])) {
-			auto& las = g.mEcs->GetComponent<Laser>(g.mRobots->mRacingRobots[i]);
-			fbl_set_prim_active(las.rayId, false);				// turn off ray
-			fbl_set_emitter_active(las.particleId, false);		// turn off emitter
-			fbl_set_prim_active(las.crossHairId, false);		// turn off crosshair
-		}
+
+	if (fromRace) {
+		// remove all lasers and particles and crosshairs
+		for (int i = 0; i < 4; i++)
+			if (g.mEcs->HasComponent<Laser>(g.mRobots->mRacingRobots[i])) {
+				auto& las = g.mEcs->GetComponent<Laser>(g.mRobots->mRacingRobots[i]);
+				fbl_set_prim_active(las.rayId, false);				// turn off ray
+				fbl_set_emitter_active(las.particleId, false);		// turn off emitter
+				fbl_set_prim_active(las.crossHairId, false);		// turn off crosshair
+			}
+
+	}
 
 }

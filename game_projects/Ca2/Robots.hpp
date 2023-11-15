@@ -37,7 +37,8 @@ public:
         NumRobots
     };
 
-    const uint32_t Unassigned = 9999; // used for empty slots in the robot-arrays.
+    const uint8_t  cMaxRobotLevel = 5; // this is the level cap
+    const uint32_t Unassigned = 9999;  // used for empty slots in the robot-arrays.
 
     Entity mAllRobots[NumRobots];     // all the robots
     Entity mOwnedRobots[NumRobots];   // all the robots in your collection
@@ -64,6 +65,7 @@ public:
     void assignAIrobots(Game& g);
     void equipAIaddon(Game& g, int probability, int type);
     int  ownedRobotsLeft(Game& g);
+    int  getNameIndexFromEntity(Game& g, uint32_t entity, bool owned);
     int* levelUpRobot(Game& g, int nameIndex, bool owned);
     void levelUpAllFreeRobots(Game& g);
     bool assignRobotXP(Game& g, int nameIndex);

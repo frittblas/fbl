@@ -39,8 +39,9 @@ public:
     static const int cTargetX = 15 * 32; //Game::TileSize;
     static const int cTargetY = 8 * 32;  //Game::TileSize;
 
-    static const int cMaxFlags = 7;     // max number of flags in a level
-    static const int cMaxCoins = 26;     // max number of coins in a level
+    static const int cMaxFlags   = 5;      // max number of flags in a level
+    static const int cMaxTargets = 3;      // max number of targets (robots to eliminate) in a level
+    static const int cMaxCoins   = 26;     // max number of coins in a level
 
     struct aFlag {
         int16_t  id;      // sprite id
@@ -77,8 +78,9 @@ public:
     bool mazeHasAllPaths();
     void assignPaths(Game& g);
 
-    static Maze::aFlag sFlag[Maze::cMaxFlags];    // the flag sprites, used in CaptureFlags and LaserSystem
-    static Maze::aCoin sCoin[Maze::cMaxCoins];	  // the coins, used in CaptureFlags, DeathMatch and Magnet
+    static Maze::aFlag sFlag[Maze::cMaxFlags];     // the flag sprites, used in CaptureFlags and LaserSystem
+    static Maze::aCoin sCoin[Maze::cMaxCoins];	   // the coins, used in CaptureFlags, DeathMatch and Magnet
+    static uint32_t    sTarget[Maze::cMaxTargets]; // the targets (3 robots you can attack in DM)
 
     static bool sPickDone;		// used in LaserSystem, true if picking stage is complete.
     static bool sStartingOut;	// used in PathLogicSystem, RobotCtrl. Takes wait 3 sec into consid. (before the race starts)
@@ -100,6 +102,7 @@ private:
     int mNumRacers;     // this many robots in a race at once
 
     int mGetReadyTextId = 0;    // get ready text id
+    int mGameModeTextId = 0;    // game mode text id
 
     int mGetReadyTimer = 2;	    // seconds of GET READY text with black bg
     int mTimeToPick = 6;        // seconds of actual time player has to pick corner

@@ -16,6 +16,7 @@
 #include "../../Ecs/Components.hpp"
 #include "../../Game.hpp"
 #include "../../Addons.hpp"
+#include "Race.hpp"
 #include "Maze.hpp"
 
 // In order to connect PathLogicSystem, Laser, CaptureFlags, DeathMatch to Maze
@@ -37,6 +38,10 @@ Maze::Maze() {
 	sStartingOut = true;
 	sUpdatePaths = false;
 	sGameMode = 0;
+
+	sTarget[0] = -1;
+	sTarget[1] = -1;
+	sTarget[2] = -1;
 
 	sCF = new CaptureFlags();
 	sDM = new DeathMatch();
@@ -91,6 +96,15 @@ void Maze::setupPickStart() {
 	mGetReadyTextId = fbl_create_text(255, 69, 0, 255, (char*)"GET READY!");
 	fbl_set_text_align(mGetReadyTextId, FBL_ALIGN_CENTER);
 	fbl_set_text_xy(mGetReadyTextId, fbl_get_screen_w() / 2, fbl_get_screen_h() / 3);
+
+	// game mode text
+	fbl_load_ttf_font("font/garamond.ttf", 20);
+	if(sGameMode == Race::GM_CaptureFlags)
+		mGameModeTextId = fbl_create_text(255, 69, 0, 255, (char*)"CF");
+	else if (sGameMode == Race::GM_DeathMatch)
+		mGameModeTextId = fbl_create_text(255, 69, 0, 255, (char*)"DM");
+	fbl_set_text_align(mGameModeTextId, FBL_ALIGN_CENTER);
+	fbl_set_text_xy(mGameModeTextId, fbl_get_screen_w() / 2, fbl_get_screen_h() / 2);
 
 	// circle = type 6 (starts at id's 1-11)
 
@@ -192,6 +206,7 @@ void Maze::pickStartPosition(Game& g) {
 	if(mPickTimer == mTimeToPick * 60){
 		fbl_set_prim_active(mBlackBgId, false);	// deactivate bg after the fadeout
 		fbl_set_text_active(mGetReadyTextId, false);
+		fbl_set_text_active(mGameModeTextId, false);
 	}
 
 	// time bar
@@ -228,6 +243,7 @@ void Maze::pickStartPosition(Game& g) {
 			fbl_set_prim_active(i, false);
 
 		fbl_set_text_active(mGetReadyTextId, false);
+		fbl_set_text_active(mGameModeTextId, false);
 		fbl_set_prim_active(mBlackBgId, false);
 		fbl_set_prim_active(mTimeBarId, false);
 
@@ -394,12 +410,14 @@ void Maze::showAddons(Game& g) {
 void Maze::addItems() {
 
 
-	// add flags in the middle
-	for (int i = 0; i < cMaxFlags; i++) {
-		sFlag[i].id = fbl_create_sprite(265, 324, 17, 24, 0);
-		fbl_set_sprite_xy(sFlag[i].id, cTargetX + 16, cTargetY + 16);	// drawn from the center
-		fbl_set_sprite_layer(sFlag[i].id, 6);
-		sFlag[i].state = FlagState::Center;	// start in the center
+	// add flags in the middle in cf game mode
+	if (sGameMode == Race::GM_CaptureFlags) {
+		for (int i = 0; i < cMaxFlags; i++) {
+			sFlag[i].id = fbl_create_sprite(265, 324, 17, 24, 0);
+			fbl_set_sprite_xy(sFlag[i].id, cTargetX + 16, cTargetY + 16);	// drawn from the center
+			fbl_set_sprite_layer(sFlag[i].id, 6);
+			sFlag[i].state = FlagState::Center;	// start in the center
+		}
 	}
 
 	// add random amount of coins (from 12 to 25)
