@@ -43,8 +43,18 @@ public:
         uint16_t timeLeft;
     };
 
+    struct AirMeter {
+        uint16_t x, y;
+        uint16_t meterId, sweetSpotId, sweetSpotSize;;
+        float    sweetSpotY;
+        uint16_t pointerId, pointerY;
+        uint16_t arrowUpId, arrowDownId;
+        float    speed;
+    };
+
     void setupMaintenance(Game& g);
     void getInput(Game& g);
+    void processAirPressure(Game& g);
     void processTimers(Game& g);
 
 
@@ -58,5 +68,7 @@ private:
     int mPostRaceDelay;
 
     TimerBar mTimerBar[4];
+
+    AirMeter mAirMeter;
 
 };

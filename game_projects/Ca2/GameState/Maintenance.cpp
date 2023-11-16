@@ -40,8 +40,6 @@ Maintenance::Maintenance() {
 	Race::sRaceState = Undecided;
 	mPostRaceDelay = 60;	// one second delay before PostRace menu or game over is shown.
 
-
-
 	std::cout << "Started Maintenance state." << std::endl;
 
 }
@@ -92,12 +90,79 @@ void Maintenance::setupMaintenance(Game& g) {
 		fbl_set_prim_color(mTimerBar[i].primId, 0, 255, 0, 255);
 	}
 
+	// create air pressure minigame ui
+	// meter
+	mAirMeter.x = Game::DeviceResW / 4 + 64;
+	mAirMeter.y = 30;
+	mAirMeter.meterId = fbl_create_prim(FBL_NORMAL_RECT, mAirMeter.x, mAirMeter.y, 32, 200, 0, false, true);
+	fbl_set_prim_color(mAirMeter.meterId, 11, 168, 230, 255);	// sky blue
+	// sweet spot
+	mAirMeter.sweetSpotY = 100;
+	mAirMeter.sweetSpotSize = 15;
+	mAirMeter.pointerY = mAirMeter.sweetSpotY + mAirMeter.sweetSpotSize / 2;
+	mAirMeter.speed = 0.8;
+	mAirMeter.sweetSpotId = fbl_create_prim(FBL_NORMAL_RECT, mAirMeter.x, mAirMeter.sweetSpotY, 32, mAirMeter.sweetSpotSize, 0, false, true);
+	fbl_set_prim_color(mAirMeter.sweetSpotId, 255, 255, 255, 255);	// white sweet spot
+	// pointer
+	mAirMeter.pointerId = fbl_create_sprite(256, 288, 16, 16, 0);
+	fbl_set_sprite_xy(mAirMeter.pointerId, mAirMeter.x - 15, mAirMeter.pointerY);
+	fbl_set_sprite_animation(mAirMeter.pointerId, true, 256, 288, 16, 16, 4, 7, true);
+	// up/down arrows
+	mAirMeter.arrowUpId = fbl_create_ui_elem(FBL_UI_BUTTON_HOLD, 128, 96, 32, 32, NULL);
+	fbl_set_ui_elem_xy(mAirMeter.arrowUpId, mAirMeter.x + 80, 100);
+	mAirMeter.arrowDownId = fbl_create_ui_elem(FBL_UI_BUTTON_HOLD, 128, 128, 32, 32, NULL);
+	fbl_set_ui_elem_xy(mAirMeter.arrowDownId, mAirMeter.x + 80, 150);
+	// instructions
+	fbl_load_ttf_font("font/roboto.ttf", 20);
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"Air Pressure Tuning (APT):", 1, 0, 4);
+	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(tmpId, 20, 20);
+	fbl_load_ttf_font("font/roboto.ttf", 16);
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"When the timer is done");
+	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(tmpId, 20, 80);
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"make sure the green arrow");
+	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(tmpId, 20, 110);
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"is in the sweet spot.");
+	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(tmpId, 20, 140);
+	// shortcut keys
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"W");
+	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(tmpId, mAirMeter.x + 120, 100);
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"S");
+	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(tmpId, mAirMeter.x + 122, 150);
 
 }
 
 void Maintenance::getInput(Game& g) {
 
+	//Efx::getInstance().shakeCamera(10, 10);
 
+	// Air pressure input
+	if (fbl_get_ui_elem_val(mAirMeter.arrowUpId) || fbl_get_key_down(FBLK_W)) {
+		mAirMeter.pointerY -= 2;
+	}
+	if (fbl_get_ui_elem_val(mAirMeter.arrowDownId) || fbl_get_key_down(FBLK_S)) {
+		mAirMeter.pointerY += 2;
+	}
+
+}
+
+void Maintenance::processAirPressure(Game& g) {
+
+	// limit values and set pointerY
+	if (mAirMeter.pointerY < 31) mAirMeter.pointerY = 31;
+	if (mAirMeter.pointerY > 228) mAirMeter.pointerY = 228;
+	fbl_set_sprite_xy(mAirMeter.pointerId, mAirMeter.x - 15, mAirMeter.pointerY);
+
+	// move the sweet spot, limit values and change dir
+	mAirMeter.sweetSpotY += mAirMeter.speed;
+	if(mAirMeter.sweetSpotY > 230 - mAirMeter.sweetSpotSize) mAirMeter.speed = -mAirMeter.speed;
+	if (mAirMeter.sweetSpotY < 31) mAirMeter.speed = -mAirMeter.speed;
+	fbl_set_prim_xy(mAirMeter.sweetSpotId, mAirMeter.x, mAirMeter.sweetSpotY);
 
 }
 
@@ -128,6 +193,7 @@ void Maintenance::tick(Game& g) {
 
 	if (Race::sRaceState == Undecided) {
 		getInput(g);
+		processAirPressure(g);
 		processTimers(g);
 	}
 	else {
