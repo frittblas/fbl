@@ -46,9 +46,10 @@ public:
     struct AirMeter {
         uint16_t x, y;
         uint16_t meterId, sweetSpotId, sweetSpotSize;;
-        float    sweetSpotY;
         uint16_t pointerId, pointerY;
         uint16_t arrowUpId, arrowDownId;
+        uint16_t checkDuration;
+        float    sweetSpotY;
         float    speed;
     };
 
@@ -56,7 +57,7 @@ public:
     void getInput(Game& g);
     void processAirPressure(Game& g);
     void processTimers(Game& g);
-
+    void hideSprites();
 
     virtual void tick(Game& g) override;
 

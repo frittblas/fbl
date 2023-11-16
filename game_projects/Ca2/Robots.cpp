@@ -506,9 +506,9 @@ void Robots::assignAIrobots(Game& g) {
 		case 3:
 		case 4:
 
-			//equipAIaddon(g, 3, Addons::Laser1);
+			equipAIaddon(g, 1, Addons::Laser1);
 			equipAIaddon(g, 1, Addons::Shield2);
-			//equipAIaddon(g, 1, Addons::Heal1);
+			equipAIaddon(g, 1, Addons::Heal1);
 
 			break;
 
@@ -532,6 +532,8 @@ void Robots::assignAIrobots(Game& g) {
 			equipAIaddon(g, 3, Addons::Turbo1);
 			equipAIaddon(g, 3, Addons::Shield1);
 			equipAIaddon(g, 2, Addons::Heal1);
+			equipAIaddon(g, 2, Addons::Diag);
+
 			break;
 
 		case 12:
@@ -703,8 +705,8 @@ int* Robots::levelUpRobot(Game& g, int nameIndex, bool owned) {
 	bonus[2] = rand() % 3 + 1;
 	sta->speed += bonus[2];
 
-	if (sta->level == 2) {
-		sta->diag = true;	// all robots will get diag at level 2
+	if (sta->level == 3) {
+		sta->diag = true;	// all robots will get diag at level 3
 		bonus[3] = 1;
 	}
 	else bonus[3] = 0;

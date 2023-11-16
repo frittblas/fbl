@@ -304,6 +304,9 @@ void PostRace::initPostRaceMenu(Game& g, bool fromRace) {
 	}
 	else {
 
+		fbl_destroy_all_prims();
+		fbl_destroy_all_text_objects();
+
 		switch (Race::sRaceState) {
 		case Race::RaceState::First:
 			msg = "Perfect! You maintained a robot! Buy something will ya!";
