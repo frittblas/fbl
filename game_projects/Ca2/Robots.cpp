@@ -700,7 +700,7 @@ int* Robots::levelUpRobot(Game& g, int nameIndex, bool owned) {
 	sta->maxHp += bonus[1];
 	sta->hp = sta->maxHp;	// refill life at level up = nice!
 
-	bonus[2] = rand() % 3 + 2;
+	bonus[2] = rand() % 3 + 1;
 	sta->speed += bonus[2];
 
 	if (sta->level == 2) {

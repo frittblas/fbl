@@ -221,7 +221,23 @@ void DeathMatch::checkWinCondition(Game& g) {
 			// if you still have robots that are alive left it's not game over.
 			if (g.mRobots->ownedRobotsLeft(g) > 0) {
 
-				Race::sRaceState = Race::Fourth;
+				// calculate placing
+				int robotsAlive = 0;
+				for (int i = 1; i < g.mRobots->mNumRacers; i++) {
+					auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mRacingRobots[i]);
+					if (sta.hp > 0.1) robotsAlive++;
+				}
+
+				switch (robotsAlive) {
+
+					case 1 : Race::sRaceState = Race::Second; break;
+					case 2: Race::sRaceState = Race::Third; break;
+					case 3: Race::sRaceState = Race::Fourth; break;
+					default : Race::sRaceState = Race::Fourth; break;
+
+				}
+
+				std::cout << "ROBOTS ALIVE:::::::: " << robotsAlive << std::endl;
 
 			}
 			else
