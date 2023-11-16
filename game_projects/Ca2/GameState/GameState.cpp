@@ -371,6 +371,7 @@ void GameState::setupMaintenance(Game& g) {
 	destroyAllGfx();								// remove resources (ALL sprites, prims, text, ui and emitters)
 	g.mLocation->unLoadLocation(g.mMap);			// this destroys ALL sprites
 	g.mSysManager->mSpriteSystem->Init(*g.mEcs);	// create sprites for all entities with a sprite component
+	g.mSysManager->mLightSystem->Init(*g.mEcs);		// create lights for all entities with a light component
 	g.mRobots->hideRobots(g.mEcs);
 
 	// temporarily remove path component from the player

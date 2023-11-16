@@ -192,6 +192,11 @@ void LaserSystem::dealDamage(Game &g, Entity attacker, Entity target) {
 				
 				// nothing (don't take damage) NOTE: match the different shields and lasers here
 				// red lasers can be blocked by red shield etc.
+
+				if(attackLas.level == targetShield->level + 1)
+					targetSta.hp -= static_cast<double>(attackLas.damage / 3) / 10;
+				if (attackLas.level == targetShield->level + 2)
+					targetSta.hp -= static_cast<double>(attackLas.damage / 2) / 10;
 				
 			}
 			else targetSta.hp -= static_cast<double>(attackLas.damage) / 10;

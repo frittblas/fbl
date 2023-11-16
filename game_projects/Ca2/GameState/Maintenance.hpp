@@ -35,8 +35,17 @@ public:
         GameOver
     };
 
+    struct TimerBar {
+        uint16_t x, y;
+        uint16_t primId;
+        uint16_t red;
+        uint16_t totalTime;
+        uint16_t timeLeft;
+    };
+
     void setupMaintenance(Game& g);
     void getInput(Game& g);
+    void processTimers(Game& g);
 
 
     virtual void tick(Game& g) override;
@@ -47,5 +56,7 @@ private:
 
     PostRace* mPostRace;
     int mPostRaceDelay;
+
+    TimerBar mTimerBar[4];
 
 };
