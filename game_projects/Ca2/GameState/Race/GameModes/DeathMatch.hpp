@@ -42,6 +42,7 @@ public:
 	void checkWinCondition(Game& g);
 	void switchCtrl(Game& g, Entity e, Position& pos, Path& path, PathLogic& plog);
 	void updatePaths(Game& g, Entity e, Position& pos, Path& path, PathLogic& plog);
+	void printPlayerMsg(std::string msg, Entity e);
 	void snapToGrid(uint16_t& x, uint16_t& y);
 	int  distance(int px, int py, int cx, int cy);
 

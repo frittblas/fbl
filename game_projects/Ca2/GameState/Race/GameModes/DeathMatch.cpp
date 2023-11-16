@@ -42,30 +42,32 @@ void DeathMatch::handleTargets(Game& g, Entity e, Position& pos, Sprite& spr, Pa
 
 	// if energy is out, head back to the base!
 	auto& sta = g.mEcs->GetComponent<Stats>(e);
-	if (sta.energy < 0.1) {
+	if (sta.energy < 0.1 && plog.state >= 0) {
 		plog.state = CheckPointBase;
+		printPlayerMsg("OUT OF ENERGY! TO BASE!", e);
 	}
 
+	// if getting too close to the target head to the base
+	if (plog.state >= 0) {
+		int targetX = fbl_get_sprite_x(plog.state);
+		int targetY = fbl_get_sprite_y(plog.state);
+		if (distance((int)pos.x, (int)pos.x, targetX, targetY) < 64) {
+			plog.state = CheckPointBase;
+			printPlayerMsg("TOO CLOSE! HEADING TO BASE!", e);
+		}
+	}
+
+	// got the msg base checkpoint, change to actually going
 	if (plog.state == CheckPointBase) {
 		goToBase(g, e, path, plog);
+		plog.state = GoingToBase;
 		return;
 	}
 
-	if (plog.state < 0) return;
-
-
-	if (rand() % 100 == 0) {
+	// randomly update the pathing to you target
+	if (rand() % 100 == 0 && plog.state >= 0) {
 		findClosestTarget(g, e, pos, path, plog);
-		std::cout << "GETTING NEW PATH " << std::endl;
-	}
-
-
-	// if getting too close to the target head to the base
-	int targetX = fbl_get_sprite_x(plog.state);
-	int targetY = fbl_get_sprite_y(plog.state);
-	if (distance((int)pos.x, (int)pos.x, targetX, targetY) < 64) {
-		plog.state = CheckPointBase;
-		std::cout << "TOO CLOSE! HEADING TO BASE!" << std::endl;
+		printPlayerMsg("GETTING NEW PATH TO TARGET FREESTYLE", e);
 	}
 
 }
@@ -106,8 +108,6 @@ void DeathMatch::goToBase(Game& g, Entity e, Path& path, PathLogic& plog) {
 		}
 	}
 
-	plog.state = GoingToBase;
-
 }
 
 void DeathMatch::handleBases(Game& g, Entity e, Position& pos, Sprite& spr, Path& path, PathLogic& plog) {
@@ -128,12 +128,15 @@ void DeathMatch::handleBases(Game& g, Entity e, Position& pos, Sprite& spr, Path
 
 	if (!g.mEcs->HasComponent<RobotCtrl>(e)) {
 		findClosestTarget(g, e, pos, path, plog);
+		printPlayerMsg("GETTING NEW PATH TO TARGET FROM BASE", e);
 	}
 	else {
 		auto& ctrl = g.mEcs->GetComponent<RobotCtrl>(e);
 
-		if (!ctrl.active)
+		if (!ctrl.active) {
 			findClosestTarget(g, e, pos, path, plog);
+			printPlayerMsg("GETTING NEW PATH TO TARGET FROM BASE", e);
+		}
 	}
 
 }
@@ -286,16 +289,25 @@ void DeathMatch::updatePaths(Game& g, Entity e, Position& pos, Path& path, PathL
 	// update paths for robots without a MouseCtrl component
 	if (!g.mEcs->HasComponent<RobotCtrl>(e)) {
 		findClosestTarget(g, e, pos, path, plog);
+		printPlayerMsg("UPDATE PATHS!", e);
 	}
 	else {
 		auto& ctrl = g.mEcs->GetComponent<RobotCtrl>(e);
 
-		if (!ctrl.active && !Maze::sStartingOut)
+		if (!ctrl.active && !Maze::sStartingOut) {
 			findClosestTarget(g, e, pos, path, plog);
+			printPlayerMsg("UPDATE PATHS!", e);
+		}
 	}
 
 	std::cout << "New path for robot-entity: " << e << std::endl;
 
+}
+
+void DeathMatch::printPlayerMsg(std::string msg, Entity e) {
+
+	if(e == 5)
+		std::cout << "PLAYER MSG: " << msg << std::endl;
 }
 
 void DeathMatch::snapToGrid(uint16_t& x, uint16_t& y) {

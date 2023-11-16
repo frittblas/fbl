@@ -501,13 +501,12 @@ void Robots::assignAIrobots(Game& g) {
 
 		case 0:
 		case 1:
-			//break;
+			break;
 		case 2:
 		case 3:
 		case 4:
 
-
-			equipAIaddon(g, 1, Addons::Laser1);
+			equipAIaddon(g, 3, Addons::Laser1);
 
 			break;
 
@@ -517,8 +516,6 @@ void Robots::assignAIrobots(Game& g) {
 
 			equipAIaddon(g, 1, Addons::Laser1);
 			equipAIaddon(g, 2, Addons::Magnet1);
-			equipAIaddon(g, 3, Addons::Turbo1);
-
 
 			break;
 		case 6:
@@ -533,6 +530,7 @@ void Robots::assignAIrobots(Game& g) {
 			equipAIaddon(g, 3, Addons::Turbo1);
 			equipAIaddon(g, 3, Addons::Shield1);
 			equipAIaddon(g, 2, Addons::Heal1);
+			break;
 
 		case 12:
 
