@@ -45,23 +45,33 @@ public:
 
     struct AirMeter {
         uint16_t x, y;
-        uint16_t meterId, sweetSpotId, sweetSpotSize;;
+        uint16_t meterId, sweetSpotId, sweetSpotSize;
         uint16_t pointerId, pointerY;
         uint16_t arrowUpId, arrowDownId;
-        uint16_t checkDuration;
+        int16_t  checkDuration;
         float    sweetSpotY;
         float    speed;
     };
 
+    struct ColorCables {
+        uint16_t x, y;
+        uint16_t lineId[3];
+        uint16_t colorId[3];
+        uint16_t mimicLineId[3];
+        uint16_t mimicColorId[3];
+        uint16_t button[3];
+        int16_t  showDuration;
+    };
+
     void setupMaintenance(Game& g);
+    void setupAirPressure(int x, int y);
+    void setupColorCables(int x, int y);
     void getInput(Game& g);
     void processAirPressure(Game& g);
     void processTimers(Game& g);
     void hideSprites();
 
     virtual void tick(Game& g) override;
-
-    //static int sRaceState;
 
 private:
 
@@ -71,5 +81,6 @@ private:
     TimerBar mTimerBar[4];
 
     AirMeter mAirMeter;
+    ColorCables mColorCables;
 
 };

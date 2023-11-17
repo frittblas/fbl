@@ -56,12 +56,12 @@ Maintenance::~Maintenance() {
 
 void Maintenance::setupMaintenance(Game& g) {
 
+	int tmpId;
+
 	// replace this with the lowest level robot in your collection.
 	g.mRobots->mRacingRobots[0] = g.mRobots->mOwnedRobots[g.mProgress->mFavRobot];
 
 	// create all the ui elements for maintenance mode!
-
-	int tmpId;
 
 	// create the white outline as RECT
 	tmpId = fbl_create_prim(FBL_RECT, Game::DeviceResW / 2, Game::DeviceResH / 2, 479, 269, 0, false, false);
@@ -69,71 +69,124 @@ void Maintenance::setupMaintenance(Game& g) {
 
 	// lines to divide into 4 parts
 	tmpId = fbl_create_prim(FBL_LINE, 1, g.LogicalResH / 2, g.LogicalResW, g.LogicalResH / 2, 0, false, false);
-fbl_set_prim_color(tmpId, 255, 255, 255, 255);
-tmpId = fbl_create_prim(FBL_LINE, g.LogicalResW / 2, 1, g.LogicalResW / 2, g.LogicalResH, 0, false, false);
-fbl_set_prim_color(tmpId, 255, 255, 255, 255);
+	fbl_set_prim_color(tmpId, 255, 255, 255, 255);
+	tmpId = fbl_create_prim(FBL_LINE, g.LogicalResW / 2, 1, g.LogicalResW / 2, g.LogicalResH, 0, false, false);
+	fbl_set_prim_color(tmpId, 255, 255, 255, 255);
 
-// create the 4 timer bars
-mTimerBar[0].x = Game::DeviceResW / 4;
-mTimerBar[0].y = 250;
-mTimerBar[1].x = Game::DeviceResW / 4 + Game::DeviceResW / 2;
-mTimerBar[1].y = 250;
-mTimerBar[2].x = Game::DeviceResW / 4;
-mTimerBar[2].y = 520;
-mTimerBar[3].x = Game::DeviceResW / 4 + Game::DeviceResW / 2;
-mTimerBar[3].y = 520;
-for (int i = 0; i < 4; i++) {
-	mTimerBar[i].red = 0;
-	mTimerBar[i].totalTime = 7;
-	mTimerBar[i].timeLeft = 7 * 30;
-	mTimerBar[i].primId = fbl_create_prim(FBL_RECT, mTimerBar[i].x, mTimerBar[i].y, mTimerBar[i].totalTime * 30, 5, 0, false, true);
-	fbl_set_prim_color(mTimerBar[i].primId, 0, 255, 0, 255);
+	// create the 4 timer bars
+	mTimerBar[0].x = Game::DeviceResW / 4;
+	mTimerBar[0].y = 250;
+	mTimerBar[1].x = Game::DeviceResW / 4 + Game::DeviceResW / 2;
+	mTimerBar[1].y = 250;
+	mTimerBar[2].x = Game::DeviceResW / 4;
+	mTimerBar[2].y = 520;
+	mTimerBar[3].x = Game::DeviceResW / 4 + Game::DeviceResW / 2;
+	mTimerBar[3].y = 520;
+
+	for (int i = 0; i < 4; i++) {
+		mTimerBar[i].red = 0;
+		mTimerBar[i].totalTime = rand() % 4 + 4;
+		mTimerBar[i].timeLeft = 7 * 30;
+		mTimerBar[i].primId = fbl_create_prim(FBL_RECT, mTimerBar[i].x, mTimerBar[i].y, mTimerBar[i].totalTime * 30, 5, 0, false, true);
+		fbl_set_prim_color(mTimerBar[i].primId, 0, 255, 0, 255);
+	}
+
+	setupAirPressure(Game::DeviceResW / 4 + 64, 30);
+	setupColorCables(25+ Game::DeviceResW / 2, 400);
+
+
+
+
 }
 
-// create air pressure minigame ui
-// meter
-mAirMeter.x = Game::DeviceResW / 4 + 64;
-mAirMeter.y = 30;
-mAirMeter.meterId = fbl_create_prim(FBL_NORMAL_RECT, mAirMeter.x, mAirMeter.y, 32, 200, 0, false, true);
-fbl_set_prim_color(mAirMeter.meterId, 11, 168, 230, 255);	// sky blue
-// sweet spot
-mAirMeter.sweetSpotY = 100;
-mAirMeter.sweetSpotSize = 30;
-mAirMeter.pointerY = mAirMeter.sweetSpotY + mAirMeter.sweetSpotSize / 2;
-mAirMeter.speed = 0.8;
-mAirMeter.sweetSpotId = fbl_create_prim(FBL_NORMAL_RECT, mAirMeter.x, mAirMeter.sweetSpotY, 32, mAirMeter.sweetSpotSize, 0, false, true);
-fbl_set_prim_color(mAirMeter.sweetSpotId, 255, 255, 255, 255);	// white sweet spot
-// pointer
-mAirMeter.pointerId = fbl_create_sprite(256, 288, 16, 16, 0);
-fbl_set_sprite_xy(mAirMeter.pointerId, mAirMeter.x - 15, mAirMeter.pointerY);
-fbl_set_sprite_animation(mAirMeter.pointerId, true, 256, 288, 16, 16, 4, 7, true);
-// up/down arrows
-mAirMeter.arrowUpId = fbl_create_ui_elem(FBL_UI_BUTTON_HOLD, 128, 96, 32, 32, NULL);
-fbl_set_ui_elem_xy(mAirMeter.arrowUpId, mAirMeter.x + 80, 100);
-mAirMeter.arrowDownId = fbl_create_ui_elem(FBL_UI_BUTTON_HOLD, 128, 128, 32, 32, NULL);
-fbl_set_ui_elem_xy(mAirMeter.arrowDownId, mAirMeter.x + 80, 150);
-// instructions
-fbl_load_ttf_font("font/roboto.ttf", 20);
-tmpId = fbl_create_text(255, 255, 255, 0, (char*)"Air Pressure Tuning (APT):", 1, 0, 4);
-fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
-fbl_set_text_xy(tmpId, 20, 20);
-fbl_load_ttf_font("font/roboto.ttf", 16);
-tmpId = fbl_create_text(255, 255, 255, 0, (char*)"When the timer is done");
-fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
-fbl_set_text_xy(tmpId, 20, 80);
-tmpId = fbl_create_text(255, 255, 255, 0, (char*)"make sure the green arrow");
-fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
-fbl_set_text_xy(tmpId, 20, 110);
-tmpId = fbl_create_text(255, 255, 255, 0, (char*)"is in the sweet spot.");
-fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
-fbl_set_text_xy(tmpId, 20, 140);
-// shortcut keys
-tmpId = fbl_create_text(255, 255, 255, 0, (char*)"W");
-fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
-fbl_set_text_xy(tmpId, mAirMeter.x + 120, 100);
-tmpId = fbl_create_text(255, 255, 255, 0, (char*)"S");
-fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
-fbl_set_text_xy(tmpId, mAirMeter.x + 122, 150);
+void Maintenance::setupAirPressure(int x, int y) {
+
+	int tmpId;
+
+	// create air pressure minigame ui
+	// meter
+	mAirMeter.x = x;
+	mAirMeter.y = y;
+	mAirMeter.meterId = fbl_create_prim(FBL_NORMAL_RECT, mAirMeter.x, mAirMeter.y, 32, 200, 0, false, true);
+	fbl_set_prim_color(mAirMeter.meterId, 11, 168, 230, 255);	// sky blue
+	// sweet spot
+	mAirMeter.sweetSpotY = 100;
+	mAirMeter.sweetSpotSize = 30;
+	mAirMeter.pointerY = mAirMeter.sweetSpotY + mAirMeter.sweetSpotSize / 2;
+	mAirMeter.speed = 0.8;
+	mAirMeter.checkDuration = 0;
+	mAirMeter.sweetSpotId = fbl_create_prim(FBL_NORMAL_RECT, mAirMeter.x, mAirMeter.sweetSpotY, 32, mAirMeter.sweetSpotSize, 0, false, true);
+	fbl_set_prim_color(mAirMeter.sweetSpotId, 255, 255, 255, 255);	// white sweet spot
+	// pointer
+	mAirMeter.pointerId = fbl_create_sprite(256, 288, 16, 16, 0);
+	fbl_set_sprite_xy(mAirMeter.pointerId, mAirMeter.x - 15, mAirMeter.pointerY);
+	fbl_set_sprite_animation(mAirMeter.pointerId, true, 256, 288, 16, 16, 4, 7, true);
+	// up/down arrows
+	mAirMeter.arrowUpId = fbl_create_ui_elem(FBL_UI_BUTTON_HOLD, 128, 96, 32, 32, NULL);
+	fbl_set_ui_elem_xy(mAirMeter.arrowUpId, mAirMeter.x + 80, mAirMeter.y + 70);
+	mAirMeter.arrowDownId = fbl_create_ui_elem(FBL_UI_BUTTON_HOLD, 128, 128, 32, 32, NULL);
+	fbl_set_ui_elem_xy(mAirMeter.arrowDownId, mAirMeter.x + 80, mAirMeter.y + 120);
+	// Air pressure instructions
+	fbl_load_ttf_font("font/roboto.ttf", 20);
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"Air Pressure Tuning (APT):");
+	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(tmpId, mAirMeter.x - 279, mAirMeter.y + 7);
+	fbl_load_ttf_font("font/roboto.ttf", 16);
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"When the timer is done");
+	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(tmpId, mAirMeter.x - 279, mAirMeter.y + 37);
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"make sure the green arrow");
+	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(tmpId, mAirMeter.x - 279, mAirMeter.y + 67);
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"is in the sweet spot.");
+	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(tmpId, mAirMeter.x - 279, mAirMeter.y + 97);
+	// shortcut keys
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"W");
+	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(tmpId, mAirMeter.x + 120, mAirMeter.y + 70);
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"S");
+	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(tmpId, mAirMeter.x + 122, mAirMeter.y + 120);
+
+}
+
+void Maintenance::setupColorCables(int x, int y) {
+
+	int tmpId;
+
+	// memorize and match colored cables
+	mColorCables.x = x;
+	mColorCables.y = y;
+	mColorCables.lineId[0] = fbl_create_prim(FBL_NORMAL_RECT, mColorCables.x, mColorCables.y, 120, 7, 0, false, true);
+	fbl_set_prim_color(mColorCables.lineId[0], 255, 100, 30, 255);
+	mColorCables.lineId[1] = fbl_create_prim(FBL_NORMAL_RECT, mColorCables.x, mColorCables.y + 32, 120, 7, 0, false, true);
+	fbl_set_prim_color(mColorCables.lineId[1], 255, 255, 255, 255);
+	mColorCables.lineId[2] = fbl_create_prim(FBL_NORMAL_RECT, mColorCables.x, mColorCables.y + 64, 120, 7, 0, false, true);
+	fbl_set_prim_color(mColorCables.lineId[2], 0, 83, 255, 255);
+
+	// Color cables instructions
+	fbl_load_ttf_font("font/roboto.ttf", 20);
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"Match Colored Cables (MCC):");
+	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(tmpId, mColorCables.x, mColorCables.y - 92);
+	fbl_load_ttf_font("font/roboto.ttf", 16);
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"Memorize and match the colors of the cables");
+	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(tmpId, mColorCables.x, mColorCables.y - 62);
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"before the time runs out.");
+	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(tmpId, mColorCables.x, mColorCables.y - 32);
+	/*
+
+	// shortcut keys
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"W");
+	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(tmpId, mAirMeter.x + 120, mAirMeter.y + 70);
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"S");
+	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(tmpId, mAirMeter.x + 122, mAirMeter.y + 120);
+	*/
 
 }
 
@@ -150,6 +203,9 @@ void Maintenance::getInput(Game& g) {
 		if (mAirMeter.checkDuration == 0)
 			mAirMeter.pointerY += 2;
 	}
+
+	// memorize match color colored cables
+
 
 }
 
@@ -185,7 +241,7 @@ void Maintenance::processAirPressure(Game& g) {
 
 	// times up!
 	int y = fbl_get_sprite_y(mAirMeter.pointerId);
-	if ((y + 8) >= mAirMeter.sweetSpotY && (y + 8) <= mAirMeter.sweetSpotY + mAirMeter.sweetSpotSize) {
+	if ((y + 1) >= mAirMeter.sweetSpotY && y <= mAirMeter.sweetSpotY + mAirMeter.sweetSpotSize) {
 
 		// play sound
 
