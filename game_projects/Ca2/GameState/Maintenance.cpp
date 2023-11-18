@@ -16,6 +16,7 @@
 #include "../Ecs/Components.hpp"
 #include "../Game.hpp"
 #include "../Progress.hpp"
+#include "../SoundManager.hpp"
 #include "../SysManager.hpp"
 #include "../Efx.hpp"
 
@@ -86,7 +87,7 @@ void Maintenance::setupMaintenance(Game& g) {
 	for (int i = 0; i < 4; i++) {
 		mTimerBar[i].red = 0;
 		mTimerBar[i].totalTime = rand() % 4 + 4;
-		mTimerBar[i].timeLeft = 7 * 30;
+		mTimerBar[i].timeLeft = mTimerBar[i].totalTime * 30;
 		mTimerBar[i].primId = fbl_create_prim(FBL_RECT, mTimerBar[i].x, mTimerBar[i].y, mTimerBar[i].totalTime * 30, 5, 0, false, true);
 		fbl_set_prim_color(mTimerBar[i].primId, 0, 255, 0, 255);
 	}
@@ -158,6 +159,13 @@ void Maintenance::setupColorCables(int x, int y) {
 	// memorize and match colored cables
 	mColorCables.x = x;
 	mColorCables.y = y;
+	mColorCables.color[0] = 0;
+	mColorCables.color[1] = 1;
+	mColorCables.color[2] = 2;
+	mColorCables.mimicColor[0] = 0;
+	mColorCables.mimicColor[1] = 1;
+	mColorCables.mimicColor[2] = 2;
+	mColorCables.checkDuration = 0;
 	mColorCables.lineId[0] = fbl_create_prim(FBL_NORMAL_RECT, mColorCables.x, mColorCables.y, 120, 7, 0, false, true);
 	fbl_set_prim_color(mColorCables.lineId[0], 255, 100, 30, 255);	// orange
 	mColorCables.lineId[1] = fbl_create_prim(FBL_NORMAL_RECT, mColorCables.x, mColorCables.y + 32, 120, 7, 0, false, true);
@@ -166,17 +174,21 @@ void Maintenance::setupColorCables(int x, int y) {
 	fbl_set_prim_color(mColorCables.lineId[2], 0, 83, 255, 255);	// blue
 
 	mColorCables.mimicLineId[0] = fbl_create_prim(FBL_NORMAL_RECT, mColorCables.x + 200, mColorCables.y, 120, 7, 0, false, true);
-	fbl_set_prim_color(mColorCables.mimicLineId[0], 255, 100, 30, 255);
+	fbl_set_prim_color(mColorCables.mimicLineId[0], 255, 100, 30, 255); // orange
 	mColorCables.mimicLineId[1] = fbl_create_prim(FBL_NORMAL_RECT, mColorCables.x + 200, mColorCables.y + 32, 120, 7, 0, false, true);
-	fbl_set_prim_color(mColorCables.mimicLineId[1], 255, 255, 255, 255);
+	fbl_set_prim_color(mColorCables.mimicLineId[1], 255, 255, 255, 255); // white
 	mColorCables.mimicLineId[2] = fbl_create_prim(FBL_NORMAL_RECT, mColorCables.x + 200, mColorCables.y + 64, 120, 7, 0, false, true);
-	fbl_set_prim_color(mColorCables.mimicLineId[2], 0, 83, 255, 255);
+	fbl_set_prim_color(mColorCables.mimicLineId[2], 0, 83, 255, 255); // blue
 
+	// Color cable buttons
 	mColorCables.button[0] = fbl_create_ui_elem(FBL_UI_BUTTON_INTERVAL, 0, 0, 32, 32, NULL);
+	fbl_set_ui_elem_access(mColorCables.button[0], cKeyDelay);
 	fbl_set_ui_elem_xy(mColorCables.button[0], mColorCables.x + 360, mColorCables.y - 2);
 	mColorCables.button[1] = fbl_create_ui_elem(FBL_UI_BUTTON_INTERVAL, 0, 0, 32, 32, NULL);
+	fbl_set_ui_elem_access(mColorCables.button[1], cKeyDelay);
 	fbl_set_ui_elem_xy(mColorCables.button[1], mColorCables.x + 360, mColorCables.y + 35);
 	mColorCables.button[2] = fbl_create_ui_elem(FBL_UI_BUTTON_INTERVAL, 0, 0, 32, 32, NULL);
+	fbl_set_ui_elem_access(mColorCables.button[2], cKeyDelay);
 	fbl_set_ui_elem_xy(mColorCables.button[2], mColorCables.x + 360, mColorCables.y + 72);
 
 	// Color cables instructions
@@ -227,22 +239,40 @@ void Maintenance::getInput(Game& g) {
 	}
 
 	// color cables input
-	if (fbl_get_ui_elem_val(mColorCables.button[0]) || fbl_get_key_down(FBLK_E)) {
-		mColorCables.mimicColor[0]++;
-		if (mColorCables.mimicColor[0] > 2)
-			mColorCables.mimicColor[0] = 0;
+	if (fbl_get_ui_elem_val(mColorCables.button[0]) || (fbl_get_key_down(FBLK_E) && mKeyDelayLeft[0] == 0)) {
+		if (mColorCables.checkDuration == 0) {
+			mColorCables.mimicColor[0]++;
+			if (mColorCables.mimicColor[0] > 2)
+				mColorCables.mimicColor[0] = 0;
+
+			updateCableColors(0, true);
+			mKeyDelayLeft[0] = cKeyDelay;
+		}
 	}
-	if (fbl_get_ui_elem_val(mColorCables.button[1]) || fbl_get_key_down(FBLK_D)) {
-		mColorCables.mimicColor[1]++;
-		if (mColorCables.mimicColor[1] > 2)
-			mColorCables.mimicColor[1] = 0;
+	if (fbl_get_ui_elem_val(mColorCables.button[1]) || (fbl_get_key_down(FBLK_D) && mKeyDelayLeft[1] == 0)) {
+		if (mColorCables.checkDuration == 0) {
+			mColorCables.mimicColor[1]++;
+			if (mColorCables.mimicColor[1] > 2)
+				mColorCables.mimicColor[1] = 0;
+
+			updateCableColors(1, true);
+			mKeyDelayLeft[1] = cKeyDelay;
+		}
 	}
-	if (fbl_get_ui_elem_val(mColorCables.button[2]) || fbl_get_key_down(FBLK_C)) {
-		mColorCables.mimicColor[2]++;
-		if (mColorCables.mimicColor[2] > 2)
-			mColorCables.mimicColor[2] = 0;
+	if (fbl_get_ui_elem_val(mColorCables.button[2]) || (fbl_get_key_down(FBLK_C ) && mKeyDelayLeft[2] == 0)) {
+		if (mColorCables.checkDuration == 0) {
+			mColorCables.mimicColor[2]++;
+			if (mColorCables.mimicColor[2] > 2)
+				mColorCables.mimicColor[2] = 0;
+			updateCableColors(2, true);
+			mKeyDelayLeft[2] = cKeyDelay;
+		}
 	}
 
+	for (int i = 0; i < 3; i++) {
+		mKeyDelayLeft[i]--;
+		if (mKeyDelayLeft[i] < 0) mKeyDelayLeft[i] = 0;
+	}
 
 }
 
@@ -274,21 +304,24 @@ void Maintenance::processAirPressure(Game& g) {
 	}
 
 	// check the pointer when the timer is done
-	if (mTimerBar[0].timeLeft > 1) return;
+	if (mTimerBar[0].timeLeft > cTimeStep) return;
 
 	// times up!
 	int y = fbl_get_sprite_y(mAirMeter.pointerId);
 	if ((y + 1) >= mAirMeter.sweetSpotY && y <= mAirMeter.sweetSpotY + mAirMeter.sweetSpotSize) {
 
 		// play sound
+		//fbl_play_sound(SoundManager::getInstance().mSfxPass, SoundManager::Channel::Ui, 0);
 
 		// make sweet spot green for a while
-
 		fbl_set_prim_color(mAirMeter.sweetSpotId, 0, 220, 0, 255);
 		mAirMeter.checkDuration = 60;
 
 	}
 	else {
+
+		// play sound
+		//fbl_play_sound(SoundManager::getInstance().mSfxDenied, SoundManager::Channel::Ui, 0);
 
 		fbl_set_prim_color(mAirMeter.sweetSpotId, 220, 0, 0, 255);
 		mAirMeter.checkDuration = 60;
@@ -299,29 +332,98 @@ void Maintenance::processAirPressure(Game& g) {
 
 void Maintenance::processColorCables(Game& g) {
 
+	mColorCables.checkDuration--;
 
+	if (mColorCables.checkDuration < 0)
+		mColorCables.checkDuration = 0;
+
+	if (mColorCables.checkDuration == 1) {
+
+		// put back to where the colors were
+		updateCableColors(0, true);
+		updateCableColors(1, true);
+		updateCableColors(2, true);
+
+	}
+
+	if (mTimerBar[2].timeLeft > cTimeStep) return;	// skip if time left
+
+	// check if cables match
+
+	bool match = true;
+	for (int i = 0; i < 3; i++)
+		if (mColorCables.color[i] != mColorCables.mimicColor[i])
+			match = false;
+
+	if (match) {
+
+		for (int i = 0; i < 3; i++)
+			fbl_set_prim_color(mColorCables.mimicLineId[i], 0, 220, 0, 255);
+
+		mColorCables.checkDuration = 60;
+
+		fbl_play_sound(SoundManager::getInstance().mSfxPass, SoundManager::Channel::Ui, 0);
+
+	}
+	else {
+
+		for(int i = 0; i < 3; i++)
+			fbl_set_prim_color(mColorCables.mimicLineId[i], 220, 0, 0, 255);
+
+		mColorCables.checkDuration = 60;
+
+		fbl_play_sound(SoundManager::getInstance().mSfxDenied, SoundManager::Channel::Ui, 0);
+
+	}
+
+	// randomize colors
+	for (int i = 0; i < 3; i++) {
+		mColorCables.color[i] = rand() % 3;
+		updateCableColors(i, false);
+	}
+
+}
+
+void Maintenance::updateCableColors(int index, bool mimic) {
+
+	if (mimic) {
+		if (mColorCables.mimicColor[index] == 0)
+			fbl_set_prim_color(mColorCables.mimicLineId[index], 255, 100, 30, 255);
+		if (mColorCables.mimicColor[index] == 1)
+			fbl_set_prim_color(mColorCables.mimicLineId[index], 255, 255, 255, 255);
+		if (mColorCables.mimicColor[index] == 2)
+			fbl_set_prim_color(mColorCables.mimicLineId[index], 0, 83, 255, 255);
+	}
+	else {
+		if (mColorCables.color[index] == 0)
+			fbl_set_prim_color(mColorCables.lineId[index], 255, 100, 30, 255);
+		if (mColorCables.color[index] == 1)
+			fbl_set_prim_color(mColorCables.lineId[index], 255, 255, 255, 255);
+		if (mColorCables.color[index] == 2)
+			fbl_set_prim_color(mColorCables.lineId[index], 0, 83, 255, 255);
+	}
 }
 
 void Maintenance::processTimers(Game& g) {
 
-	if (fbl_get_raw_frames_count() % 2 == 0) {
-		for (int i = 0; i < 4; i++) {
-			mTimerBar[i].timeLeft--;
-			if (mTimerBar[i].timeLeft < 1) {
-				mTimerBar[i].timeLeft = mTimerBar[i].totalTime * 30;
-				mTimerBar[i].red = 0;
-			}
-			if (mTimerBar[i].timeLeft < mTimerBar[i].totalTime * 30) {
-				fbl_set_prim_size(mTimerBar[i].primId, mTimerBar[i].timeLeft, 5, 0);
-				int greenFade = mTimerBar[i].timeLeft * 2;
-				if (greenFade > 230) greenFade = 230;
-				if (greenFade < 1) greenFade = 0;
-				fbl_set_prim_color(mTimerBar[i].primId, mTimerBar[i].red, greenFade, 0, 255);
-				mTimerBar[i].red++;
-				if (mTimerBar[i].red > 255) mTimerBar[i].red = 255;
-			}
+
+	for (int i = 0; i < 4; i++) {
+		mTimerBar[i].timeLeft -= cTimeStep;
+		if (mTimerBar[i].timeLeft < cTimeStep) {
+			mTimerBar[i].timeLeft = mTimerBar[i].totalTime * 30;
+			mTimerBar[i].red = 0;
+		}
+		if (mTimerBar[i].timeLeft < mTimerBar[i].totalTime * 30) {
+			fbl_set_prim_size(mTimerBar[i].primId, mTimerBar[i].timeLeft, 5, 0);
+			int greenFade = mTimerBar[i].timeLeft * 2;
+			if (greenFade > 230) greenFade = 230;
+			if (greenFade < 1) greenFade = 0;
+			fbl_set_prim_color(mTimerBar[i].primId, mTimerBar[i].red, greenFade, 0, 255);
+			mTimerBar[i].red++;
+			if (mTimerBar[i].red > 255) mTimerBar[i].red = 255;
 		}
 	}
+
 
 }
 
@@ -336,6 +438,7 @@ void Maintenance::tick(Game& g) {
 	if (Race::sRaceState == Undecided) {
 		getInput(g);
 		processAirPressure(g);
+		processColorCables(g);
 		processTimers(g);
 	}
 	else {

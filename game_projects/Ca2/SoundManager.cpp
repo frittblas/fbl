@@ -40,15 +40,17 @@ SoundManager& SoundManager::getInstance() {
 void SoundManager::loadSfx() {
 	
 	// load all the sound effects in the game and assign id's
-	/*
+	
 	mSfxCoin = fbl_load_sound("sfx/coin.ogg");
 	mSfxDenied = fbl_load_sound("sfx/denied.ogg");
+	fbl_set_sound_volume(mSfxDenied, 40); // max is 128
 	mSfxExplosion = fbl_load_sound("sfx/explosion1.ogg");
 	fbl_set_sound_volume(mSfxExplosion, 40); // max is 128
 	mSfxHeal = fbl_load_sound("sfx/heal.ogg");
 	mSfxLaser1 = fbl_load_sound("sfx/laser1.ogg");
 	mSfxMagnet = fbl_load_sound("sfx/magnet.ogg");
 	mSfxPass = fbl_load_sound("sfx/pass.ogg");
+	fbl_set_sound_volume(mSfxPass, 50); // max is 128
 	mSfxPowerup = fbl_load_sound("sfx/powerup.ogg");
 	mSfxQuit = fbl_load_sound("sfx/quit.ogg");
 	fbl_set_sound_volume(mSfxQuit, 60); // max is 128
@@ -63,7 +65,7 @@ void SoundManager::loadSfx() {
 
 	fbl_play_sound(mSfxSummer, Ambient, 1);
 	loadAndPlayMusic("music/title.ogg", 40);
-	*/
+	
 }
 
 void SoundManager::loadAndPlayMusic(std::string filename, int volume) {

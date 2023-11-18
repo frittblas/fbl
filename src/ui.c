@@ -118,7 +118,7 @@ int fbl_create_ui_elem(uint8_t type, int x, int y, int w, int h, int(*func)(int,
 	fbl_ui_elem->active = true;
     fbl_ui_elem->pressed = false;
     fbl_ui_elem->access = 0;
-    fbl_ui_elem->access_delay = 30;     /* default to half aa second */
+    fbl_ui_elem->access_delay = 30;     /* default to half a second */
 
 	/* set function */
 

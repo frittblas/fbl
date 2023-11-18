@@ -40,7 +40,7 @@ public:
         uint16_t primId;
         uint16_t red;
         uint16_t totalTime;
-        uint16_t timeLeft;
+        float    timeLeft;
     };
 
     struct AirMeter {
@@ -56,11 +56,11 @@ public:
     struct ColorCables {
         uint16_t x, y;
         uint16_t lineId[3];
-        uint16_t color[3];
         uint16_t mimicLineId[3];
+        uint16_t color[3];
         uint16_t mimicColor[3];
         uint16_t button[3];
-        int16_t  showDuration;
+        int16_t  checkDuration;
     };
 
     struct CalcChecksum {
@@ -82,6 +82,7 @@ public:
     void getInput(Game& g);
     void processAirPressure(Game& g);
     void processColorCables(Game& g);
+    void updateCableColors(int index, bool mimic);
     void processTimers(Game& g);
     void hideSprites();
 
@@ -91,6 +92,11 @@ private:
 
     PostRace* mPostRace;
     int mPostRaceDelay;
+
+    const float cTimeStep = 0.25;
+    const int   cKeyDelay = 10;
+
+    int mKeyDelayLeft[3] = {};
 
     TimerBar mTimerBar[4];
 
