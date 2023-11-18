@@ -39,7 +39,7 @@ Maintenance::Maintenance() {
 	fbl_set_clear_color(50, 50, 50, 0);
 
 	Race::sRaceState = Undecided;
-	mPostRaceDelay = 60;	// one second delay before PostRace menu or game over is shown.
+	mPostRaceDelay = 120;	// two second delay before PostRace menu or game over is shown.
 
 	std::cout << "Started Maintenance state." << std::endl;
 
@@ -61,6 +61,8 @@ void Maintenance::setupMaintenance(Game& g) {
 
 	// replace this with the lowest level robot in your collection.
 	g.mRobots->mRacingRobots[0] = g.mRobots->mOwnedRobots[g.mProgress->mFavRobot];
+
+	mOpsLeft = g.mProgress->mCompletedRaces + 5;
 
 	// create all the ui elements for maintenance mode!
 
@@ -92,10 +94,19 @@ void Maintenance::setupMaintenance(Game& g) {
 		fbl_set_prim_color(mTimerBar[i].primId, 0, 255, 0, 255);
 	}
 
+	// create 3 red crosses for failure
+	for (int i = 0; i < 3; i++) {
+		mFailCrossId[i] = fbl_create_sprite(192, 480, 32, 32, 0);
+		fbl_set_sprite_xy(mFailCrossId[i], Game::DeviceResW - (226 - 32 * i), 20);
+		fbl_set_sprite_active(mFailCrossId[i], false);
+	}
+
 	setupAirPressure(Game::DeviceResW / 4 + 64, 30);
 	setupColorCables(25, 400);
 
-
+	fbl_load_ttf_font("font/roboto.ttf", 20);
+	mOpsId = fbl_create_text(255, 255, 255, 255, "Ops left: %d", mOpsLeft);
+	fbl_set_text_xy(mOpsId, Game::DeviceResW - 120, 20);
 
 
 }
@@ -311,20 +322,24 @@ void Maintenance::processAirPressure(Game& g) {
 	if ((y + 1) >= mAirMeter.sweetSpotY && y <= mAirMeter.sweetSpotY + mAirMeter.sweetSpotSize) {
 
 		// play sound
-		//fbl_play_sound(SoundManager::getInstance().mSfxPass, SoundManager::Channel::Ui, 0);
+		fbl_play_sound(SoundManager::getInstance().mSfxPass, SoundManager::Channel::Ui, 0);
 
 		// make sweet spot green for a while
 		fbl_set_prim_color(mAirMeter.sweetSpotId, 0, 220, 0, 255);
 		mAirMeter.checkDuration = 60;
 
+		advance();
+
 	}
 	else {
 
 		// play sound
-		//fbl_play_sound(SoundManager::getInstance().mSfxDenied, SoundManager::Channel::Ui, 0);
+		fbl_play_sound(SoundManager::getInstance().mSfxDenied, SoundManager::Channel::Ui, 0);
 
 		fbl_set_prim_color(mAirMeter.sweetSpotId, 220, 0, 0, 255);
 		mAirMeter.checkDuration = 60;
+
+		fail();
 
 	}
 
@@ -364,6 +379,8 @@ void Maintenance::processColorCables(Game& g) {
 
 		fbl_play_sound(SoundManager::getInstance().mSfxPass, SoundManager::Channel::Ui, 0);
 
+		advance();
+
 	}
 	else {
 
@@ -373,6 +390,8 @@ void Maintenance::processColorCables(Game& g) {
 		mColorCables.checkDuration = 60;
 
 		fbl_play_sound(SoundManager::getInstance().mSfxDenied, SoundManager::Channel::Ui, 0);
+
+		fail();
 
 	}
 
@@ -427,7 +446,57 @@ void Maintenance::processTimers(Game& g) {
 
 }
 
+void Maintenance::advance() {
+
+	mOpsLeft--;
+	if (mOpsLeft < 0) mOpsLeft = 0;
+
+	// update the text
+	fbl_update_text(mOpsId, 255, 255, 255, 255, "Ops left: %d ", mOpsLeft);
+
+}
+
+void Maintenance::fail() {
+
+	mFails++;
+	if (mFails > 3) mFails = 3;
+
+	fbl_set_sprite_active(mFailCrossId[mFails - 1], true);
+
+	if (mFails > 2) {
+
+		Race::sRaceState = Dead;	// oh yes!
+
+	}
+
+}
+
+void Maintenance::checkWinCondition() {
+
+	if (mOpsLeft > 0) return;
+
+	//Race::sRaceState = mFails + 1;
+
+	switch (mFails) {
+
+		case 0:
+			Race::sRaceState = First;
+			break;
+		case 1:
+			Race::sRaceState = Second;
+			break;
+		case 2:
+			Race::sRaceState = Third;
+			break;
+
+	}
+
+}
+
 void Maintenance::hideSprites() {
+
+	for (int i = 0; i < 3; i++)
+		fbl_set_sprite_active(mFailCrossId[i], false);
 
 	fbl_set_sprite_active(mAirMeter.pointerId, false);
 
@@ -440,11 +509,13 @@ void Maintenance::tick(Game& g) {
 		processAirPressure(g);
 		processColorCables(g);
 		processTimers(g);
+		checkWinCondition();
 	}
 	else {
 		mPostRaceDelay--;
 		if (mPostRaceDelay == 0) {
 			if (Race::sRaceState == Dead) {
+				fbl_destroy_all_ui_elems();
 				mPostRace->gameOver();
 			}
 			else {

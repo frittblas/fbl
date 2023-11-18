@@ -93,6 +93,9 @@ void GameState::change(Game& g, StateType newState) {
 			if (mState == StateType::Race) {	// if coming from Race menu
 				toTitle(g);						// toTitle() works from anywhere
 			}
+			if (mState == StateType::Maintenance) {
+				toTitle(g);
+			}
 
 			mCurrentStateInstance = new Title();
 

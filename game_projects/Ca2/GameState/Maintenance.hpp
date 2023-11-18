@@ -84,6 +84,9 @@ public:
     void processColorCables(Game& g);
     void updateCableColors(int index, bool mimic);
     void processTimers(Game& g);
+    void advance();
+    void fail();
+    void checkWinCondition();
     void hideSprites();
 
     virtual void tick(Game& g) override;
@@ -96,7 +99,12 @@ private:
     const float cTimeStep = 0.25;
     const int   cKeyDelay = 10;
 
+    int mFails;
+    int mFailCrossId[3];
+
     int mKeyDelayLeft[3] = {};
+
+    int mOpsLeft, mOpsId;
 
     TimerBar mTimerBar[4];
 
