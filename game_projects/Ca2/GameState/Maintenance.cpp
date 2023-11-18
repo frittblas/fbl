@@ -103,6 +103,7 @@ void Maintenance::setupMaintenance(Game& g) {
 
 	setupAirPressure(Game::DeviceResW / 4 + 64, 30);
 	setupColorCables(25, 400);
+	setupCalcChecksum(Game::DeviceResW / 2, 0);
 
 	fbl_load_ttf_font("font/roboto.ttf", 20);
 	mOpsId = fbl_create_text(255, 255, 255, 255, "Ops left: %d", mOpsLeft);
@@ -208,7 +209,7 @@ void Maintenance::setupColorCables(int x, int y) {
 	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
 	fbl_set_text_xy(tmpId, mColorCables.x, mColorCables.y - 92);
 	fbl_load_ttf_font("font/roboto.ttf", 16);
-	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"Memorize and match the colors of the cables");
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"Match the colors of the cables");
 	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
 	fbl_set_text_xy(tmpId, mColorCables.x, mColorCables.y - 62);
 	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"before the time runs out.");
@@ -230,7 +231,32 @@ void Maintenance::setupColorCables(int x, int y) {
 
 void Maintenance::setupCalcChecksum(int x, int y) {
 
+	mCalc.x = x;
+	mCalc.y = y;
+
+	// the calc
+	fbl_load_ttf_font("font/roboto.ttf", 25);
+	mCalc.calcTextId = fbl_create_text(255, 255, 255, 255, "");
+	fbl_set_text_xy(mCalc.calcTextId, mCalc.x + 150, mCalc.y + 150);
+
+	// alternative text
+	for (int i = 0; i < 3; i++) {
+		mCalc.altTextId[i] = fbl_create_text(255, 255, 255, 255, "");
+		fbl_set_text_xy(mCalc.altTextId[i], mCalc.x + 250, mCalc.y + 100 + (35 * i));
+	}
+
+	// buttons
+	for (int i = 0; i < 3; i++) {
+		mCalc.button[i] = fbl_create_ui_elem(FBL_UI_BUTTON_INTERVAL, 0, 0, 32, 32, NULL);
+		fbl_set_ui_elem_xy(mCalc.button[i], mCalc.x + 300, mCalc.y + 100 + (35 * i));
+	}
+
+
+	genCalc();
+
+
 }
+
 void Maintenance::setupSequencer(int x, int y) {
 
 }
@@ -287,7 +313,7 @@ void Maintenance::getInput(Game& g) {
 
 }
 
-void Maintenance::processAirPressure(Game& g) {
+void Maintenance::processAirPressure() {
 
 	mAirMeter.checkDuration--;
 
@@ -345,7 +371,7 @@ void Maintenance::processAirPressure(Game& g) {
 
 }
 
-void Maintenance::processColorCables(Game& g) {
+void Maintenance::processColorCables() {
 
 	mColorCables.checkDuration--;
 
@@ -403,6 +429,12 @@ void Maintenance::processColorCables(Game& g) {
 
 }
 
+void Maintenance::processCalcChecksum() {
+
+
+
+}
+
 void Maintenance::updateCableColors(int index, bool mimic) {
 
 	if (mimic) {
@@ -421,6 +453,75 @@ void Maintenance::updateCableColors(int index, bool mimic) {
 		if (mColorCables.color[index] == 2)
 			fbl_set_prim_color(mColorCables.lineId[index], 0, 83, 255, 255);
 	}
+}
+
+void Maintenance::genCalc() {
+
+	// Generate a random operation (addition, subtraction, multiplication, division)
+	mCalc.operation = randNum(0, 3);
+
+	// Generate random operands
+	mCalc.operand1 = randNum(1, 10);
+	mCalc.operand2 = randNum(1, 10);
+
+	// calc correct answer
+	switch (mCalc.operation) {
+	case 0:
+		mCalc.correctAnswer = mCalc.operand1 + mCalc.operand2;
+		mCalc.operationChar = '+';
+		break;
+	case 1:
+		mCalc.correctAnswer = mCalc.operand1 - mCalc.operand2;
+		mCalc.operationChar = '-';
+		break;
+	case 2:
+		mCalc.correctAnswer = mCalc.operand1 * mCalc.operand2;
+		mCalc.operationChar = '*';
+		break;
+	case 3:
+		mCalc.correctAnswer = mCalc.operand1 / mCalc.operand2;
+		mCalc.operationChar = '/';
+		break;
+	}
+
+	// make alternatives
+	switch (mCalc.operation) {
+	case 0:
+	case 1:
+		genAddSubAlt(mCalc.correctAnswer, mCalc.alt1, mCalc.alt2);
+		break;
+	case 2:
+	case 3:
+		genMulDivAlt(mCalc.correctAnswer, mCalc.alt1, mCalc.alt2);
+		break;
+	}
+
+	mCalc.finalAlt[0] = mCalc.correctAnswer;
+	mCalc.finalAlt[1] = mCalc.alt1;
+	mCalc.finalAlt[2] = mCalc.alt2;
+
+	// shuffle the alternatives
+
+	fbl_update_text(mCalc.calcTextId, 255, 255, 255, 255, "%d %c %d =", mCalc.operand1, mCalc.operationChar, mCalc.operand2);
+	fbl_update_text(mCalc.altTextId[0], 255, 255, 255, 255, "%d", mCalc.finalAlt[0]);
+	fbl_update_text(mCalc.altTextId[1], 255, 255, 255, 255, "%d", mCalc.finalAlt[1]);
+	fbl_update_text(mCalc.altTextId[2], 255, 255, 255, 255, "%d", mCalc.finalAlt[2]);
+
+
+}
+
+int Maintenance::randNum(int min, int max) {
+	return rand() % (max - min + 1) + min;
+}
+
+void Maintenance::genAddSubAlt(int correct, int& alt1, int& alt2) {
+	alt1 = correct + randNum(1, 10);
+	alt2 = correct - randNum(1, 10);
+}
+
+void Maintenance::genMulDivAlt(int correct, int& alt1, int& alt2) {
+	alt1 = correct * randNum(2, 5);
+	alt2 = correct / randNum(2, 5);
 }
 
 void Maintenance::processTimers(Game& g) {
@@ -506,8 +607,8 @@ void Maintenance::tick(Game& g) {
 
 	if (Race::sRaceState == Undecided) {
 		getInput(g);
-		processAirPressure(g);
-		processColorCables(g);
+		processAirPressure();
+		processColorCables();
 		processTimers(g);
 		checkWinCondition();
 	}

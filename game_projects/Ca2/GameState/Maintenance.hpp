@@ -65,7 +65,15 @@ public:
 
     struct CalcChecksum {
         uint16_t x, y;
-        int16_t  showDuration;
+        int      operand1, operand2;
+        int      operation;
+        char     operationChar;
+        int      correctAnswer, alt1, alt2;
+        int      finalAlt[3];
+        uint16_t calcTextId;
+        uint16_t altTextId[3];
+        uint16_t button[3];
+        int16_t  checkDuration;
     };
 
     struct Sequencer {
@@ -80,9 +88,14 @@ public:
     void setupCalcChecksum(int x, int y);
     void setupSequencer(int x, int y);
     void getInput(Game& g);
-    void processAirPressure(Game& g);
-    void processColorCables(Game& g);
+    void processAirPressure();
+    void processColorCables();
+    void processCalcChecksum();
     void updateCableColors(int index, bool mimic);
+    void genCalc();
+    int  randNum(int min, int max);
+    void genAddSubAlt(int correct, int& alt1, int& alt2);
+    void genMulDivAlt(int correct, int& alt1, int& alt2);
     void processTimers(Game& g);
     void advance();
     void fail();
