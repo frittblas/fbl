@@ -56,18 +56,32 @@ public:
     struct ColorCables {
         uint16_t x, y;
         uint16_t lineId[3];
-        uint16_t colorId[3];
+        uint16_t color[3];
         uint16_t mimicLineId[3];
-        uint16_t mimicColorId[3];
+        uint16_t mimicColor[3];
         uint16_t button[3];
+        int16_t  showDuration;
+    };
+
+    struct CalcChecksum {
+        uint16_t x, y;
+        int16_t  showDuration;
+    };
+
+    struct Sequencer {
+        uint16_t x, y;
+        uint16_t seq[3];
         int16_t  showDuration;
     };
 
     void setupMaintenance(Game& g);
     void setupAirPressure(int x, int y);
     void setupColorCables(int x, int y);
+    void setupCalcChecksum(int x, int y);
+    void setupSequencer(int x, int y);
     void getInput(Game& g);
     void processAirPressure(Game& g);
+    void processColorCables(Game& g);
     void processTimers(Game& g);
     void hideSprites();
 
@@ -80,7 +94,9 @@ private:
 
     TimerBar mTimerBar[4];
 
-    AirMeter mAirMeter;
-    ColorCables mColorCables;
+    AirMeter        mAirMeter;
+    ColorCables     mColorCables;
+    CalcChecksum    mCalc;
+    Sequencer       mSeq;
 
 };

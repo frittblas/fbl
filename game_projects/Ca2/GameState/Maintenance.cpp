@@ -92,7 +92,7 @@ void Maintenance::setupMaintenance(Game& g) {
 	}
 
 	setupAirPressure(Game::DeviceResW / 4 + 64, 30);
-	setupColorCables(25+ Game::DeviceResW / 2, 400);
+	setupColorCables(25, 400);
 
 
 
@@ -159,11 +159,25 @@ void Maintenance::setupColorCables(int x, int y) {
 	mColorCables.x = x;
 	mColorCables.y = y;
 	mColorCables.lineId[0] = fbl_create_prim(FBL_NORMAL_RECT, mColorCables.x, mColorCables.y, 120, 7, 0, false, true);
-	fbl_set_prim_color(mColorCables.lineId[0], 255, 100, 30, 255);
+	fbl_set_prim_color(mColorCables.lineId[0], 255, 100, 30, 255);	// orange
 	mColorCables.lineId[1] = fbl_create_prim(FBL_NORMAL_RECT, mColorCables.x, mColorCables.y + 32, 120, 7, 0, false, true);
-	fbl_set_prim_color(mColorCables.lineId[1], 255, 255, 255, 255);
+	fbl_set_prim_color(mColorCables.lineId[1], 255, 255, 255, 255); // white
 	mColorCables.lineId[2] = fbl_create_prim(FBL_NORMAL_RECT, mColorCables.x, mColorCables.y + 64, 120, 7, 0, false, true);
-	fbl_set_prim_color(mColorCables.lineId[2], 0, 83, 255, 255);
+	fbl_set_prim_color(mColorCables.lineId[2], 0, 83, 255, 255);	// blue
+
+	mColorCables.mimicLineId[0] = fbl_create_prim(FBL_NORMAL_RECT, mColorCables.x + 200, mColorCables.y, 120, 7, 0, false, true);
+	fbl_set_prim_color(mColorCables.mimicLineId[0], 255, 100, 30, 255);
+	mColorCables.mimicLineId[1] = fbl_create_prim(FBL_NORMAL_RECT, mColorCables.x + 200, mColorCables.y + 32, 120, 7, 0, false, true);
+	fbl_set_prim_color(mColorCables.mimicLineId[1], 255, 255, 255, 255);
+	mColorCables.mimicLineId[2] = fbl_create_prim(FBL_NORMAL_RECT, mColorCables.x + 200, mColorCables.y + 64, 120, 7, 0, false, true);
+	fbl_set_prim_color(mColorCables.mimicLineId[2], 0, 83, 255, 255);
+
+	mColorCables.button[0] = fbl_create_ui_elem(FBL_UI_BUTTON_INTERVAL, 0, 0, 32, 32, NULL);
+	fbl_set_ui_elem_xy(mColorCables.button[0], mColorCables.x + 360, mColorCables.y - 2);
+	mColorCables.button[1] = fbl_create_ui_elem(FBL_UI_BUTTON_INTERVAL, 0, 0, 32, 32, NULL);
+	fbl_set_ui_elem_xy(mColorCables.button[1], mColorCables.x + 360, mColorCables.y + 35);
+	mColorCables.button[2] = fbl_create_ui_elem(FBL_UI_BUTTON_INTERVAL, 0, 0, 32, 32, NULL);
+	fbl_set_ui_elem_xy(mColorCables.button[2], mColorCables.x + 360, mColorCables.y + 72);
 
 	// Color cables instructions
 	fbl_load_ttf_font("font/roboto.ttf", 20);
@@ -177,16 +191,24 @@ void Maintenance::setupColorCables(int x, int y) {
 	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"before the time runs out.");
 	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
 	fbl_set_text_xy(tmpId, mColorCables.x, mColorCables.y - 32);
-	/*
-
 	// shortcut keys
-	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"W");
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"E");
 	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
-	fbl_set_text_xy(tmpId, mAirMeter.x + 120, mAirMeter.y + 70);
-	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"S");
+	fbl_set_text_xy(tmpId, mColorCables.x + 390, mColorCables.y);
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"D");
 	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
-	fbl_set_text_xy(tmpId, mAirMeter.x + 122, mAirMeter.y + 120);
-	*/
+	fbl_set_text_xy(tmpId, mColorCables.x + 390, mColorCables.y + 35);
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"C");
+	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(tmpId, mColorCables.x + 390, mColorCables.y + 72);
+
+
+}
+
+void Maintenance::setupCalcChecksum(int x, int y) {
+
+}
+void Maintenance::setupSequencer(int x, int y) {
 
 }
 
@@ -204,7 +226,22 @@ void Maintenance::getInput(Game& g) {
 			mAirMeter.pointerY += 2;
 	}
 
-	// memorize match color colored cables
+	// color cables input
+	if (fbl_get_ui_elem_val(mColorCables.button[0]) || fbl_get_key_down(FBLK_E)) {
+		mColorCables.mimicColor[0]++;
+		if (mColorCables.mimicColor[0] > 2)
+			mColorCables.mimicColor[0] = 0;
+	}
+	if (fbl_get_ui_elem_val(mColorCables.button[1]) || fbl_get_key_down(FBLK_D)) {
+		mColorCables.mimicColor[1]++;
+		if (mColorCables.mimicColor[1] > 2)
+			mColorCables.mimicColor[1] = 0;
+	}
+	if (fbl_get_ui_elem_val(mColorCables.button[2]) || fbl_get_key_down(FBLK_C)) {
+		mColorCables.mimicColor[2]++;
+		if (mColorCables.mimicColor[2] > 2)
+			mColorCables.mimicColor[2] = 0;
+	}
 
 
 }
@@ -257,6 +294,11 @@ void Maintenance::processAirPressure(Game& g) {
 		mAirMeter.checkDuration = 60;
 
 	}
+
+}
+
+void Maintenance::processColorCables(Game& g) {
+
 
 }
 

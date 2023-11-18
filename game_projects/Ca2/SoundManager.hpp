@@ -21,6 +21,19 @@ public:
 
     ~SoundManager();
 
+    enum Channel {
+
+        Ambient,
+        Ui,
+        Expl,
+        Heal,
+        Laser,
+        Magnet,
+        Shield,
+        Turbo
+
+    };
+
     static SoundManager& getInstance();
 
     void loadSfx();
@@ -29,14 +42,15 @@ public:
     void onRobotDeath() override;
     void onFireLaser() override;
 
+    uint16_t mSfxLaser1, mSfxLaser2, mSfxLaser3;
+    uint16_t mSfxMagnet, mSfxHeal, mSfxTurbo, mSfxShield;
+    uint16_t mSfxExplosion, mSfxCoin, mSfxPowerup;
+    uint16_t mSfxPass, mSfxDenied, mSfxSnap, mSfxTick, mSfxQuit;
+    uint16_t mSfxRainStorm, mSfxSummer;
+
 private:
 
     static SoundManager instance;
     SoundManager();
-
-    uint16_t mSfxLaser1, mSfxLaser2, mSfxLaser3;
-    uint16_t mSfxMagnet, mSfxHealing, mSfxTurbo, mShield;
-    uint16_t mSfxExplosion;
-    uint16_t mSfxRainstorm, mSfxSummer;
 
 };

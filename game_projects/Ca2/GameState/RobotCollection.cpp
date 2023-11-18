@@ -20,6 +20,7 @@
 #include "../Addons.hpp"
 #include "../Progress.hpp"
 #include "../Robots.hpp"
+#include "../SoundManager.hpp"
 #include "../Weather.hpp"
 #include "GameState.hpp"
 #include "RobotCollection.hpp"
@@ -322,6 +323,8 @@ void RobotCollection::equipAddon(Game& g) {
 					updateContextHelp("Can't equip 2 addons of the same type!");
 					std::cout << "Can't equip 2 addons of the same type!" << std::endl;
 
+					fbl_play_sound(SoundManager::getInstance().mSfxDenied, SoundManager::Channel::Ui, 1);
+
 				}
 			}
 			else std::cout << "Moving peacefully between slots :)" << std::endl;
@@ -389,6 +392,8 @@ void RobotCollection::processInput(Game& g) {
 
 		updateContextHelp("Cycling through robots!");
 
+		fbl_play_sound(SoundManager::getInstance().mSfxSnap, SoundManager::Channel::Ui, 0);
+
 	}
 
 	if (fbl_get_ui_elem_val(fMenuButtonRight)) {
@@ -396,6 +401,8 @@ void RobotCollection::processInput(Game& g) {
 		cyclePages(g, 1);	// cycle forward
 
 		updateContextHelp("Cycling through robots!");
+
+		fbl_play_sound(SoundManager::getInstance().mSfxSnap, SoundManager::Channel::Ui, 0);
 
 	}
 
@@ -429,6 +436,7 @@ void RobotCollection::processInput(Game& g) {
 		// Save game somehow :)
 		g.mState->change(g, GameState::StateType::Title);
 		g.mInput->access = g.mInput->buttonDelay * 2;	// 1 second delay
+		fbl_play_sound(SoundManager::getInstance().mSfxQuit, SoundManager::Channel::Ui, 0);
 	}
 
 }

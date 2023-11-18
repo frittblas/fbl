@@ -127,6 +127,7 @@ void GameState::change(Game& g, StateType newState) {
 			}
 			else if (mState == StateType::RobotCollection) {	// if coming from robotCollection
 				hideCollectionMenu();
+				fbl_play_sound(SoundManager::getInstance().mSfxTick, SoundManager::Channel::Ui, 0);
 			}
 
 			g.mRobots->hideRobots(g.mEcs);		 // don't show the robot-sprites in explore mode (or in beginning of race)
@@ -208,6 +209,8 @@ void GameState::change(Game& g, StateType newState) {
 
 			rc->updateAddonInfo(g, true);	// update addon info to empty
 			mCurrentStateInstance = rc;
+
+			fbl_play_sound(SoundManager::getInstance().mSfxTick, SoundManager::Channel::Ui, 0);
 
 			break;
 
@@ -310,11 +313,12 @@ void GameState::raceToExplore(Game& g) {
 	// add path component back to the player
 	g.mEcs->AddComponent(g.mChars->mBrodo, Path{ 0, 0, 0, false, 2.0, FBL_PATHF_USE_DIAG, 1 });
 
-	g.mWeather->setWeather(Weather::TimeOfDay::Evening, 1, 0, 50, true);
+	g.mWeather->setWeather(Weather::TimeOfDay::Morning, 1, 0, 50, false);
 
 	initCollectionMenu();	// set up prims and text and ui for the collection-menu, sprite draw-order is important
 	g.mAddons->initAddons(g.mEcs); // create the addon ui elements (buttons)
 
+	fbl_play_sound(SoundManager::getInstance().mSfxSummer, SoundManager::Channel::Ambient, 1);
 	SoundManager::getInstance().loadAndPlayMusic("music/overworld1.ogg", 100);
 
 }
@@ -330,12 +334,13 @@ void GameState::maintenanceToExplore(Game& g) {
 	// add path component back to the player
 	g.mEcs->AddComponent(g.mChars->mBrodo, Path{ 0, 0, 0, false, 2.0, FBL_PATHF_USE_DIAG, 1 });
 
-	g.mWeather->setWeather(Weather::TimeOfDay::Evening, 1, 0, 50, true);
+	g.mWeather->setWeather(Weather::TimeOfDay::Late, 1, 0, 50, true);
 
 	initCollectionMenu();
 	g.mAddons->initAddons(g.mEcs);
 
-	SoundManager::getInstance().loadAndPlayMusic("music/overworld2.ogg", 100);
+	fbl_play_sound(SoundManager::getInstance().mSfxRainStorm, SoundManager::Channel::Ambient, 1);
+	SoundManager::getInstance().loadAndPlayMusic("music/overworld2.ogg", 70);
 
 }
 
@@ -362,7 +367,7 @@ void GameState::setupRace(Game& g) {
 
 	g.mWeather->setWeather(Weather::TimeOfDay::Evening, 0, 0, 0, false);
 
-	SoundManager::getInstance().loadAndPlayMusic("music/boss.ogg", 80);
+	SoundManager::getInstance().loadAndPlayMusic("music/dm.ogg", 80);
 
 }
 
@@ -380,6 +385,6 @@ void GameState::setupMaintenance(Game& g) {
 
 	g.mWeather->setWeather(Weather::TimeOfDay::Day, 0, 0, 0, false);
 
-	SoundManager::getInstance().loadAndPlayMusic("music/race.ogg", 80);
+	SoundManager::getInstance().loadAndPlayMusic("music/maintenance.ogg", 80);
 
 }
