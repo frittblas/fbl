@@ -88,11 +88,16 @@ void Maintenance::setupMaintenance(Game& g) {
 
 	for (int i = 0; i < 4; i++) {
 		mTimerBar[i].red = 0;
-		mTimerBar[i].totalTime = rand() % 4 + 4;
+		mTimerBar[i].totalTime = 7;
 		mTimerBar[i].timeLeft = mTimerBar[i].totalTime * 30;
 		mTimerBar[i].primId = fbl_create_prim(FBL_RECT, mTimerBar[i].x, mTimerBar[i].y, mTimerBar[i].totalTime * 30, 5, 0, false, true);
 		fbl_set_prim_color(mTimerBar[i].primId, 0, 255, 0, 255);
 	}
+
+	mTimerBar[0].totalTime = 7;
+	mTimerBar[1].totalTime = 6;
+	mTimerBar[2].totalTime = 5;
+	mTimerBar[3].totalTime = 7;
 
 	// create 3 red crosses for failure
 	for (int i = 0; i < 3; i++) {
@@ -446,8 +451,26 @@ void Maintenance::genCalc() {
 	mCalc.operation = randNum(0, 3);
 
 	// Generate random operands
-	mCalc.operand1 = randNum(1, 10);
-	mCalc.operand2 = randNum(1, 10);
+	switch (mCalc.operation) {
+		case 0:
+			mCalc.operand1 = randNum(1, 20);
+			mCalc.operand2 = randNum(1, 20);
+			break;
+		case 1:
+			mCalc.operand1 = randNum(1, 20);
+			mCalc.operand2 = randNum(1, 20);
+			break;
+		case 2:
+			mCalc.operand1 = randNum(1, 11);
+			mCalc.operand2 = randNum(1, 11);
+			break;
+		case 3:
+			do {
+				mCalc.operand1 = randNum(1, 100);
+				mCalc.operand2 = randNum(1, 10);
+			} while (mCalc.operand1 % mCalc.operand2 != 0);
+			break;
+	}
 
 	// calc correct answer
 	switch (mCalc.operation) {
