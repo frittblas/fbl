@@ -94,10 +94,10 @@ void Maintenance::setupMaintenance(Game& g) {
 		fbl_set_prim_color(mTimerBar[i].primId, 0, 255, 0, 255);
 	}
 
-	mTimerBar[0].totalTime = 7;
-	mTimerBar[1].totalTime = 6;
-	mTimerBar[2].totalTime = 5;
-	mTimerBar[3].totalTime = 7;
+	mTimerBar[0].timeLeft = (mTimerBar[0].totalTime - 1) * 30;
+	mTimerBar[1].timeLeft = (mTimerBar[1].totalTime) * 30;
+	mTimerBar[2].timeLeft = (mTimerBar[2].totalTime - 3) * 30;
+	mTimerBar[3].timeLeft = (mTimerBar[3].totalTime) * 30;
 
 	// create 3 red crosses for failure
 	for (int i = 0; i < 3; i++) {
@@ -161,12 +161,12 @@ void Maintenance::setupAirPressure(int x, int y) {
 	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
 	fbl_set_text_xy(tmpId, mAirMeter.x - 279, mAirMeter.y + 97);
 	// shortcut keys
-	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"Up ->");
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"Up->");
 	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
-	fbl_set_text_xy(tmpId, mAirMeter.x + 120, mAirMeter.y + 70);
-	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"Down ->");
+	fbl_set_text_xy(tmpId, mAirMeter.x + 115, mAirMeter.y + 70);
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"Down->");
 	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
-	fbl_set_text_xy(tmpId, mAirMeter.x + 122, mAirMeter.y + 120);
+	fbl_set_text_xy(tmpId, mAirMeter.x + 114, mAirMeter.y + 120);
 
 }
 
