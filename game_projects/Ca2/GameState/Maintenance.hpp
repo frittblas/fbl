@@ -87,7 +87,6 @@ public:
     void setupColorCables(int x, int y);
     void setupCalcChecksum(int x, int y);
     void setupSequencer(int x, int y);
-    void getInput(Game& g);
     void processAirPressure();
     void processColorCables();
     void processCalcChecksum();
@@ -101,6 +100,7 @@ public:
     void fail();
     void checkWinCondition();
     void hideSprites();
+    void getInput();
 
     virtual void tick(Game& g) override;
 

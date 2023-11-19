@@ -105,6 +105,7 @@ void Maintenance::setupMaintenance(Game& g) {
 	setupColorCables(25, 400);
 	setupCalcChecksum(Game::DeviceResW / 2, 0);
 
+
 	fbl_load_ttf_font("font/roboto.ttf", 20);
 	mOpsId = fbl_create_text(255, 255, 255, 255, "Ops left: %d", mOpsLeft);
 	fbl_set_text_xy(mOpsId, Game::DeviceResW - 120, 20);
@@ -141,9 +142,9 @@ void Maintenance::setupAirPressure(int x, int y) {
 	fbl_set_ui_elem_xy(mAirMeter.arrowDownId, mAirMeter.x + 80, mAirMeter.y + 120);
 	// Air pressure instructions
 	fbl_load_ttf_font("font/roboto.ttf", 20);
-	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"Air Pressure Tuning (APT):");
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"Air Pressure Tuning:");
 	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
-	fbl_set_text_xy(tmpId, mAirMeter.x - 279, mAirMeter.y + 7);
+	fbl_set_text_xy(tmpId, mAirMeter.x - 279, mAirMeter.y);
 	fbl_load_ttf_font("font/roboto.ttf", 16);
 	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"When the timer is done");
 	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
@@ -155,10 +156,10 @@ void Maintenance::setupAirPressure(int x, int y) {
 	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
 	fbl_set_text_xy(tmpId, mAirMeter.x - 279, mAirMeter.y + 97);
 	// shortcut keys
-	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"W");
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"Up ->");
 	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
 	fbl_set_text_xy(tmpId, mAirMeter.x + 120, mAirMeter.y + 70);
-	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"S");
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"Down ->");
 	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
 	fbl_set_text_xy(tmpId, mAirMeter.x + 122, mAirMeter.y + 120);
 
@@ -193,21 +194,17 @@ void Maintenance::setupColorCables(int x, int y) {
 	fbl_set_prim_color(mColorCables.mimicLineId[2], 0, 83, 255, 255); // blue
 
 	// Color cable buttons
-	mColorCables.button[0] = fbl_create_ui_elem(FBL_UI_BUTTON_INTERVAL, 0, 0, 32, 32, NULL);
-	fbl_set_ui_elem_access(mColorCables.button[0], cKeyDelay);
-	fbl_set_ui_elem_xy(mColorCables.button[0], mColorCables.x + 360, mColorCables.y - 2);
-	mColorCables.button[1] = fbl_create_ui_elem(FBL_UI_BUTTON_INTERVAL, 0, 0, 32, 32, NULL);
-	fbl_set_ui_elem_access(mColorCables.button[1], cKeyDelay);
-	fbl_set_ui_elem_xy(mColorCables.button[1], mColorCables.x + 360, mColorCables.y + 35);
-	mColorCables.button[2] = fbl_create_ui_elem(FBL_UI_BUTTON_INTERVAL, 0, 0, 32, 32, NULL);
-	fbl_set_ui_elem_access(mColorCables.button[2], cKeyDelay);
-	fbl_set_ui_elem_xy(mColorCables.button[2], mColorCables.x + 360, mColorCables.y + 72);
+	for (int i = 0; i < 3; i++) {
+		mColorCables.button[i] = fbl_create_ui_elem(FBL_UI_BUTTON_INTERVAL, 0, 0, 32, 32, NULL);
+		fbl_set_ui_elem_access(mColorCables.button[i], cKeyDelay);
+		fbl_set_ui_elem_xy(mColorCables.button[i], mColorCables.x + 360, mColorCables.y - 2 + (37 * i));
+	}
 
 	// Color cables instructions
 	fbl_load_ttf_font("font/roboto.ttf", 20);
-	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"Match Colored Cables (MCC):");
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"Match Colored Cables:");
 	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
-	fbl_set_text_xy(tmpId, mColorCables.x, mColorCables.y - 92);
+	fbl_set_text_xy(tmpId, mColorCables.x, mColorCables.y - 99);
 	fbl_load_ttf_font("font/roboto.ttf", 16);
 	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"Match the colors of the cables");
 	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
@@ -216,13 +213,13 @@ void Maintenance::setupColorCables(int x, int y) {
 	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
 	fbl_set_text_xy(tmpId, mColorCables.x, mColorCables.y - 32);
 	// shortcut keys
-	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"E");
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"A");
 	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
-	fbl_set_text_xy(tmpId, mColorCables.x + 390, mColorCables.y);
-	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"D");
+	fbl_set_text_xy(tmpId, mColorCables.x + 390, mColorCables.y - 2);
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"S");
 	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
 	fbl_set_text_xy(tmpId, mColorCables.x + 390, mColorCables.y + 35);
-	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"C");
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"D");
 	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
 	fbl_set_text_xy(tmpId, mColorCables.x + 390, mColorCables.y + 72);
 
@@ -231,26 +228,53 @@ void Maintenance::setupColorCables(int x, int y) {
 
 void Maintenance::setupCalcChecksum(int x, int y) {
 
+	int tmpId;
+
 	mCalc.x = x;
 	mCalc.y = y;
 
+	mCalc.checkDuration = 0;
+
 	// the calc
-	fbl_load_ttf_font("font/roboto.ttf", 25);
-	mCalc.calcTextId = fbl_create_text(255, 255, 255, 255, "");
-	fbl_set_text_xy(mCalc.calcTextId, mCalc.x + 150, mCalc.y + 150);
+	fbl_load_ttf_font("font/roboto.ttf", 20);
+	mCalc.calcTextId = fbl_create_text(255, 255, 255, 255, "1 + 1 = 2");
+	fbl_set_text_xy(mCalc.calcTextId, mCalc.x + 150, mCalc.y + 145);
 
 	// alternative text
 	for (int i = 0; i < 3; i++) {
-		mCalc.altTextId[i] = fbl_create_text(255, 255, 255, 255, "");
-		fbl_set_text_xy(mCalc.altTextId[i], mCalc.x + 250, mCalc.y + 100 + (35 * i));
+		mCalc.altTextId[i] = fbl_create_text(255, 255, 255, 255, "%d + 1", i);
+		fbl_set_text_xy(mCalc.altTextId[i], mCalc.x + 255, mCalc.y + 105 + (37 * i));
 	}
 
 	// buttons
 	for (int i = 0; i < 3; i++) {
 		mCalc.button[i] = fbl_create_ui_elem(FBL_UI_BUTTON_INTERVAL, 0, 0, 32, 32, NULL);
-		fbl_set_ui_elem_xy(mCalc.button[i], mCalc.x + 300, mCalc.y + 100 + (35 * i));
+		fbl_set_ui_elem_xy(mCalc.button[i], mCalc.x + 320, mCalc.y + 105 + (37 * i));
 	}
 
+	// Color cables instructions
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"Calculate Checksum:");
+	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(tmpId, mCalc.x + 20, mCalc.y + 30);
+	fbl_load_ttf_font("font/roboto.ttf", 16);
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"Select the correct solution");
+	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(tmpId, mCalc.x + 20, mCalc.y + 70);
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"from the alternatives.");
+	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(tmpId, mCalc.x + 20, mCalc.y + 100);
+	// shortcut keys
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"Q");
+	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(tmpId, mCalc.x + 350, mCalc.y + 105);
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"W");
+	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(tmpId, mCalc.x + 350, mCalc.y + 142);
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"E");
+	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(tmpId, mCalc.x + 350, mCalc.y + 179);
+
+	fbl_load_ttf_font("font/roboto.ttf", 20);
 
 	genCalc();
 
@@ -258,58 +282,6 @@ void Maintenance::setupCalcChecksum(int x, int y) {
 }
 
 void Maintenance::setupSequencer(int x, int y) {
-
-}
-
-void Maintenance::getInput(Game& g) {
-
-	//Efx::getInstance().shakeCamera(10, 10);
-
-	// Air pressure input
-	if (fbl_get_ui_elem_val(mAirMeter.arrowUpId) || fbl_get_key_down(FBLK_W)) {
-		if(mAirMeter.checkDuration == 0)
-			mAirMeter.pointerY -= 2;
-	}
-	if (fbl_get_ui_elem_val(mAirMeter.arrowDownId) || fbl_get_key_down(FBLK_S)) {
-		if (mAirMeter.checkDuration == 0)
-			mAirMeter.pointerY += 2;
-	}
-
-	// color cables input
-	if (fbl_get_ui_elem_val(mColorCables.button[0]) || (fbl_get_key_down(FBLK_E) && mKeyDelayLeft[0] == 0)) {
-		if (mColorCables.checkDuration == 0) {
-			mColorCables.mimicColor[0]++;
-			if (mColorCables.mimicColor[0] > 2)
-				mColorCables.mimicColor[0] = 0;
-
-			updateCableColors(0, true);
-			mKeyDelayLeft[0] = cKeyDelay;
-		}
-	}
-	if (fbl_get_ui_elem_val(mColorCables.button[1]) || (fbl_get_key_down(FBLK_D) && mKeyDelayLeft[1] == 0)) {
-		if (mColorCables.checkDuration == 0) {
-			mColorCables.mimicColor[1]++;
-			if (mColorCables.mimicColor[1] > 2)
-				mColorCables.mimicColor[1] = 0;
-
-			updateCableColors(1, true);
-			mKeyDelayLeft[1] = cKeyDelay;
-		}
-	}
-	if (fbl_get_ui_elem_val(mColorCables.button[2]) || (fbl_get_key_down(FBLK_C ) && mKeyDelayLeft[2] == 0)) {
-		if (mColorCables.checkDuration == 0) {
-			mColorCables.mimicColor[2]++;
-			if (mColorCables.mimicColor[2] > 2)
-				mColorCables.mimicColor[2] = 0;
-			updateCableColors(2, true);
-			mKeyDelayLeft[2] = cKeyDelay;
-		}
-	}
-
-	for (int i = 0; i < 3; i++) {
-		mKeyDelayLeft[i]--;
-		if (mKeyDelayLeft[i] < 0) mKeyDelayLeft[i] = 0;
-	}
 
 }
 
@@ -347,9 +319,6 @@ void Maintenance::processAirPressure() {
 	int y = fbl_get_sprite_y(mAirMeter.pointerId);
 	if ((y + 1) >= mAirMeter.sweetSpotY && y <= mAirMeter.sweetSpotY + mAirMeter.sweetSpotSize) {
 
-		// play sound
-		fbl_play_sound(SoundManager::getInstance().mSfxPass, SoundManager::Channel::Ui, 0);
-
 		// make sweet spot green for a while
 		fbl_set_prim_color(mAirMeter.sweetSpotId, 0, 220, 0, 255);
 		mAirMeter.checkDuration = 60;
@@ -358,9 +327,6 @@ void Maintenance::processAirPressure() {
 
 	}
 	else {
-
-		// play sound
-		fbl_play_sound(SoundManager::getInstance().mSfxDenied, SoundManager::Channel::Ui, 0);
 
 		fbl_set_prim_color(mAirMeter.sweetSpotId, 220, 0, 0, 255);
 		mAirMeter.checkDuration = 60;
@@ -403,8 +369,6 @@ void Maintenance::processColorCables() {
 
 		mColorCables.checkDuration = 60;
 
-		fbl_play_sound(SoundManager::getInstance().mSfxPass, SoundManager::Channel::Ui, 0);
-
 		advance();
 
 	}
@@ -414,8 +378,6 @@ void Maintenance::processColorCables() {
 			fbl_set_prim_color(mColorCables.mimicLineId[i], 220, 0, 0, 255);
 
 		mColorCables.checkDuration = 60;
-
-		fbl_play_sound(SoundManager::getInstance().mSfxDenied, SoundManager::Channel::Ui, 0);
 
 		fail();
 
@@ -431,7 +393,30 @@ void Maintenance::processColorCables() {
 
 void Maintenance::processCalcChecksum() {
 
+	mCalc.checkDuration--;
 
+	if (mCalc.checkDuration < 0)
+		mCalc.checkDuration = 0;
+
+	if (mCalc.checkDuration == 1) {
+
+		// put back to where the colors were (white)
+
+		fbl_update_text(mCalc.altTextId[0], 255, 255, 255, 255, "%d", mCalc.finalAlt[0]);
+		fbl_update_text(mCalc.altTextId[1], 255, 255, 255, 255, "%d", mCalc.finalAlt[1]);
+		fbl_update_text(mCalc.altTextId[2], 255, 255, 255, 255, "%d", mCalc.finalAlt[2]);
+
+		genCalc();
+
+	}
+
+	if (mTimerBar[1].timeLeft > cTimeStep) return;	// skip if time left
+
+
+	fail();
+
+	// generate new calculation
+	genCalc();
 
 }
 
@@ -501,12 +486,15 @@ void Maintenance::genCalc() {
 	mCalc.finalAlt[2] = mCalc.alt2;
 
 	// shuffle the alternatives
+	std::random_shuffle(mCalc.finalAlt, mCalc.finalAlt + 3);
 
 	fbl_update_text(mCalc.calcTextId, 255, 255, 255, 255, "%d %c %d =", mCalc.operand1, mCalc.operationChar, mCalc.operand2);
 	fbl_update_text(mCalc.altTextId[0], 255, 255, 255, 255, "%d", mCalc.finalAlt[0]);
 	fbl_update_text(mCalc.altTextId[1], 255, 255, 255, 255, "%d", mCalc.finalAlt[1]);
 	fbl_update_text(mCalc.altTextId[2], 255, 255, 255, 255, "%d", mCalc.finalAlt[2]);
 
+
+	std::cout << "genCalc(): " << mCalc.operand1 << mCalc.operationChar << mCalc.operand2 << " = " << mCalc.finalAlt[0] << " or " << mCalc.finalAlt[1] << " or " << mCalc.finalAlt[2] << std::endl;
 
 }
 
@@ -555,6 +543,8 @@ void Maintenance::advance() {
 	// update the text
 	fbl_update_text(mOpsId, 255, 255, 255, 255, "Ops left: %d ", mOpsLeft);
 
+	fbl_play_sound(SoundManager::getInstance().mSfxPass, SoundManager::Channel::Ui, 0);
+
 }
 
 void Maintenance::fail() {
@@ -569,6 +559,9 @@ void Maintenance::fail() {
 		Race::sRaceState = Dead;	// oh yes!
 
 	}
+
+	fbl_play_sound(SoundManager::getInstance().mSfxDenied, SoundManager::Channel::Ui, 0);
+	Efx::getInstance().shakeCamera(20, 40);
 
 }
 
@@ -603,12 +596,82 @@ void Maintenance::hideSprites() {
 
 }
 
+void Maintenance::getInput() {
+
+	int key;
+
+	//Efx::getInstance().shakeCamera(10, 10);
+
+	// Air pressure input
+	if (fbl_get_ui_elem_val(mAirMeter.arrowUpId) || fbl_get_key_down(FBLK_UP)) {
+		if (mAirMeter.checkDuration == 0)
+			mAirMeter.pointerY -= 2;
+	}
+	if (fbl_get_ui_elem_val(mAirMeter.arrowDownId) || fbl_get_key_down(FBLK_DOWN)) {
+		if (mAirMeter.checkDuration == 0)
+			mAirMeter.pointerY += 2;
+	}
+
+	// color cables input
+	for (int i = 0; i < 3; i++) {
+
+		if (i == 0) key = FBLK_A;
+		if (i == 1) key = FBLK_S;
+		if (i == 2) key = FBLK_D;
+
+		if (fbl_get_ui_elem_val(mColorCables.button[i]) || (fbl_get_key_down(key) && mKeyDelayLeft[i] == 0)) {
+			if (mColorCables.checkDuration == 0) {
+				mColorCables.mimicColor[i]++;
+				if (mColorCables.mimicColor[i] > 2)
+					mColorCables.mimicColor[i] = 0;
+
+				updateCableColors(i, true);
+				mKeyDelayLeft[i] = cKeyDelay;
+			}
+		}
+
+	}
+
+	// Calc checksum input
+	for (int i = 0; i < 3; i++) {
+
+		if (i == 0) key = FBLK_Q;
+		if (i == 1) key = FBLK_W;
+		if (i == 2) key = FBLK_E;
+
+		if (fbl_get_ui_elem_val(mCalc.button[i]) || (fbl_get_key_down(key) && mKeyDelayLeft[i] == 0)) {
+			if (mCalc.checkDuration == 0) {
+				if (mCalc.finalAlt[i] == mCalc.correctAnswer) {
+					mTimerBar[1].timeLeft = mTimerBar[1].totalTime * 30;
+					fbl_update_text(mCalc.altTextId[i], 0, 220, 0, 255, "%d", mCalc.finalAlt[i]);
+					advance();
+				}
+				else {
+					fbl_update_text(mCalc.altTextId[i], 220, 0, 0, 255, "%d", mCalc.finalAlt[i]);
+					fail();
+				}
+				mCalc.checkDuration = 60;
+				mKeyDelayLeft[0] = cKeyDelay;
+			}
+
+		}
+
+	}
+
+	for (int i = 0; i < 3; i++) {
+		mKeyDelayLeft[i]--;
+		if (mKeyDelayLeft[i] < 0) mKeyDelayLeft[i] = 0;
+	}
+
+}
+
 void Maintenance::tick(Game& g) {
 
 	if (Race::sRaceState == Undecided) {
-		getInput(g);
+		getInput();
 		processAirPressure();
 		processColorCables();
+		processCalcChecksum();
 		processTimers(g);
 		checkWinCondition();
 	}
