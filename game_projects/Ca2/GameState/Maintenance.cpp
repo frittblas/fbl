@@ -62,6 +62,8 @@ void Maintenance::setupMaintenance(Game& g) {
 	// replace this with the lowest level robot in your collection.
 	g.mRobots->mRacingRobots[0] = g.mRobots->mOwnedRobots[g.mProgress->mFavRobot];
 
+	//if (g.mRobots->ownedRobotsLeft(g) > 1);
+
 	mOpsLeft = g.mProgress->mCompletedRaces + 5;
 
 	// create all the ui elements for maintenance mode!
@@ -109,7 +111,7 @@ void Maintenance::setupMaintenance(Game& g) {
 	setupAirPressure(Game::DeviceResW / 4 + 64, 30);
 	setupColorCables(25, 400);
 	setupCalcChecksum(Game::DeviceResW / 2, 0);
-
+	setupSequencer(Game::DeviceResW / 2, Game::DeviceResH / 2);
 
 	fbl_load_ttf_font("font/roboto.ttf", 20);
 	mOpsId = fbl_create_text(255, 255, 255, 255, "Ops left: %d", mOpsLeft);
@@ -279,14 +281,78 @@ void Maintenance::setupCalcChecksum(int x, int y) {
 	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
 	fbl_set_text_xy(tmpId, mCalc.x + 350, mCalc.y + 179);
 
-	fbl_load_ttf_font("font/roboto.ttf", 20);
-
 	genCalc();
 
 
 }
 
 void Maintenance::setupSequencer(int x, int y) {
+
+	int tmpId;
+
+	mSeq.x = x;
+	mSeq.y = y;
+
+	// sequence arrows
+	for (int i = 0; i < 5; i++) {
+		mSeq.seqId[i] = fbl_create_sprite(256, 304, 16, 16, 0);
+		fbl_set_sprite_xy(mSeq.seqId[i], mSeq.x + 100 + (20 * i), mSeq.y + 150);
+	}
+
+	// mimic arrows
+	for (int i = 0; i < 5; i++) {
+		mSeq.mimicSeqId[i] = fbl_create_sprite(256, 304, 16, 16, 0);
+		fbl_set_sprite_xy(mSeq.mimicSeqId[i], mSeq.x + 100 + (20 * i), mSeq.y + 180);
+		fbl_set_sprite_active(mSeq.mimicSeqId[i], false);
+	}
+
+
+	mSeq.arrowLeftId = fbl_create_ui_elem(FBL_UI_BUTTON_HOLD, 128, 192, 32, 32, NULL);
+	fbl_set_ui_elem_xy(mSeq.arrowLeftId, mSeq.x + 296, mSeq.y + 163);
+	mSeq.arrowRightId = fbl_create_ui_elem(FBL_UI_BUTTON_HOLD, 128, 160, 32, 32, NULL);
+	fbl_set_ui_elem_xy(mSeq.arrowRightId, mSeq.x + 340, mSeq.y + 163);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	// Sequencer instructions
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"Sequencer:");
+	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(tmpId, mSeq.x + 20, mSeq.y + 30);
+	fbl_load_ttf_font("font/roboto.ttf", 16);
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"Repeat the right/left sequence in order");
+	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(tmpId, mSeq.x + 20, mSeq.y + 70);
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"using the arrows.");
+	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(tmpId, mSeq.x + 20, mSeq.y + 100);
+
+	// shortcut keys
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"<- left");
+	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(tmpId, mSeq.x + 267, mSeq.y + 194);
+	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"right ->");
+	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
+	fbl_set_text_xy(tmpId, mSeq.x + 331, mSeq.y + 194);
+
+	fbl_load_ttf_font("font/roboto.ttf", 20);
 
 }
 
@@ -425,6 +491,30 @@ void Maintenance::processCalcChecksum() {
 
 }
 
+void Maintenance::processSequencer() {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
 void Maintenance::updateCableColors(int index, bool mimic) {
 
 	if (mimic) {
@@ -535,7 +625,31 @@ void Maintenance::genMulDivAlt(int correct, int& alt1, int& alt2) {
 	alt2 = correct / randNum(2, 5);
 }
 
-void Maintenance::processTimers(Game& g) {
+void Maintenance::randomizeSequence() {
+
+
+	// true = right, false = left
+
+	for (int i = 0; i < 5; i++) {
+		mSeq.seq[i] = rand() % 2;
+
+		if(mSeq.seq[i])
+
+	}
+
+
+
+
+
+
+
+
+
+
+
+}
+
+void Maintenance::processTimers() {
 
 
 	for (int i = 0; i < 4; i++) {
@@ -566,7 +680,7 @@ void Maintenance::advance() {
 	// update the text
 	fbl_update_text(mOpsId, 255, 255, 255, 255, "Ops left: %d ", mOpsLeft);
 
-	fbl_play_sound(SoundManager::getInstance().mSfxPass, SoundManager::Channel::Ui, 0);
+	SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxPass, SoundManager::Channel::Ui, 0);
 
 }
 
@@ -583,7 +697,7 @@ void Maintenance::fail() {
 
 	}
 
-	fbl_play_sound(SoundManager::getInstance().mSfxDenied, SoundManager::Channel::Ui, 0);
+	SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxDenied, SoundManager::Channel::Ui, 0);
 	Efx::getInstance().shakeCamera(20, 40);
 
 }
@@ -681,6 +795,44 @@ void Maintenance::getInput() {
 
 	}
 
+	// Sequencer input
+	if (fbl_get_ui_elem_val(mSeq.arrowLeftId) || fbl_get_key_down(FBLK_LEFT)) {
+		if (mSeq.checkDuration == 0) {
+
+		}
+
+	}
+	if (fbl_get_ui_elem_val(mSeq.arrowRightId) || fbl_get_key_down(FBLK_RIGHT)) {
+		if (mSeq.checkDuration == 0) {
+
+		}
+
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	for (int i = 0; i < 3; i++) {
 		mKeyDelayLeft[i]--;
 		if (mKeyDelayLeft[i] < 0) mKeyDelayLeft[i] = 0;
@@ -692,10 +844,11 @@ void Maintenance::tick(Game& g) {
 
 	if (Race::sRaceState == Undecided) {
 		getInput();
-		processAirPressure();
-		processColorCables();
-		processCalcChecksum();
-		processTimers(g);
+		//processAirPressure();
+		//processColorCables();
+		//processCalcChecksum();
+		processSequencer();
+		processTimers();
 		checkWinCondition();
 	}
 	else {

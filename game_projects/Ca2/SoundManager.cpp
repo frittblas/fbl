@@ -63,9 +63,15 @@ void SoundManager::loadSfx() {
 	mSfxRainStorm = fbl_load_sound("sfx/rain.ogg");
 	mSfxSummer = fbl_load_sound("sfx/summer.ogg");
 	
-	fbl_play_sound(mSfxSummer, Ambient, 1);
+	playSfx(mSfxSummer, Ambient, 1);
 	loadAndPlayMusic("music/title.ogg", 40);
 	*/
+}
+
+void SoundManager::playSfx(int id, int channel, int loops) {
+
+	fbl_play_sound(id, channel, loops);
+
 }
 
 void SoundManager::loadAndPlayMusic(std::string filename, int volume) {
@@ -78,7 +84,7 @@ void SoundManager::loadAndPlayMusic(std::string filename, int volume) {
 
 void SoundManager::onRobotDeath() {
 
-	//fbl_play_sound(mSfxExplosion, 1, 0);
+	//playSfx(mSfxExplosion, 1, 0);
 
 	//std::cout << "EXPLOSION SOUND!!!!!!!!" << std::endl;
 
@@ -86,6 +92,6 @@ void SoundManager::onRobotDeath() {
 
 void SoundManager::onFireLaser() {
 
-	//fbl_play_sound(mSfxLaser1, 2, 0);
+	//playSfx(mSfxLaser1, 2, 0);
 
 }

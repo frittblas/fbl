@@ -37,6 +37,7 @@ public:
     static SoundManager& getInstance();
 
     void loadSfx();
+    void playSfx(int id, int channel, int loops);
     void loadAndPlayMusic(std::string filename, int volume);
 
     void onRobotDeath() override;

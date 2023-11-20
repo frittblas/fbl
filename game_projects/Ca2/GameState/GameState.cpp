@@ -130,7 +130,7 @@ void GameState::change(Game& g, StateType newState) {
 			}
 			else if (mState == StateType::RobotCollection) {	// if coming from robotCollection
 				hideCollectionMenu();
-				fbl_play_sound(SoundManager::getInstance().mSfxTick, SoundManager::Channel::Ui, 0);
+				SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxTick, SoundManager::Channel::Ui, 0);
 			}
 
 			g.mRobots->hideRobots(g.mEcs);		 // don't show the robot-sprites in explore mode (or in beginning of race)
@@ -213,7 +213,7 @@ void GameState::change(Game& g, StateType newState) {
 			rc->updateAddonInfo(g, true);	// update addon info to empty
 			mCurrentStateInstance = rc;
 
-			fbl_play_sound(SoundManager::getInstance().mSfxTick, SoundManager::Channel::Ui, 0);
+			SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxTick, SoundManager::Channel::Ui, 0);
 
 			break;
 
@@ -321,7 +321,7 @@ void GameState::raceToExplore(Game& g) {
 	initCollectionMenu();	// set up prims and text and ui for the collection-menu, sprite draw-order is important
 	g.mAddons->initAddons(g.mEcs); // create the addon ui elements (buttons)
 
-	fbl_play_sound(SoundManager::getInstance().mSfxSummer, SoundManager::Channel::Ambient, 1);
+	SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxSummer, SoundManager::Channel::Ambient, 1);
 	SoundManager::getInstance().loadAndPlayMusic("music/overworld1.ogg", 100);
 
 }
@@ -342,7 +342,7 @@ void GameState::maintenanceToExplore(Game& g) {
 	initCollectionMenu();
 	g.mAddons->initAddons(g.mEcs);
 
-	fbl_play_sound(SoundManager::getInstance().mSfxRainStorm, SoundManager::Channel::Ambient, 1);
+	SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxRainStorm, SoundManager::Channel::Ambient, 1);
 	SoundManager::getInstance().loadAndPlayMusic("music/overworld2.ogg", 70);
 
 }

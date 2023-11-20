@@ -347,7 +347,7 @@ void PostRace::initPostRaceMenu(Game& g, bool fromRace) {
 
 
 	// white robot-bg
-	tmpId = fbl_create_sprite(448, 192, 64, 64, 0);
+	tmpId = fbl_create_sprite(448, 384, 64, 64, 0);
 	fbl_set_sprite_xy(tmpId, x + 200, y - 123);
 	fbl_set_sprite_layer(tmpId, 5);
 	fbl_fix_sprite_to_screen(tmpId, true);

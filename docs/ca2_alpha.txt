@@ -5,7 +5,7 @@ Checklist to finish ca2 alpha in 5 days. 9 days in :)
 3. Finish the shop after a race. - DONE!
 4. Add all robots and finish the ai robot's addon and level assignments. - DONE!
 5. Add deathmatch. - DONE!
-6. Add maintenance mode. 1.5 / 4 done. Will do calc checksum and sequencer (after air pressure and color cables).
+6. Add maintenance mode. 3 / 4 done. Will do sequencer (after air pressure and color cables).
 6. Finish the map with npc's and races (event-slime!).
 7. Finish music and sfx.
 8. Release alpha for Robofobe to play and critique.

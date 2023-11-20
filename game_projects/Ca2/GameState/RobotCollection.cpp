@@ -323,7 +323,7 @@ void RobotCollection::equipAddon(Game& g) {
 					updateContextHelp("Can't equip 2 addons of the same type!");
 					std::cout << "Can't equip 2 addons of the same type!" << std::endl;
 
-					fbl_play_sound(SoundManager::getInstance().mSfxDenied, SoundManager::Channel::Ui, 1);
+					SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxDenied, SoundManager::Channel::Ui, 1);
 
 				}
 			}
@@ -392,7 +392,7 @@ void RobotCollection::processInput(Game& g) {
 
 		updateContextHelp("Cycling through robots!");
 
-		fbl_play_sound(SoundManager::getInstance().mSfxSnap, SoundManager::Channel::Ui, 0);
+		SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxSnap, SoundManager::Channel::Ui, 0);
 
 	}
 
@@ -402,7 +402,7 @@ void RobotCollection::processInput(Game& g) {
 
 		updateContextHelp("Cycling through robots!");
 
-		fbl_play_sound(SoundManager::getInstance().mSfxSnap, SoundManager::Channel::Ui, 0);
+		SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxSnap, SoundManager::Channel::Ui, 0);
 
 	}
 
@@ -436,7 +436,7 @@ void RobotCollection::processInput(Game& g) {
 		// Save game somehow :)
 		g.mState->change(g, GameState::StateType::Title);
 		g.mInput->access = g.mInput->buttonDelay * 2;	// 1 second delay
-		fbl_play_sound(SoundManager::getInstance().mSfxQuit, SoundManager::Channel::Ui, 0);
+		SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxQuit, SoundManager::Channel::Ui, 0);
 	}
 
 }
@@ -484,7 +484,7 @@ void initCollectionMenu() {
 
 
 	// white robot-bg
-	fMenuRobotBgSquareId = fbl_create_sprite(448, 192, 64, 64, 0);
+	fMenuRobotBgSquareId = fbl_create_sprite(448, 384, 64, 64, 0);
 	fbl_set_sprite_xy(fMenuRobotBgSquareId, x + 168, y - 155);
 	fbl_set_sprite_layer(fMenuRobotBgSquareId, 5);
 	fbl_fix_sprite_to_screen(fMenuRobotBgSquareId, true);

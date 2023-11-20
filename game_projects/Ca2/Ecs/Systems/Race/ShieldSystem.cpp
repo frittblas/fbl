@@ -31,7 +31,7 @@ void ShieldSystem::Init(Coordinator& ecs) {
 		auto& shield = ecs.GetComponent<Shield>(entity);
 
 		// create shield (sprite circle)
-		shield.spriteId = fbl_create_sprite(406, 214, 42, 42, 21);
+		shield.spriteId = fbl_create_sprite(406, 406, 42, 42, 21);
 		fbl_set_sprite_layer(shield.spriteId, 8);			// on top of the robots
 
 		// set color

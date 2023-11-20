@@ -78,8 +78,12 @@ public:
 
     struct Sequencer {
         uint16_t x, y;
-        uint16_t seq[3];
-        int16_t  showDuration;
+        uint16_t seqId[5];
+        uint16_t mimicSeqId[5];
+        uint16_t seq[5];
+        uint16_t mimicSeq[5];
+        uint16_t arrowLeftId, arrowRightId;
+        int16_t  checkDuration;
     };
 
     void setupMaintenance(Game& g);
@@ -90,12 +94,14 @@ public:
     void processAirPressure();
     void processColorCables();
     void processCalcChecksum();
+    void processSequencer();
     void updateCableColors(int index, bool mimic);
     void genCalc();
     int  randNum(int min, int max);
     void genAddSubAlt(int correct, int& alt1, int& alt2);
     void genMulDivAlt(int correct, int& alt1, int& alt2);
-    void processTimers(Game& g);
+    void randomizeSequence();
+    void processTimers();
     void advance();
     void fail();
     void checkWinCondition();
