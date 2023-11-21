@@ -115,8 +115,20 @@ void Maintenance::setupMaintenance(Game& g) {
 	pos[3].y = Game::DeviceResH / 2;
 
 	//srand(1160);
-	if (g.mProgress->mCompletedMaint > 3)
-		std::random_shuffle(std::begin(pos), std::end(pos));
+	if (g.mProgress->mCompletedMaint > 3) {		// start randomizing positions after acouple of runs
+
+		for (int i = 3; i > 0; --i) {
+			int j = rand() % (i + 1);
+
+			// Swap arr[i] and arr[j]
+			miniGamePos temp = pos[i];
+			pos[i] = pos[j];
+			pos[j] = temp;
+		}
+
+	}
+
+	//std::random_shuffle(std::begin(pos), std::end(pos));
 
 	mTimerBar[0].x = pos[0].x + Game::DeviceResW / 4;
 	mTimerBar[0].y = pos[0].y + 250;
@@ -162,7 +174,7 @@ void Maintenance::setupMaintenance(Game& g) {
 	
 	setupAirPressure(pos[0].x, pos[0].y);
 	setupColorCables(pos[1].x, pos[1].y);
-	setupCalcChecksum(pos[2].x, pos[2].y);
+	setupCalcChecksum(g, pos[2].x, pos[2].y);
 	setupSequencer(pos[3].x, pos[3].y);
 
 	/*
@@ -314,7 +326,7 @@ void Maintenance::setupColorCables(int x, int y) {
 
 }
 
-void Maintenance::setupCalcChecksum(int x, int y) {
+void Maintenance::setupCalcChecksum(Game& g, int x, int y) {
 
 	int tmpId;
 
@@ -362,7 +374,7 @@ void Maintenance::setupCalcChecksum(int x, int y) {
 	fbl_set_text_align(mShortCut[7], FBL_ALIGN_LEFT);
 	fbl_set_text_xy(mShortCut[7], mCalc.x + 350, mCalc.y + 179);
 
-	genCalc();
+	genCalc(g);
 
 
 }
@@ -544,7 +556,7 @@ void Maintenance::processCalcChecksum(Game& g) {
 		fbl_update_text(mCalc.altTextId[1], 255, 255, 255, 255, "%d", mCalc.finalAlt[1]);
 		fbl_update_text(mCalc.altTextId[2], 255, 255, 255, 255, "%d", mCalc.finalAlt[2]);
 
-		genCalc();
+		genCalc(g);
 
 	}
 
@@ -554,7 +566,7 @@ void Maintenance::processCalcChecksum(Game& g) {
 	fail(g);
 
 	// generate new calculation
-	genCalc();
+	genCalc(g);
 
 }
 
@@ -659,7 +671,7 @@ void Maintenance::updateCableColors(int index, bool mimic) {
 	}
 }
 
-void Maintenance::genCalc() {
+void Maintenance::genCalc(Game& g) {
 
 	// Generate a random operation (addition, subtraction, multiplication, division)
 	mCalc.operation = randNum(0, 3);
@@ -723,7 +735,8 @@ void Maintenance::genCalc() {
 	mCalc.finalAlt[2] = mCalc.alt2;
 
 	// shuffle the alternatives
-	std::random_shuffle(mCalc.finalAlt, mCalc.finalAlt + 3);
+	//std::random_shuffle(mCalc.finalAlt, mCalc.finalAlt + 3);
+	g.mRobots->shuffleArray(mCalc.finalAlt, 3);
 
 	fbl_update_text(mCalc.calcTextId, 255, 255, 255, 255, "%d %c %d =", mCalc.operand1, mCalc.operationChar, mCalc.operand2);
 	fbl_update_text(mCalc.altTextId[0], 255, 255, 255, 255, "%d", mCalc.finalAlt[0]);

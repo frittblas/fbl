@@ -489,7 +489,8 @@ void Robots::assignAIrobots(Game& g) {
 		if (g.mRobots->mAllRobots[i] != g.mRobots->Unassigned)
 			availableIndices.push_back(i);
 	// 2
-	std::random_shuffle(availableIndices.begin(), availableIndices.end());
+	//std::random_shuffle(availableIndices.begin(), availableIndices.end());
+	shuffleVector(availableIndices);
 	int numCopies = std::min(3, static_cast<int>(availableIndices.size()));
 	// 3
 	for (int i = 0; i < numCopies; i++)
@@ -775,4 +776,25 @@ bool Robots::assignRobotXP(Game& g, int nameIndex) {
 
 	return true;
 
+}
+
+void Robots::shuffleArray(int arr[], int size) {
+	for (int i = size - 1; i > 0; --i) {
+		int j = rand() % (i + 1);
+
+		// Swap arr[i] and arr[j]
+		int temp = arr[i];
+		arr[i] = arr[j];
+		arr[j] = temp;
+	}
+}
+
+void Robots::shuffleVector(std::vector<int>& vec) {
+	int size = vec.size();
+	for (int i = size - 1; i > 0; --i) {
+		int j = rand() % (i + 1);
+
+		// Swap vec[i] and vec[j]
+		std::swap(vec[i], vec[j]);
+	}
 }

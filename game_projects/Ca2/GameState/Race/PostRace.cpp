@@ -214,7 +214,8 @@ void PostRace::prepShop(Game& g) {
 		if (g.mAddons->mAllAddons[i] != g.mAddons->Unassigned)
 			availableIndices.push_back(i);
 	// 2
-	std::random_shuffle(availableIndices.begin(), availableIndices.end());
+	//std::random_shuffle(availableIndices.begin(), availableIndices.end());
+	g.mRobots->shuffleVector(availableIndices);
 	int numCopies = std::min(3, static_cast<int>(availableIndices.size()));
 	// 3
 	for (int i = 0; i < numCopies; i++)

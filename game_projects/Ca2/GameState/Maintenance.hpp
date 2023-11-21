@@ -93,14 +93,14 @@ public:
     void setupMaintenance(Game& g);
     void setupAirPressure(int x, int y);
     void setupColorCables(int x, int y);
-    void setupCalcChecksum(int x, int y);
+    void setupCalcChecksum(Game& g, int x, int y);
     void setupSequencer(int x, int y);
     void processAirPressure(Game& g);
     void processColorCables(Game& g);
     void processCalcChecksum(Game& g);
     void processSequencer(Game& g);
     void updateCableColors(int index, bool mimic);
-    void genCalc();
+    void genCalc(Game& g);
     int  randNum(int min, int max);
     void genAddSubAlt(int correct, int& alt1, int& alt2);
     void genMulDivAlt(int correct, int& alt1, int& alt2);

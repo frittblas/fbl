@@ -69,5 +69,7 @@ public:
     int* levelUpRobot(Game& g, int nameIndex, bool owned);
     void levelUpAllFreeRobots(Game& g);
     bool assignRobotXP(Game& g, int nameIndex);
+    void shuffleArray(int arr[], int size);
+    void shuffleVector(std::vector<int>& vec);
 
 };
