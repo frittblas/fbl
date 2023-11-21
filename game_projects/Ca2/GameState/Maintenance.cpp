@@ -60,7 +60,32 @@ void Maintenance::setupMaintenance(Game& g) {
 	// replace this with the lowest level robot in your collection.
 	g.mRobots->mRacingRobots[0] = g.mRobots->mOwnedRobots[g.mProgress->mFavRobot];
 
-	//if (g.mRobots->ownedRobotsLeft(g) > 1);
+	// find robot with lowest level and assign for maintenance
+	if (g.mRobots->ownedRobotsLeft(g) > 1) {
+
+		auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mOwnedRobots[g.mProgress->mFavRobot]);
+
+		int lowestLevel = sta.level;	// start comparing with the fav robot
+
+		for (int i = 0; i < g.mRobots->NumRobots; i++) {
+			if (g.mRobots->mOwnedRobots[i] != g.mRobots->Unassigned) {
+				auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mOwnedRobots[i]);
+				if (sta.hp > 0.1) {
+					if (sta.level <= lowestLevel) {
+						lowestLevel = sta.level;	// set new lowest
+						g.mRobots->mRacingRobots[0] = g.mRobots->mOwnedRobots[i];	// assign new robot
+					}
+				}
+			}
+		}
+
+	}
+
+	// show the current robot being maintined in the low right corner
+	auto& spr = g.mEcs->GetComponent<Sprite>(g.mRobots->mRacingRobots[0]);
+	fbl_set_sprite_xy(spr.id[0], Game::DeviceResW - 64, 64);
+	fbl_set_sprite_active(spr.id[0], true);
+
 
 	mTotalOps = g.mProgress->mCompletedRaces + g.mProgress->mCompletedMaint + 5;
 	mOpsLeft = mTotalOps;
@@ -77,7 +102,33 @@ void Maintenance::setupMaintenance(Game& g) {
 	tmpId = fbl_create_prim(FBL_LINE, g.LogicalResW / 2, 1, g.LogicalResW / 2, g.LogicalResH, 0, false, false);
 	fbl_set_prim_color(tmpId, 255, 255, 255, 255);
 
+
+	// randomize where the minigames should be displayed
+
+	pos[0].x = 0;
+	pos[0].y = 0;
+	pos[1].x = 0;
+	pos[1].y = Game::DeviceResH / 2;
+	pos[2].x = Game::DeviceResW / 2;
+	pos[2].y = 0;
+	pos[3].x = Game::DeviceResW / 2;
+	pos[3].y = Game::DeviceResH / 2;
+
+	//srand(1160);
+	if (g.mProgress->mCompletedMaint > 3)
+		std::random_shuffle(std::begin(pos), std::end(pos));
+
+	mTimerBar[0].x = pos[0].x + Game::DeviceResW / 4;
+	mTimerBar[0].y = pos[0].y + 250;
+	mTimerBar[2].x = pos[1].x + Game::DeviceResW / 4;
+	mTimerBar[2].y = pos[1].y + 250;
+	mTimerBar[1].x = pos[2].x + Game::DeviceResW / 4;
+	mTimerBar[1].y = pos[2].y + 250;
+	mTimerBar[3].x = pos[3].x + Game::DeviceResW / 4;
+	mTimerBar[3].y = pos[3].y + 250;
+
 	// create the 4 timer bars
+	/*
 	mTimerBar[0].x = Game::DeviceResW / 4;
 	mTimerBar[0].y = 250;
 	mTimerBar[1].x = Game::DeviceResW / 4 + Game::DeviceResW / 2;
@@ -86,6 +137,7 @@ void Maintenance::setupMaintenance(Game& g) {
 	mTimerBar[2].y = 520;
 	mTimerBar[3].x = Game::DeviceResW / 4 + Game::DeviceResW / 2;
 	mTimerBar[3].y = 520;
+	*/
 
 	mTimerBar[0].timeLeft = (7 - 1) * 30;
 	mTimerBar[1].timeLeft = (7) * 30;
@@ -96,7 +148,7 @@ void Maintenance::setupMaintenance(Game& g) {
 		mTimerBar[i].red = 0;
 		mTimerBar[i].totalTime = 7;
 		//mTimerBar[i].timeLeft = mTimerBar[i].totalTime * 30;
-		mTimerBar[i].primId = fbl_create_prim(FBL_RECT, mTimerBar[i].x, mTimerBar[i].y, mTimerBar[i].totalTime * 30, 5, 0, false, true);
+		mTimerBar[i].primId = fbl_create_prim(FBL_RECT, mTimerBar[i].x, mTimerBar[i].y, mTimerBar[i].timeLeft, 5, 0, false, true);
 		fbl_set_prim_color(mTimerBar[i].primId, 0, 255, 0, 255);
 	}
 
@@ -107,14 +159,19 @@ void Maintenance::setupMaintenance(Game& g) {
 		fbl_set_sprite_active(mFailCrossId[i], false);
 	}
 
-	// randomize where the minigames should be displayed
+	
+	setupAirPressure(pos[0].x, pos[0].y);
+	setupColorCables(pos[1].x, pos[1].y);
+	setupCalcChecksum(pos[2].x, pos[2].y);
+	setupSequencer(pos[3].x, pos[3].y);
 
-
-
+	/*
 	setupAirPressure(Game::DeviceResW / 4 + 64, 30);
 	setupColorCables(25, 400);
 	setupCalcChecksum(Game::DeviceResW / 2, 0);
 	setupSequencer(Game::DeviceResW / 2, Game::DeviceResH / 2);
+	*/
+
 
 	// intro black bg and MAINTENANCE text
 
@@ -146,15 +203,19 @@ void Maintenance::setupAirPressure(int x, int y) {
 
 	// create air pressure minigame ui
 	// meter
-	mAirMeter.x = x;
-	mAirMeter.y = y;
-	mAirMeter.meterId = fbl_create_prim(FBL_NORMAL_RECT, mAirMeter.x, mAirMeter.y, 32, 200, 0, false, true);
+	mAirMeter.x = x + 304;
+	mAirMeter.y = y + 30;
+	mAirMeter.meterId = fbl_create_prim(FBL_NORMAL_RECT, mAirMeter.x, mAirMeter.y + 6, 32, 198, 0, false, true);
 	fbl_set_prim_color(mAirMeter.meterId, 11, 168, 230, 255);	// sky blue
 	// sweet spot
-	mAirMeter.sweetSpotY = 100;
+	mAirMeter.sweetSpotY = mAirMeter.y + 100;
 	mAirMeter.sweetSpotSize = 30;
+	if (mTotalOps > 20)
+		mAirMeter.sweetSpotSize = 20;
 	mAirMeter.pointerY = mAirMeter.sweetSpotY + mAirMeter.sweetSpotSize / 2;
-	mAirMeter.speed = 0.8;
+	mAirMeter.speed = static_cast<float>(rand() % 4 + 6) / 10;
+	if (mTotalOps > 20)
+		mAirMeter.speed = static_cast<float>(rand() % 5 + 10) / 10;
 	mAirMeter.checkDuration = 0;
 	mAirMeter.sweetSpotId = fbl_create_prim(FBL_NORMAL_RECT, mAirMeter.x, mAirMeter.sweetSpotY, 32, mAirMeter.sweetSpotSize, 0, false, true);
 	fbl_set_prim_color(mAirMeter.sweetSpotId, 255, 255, 255, 255);	// white sweet spot
@@ -183,12 +244,12 @@ void Maintenance::setupAirPressure(int x, int y) {
 	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
 	fbl_set_text_xy(tmpId, mAirMeter.x - 279, mAirMeter.y + 97);
 	// shortcut keys
-	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"Up->");
-	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
-	fbl_set_text_xy(tmpId, mAirMeter.x + 115, mAirMeter.y + 70);
-	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"Down->");
-	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
-	fbl_set_text_xy(tmpId, mAirMeter.x + 114, mAirMeter.y + 120);
+	mShortCut[0] = fbl_create_text(255, 255, 255, 0, (char*)"Up->");
+	fbl_set_text_align(mShortCut[0], FBL_ALIGN_LEFT);
+	fbl_set_text_xy(mShortCut[0], mAirMeter.x + 115, mAirMeter.y + 70);
+	mShortCut[1] = fbl_create_text(255, 255, 255, 0, (char*)"Down->");
+	fbl_set_text_align(mShortCut[1], FBL_ALIGN_LEFT);
+	fbl_set_text_xy(mShortCut[1], mAirMeter.x + 114, mAirMeter.y + 120);
 
 }
 
@@ -197,8 +258,8 @@ void Maintenance::setupColorCables(int x, int y) {
 	int tmpId;
 
 	// memorize and match colored cables
-	mColorCables.x = x;
-	mColorCables.y = y;
+	mColorCables.x = x + 25;
+	mColorCables.y = y + 130;
 	mColorCables.color[0] = 0;
 	mColorCables.color[1] = 1;
 	mColorCables.color[2] = 2;
@@ -240,15 +301,15 @@ void Maintenance::setupColorCables(int x, int y) {
 	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
 	fbl_set_text_xy(tmpId, mColorCables.x, mColorCables.y - 32);
 	// shortcut keys
-	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"A");
-	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
-	fbl_set_text_xy(tmpId, mColorCables.x + 390, mColorCables.y - 2);
-	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"S");
-	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
-	fbl_set_text_xy(tmpId, mColorCables.x + 390, mColorCables.y + 35);
-	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"D");
-	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
-	fbl_set_text_xy(tmpId, mColorCables.x + 390, mColorCables.y + 72);
+	mShortCut[2] = fbl_create_text(255, 255, 255, 0, (char*)"A");
+	fbl_set_text_align(mShortCut[2], FBL_ALIGN_LEFT);
+	fbl_set_text_xy(mShortCut[2], mColorCables.x + 390, mColorCables.y - 2);
+	mShortCut[3] = fbl_create_text(255, 255, 255, 0, (char*)"S");
+	fbl_set_text_align(mShortCut[3], FBL_ALIGN_LEFT);
+	fbl_set_text_xy(mShortCut[3], mColorCables.x + 390, mColorCables.y + 35);
+	mShortCut[4] = fbl_create_text(255, 255, 255, 0, (char*)"D");
+	fbl_set_text_align(mShortCut[4], FBL_ALIGN_LEFT);
+	fbl_set_text_xy(mShortCut[4], mColorCables.x + 390, mColorCables.y + 72);
 
 
 }
@@ -291,15 +352,15 @@ void Maintenance::setupCalcChecksum(int x, int y) {
 	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
 	fbl_set_text_xy(tmpId, mCalc.x + 20, mCalc.y + 100);
 	// shortcut keys
-	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"Q");
-	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
-	fbl_set_text_xy(tmpId, mCalc.x + 350, mCalc.y + 105);
-	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"W");
-	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
-	fbl_set_text_xy(tmpId, mCalc.x + 350, mCalc.y + 142);
-	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"E");
-	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
-	fbl_set_text_xy(tmpId, mCalc.x + 350, mCalc.y + 179);
+	mShortCut[5] = fbl_create_text(255, 255, 255, 0, (char*)"Q");
+	fbl_set_text_align(mShortCut[5], FBL_ALIGN_LEFT);
+	fbl_set_text_xy(mShortCut[5], mCalc.x + 350, mCalc.y + 105);
+	mShortCut[6] = fbl_create_text(255, 255, 255, 0, (char*)"W");
+	fbl_set_text_align(mShortCut[6], FBL_ALIGN_LEFT);
+	fbl_set_text_xy(mShortCut[6], mCalc.x + 350, mCalc.y + 142);
+	mShortCut[7] = fbl_create_text(255, 255, 255, 0, (char*)"E");
+	fbl_set_text_align(mShortCut[7], FBL_ALIGN_LEFT);
+	fbl_set_text_xy(mShortCut[7], mCalc.x + 350, mCalc.y + 179);
 
 	genCalc();
 
@@ -335,30 +396,6 @@ void Maintenance::setupSequencer(int x, int y) {
 	fbl_set_ui_elem_access(mSeq.arrowRightId, cKeyDelay);
 	fbl_set_ui_elem_xy(mSeq.arrowRightId, mSeq.x + 340, mSeq.y + 163);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	// Sequencer instructions
 	fbl_load_ttf_font("font/roboto.ttf", 20);
 	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"Sequencer:");
@@ -373,12 +410,12 @@ void Maintenance::setupSequencer(int x, int y) {
 	fbl_set_text_xy(tmpId, mSeq.x + 20, mSeq.y + 100);
 
 	// shortcut keys
-	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"<- left");
-	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
-	fbl_set_text_xy(tmpId, mSeq.x + 267, mSeq.y + 194);
-	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"right ->");
-	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
-	fbl_set_text_xy(tmpId, mSeq.x + 331, mSeq.y + 194);
+	mShortCut[8] = fbl_create_text(255, 255, 255, 0, (char*)"<- left");
+	fbl_set_text_align(mShortCut[8], FBL_ALIGN_LEFT);
+	fbl_set_text_xy(mShortCut[8], mSeq.x + 267, mSeq.y + 194);
+	mShortCut[9] = fbl_create_text(255, 255, 255, 0, (char*)"right ->");
+	fbl_set_text_align(mShortCut[9], FBL_ALIGN_LEFT);
+	fbl_set_text_xy(mShortCut[9], mSeq.x + 331, mSeq.y + 194);
 
 	//fbl_load_ttf_font("font/roboto.ttf", 20);
 
@@ -386,7 +423,7 @@ void Maintenance::setupSequencer(int x, int y) {
 
 }
 
-void Maintenance::processAirPressure() {
+void Maintenance::processAirPressure(Game& g) {
 
 	mAirMeter.checkDuration--;
 
@@ -401,15 +438,15 @@ void Maintenance::processAirPressure() {
 	}
 
 	// limit values and set pointerY
-	if (mAirMeter.pointerY < 30) mAirMeter.pointerY = 30;
-	if (mAirMeter.pointerY > 229) mAirMeter.pointerY = 229;
+	if (mAirMeter.pointerY < pos[0].y + 36) mAirMeter.pointerY = pos[0].y + 36;
+	if (mAirMeter.pointerY > pos[0].y + 233) mAirMeter.pointerY = pos[0].y + 233;
 	fbl_set_sprite_xy(mAirMeter.pointerId, mAirMeter.x - 15, mAirMeter.pointerY);
 
 	// move the sweet spot, limit values and change dir
 	if (mAirMeter.checkDuration == 0) {
 		mAirMeter.sweetSpotY += mAirMeter.speed;
-		if (mAirMeter.sweetSpotY > 230 - mAirMeter.sweetSpotSize) mAirMeter.speed = -mAirMeter.speed;
-		if (mAirMeter.sweetSpotY < 31) mAirMeter.speed = -mAirMeter.speed;
+		if (mAirMeter.sweetSpotY > pos[0].y + 234 - mAirMeter.sweetSpotSize) mAirMeter.speed = -mAirMeter.speed;
+		if (mAirMeter.sweetSpotY < pos[0].y + 37) mAirMeter.speed = -mAirMeter.speed;
 		fbl_set_prim_xy(mAirMeter.sweetSpotId, mAirMeter.x, mAirMeter.sweetSpotY);
 	}
 
@@ -432,13 +469,13 @@ void Maintenance::processAirPressure() {
 		fbl_set_prim_color(mAirMeter.sweetSpotId, 220, 0, 0, 255);
 		mAirMeter.checkDuration = cCheckTimeLimit;
 
-		fail();
+		fail(g);
 
 	}
 
 }
 
-void Maintenance::processColorCables() {
+void Maintenance::processColorCables(Game& g) {
 
 	mColorCables.checkDuration--;
 
@@ -480,7 +517,7 @@ void Maintenance::processColorCables() {
 
 		mColorCables.checkDuration = cCheckTimeLimit;
 
-		fail();
+		fail(g);
 
 	}
 
@@ -492,7 +529,7 @@ void Maintenance::processColorCables() {
 
 }
 
-void Maintenance::processCalcChecksum() {
+void Maintenance::processCalcChecksum(Game& g) {
 
 	mCalc.checkDuration--;
 
@@ -514,14 +551,14 @@ void Maintenance::processCalcChecksum() {
 	if (mTimerBar[1].timeLeft > cTimeStep) return;	// skip if time left
 
 
-	fail();
+	fail(g);
 
 	// generate new calculation
 	genCalc();
 
 }
 
-void Maintenance::processSequencer() {
+void Maintenance::processSequencer(Game& g) {
 
 	if (mSeq.checkDuration == cCheckTimeLimit) {
 
@@ -552,7 +589,7 @@ void Maintenance::processSequencer() {
 				fbl_set_sprite_color(mSeq.mimicSeqId[i], 220, 0, 0);
 
 			mTimerBar[3].timeLeft = mTimerBar[3].totalTime * 30;
-			fail();
+			fail(g);
 		}
 
 
@@ -577,7 +614,7 @@ void Maintenance::processSequencer() {
 	if (mTimerBar[3].timeLeft > cTimeStep) return;	// skip if time left
 
 
-	fail();
+	fail(g);
 
 	// generate new sequence
 	randomizeSequence();
@@ -810,7 +847,7 @@ void Maintenance::advance() {
 
 }
 
-void Maintenance::fail() {
+void Maintenance::fail(Game& g) {
 
 	mFails++;
 	if (mFails > 3) mFails = 3;
@@ -821,7 +858,18 @@ void Maintenance::fail() {
 
 		SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxExplosion, SoundManager::Channel::Expl, 0);
 
-		Race::sRaceState = Dead;	// oh yes!
+		if (g.mRobots->ownedRobotsLeft(g) > 1) {
+
+			auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mRacingRobots[0]);
+			sta.hp = 0;
+
+			Race::sRaceState = Fourth;
+
+		}
+		else {
+			for (int i = 0; i < 10; i++) fbl_set_text_active(mShortCut[i], false);	// remove the letters
+			Race::sRaceState = Dead;	// oh yes!
+		}
 
 	}
 
@@ -871,7 +919,7 @@ void Maintenance::hideSprites() {
 
 }
 
-void Maintenance::getInput() {
+void Maintenance::getInput(Game& g) {
 
 	int key;
 
@@ -924,7 +972,7 @@ void Maintenance::getInput() {
 				else {
 					mTimerBar[1].timeLeft = mTimerBar[1].totalTime * 30;
 					fbl_update_text(mCalc.altTextId[i], 220, 0, 0, 255, "%d", mCalc.finalAlt[i]);
-					fail();
+					fail(g);
 				}
 				mCalc.checkDuration = cCheckTimeLimit;
 				mKeyDelayLeft[0] = cKeyDelay;
@@ -982,30 +1030,6 @@ void Maintenance::getInput() {
 
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	for (int i = 0; i < 3; i++) {
 		mKeyDelayLeft[i]--;
 		if (mKeyDelayLeft[i] < 0) mKeyDelayLeft[i] = 0;
@@ -1020,11 +1044,11 @@ void Maintenance::tick(Game& g) {
 	if (mStartTimer > 0) return;
 
 	if (Race::sRaceState == Undecided) {
-		getInput();
-		processAirPressure();
-		processColorCables();
-		processCalcChecksum();
-		processSequencer();
+		getInput(g);
+		processAirPressure(g);
+		processColorCables(g);
+		processCalcChecksum(g);
+		processSequencer(g);
 		processTimers();
 		checkWinCondition();
 	}

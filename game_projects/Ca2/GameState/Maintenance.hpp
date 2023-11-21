@@ -86,15 +86,19 @@ public:
         int16_t  checkDuration;
     };
 
+    struct miniGamePos {
+        int x, y;
+    };
+
     void setupMaintenance(Game& g);
     void setupAirPressure(int x, int y);
     void setupColorCables(int x, int y);
     void setupCalcChecksum(int x, int y);
     void setupSequencer(int x, int y);
-    void processAirPressure();
-    void processColorCables();
-    void processCalcChecksum();
-    void processSequencer();
+    void processAirPressure(Game& g);
+    void processColorCables(Game& g);
+    void processCalcChecksum(Game& g);
+    void processSequencer(Game& g);
     void updateCableColors(int index, bool mimic);
     void genCalc();
     int  randNum(int min, int max);
@@ -104,10 +108,10 @@ public:
     void upDifficulty();
     void processTimers();
     void advance();
-    void fail();
+    void fail(Game& g);
     void checkWinCondition();
     void hideSprites();
-    void getInput();
+    void getInput(Game& g);
 
     virtual void tick(Game& g) override;
 
@@ -131,11 +135,16 @@ private:
 
     int mTotalOps, mOpsLeft, mOpsId;
 
+    // the shortcut keys
+    int mShortCut[10];
+
     TimerBar mTimerBar[4];
 
     AirMeter        mAirMeter;
     ColorCables     mColorCables;
     CalcChecksum    mCalc;
     Sequencer       mSeq;
+
+    miniGamePos     pos[4];
 
 };

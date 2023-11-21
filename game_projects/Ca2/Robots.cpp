@@ -148,7 +148,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 				break;
 			case Sprinty:
 												  // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
-				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 224, 160, 32, 32, true, 4, 4, 0, 0, 7 });
+				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 224, 160, 32, 32, true, 4, 5, 0, 0, 7 });
 													// name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
 				mEcs->AddComponent(tmpRobot, Stats{ "Sprinty", 1, 0, 7, 15, 15, 11, false, 25, 25, 7, -1, -1, -1, -1, -1, -1 });
 												//  rid len dir ivalM ivalC hasTarg active

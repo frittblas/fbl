@@ -48,6 +48,10 @@ bool Game::init() {
 
 	//std::cout.setstate(std::ios_base::failbit);	// deactivate cout
 
+	// Seed the random number generator
+	//srand(static_cast<unsigned int>(time(0)));
+	srand(time(NULL));
+
 	// set this as default
 	//DeviceResW = LogicalResW;
 	//DeviceResH = LogicalResH;
