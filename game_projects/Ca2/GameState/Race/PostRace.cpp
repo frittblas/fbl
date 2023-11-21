@@ -255,7 +255,7 @@ void PostRace::buySelectedItem(Game& g) {
 	g.mProgress->mFunds -= add.price;
 
 	// update gui
-	fbl_update_text(mFundsText, 255, 255, 255, 255, "Coins: %d", g.mProgress->mFunds);
+	fbl_update_text(mFundsText, 255, 255, 255, 255, (char*)"Coins: %d", g.mProgress->mFunds);
 
 	updateContextHelp("Thank you for your purchase!");
 

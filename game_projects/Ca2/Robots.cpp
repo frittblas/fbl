@@ -679,6 +679,8 @@ int Robots::getNameIndexFromEntity(Game& g, uint32_t entity, bool owned) {
 		}
 	}
 
+	return -1;
+
 }
 
 int* Robots::levelUpRobot(Game& g, int nameIndex, bool owned) {

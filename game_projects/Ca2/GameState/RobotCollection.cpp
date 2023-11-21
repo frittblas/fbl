@@ -144,7 +144,7 @@ void RobotCollection::cyclePages(Game& g, int dir) {
 
 
 	// update funds to match the value in mProgress
-	fbl_update_text(fFundsText, 255, 255, 255, 255, "Coins: %d", g.mProgress->mFunds);
+	fbl_update_text(fFundsText, 255, 255, 255, 255, (char*)"Coins: %d", g.mProgress->mFunds);
 
 	std::cout << mCurrentRobotPage << std::endl;
 	std::cout << sta.name << std::endl;

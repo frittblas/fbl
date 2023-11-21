@@ -204,7 +204,7 @@ void Maintenance::setupMaintenance(Game& g) {
 	mStartTimer = cCheckTimeLimit * 5;
 
 	fbl_load_ttf_font("font/roboto.ttf", 20);
-	mOpsId = fbl_create_text(255, 255, 255, 255, "Ops left: %d", mOpsLeft);
+	mOpsId = fbl_create_text(255, 255, 255, 255, (char*)"Ops left: %d", mOpsLeft);
 	fbl_set_text_xy(mOpsId, Game::DeviceResW - 120, 20);
 
 }
@@ -337,12 +337,12 @@ void Maintenance::setupCalcChecksum(Game& g, int x, int y) {
 
 	// the calc
 	fbl_load_ttf_font("font/roboto.ttf", 20);
-	mCalc.calcTextId = fbl_create_text(255, 255, 255, 255, "1 + 1 = 2");
+	mCalc.calcTextId = fbl_create_text(255, 255, 255, 255, (char*)"1 + 1 = 2");
 	fbl_set_text_xy(mCalc.calcTextId, mCalc.x + 150, mCalc.y + 145);
 
 	// alternative text
 	for (int i = 0; i < 3; i++) {
-		mCalc.altTextId[i] = fbl_create_text(255, 255, 255, 255, "%d + 1", i);
+		mCalc.altTextId[i] = fbl_create_text(255, 255, 255, 255, (char*)"%d + 1", i);
 		fbl_set_text_xy(mCalc.altTextId[i], mCalc.x + 255, mCalc.y + 105 + (37 * i));
 	}
 
@@ -552,9 +552,9 @@ void Maintenance::processCalcChecksum(Game& g) {
 
 		// put back to where the colors were (white)
 
-		fbl_update_text(mCalc.altTextId[0], 255, 255, 255, 255, "%d", mCalc.finalAlt[0]);
-		fbl_update_text(mCalc.altTextId[1], 255, 255, 255, 255, "%d", mCalc.finalAlt[1]);
-		fbl_update_text(mCalc.altTextId[2], 255, 255, 255, 255, "%d", mCalc.finalAlt[2]);
+		fbl_update_text(mCalc.altTextId[0], 255, 255, 255, 255, (char*)"%d", mCalc.finalAlt[0]);
+		fbl_update_text(mCalc.altTextId[1], 255, 255, 255, 255, (char*)"%d", mCalc.finalAlt[1]);
+		fbl_update_text(mCalc.altTextId[2], 255, 255, 255, 255, (char*)"%d", mCalc.finalAlt[2]);
 
 		genCalc(g);
 
@@ -738,10 +738,10 @@ void Maintenance::genCalc(Game& g) {
 	//std::random_shuffle(mCalc.finalAlt, mCalc.finalAlt + 3);
 	g.mRobots->shuffleArray(mCalc.finalAlt, 3);
 
-	fbl_update_text(mCalc.calcTextId, 255, 255, 255, 255, "%d %c %d =", mCalc.operand1, mCalc.operationChar, mCalc.operand2);
-	fbl_update_text(mCalc.altTextId[0], 255, 255, 255, 255, "%d", mCalc.finalAlt[0]);
-	fbl_update_text(mCalc.altTextId[1], 255, 255, 255, 255, "%d", mCalc.finalAlt[1]);
-	fbl_update_text(mCalc.altTextId[2], 255, 255, 255, 255, "%d", mCalc.finalAlt[2]);
+	fbl_update_text(mCalc.calcTextId, 255, 255, 255, 255, (char*)"%d %c %d =", mCalc.operand1, mCalc.operationChar, mCalc.operand2);
+	fbl_update_text(mCalc.altTextId[0], 255, 255, 255, 255, (char*)"%d", mCalc.finalAlt[0]);
+	fbl_update_text(mCalc.altTextId[1], 255, 255, 255, 255, (char*)"%d", mCalc.finalAlt[1]);
+	fbl_update_text(mCalc.altTextId[2], 255, 255, 255, 255, (char*)"%d", mCalc.finalAlt[2]);
 
 
 	std::cout << "genCalc(): " << mCalc.operand1 << mCalc.operationChar << mCalc.operand2 << " = " << mCalc.finalAlt[0] << " or " << mCalc.finalAlt[1] << " or " << mCalc.finalAlt[2] << std::endl;
@@ -852,7 +852,7 @@ void Maintenance::advance() {
 	if (mOpsLeft < 0) mOpsLeft = 0;
 
 	// update the text
-	fbl_update_text(mOpsId, 255, 255, 255, 255, "Ops left: %d ", mOpsLeft);
+	fbl_update_text(mOpsId, 255, 255, 255, 255, (char*)"Ops left: %d ", mOpsLeft);
 
 	SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxPass, SoundManager::Channel::Ui, 0);
 
@@ -979,12 +979,12 @@ void Maintenance::getInput(Game& g) {
 			if (mCalc.checkDuration == 0) {
 				if (mCalc.finalAlt[i] == mCalc.correctAnswer) {
 					mTimerBar[1].timeLeft = mTimerBar[1].totalTime * 30;
-					fbl_update_text(mCalc.altTextId[i], 0, 220, 0, 255, "%d", mCalc.finalAlt[i]);
+					fbl_update_text(mCalc.altTextId[i], 0, 220, 0, 255, (char*)"%d", mCalc.finalAlt[i]);
 					advance();
 				}
 				else {
 					mTimerBar[1].timeLeft = mTimerBar[1].totalTime * 30;
-					fbl_update_text(mCalc.altTextId[i], 220, 0, 0, 255, "%d", mCalc.finalAlt[i]);
+					fbl_update_text(mCalc.altTextId[i], 220, 0, 0, 255, (char*)"%d", mCalc.finalAlt[i]);
 					fail(g);
 				}
 				mCalc.checkDuration = cCheckTimeLimit;
