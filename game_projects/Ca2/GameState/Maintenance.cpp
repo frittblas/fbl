@@ -89,6 +89,7 @@ void Maintenance::setupMaintenance(Game& g) {
 
 	mTotalOps = g.mProgress->mCompletedRaces + g.mProgress->mCompletedMaint + 5;
 	mOpsLeft = mTotalOps;
+	mFails = 0;
 
 	// create all the ui elements for maintenance mode!
 
@@ -631,24 +632,6 @@ void Maintenance::processSequencer(Game& g) {
 	// generate new sequence
 	randomizeSequence();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
 
 void Maintenance::updateCableColors(int index, bool mimic) {
@@ -784,22 +767,6 @@ void Maintenance::randomizeSequence() {
 		fbl_set_sprite_active(mSeq.mimicSeqId[i], false);
 
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
 

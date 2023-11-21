@@ -5,11 +5,18 @@ Checklist to finish ca2 alpha in 5 days. 9 days in :)
 3. Finish the shop after a race. - DONE!
 4. Add all robots and finish the ai robot's addon and level assignments. - DONE!
 5. Add deathmatch. - DONE!
-6. Add maintenance mode. 3 / 4 done. Will do sequencer (after air pressure and color cables).
-6. Finish the map with npc's and races (event-slime!).
-7. Finish music and sfx.
-8. Release alpha for Robofobe to play and critique.
+6. Add maintenance mode. DONE!
+7. Finish music and sfx. - DONE!
+8. Finish the map with npc's and races (event-slime!).
+9. Release alpha for Robofobe to play and critique.
 
 Checklist for beta:
 1. Tweak gameplay balance.
-2. Fix bugs (deathmatch?).
+2. Fix bugs (Maintenance mode, deathmatch?).
+
+
+Bug:
+In maintenance mode: Sometimes it's game over even though you have another robot!
+In the web version: when you fail() only the last red cross gets active and it's game over immediately!
+
+Web: loading sfx doesn't work?
