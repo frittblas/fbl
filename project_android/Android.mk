@@ -40,10 +40,12 @@ fbl/game_projects/Ca2/Weather.cpp \
 fbl/game_projects/Ca2/GameState/Dialogue.cpp \
 fbl/game_projects/Ca2/GameState/Explore.cpp \
 fbl/game_projects/Ca2/GameState/GameState.cpp \
+fbl/game_projects/Ca2/GameState/Maintenance.cpp \
 fbl/game_projects/Ca2/GameState/RobotCollection.cpp \
 fbl/game_projects/Ca2/GameState/Settings.cpp \
 fbl/game_projects/Ca2/GameState/Title.cpp \
 fbl/game_projects/Ca2/GameState/Race/Race.cpp \
+fbl/game_projects/Ca2/GameState/Race/PostRace.cpp \
 fbl/game_projects/Ca2/GameState/Race/Maze.cpp \
 fbl/game_projects/Ca2/GameState/Race/GameModes/CaptureFlags.cpp \
 fbl/game_projects/Ca2/GameState/Race/GameModes/DeathMatch.cpp \
