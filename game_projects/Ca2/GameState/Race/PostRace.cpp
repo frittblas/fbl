@@ -325,7 +325,7 @@ void PostRace::initPostRaceMenu(Game& g, bool fromRace) {
 			break;
 		}
 
-		mContextHelp = fbl_create_text(255, 255, 255, 0, (char*)"%s (Runs: %d)", msg.c_str(), g.mProgress->mCompletedMaint + 1);
+		mContextHelp = fbl_create_text(255, 255, 255, 0, (char*)"%s (Run: %d)", msg.c_str(), g.mProgress->mCompletedMaint + 1);
 		fbl_set_text_align(mContextHelp, FBL_ALIGN_CENTER);
 		fbl_set_text_xy(mContextHelp, x, y - height - 20);
 

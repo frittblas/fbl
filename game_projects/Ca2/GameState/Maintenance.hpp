@@ -80,8 +80,8 @@ public:
         uint16_t x, y;
         uint16_t seqId[5];
         uint16_t mimicSeqId[5];
-        uint16_t seq[5];
-        uint16_t mimicSeq[5];
+        int16_t  seq[5];
+        int16_t  mimicSeq[5];
         uint16_t arrowLeftId, arrowRightId;
         int16_t  checkDuration;
     };
@@ -101,6 +101,7 @@ public:
     void genAddSubAlt(int correct, int& alt1, int& alt2);
     void genMulDivAlt(int correct, int& alt1, int& alt2);
     void randomizeSequence();
+    void upDifficulty();
     void processTimers();
     void advance();
     void fail();
@@ -117,13 +118,14 @@ private:
 
     const float cTimeStep = 0.25;
     const int   cKeyDelay = 10;
+    const int   cCheckTimeLimit = 60;
 
     int mFails;
     int mFailCrossId[3];
 
     int mKeyDelayLeft[3] = {};
 
-    int mOpsLeft, mOpsId;
+    int mTotalOps, mOpsLeft, mOpsId;
 
     TimerBar mTimerBar[4];
 

@@ -64,7 +64,8 @@ void Maintenance::setupMaintenance(Game& g) {
 
 	//if (g.mRobots->ownedRobotsLeft(g) > 1);
 
-	mOpsLeft = g.mProgress->mCompletedRaces + 5;
+	mTotalOps = g.mProgress->mCompletedRaces + g.mProgress->mCompletedMaint + 25;
+	mOpsLeft = mTotalOps;
 
 	// create all the ui elements for maintenance mode!
 
@@ -97,7 +98,7 @@ void Maintenance::setupMaintenance(Game& g) {
 	}
 
 	mTimerBar[0].timeLeft = (mTimerBar[0].totalTime - 1) * 30;
-	mTimerBar[1].timeLeft = (mTimerBar[1].totalTime) * 30;
+	mTimerBar[1].timeLeft = (mTimerBar[1].totalTime - 2) * 30;
 	mTimerBar[2].timeLeft = (mTimerBar[2].totalTime - 3) * 30;
 	mTimerBar[3].timeLeft = (mTimerBar[3].totalTime) * 30;
 
@@ -292,6 +293,7 @@ void Maintenance::setupSequencer(int x, int y) {
 
 	mSeq.x = x;
 	mSeq.y = y;
+	mSeq.checkDuration = 0;
 
 	// sequence arrows
 	for (int i = 0; i < 5; i++) {
@@ -307,10 +309,16 @@ void Maintenance::setupSequencer(int x, int y) {
 	}
 
 
-	mSeq.arrowLeftId = fbl_create_ui_elem(FBL_UI_BUTTON_HOLD, 128, 192, 32, 32, NULL);
+	mSeq.arrowLeftId = fbl_create_ui_elem(FBL_UI_BUTTON_INTERVAL, 128, 192, 32, 32, NULL);
+	fbl_set_ui_elem_access(mSeq.arrowLeftId, cKeyDelay);
 	fbl_set_ui_elem_xy(mSeq.arrowLeftId, mSeq.x + 296, mSeq.y + 163);
-	mSeq.arrowRightId = fbl_create_ui_elem(FBL_UI_BUTTON_HOLD, 128, 160, 32, 32, NULL);
+	mSeq.arrowRightId = fbl_create_ui_elem(FBL_UI_BUTTON_INTERVAL, 128, 160, 32, 32, NULL);
+	fbl_set_ui_elem_access(mSeq.arrowRightId, cKeyDelay);
 	fbl_set_ui_elem_xy(mSeq.arrowRightId, mSeq.x + 340, mSeq.y + 163);
+
+
+
+
 
 
 
@@ -354,6 +362,8 @@ void Maintenance::setupSequencer(int x, int y) {
 
 	fbl_load_ttf_font("font/roboto.ttf", 20);
 
+	randomizeSequence();
+
 }
 
 void Maintenance::processAirPressure() {
@@ -392,7 +402,7 @@ void Maintenance::processAirPressure() {
 
 		// make sweet spot green for a while
 		fbl_set_prim_color(mAirMeter.sweetSpotId, 0, 220, 0, 255);
-		mAirMeter.checkDuration = 60;
+		mAirMeter.checkDuration = cCheckTimeLimit;
 
 		advance();
 
@@ -400,7 +410,7 @@ void Maintenance::processAirPressure() {
 	else {
 
 		fbl_set_prim_color(mAirMeter.sweetSpotId, 220, 0, 0, 255);
-		mAirMeter.checkDuration = 60;
+		mAirMeter.checkDuration = cCheckTimeLimit;
 
 		fail();
 
@@ -438,7 +448,7 @@ void Maintenance::processColorCables() {
 		for (int i = 0; i < 3; i++)
 			fbl_set_prim_color(mColorCables.mimicLineId[i], 0, 220, 0, 255);
 
-		mColorCables.checkDuration = 60;
+		mColorCables.checkDuration = cCheckTimeLimit;
 
 		advance();
 
@@ -448,7 +458,7 @@ void Maintenance::processColorCables() {
 		for(int i = 0; i < 3; i++)
 			fbl_set_prim_color(mColorCables.mimicLineId[i], 220, 0, 0, 255);
 
-		mColorCables.checkDuration = 60;
+		mColorCables.checkDuration = cCheckTimeLimit;
 
 		fail();
 
@@ -493,7 +503,64 @@ void Maintenance::processCalcChecksum() {
 
 void Maintenance::processSequencer() {
 
+	if (mSeq.checkDuration == cCheckTimeLimit) {
 
+		//std::cout << "CHECKING SEQUENCE" << std::endl;
+
+		// check if sequence is correct
+		bool correct = true;
+		for (int i = 0; i < 5; i++) {
+			if (mSeq.seq[i] != mSeq.mimicSeq[i]) {
+				correct = false;
+				break;
+			}
+		}
+
+		if (correct) {
+
+			// make arrows green
+			for (int i = 0; i < 5; i++)
+				fbl_set_sprite_color(mSeq.mimicSeqId[i], 0, 220, 0);
+
+			mTimerBar[3].timeLeft = mTimerBar[3].totalTime * 30;
+			advance();
+		}
+		else {
+
+			// make arrows red
+			for (int i = 0; i < 5; i++)
+				fbl_set_sprite_color(mSeq.mimicSeqId[i], 220, 0, 0);
+
+			mTimerBar[3].timeLeft = mTimerBar[3].totalTime * 30;
+			fail();
+		}
+
+
+	}
+
+	mSeq.checkDuration--;
+
+	if (mSeq.checkDuration < 0)
+		mSeq.checkDuration = 0;
+
+	if (mSeq.checkDuration == 1) {
+
+		// put back to where the colors were (white)
+
+		for (int i = 0; i < 5; i++)
+			fbl_set_sprite_color(mSeq.mimicSeqId[i], 255, 255, 255);
+
+		randomizeSequence();
+
+	}
+
+	if (mTimerBar[3].timeLeft > cTimeStep) return;	// skip if time left
+
+
+	fail();
+
+	// generate new sequence
+	randomizeSequence();
 
 
 
@@ -627,13 +694,24 @@ void Maintenance::genMulDivAlt(int correct, int& alt1, int& alt2) {
 
 void Maintenance::randomizeSequence() {
 
-
-	// true = right, false = left
+	// 0 = left, 1 = right
 
 	for (int i = 0; i < 5; i++) {
 		mSeq.seq[i] = rand() % 2;
 
-		if(mSeq.seq[i])
+		if (mSeq.seq[i] == 0) {
+			if (fbl_get_sprite_flip(mSeq.seqId[i]) == 0)
+				fbl_set_sprite_flip(mSeq.seqId[i], 1);
+		}
+		if (mSeq.seq[i] == 1) {
+			if (fbl_get_sprite_flip(mSeq.seqId[i]) == 1)
+				fbl_set_sprite_flip(mSeq.seqId[i], 0);
+		}
+
+
+		// set mimic seq to -1 and deactivate sprites
+		mSeq.mimicSeq[i] = -1;
+		fbl_set_sprite_active(mSeq.mimicSeqId[i], false);
 
 	}
 
@@ -646,6 +724,33 @@ void Maintenance::randomizeSequence() {
 
 
 
+
+
+
+
+
+
+
+}
+
+void Maintenance::upDifficulty() {
+
+	// every 5 successful op lower the max time by 1 sec
+
+	if (mTotalOps - mOpsLeft == 5  ||
+		mTotalOps - mOpsLeft == 10 ||
+		mTotalOps - mOpsLeft == 15 ||
+		mTotalOps - mOpsLeft == 20) {
+
+		for (int i = 0; i < 4; i++) {
+			mTimerBar[i].totalTime--;
+			mTimerBar[i].timeLeft = mTimerBar[i].totalTime;
+		}
+
+		SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxTurbo, SoundManager::Channel::Ui, 0);
+
+	}
+		
 
 }
 
@@ -681,6 +786,8 @@ void Maintenance::advance() {
 	fbl_update_text(mOpsId, 255, 255, 255, 255, "Ops left: %d ", mOpsLeft);
 
 	SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxPass, SoundManager::Channel::Ui, 0);
+
+	upDifficulty();
 
 }
 
@@ -784,10 +891,11 @@ void Maintenance::getInput() {
 					advance();
 				}
 				else {
+					mTimerBar[1].timeLeft = mTimerBar[1].totalTime * 30;
 					fbl_update_text(mCalc.altTextId[i], 220, 0, 0, 255, "%d", mCalc.finalAlt[i]);
 					fail();
 				}
-				mCalc.checkDuration = 60;
+				mCalc.checkDuration = cCheckTimeLimit;
 				mKeyDelayLeft[0] = cKeyDelay;
 			}
 
@@ -796,14 +904,48 @@ void Maintenance::getInput() {
 	}
 
 	// Sequencer input
-	if (fbl_get_ui_elem_val(mSeq.arrowLeftId) || fbl_get_key_down(FBLK_LEFT)) {
+	if (fbl_get_ui_elem_val(mSeq.arrowLeftId) || fbl_get_key_down(FBLK_LEFT) && mKeyDelayLeft[0] == 0) {
 		if (mSeq.checkDuration == 0) {
+
+			// find next mimic arrow
+			int i;
+			for (i = 0; i < 4; i++)
+				if (mSeq.mimicSeq[i] == -1) break;
+
+			std::cout << "Next free mimic arrow index = " << i << std::endl;
+
+			mSeq.mimicSeq[i] = 0;	// 0 = left
+			if (fbl_get_sprite_flip(mSeq.mimicSeqId[i]) == 0)
+				fbl_set_sprite_flip(mSeq.mimicSeqId[i], 1);
+
+			// activate the sprite
+			fbl_set_sprite_active(mSeq.mimicSeqId[i], true);
+
+			mKeyDelayLeft[0] = cKeyDelay;
+			if(i == 4) mSeq.checkDuration = cCheckTimeLimit;
 
 		}
 
 	}
-	if (fbl_get_ui_elem_val(mSeq.arrowRightId) || fbl_get_key_down(FBLK_RIGHT)) {
+	if (fbl_get_ui_elem_val(mSeq.arrowRightId) || fbl_get_key_down(FBLK_RIGHT) && mKeyDelayLeft[1] == 0) {
 		if (mSeq.checkDuration == 0) {
+
+			// find next mimic arrow
+			int i;
+			for (i = 0; i < 4; i++)
+				if (mSeq.mimicSeq[i] == -1) break;
+
+			std::cout << "Next free mimic arrow index = " << i << std::endl;
+
+			mSeq.mimicSeq[i] = 1;	// 1 = right
+			if (fbl_get_sprite_flip(mSeq.mimicSeqId[i]) == 1)
+				fbl_set_sprite_flip(mSeq.mimicSeqId[i], 0);
+
+			// activate the sprite
+			fbl_set_sprite_active(mSeq.mimicSeqId[i], true);
+
+			mKeyDelayLeft[1] = cKeyDelay;
+			if (i == 4) mSeq.checkDuration = cCheckTimeLimit;
 
 		}
 
@@ -844,9 +986,9 @@ void Maintenance::tick(Game& g) {
 
 	if (Race::sRaceState == Undecided) {
 		getInput();
-		//processAirPressure();
-		//processColorCables();
-		//processCalcChecksum();
+		processAirPressure();
+		processColorCables();
+		processCalcChecksum();
 		processSequencer();
 		processTimers();
 		checkWinCondition();
