@@ -19,8 +19,6 @@
 #include "../SoundManager.hpp"
 #include "../SysManager.hpp"
 #include "../Efx.hpp"
-
-
 #include "../Robots.hpp"
 
 #include "Race/Race.hpp"
@@ -64,7 +62,7 @@ void Maintenance::setupMaintenance(Game& g) {
 
 	//if (g.mRobots->ownedRobotsLeft(g) > 1);
 
-	mTotalOps = g.mProgress->mCompletedRaces + g.mProgress->mCompletedMaint + 25;
+	mTotalOps = g.mProgress->mCompletedRaces + g.mProgress->mCompletedMaint + 5;
 	mOpsLeft = mTotalOps;
 
 	// create all the ui elements for maintenance mode!
@@ -89,18 +87,18 @@ void Maintenance::setupMaintenance(Game& g) {
 	mTimerBar[3].x = Game::DeviceResW / 4 + Game::DeviceResW / 2;
 	mTimerBar[3].y = 520;
 
+	mTimerBar[0].timeLeft = (7 - 1) * 30;
+	mTimerBar[1].timeLeft = (7) * 30;
+	mTimerBar[2].timeLeft = (7 - 3) * 30;
+	mTimerBar[3].timeLeft = (7) * 30;
+
 	for (int i = 0; i < 4; i++) {
 		mTimerBar[i].red = 0;
 		mTimerBar[i].totalTime = 7;
-		mTimerBar[i].timeLeft = mTimerBar[i].totalTime * 30;
+		//mTimerBar[i].timeLeft = mTimerBar[i].totalTime * 30;
 		mTimerBar[i].primId = fbl_create_prim(FBL_RECT, mTimerBar[i].x, mTimerBar[i].y, mTimerBar[i].totalTime * 30, 5, 0, false, true);
 		fbl_set_prim_color(mTimerBar[i].primId, 0, 255, 0, 255);
 	}
-
-	mTimerBar[0].timeLeft = (mTimerBar[0].totalTime - 1) * 30;
-	mTimerBar[1].timeLeft = (mTimerBar[1].totalTime - 2) * 30;
-	mTimerBar[2].timeLeft = (mTimerBar[2].totalTime - 3) * 30;
-	mTimerBar[3].timeLeft = (mTimerBar[3].totalTime) * 30;
 
 	// create 3 red crosses for failure
 	for (int i = 0; i < 3; i++) {
@@ -109,15 +107,36 @@ void Maintenance::setupMaintenance(Game& g) {
 		fbl_set_sprite_active(mFailCrossId[i], false);
 	}
 
+	// randomize where the minigames should be displayed
+
+
+
 	setupAirPressure(Game::DeviceResW / 4 + 64, 30);
 	setupColorCables(25, 400);
 	setupCalcChecksum(Game::DeviceResW / 2, 0);
 	setupSequencer(Game::DeviceResW / 2, Game::DeviceResH / 2);
 
+	// intro black bg and MAINTENANCE text
+
+	// black bg
+	/*
+	mBlackBgId = fbl_create_prim(FBL_NORMAL_RECT, 0, 0, Game::DeviceResW, Game::DeviceResH, 0, 0, 1);
+	fbl_set_prim_color(mBlackBgId, 0, 0, 0, 255);
+	mBlackBgFade = 255;
+
+	// maintenance text
+	fbl_load_ttf_font("font/garamond.ttf", 48);
+	mMaintenanceTextId = fbl_create_text(255, 69, 0, 255, (char*)"MAINTENANCE MODE!");
+	fbl_set_text_align(mMaintenanceTextId, FBL_ALIGN_CENTER);
+	fbl_set_text_xy(mMaintenanceTextId, fbl_get_screen_w() / 2, fbl_get_screen_h() / 3);
+	*/
+
+	// wait a couple of seconds before start
+	mStartTimer = cCheckTimeLimit * 5;
+
 	fbl_load_ttf_font("font/roboto.ttf", 20);
 	mOpsId = fbl_create_text(255, 255, 255, 255, "Ops left: %d", mOpsLeft);
 	fbl_set_text_xy(mOpsId, Game::DeviceResW - 120, 20);
-
 
 }
 
@@ -341,6 +360,7 @@ void Maintenance::setupSequencer(int x, int y) {
 
 
 	// Sequencer instructions
+	fbl_load_ttf_font("font/roboto.ttf", 20);
 	tmpId = fbl_create_text(255, 255, 255, 0, (char*)"Sequencer:");
 	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
 	fbl_set_text_xy(tmpId, mSeq.x + 20, mSeq.y + 30);
@@ -360,7 +380,7 @@ void Maintenance::setupSequencer(int x, int y) {
 	fbl_set_text_align(tmpId, FBL_ALIGN_LEFT);
 	fbl_set_text_xy(tmpId, mSeq.x + 331, mSeq.y + 194);
 
-	fbl_load_ttf_font("font/roboto.ttf", 20);
+	//fbl_load_ttf_font("font/roboto.ttf", 20);
 
 	randomizeSequence();
 
@@ -737,17 +757,16 @@ void Maintenance::upDifficulty() {
 
 	// every 5 successful op lower the max time by 1 sec
 
-	if (mTotalOps - mOpsLeft == 5  ||
-		mTotalOps - mOpsLeft == 10 ||
+	if (mTotalOps - mOpsLeft == 10 ||
 		mTotalOps - mOpsLeft == 15 ||
 		mTotalOps - mOpsLeft == 20) {
 
 		for (int i = 0; i < 4; i++) {
 			mTimerBar[i].totalTime--;
-			mTimerBar[i].timeLeft = mTimerBar[i].totalTime;
+			mTimerBar[i].timeLeft = mTimerBar[i].totalTime * 30;
 		}
 
-		SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxTurbo, SoundManager::Channel::Ui, 0);
+		SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxTurbo, SoundManager::Channel::Turbo, 0);
 
 	}
 		
@@ -800,11 +819,13 @@ void Maintenance::fail() {
 
 	if (mFails > 2) {
 
+		SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxExplosion, SoundManager::Channel::Expl, 0);
+
 		Race::sRaceState = Dead;	// oh yes!
 
 	}
 
-	SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxDenied, SoundManager::Channel::Ui, 0);
+	SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxDenied, SoundManager::Channel::Shield, 0);
 	Efx::getInstance().shakeCamera(20, 40);
 
 }
@@ -829,14 +850,24 @@ void Maintenance::checkWinCondition() {
 
 	}
 
+	SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxShutdown, SoundManager::Channel::Expl, 0);
+
 }
 
 void Maintenance::hideSprites() {
 
+	// fail red cross
 	for (int i = 0; i < 3; i++)
 		fbl_set_sprite_active(mFailCrossId[i], false);
 
+	// the air pressure pointer
 	fbl_set_sprite_active(mAirMeter.pointerId, false);
+
+	// sequence arrows
+	for (int i = 0; i < 5; i++) {
+		fbl_set_sprite_active(mSeq.seqId[i], false);
+		fbl_set_sprite_active(mSeq.mimicSeqId[i], false);
+	}
 
 }
 
@@ -983,6 +1014,10 @@ void Maintenance::getInput() {
 }
 
 void Maintenance::tick(Game& g) {
+
+	mStartTimer--;
+	if (mStartTimer < 0) mStartTimer = 0;
+	if (mStartTimer > 0) return;
 
 	if (Race::sRaceState == Undecided) {
 		getInput();

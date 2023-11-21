@@ -123,6 +123,10 @@ private:
     int mFails;
     int mFailCrossId[3];
 
+    // for intro
+    int mBlackBgId, mMaintenanceTextId;
+    int mStartTimer, mBlackBgFade;
+
     int mKeyDelayLeft[3] = {};
 
     int mTotalOps, mOpsLeft, mOpsId;

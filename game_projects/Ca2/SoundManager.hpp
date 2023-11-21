@@ -39,13 +39,14 @@ public:
     void loadSfx();
     void playSfx(int id, int channel, int loops);
     void loadAndPlayMusic(std::string filename, int volume);
+    void stopMusic();
 
     void onRobotDeath() override;
     void onFireLaser() override;
 
     uint16_t mSfxLaser1, mSfxLaser2, mSfxLaser3;
     uint16_t mSfxMagnet, mSfxHeal, mSfxTurbo, mSfxShield;
-    uint16_t mSfxExplosion, mSfxCoin, mSfxPowerup;
+    uint16_t mSfxExplosion, mSfxCoin, mSfxPowerup, mSfxShutdown;
     uint16_t mSfxPass, mSfxDenied, mSfxSnap, mSfxTick, mSfxQuit;
     uint16_t mSfxRainStorm, mSfxSummer;
 

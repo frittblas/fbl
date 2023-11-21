@@ -52,6 +52,9 @@ void SoundManager::loadSfx() {
 	mSfxPass = fbl_load_sound("sfx/pass.ogg");
 	fbl_set_sound_volume(mSfxPass, 50); // max is 128
 	mSfxPowerup = fbl_load_sound("sfx/powerup.ogg");
+	fbl_set_sound_volume(mSfxPowerup, 50); // max is 128
+	mSfxShutdown = fbl_load_sound("sfx/shutdown.ogg");
+	fbl_set_sound_volume(mSfxShutdown, 50); // max is 128
 	mSfxQuit = fbl_load_sound("sfx/quit.ogg");
 	fbl_set_sound_volume(mSfxQuit, 60); // max is 128
 	mSfxShield = fbl_load_sound("sfx/shield.ogg");
@@ -59,13 +62,13 @@ void SoundManager::loadSfx() {
 	mSfxTick = fbl_load_sound("sfx/tick.ogg");
 	fbl_set_sound_volume(mSfxTick, 20); // max is 128
 	mSfxTurbo = fbl_load_sound("sfx/turbo.ogg");
-	/*
+
 	mSfxRainStorm = fbl_load_sound("sfx/rain.ogg");
 	mSfxSummer = fbl_load_sound("sfx/summer.ogg");
 	
 	playSfx(mSfxSummer, Ambient, 1);
 	loadAndPlayMusic("music/title.ogg", 40);
-	*/
+
 }
 
 void SoundManager::playSfx(int id, int channel, int loops) {
@@ -76,15 +79,21 @@ void SoundManager::playSfx(int id, int channel, int loops) {
 
 void SoundManager::loadAndPlayMusic(std::string filename, int volume) {
 
-	//fbl_destroy_music();
-	//fbl_load_music(filename.c_str());
-	//fbl_play_music(volume, 0);	// max volume = 128
+	fbl_destroy_music();
+	fbl_load_music(filename.c_str());
+	fbl_play_music(volume, 0);	// max volume = 128
+
+}
+
+void SoundManager::stopMusic() {
+
+	fbl_stop_music();
 
 }
 
 void SoundManager::onRobotDeath() {
 
-	//playSfx(mSfxExplosion, 1, 0);
+	playSfx(mSfxExplosion, 1, 0);
 
 	//std::cout << "EXPLOSION SOUND!!!!!!!!" << std::endl;
 
@@ -92,6 +101,6 @@ void SoundManager::onRobotDeath() {
 
 void SoundManager::onFireLaser() {
 
-	//playSfx(mSfxLaser1, 2, 0);
+	playSfx(mSfxLaser1, 2, 0);
 
 }

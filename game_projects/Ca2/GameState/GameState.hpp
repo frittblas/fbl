@@ -47,6 +47,7 @@ public:
     void maintenanceToExplore(Game& g);
     void setupRace(Game& g);
     void setupMaintenance(Game& g);
+    void setAtmosphere(Game& g);
 
 
 private:

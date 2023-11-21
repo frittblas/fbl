@@ -70,7 +70,6 @@ void PostRace::tick(Game& g) {
 		} else {
 			g.mState->change(g, GameState::StateType::Explore);
 			g.mChars->stopPlayerPathing(g);
-			g.mProgress->mCompletedRaces++;	// successfully completed a race!
 
 			// check if player is dead, and if so, assign new robot as fav
 			auto& sta = g.mEcs->GetComponent<Stats>(g.mRobots->mRacingRobots[0]);
@@ -297,7 +296,9 @@ void PostRace::initPostRaceMenu(Game& g, bool fromRace) {
 			break;
 		}
 
-		mContextHelp = fbl_create_text(255, 255, 255, 0, (char*)"%s (Race %d)", msg.c_str(), g.mProgress->mCompletedRaces + 1);
+		g.mProgress->mCompletedRaces++;	// successfully completed a race!
+
+		mContextHelp = fbl_create_text(255, 255, 255, 0, (char*)"%s (Race %d)", msg.c_str(), g.mProgress->mCompletedRaces);
 		fbl_set_text_align(mContextHelp, FBL_ALIGN_CENTER);
 		fbl_set_text_xy(mContextHelp, x, y - height - 20);
 
@@ -325,7 +326,9 @@ void PostRace::initPostRaceMenu(Game& g, bool fromRace) {
 			break;
 		}
 
-		mContextHelp = fbl_create_text(255, 255, 255, 0, (char*)"%s (Run: %d)", msg.c_str(), g.mProgress->mCompletedMaint + 1);
+		g.mProgress->mCompletedMaint++;	// successfully completed a maintenance session!
+
+		mContextHelp = fbl_create_text(255, 255, 255, 0, (char*)"%s (Run: %d)", msg.c_str(), g.mProgress->mCompletedMaint);
 		fbl_set_text_align(mContextHelp, FBL_ALIGN_CENTER);
 		fbl_set_text_xy(mContextHelp, x, y - height - 20);
 
