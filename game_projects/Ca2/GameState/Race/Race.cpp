@@ -126,9 +126,33 @@ void Race::assignRobots(Game& g) {
 
 	std::cout << "Block density: " << blockDensity << std::endl;
 
-	//mMaze->initMaze(g, blockDensity, mNumRacers, Race::GameMode::GM_CaptureFlags);
-	mMaze->initMaze(g, blockDensity - 5, mNumRacers, Race::GameMode::GM_DeathMatch);
+	switch (g.mProgress->mCompletedRaces) {
 
+		case 0:
+		case 1:
+		case 2:
+		case 3:
+		case 4:
+			blockDensity = (rand() % 10) + 25;	// slightly denser maps in the beginning
+			mMaze->initMaze(g, blockDensity, mNumRacers, Race::GameMode::GM_CaptureFlags);	// start with CF
+			break;
+		case 5:
+		case 6:
+			mMaze->initMaze(g, blockDensity - 5, mNumRacers, Race::GameMode::GM_DeathMatch); // less dense DM map
+			break;
+		case 7:
+		case 8:
+			blockDensity = (rand() % 10) + 25;	// denser maps again
+			mMaze->initMaze(g, blockDensity, mNumRacers, Race::GameMode::GM_CaptureFlags);	// CF
+			break;
+		default:
+			if(rand() % 2 == 0)
+				mMaze->initMaze(g, blockDensity, mNumRacers, Race::GameMode::GM_CaptureFlags);
+			else
+				mMaze->initMaze(g, blockDensity - 5, mNumRacers, Race::GameMode::GM_DeathMatch); // less dense DM map
+			break;
+
+	}
 
 	fbl_sort_sprites(FBL_SORT_BY_LAYER);
 

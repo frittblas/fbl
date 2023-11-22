@@ -39,7 +39,7 @@ public:
     static const int cTargetX = 15 * 32; //Game::TileSize;
     static const int cTargetY = 8 * 32;  //Game::TileSize;
 
-    static const int cMaxFlags   = 5;      // max number of flags in a level
+    static const int cMaxFlags   = 6;      // max number of flags in a level
     static const int cMaxTargets = 3;      // max number of targets (robots to eliminate) in a level
     static const int cMaxCoins   = 26;     // max number of coins in a level
 

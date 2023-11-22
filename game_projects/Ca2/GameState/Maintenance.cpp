@@ -81,7 +81,7 @@ void Maintenance::setupMaintenance(Game& g) {
 
 	}
 
-	// show the current robot being maintined in the low right corner
+	// show the current robot being maintained in the up right corner
 	auto& spr = g.mEcs->GetComponent<Sprite>(g.mRobots->mRacingRobots[0]);
 	fbl_set_sprite_xy(spr.id[0], Game::DeviceResW - 64, 64);
 	fbl_set_sprite_active(spr.id[0], true);
@@ -116,7 +116,7 @@ void Maintenance::setupMaintenance(Game& g) {
 	pos[3].y = Game::DeviceResH / 2;
 
 	//srand(1160);
-	if (g.mProgress->mCompletedMaint > 3) {		// start randomizing positions after acouple of runs
+	if (g.mProgress->mCompletedMaint > 3) {		// start randomizing positions after a couple of runs
 
 		for (int i = 3; i > 0; --i) {
 			int j = rand() % (i + 1);
@@ -129,7 +129,10 @@ void Maintenance::setupMaintenance(Game& g) {
 
 	}
 
-	//std::random_shuffle(std::begin(pos), std::end(pos));
+	// note that the indexes ARE infact correct here
+	// the timers are create as upLeft, upRight, downLeft, downRight
+	// but the minigames are created as upLeft, downLeft, upRight, downRight
+	// confusing but fine :)
 
 	mTimerBar[0].x = pos[0].x + Game::DeviceResW / 4;
 	mTimerBar[0].y = pos[0].y + 250;
@@ -776,11 +779,12 @@ void Maintenance::upDifficulty() {
 
 	if (mTotalOps - mOpsLeft == 10 ||
 		mTotalOps - mOpsLeft == 15 ||
-		mTotalOps - mOpsLeft == 20) {
+		mTotalOps - mOpsLeft == 20 ||
+		mTotalOps - mOpsLeft == 25) {
 
 		for (int i = 0; i < 4; i++) {
 			mTimerBar[i].totalTime--;
-			mTimerBar[i].timeLeft = mTimerBar[i].totalTime * 30;
+			//mTimerBar[i].timeLeft = mTimerBar[i].totalTime * 30;
 		}
 
 		SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxTurbo, SoundManager::Channel::Turbo, 0);

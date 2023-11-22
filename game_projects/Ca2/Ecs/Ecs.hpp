@@ -109,6 +109,11 @@ class ComponentArray : public IComponentArray
 public:
 	void InsertData(Entity entity, T component)
 	{
+		
+		if (mEntityToIndexMap.find(entity) != mEntityToIndexMap.end()) {
+			std::cout << "Component added to same entity more than once. SKIPPING." << std::endl;
+			return;
+		}
 		assert(mEntityToIndexMap.find(entity) == mEntityToIndexMap.end() && "Component added to same entity more than once.");
 
 		// Put new entry at end and update the maps
