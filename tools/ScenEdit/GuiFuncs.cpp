@@ -23,6 +23,13 @@ int getIndexAtCursor() {
 
 }
 
+// return the index for the tile vector based on any pos.
+int getIndexAtPos(int x, int y) {
+
+	return (x / gEditor->tileSize) + gEditor->mapWidth * (y / gEditor->tileSize);
+
+}
+
 //
 // Below are the functions that are called by the Gui buttons
 //

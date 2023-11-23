@@ -11,6 +11,7 @@
 */
 
 #include "../../tools/ScenEdit/ScenEdit.hpp"
+#include "../../tools/ScenEdit/GuiFuncs.hpp"
 #include "Ecs/Ecs.hpp"
 #include "Ecs/Components.hpp"
 #include "Game.hpp"
@@ -20,6 +21,9 @@
 // Chars-class implementation
 
 Chars::Chars() {
+
+	mFadingEventSlimeId = 0;
+	mFadeCounter = 255;
 
 	std::cout << "Initialized Chars subsystem." << std::endl;
 
@@ -126,5 +130,44 @@ void Chars::removeNpc(Coordinator* mEcs) {
 	}
 
 	mNpc.clear();
+
+}
+
+void Chars::removeEventSlime(Game& g) {
+
+	for (Entity e : mNpc) {
+	
+		auto& pos = g.mEcs->GetComponent<Position>(e);
+		auto& player = g.mEcs->GetComponent<Position>(g.mChars->mBrodo);
+
+		if ((pos.x == (player.x + Game::TileSize) && pos.y == player.y) ||
+			(pos.x == (player.x - Game::TileSize) && pos.y == player.y) ||
+			(pos.y == (player.y + Game::TileSize) && pos.x == player.x) ||
+			(pos.y == (player.y - Game::TileSize) && pos.x == player.x)) {
+
+			removeAndStartFade(g, e, (int)pos.x, (int)pos.y);
+
+		}
+	
+	}
+
+}
+
+void Chars::removeAndStartFade(Game& g, Entity e, int x, int y) {
+
+	// remove the sprite
+	int index = getIndexAtPos(x, y);
+	if (g.mMap->tile[index] != nullptr) {
+		mFadingEventSlimeId = g.mMap->tile[index]->id;
+	}
+
+	// set tile to walkable
+	fbl_pathf_set_walkability(x / Game::TileSize, y / Game::TileSize, FBL_PATHF_WALKABLE);
+
+	// remove dialogue trigger
+	g.mEcs->RemoveComponent<DialogueTrigger>(e);
+
+	// start the fade by setting counter to one less
+	mFadeCounter = 254;
 
 }

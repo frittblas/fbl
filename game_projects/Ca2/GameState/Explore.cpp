@@ -54,6 +54,19 @@ void Explore::processInput(Game& g) {
 
 }
 
+void Explore::slimeFade(Game& g) {
+
+	if (g.mChars->mFadeCounter < 255) {
+		fbl_set_sprite_alpha(g.mChars->mFadingEventSlimeId, g.mChars->mFadeCounter);
+		g.mChars->mFadeCounter -= 4;
+		if (g.mChars->mFadeCounter < 5) {
+			g.mChars->mFadeCounter = 255;
+			fbl_set_sprite_active(g.mChars->mFadingEventSlimeId, false);
+		}
+	}
+
+}
+
 void Explore::tick(Game& g) {
 
 	g.mSysManager->mSpriteSystem->Update(*g.mEcs);			// update the sprite system
@@ -66,6 +79,8 @@ void Explore::tick(Game& g) {
 	g.mWeather->tick();
 
 	processInput(g);
+
+	slimeFade(g);
 
 	if(fbl_get_raw_frames_count() % 60 == 0)
 		std::cout << "Tick explore!" << std::endl;

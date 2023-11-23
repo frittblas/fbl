@@ -214,7 +214,6 @@ void PostRace::prepShop(Game& g) {
 		if (g.mAddons->mAllAddons[i] != g.mAddons->Unassigned)
 			availableIndices.push_back(i);
 	// 2
-	//std::random_shuffle(availableIndices.begin(), availableIndices.end());
 	g.mRobots->shuffleVector(availableIndices);
 	int numCopies = std::min(3, static_cast<int>(availableIndices.size()));
 	// 3
@@ -313,14 +312,17 @@ void PostRace::initPostRaceMenu(Game& g, bool fromRace) {
 		case Race::RaceState::First:
 			msg = "Perfect! You maintained a robot! Buy something will ya!";
 			sta.xp += 4;
+			g.mProgress->mFunds += 3;
 			break;
 		case Race::RaceState::Second:
 			msg = "Very nice you did a good job maintaining! Buy whatever you like.";
 			sta.xp += 3;
+			g.mProgress->mFunds += 2;
 			break;
 		case Race::RaceState::Third:
 			msg = "You almost destroyed that poor robot. Not great but please buy some stuff.";
 			sta.xp += 2;
+			g.mProgress->mFunds += 1;
 			break;
 		case Race::RaceState::Fourth:
 			msg = "That was not good, you wrecked your robot! Please buy something anyway :)";
@@ -530,7 +532,7 @@ void PostRace::initPostRaceMenu(Game& g, bool fromRace) {
 	g.mAddons->hideAddons(g.mEcs);
 	prepShop(g);	// set up the items in the shop
 
-	SoundManager::getInstance().loadAndPlayMusic("music/postrace.ogg", 60);
+	SoundManager::getInstance().loadAndPlayMusic("music/postrace.ogg", 60, 0);
 
 
 	if (fromRace) {

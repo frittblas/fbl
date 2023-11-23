@@ -248,7 +248,7 @@ void GameState::toTitle(Game& g) {
 	fbl_lua_shutdown();				 // so the dialogues get reset
 
 	SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxSummer, SoundManager::Channel::Ambient, 1);
-	SoundManager::getInstance().loadAndPlayMusic("music/title.ogg", 40);
+	SoundManager::getInstance().loadAndPlayMusic("music/title.ogg", 40, 0);
 
 }
 
@@ -278,6 +278,8 @@ void GameState::titleToExplore(Game& g) {
 	fbl_lua_init("Ca2Dialogue.lua", registerFuncsToLua);	// set this up each new game, so the dialogues restart
 
 	std::cout << "player id(e): " << g.mChars->mBrodo << std::endl;
+
+	g.mChars->mFadeCounter = 255;
 
 	SoundManager::getInstance().stopMusic();
 	SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxRainStorm, SoundManager::Channel::Ambient, 1);
@@ -323,6 +325,11 @@ void GameState::raceToExplore(Game& g) {
 
 	setAtmosphere(g);	// set music, ambience and weather based on progress
 
+	// delete the event-slime you talked to
+	g.mChars->removeEventSlime(g);
+	// play silly sound
+	SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxSnap, SoundManager::Channel::Ui, 0);
+
 }
 
 void GameState::maintenanceToExplore(Game& g) {
@@ -366,7 +373,7 @@ void GameState::setupRace(Game& g) {
 
 	g.mWeather->setWeather(Weather::TimeOfDay::Evening, 0, 0, 0, false);
 
-	SoundManager::getInstance().loadAndPlayMusic("music/dm.ogg", 80);
+	SoundManager::getInstance().loadAndPlayMusic("music/dm.ogg", 80, 0);
 
 	// play snap on ambient channel to stop the ambient sound.
 	SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxSnap, SoundManager::Channel::Ambient, 0);
@@ -387,7 +394,7 @@ void GameState::setupMaintenance(Game& g) {
 
 	g.mWeather->setWeather(Weather::TimeOfDay::Day, 0, 0, 0, false);
 
-	SoundManager::getInstance().loadAndPlayMusic("music/maintenance.ogg", 80);
+	SoundManager::getInstance().loadAndPlayMusic("music/maintenance.ogg", 80, 2);
 
 
 	// play powerup sound on Ambient channel to stop the ambient sounds
@@ -416,14 +423,14 @@ void GameState::setAtmosphere(Game& g) {
 		case 5:
 			g.mWeather->setWeather(Weather::TimeOfDay::Morning, 1, 0, 50, false);
 			SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxSummer, SoundManager::Channel::Ambient, 2);
-			SoundManager::getInstance().loadAndPlayMusic("music/overworld1.ogg", 100);
+			SoundManager::getInstance().loadAndPlayMusic("music/overworld1.ogg", 100, 1);
 			break;
 		case 6:
 		case 7:
 		case 8:
 		case 9:
 			g.mWeather->setWeather(Weather::TimeOfDay::Evening, 1, 0, 50, true);
-			SoundManager::getInstance().loadAndPlayMusic("music/overworld2.ogg", 100);
+			SoundManager::getInstance().loadAndPlayMusic("music/overworld2.ogg", 100, 1);
 			break;
 		case 10:
 		case 11:
@@ -435,13 +442,13 @@ void GameState::setAtmosphere(Game& g) {
 		case 15:
 			g.mWeather->setWeather(Weather::TimeOfDay::Morning, 1, 0, 50, false);
 			SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxSummer, SoundManager::Channel::Ambient, 1);
-			SoundManager::getInstance().loadAndPlayMusic("music/overworld1.ogg", 100);
+			SoundManager::getInstance().loadAndPlayMusic("music/overworld1.ogg", 100, 1);
 			break;
 
 		default:
 			g.mWeather->setWeather(Weather::TimeOfDay::Evening, 1, 0, 50, true);
 			SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxSummer, SoundManager::Channel::Ambient, 1);
-			SoundManager::getInstance().loadAndPlayMusic("music/overworld2.ogg", 100);
+			SoundManager::getInstance().loadAndPlayMusic("music/overworld2.ogg", 100, 1);
 			break;
 	
 	

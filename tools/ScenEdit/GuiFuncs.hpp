@@ -14,6 +14,7 @@
 #pragma once
 
 int getIndexAtCursor();
+int getIndexAtPos(int x, int y);
 
 int selectSpriteLeft(int x, int y);
 int selectSpriteRight(int x, int y);

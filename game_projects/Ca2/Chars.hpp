@@ -24,13 +24,18 @@ public:
 
     // Could use normal enum here, so we can use the enum as array index directly.
     // Now we have to use static_cast, see below
-    enum class Name {
-        PearSlime,
-        OldieButGoldie,
+    enum NpcName {
+        StorySlime,
+        InfoSlime,
+        EventSlime,
         NumChars
     };
 
     Entity mBrodo;  // the player!
+
+    // the fadeout of the event slime
+    int mFadingEventSlimeId;
+    int mFadeCounter;
 
     // array of npc characters to talk to
     //Entity mAllChars[static_cast<int>(Name::NumChars)]; // static cast so we can use Name as int array index.
@@ -47,5 +52,8 @@ public:
 
     void setupNpc(Game& g);
     void removeNpc(Coordinator* mEcs);
+    void removeEventSlime(Game& g);
+    void removeAndStartFade(Game& g, Entity e, int x, int y);
+
 
 };

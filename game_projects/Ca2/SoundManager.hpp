@@ -38,7 +38,7 @@ public:
 
     void loadSfx();
     void playSfx(int id, int channel, int loops);
-    void loadAndPlayMusic(std::string filename, int volume);
+    void loadAndPlayMusic(std::string filename, int volume, int loops);
     void stopMusic();
 
     void onRobotDeath() override;
