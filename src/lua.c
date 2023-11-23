@@ -38,6 +38,7 @@ int lua_get_screen_h(lua_State *lua_env);
 int lua_get_device_res(lua_State* lua_env);
 int lua_set_render_scale(lua_State* lua_env);
 int lua_set_viewport(lua_State* lua_env);
+int lua_get_viewport(lua_State* lua_env);
 int lua_set_render_logical_size(lua_State* lua_env);
 int lua_set_fps(lua_State *lua_env);
 int lua_get_fps(lua_State *lua_env);
@@ -383,6 +384,7 @@ void register_fbl_functions_to_lua()
 	lua_register(fbl_lua_env, "fbl_get_device_res", lua_get_device_res);
 	lua_register(fbl_lua_env, "fbl_set_render_scale", lua_set_render_scale);
 	lua_register(fbl_lua_env, "fbl_set_viewport", lua_set_viewport);
+	lua_register(fbl_lua_env, "fbl_get_viewport", lua_get_viewport);
 	lua_register(fbl_lua_env, "fbl_set_render_logical_size", lua_set_render_logical_size);
 	lua_register(fbl_lua_env, "fbl_set_fps", lua_set_fps);
 	lua_register(fbl_lua_env, "fbl_get_fps", lua_get_fps);
@@ -770,6 +772,22 @@ int lua_set_viewport(lua_State* lua_env)
 	fbl_set_viewport(x, y, w, h);
 
 	return 1;
+
+}
+
+int lua_get_viewport(lua_State* lua_env)
+{
+
+	int x, y, w, h;
+
+	fbl_get_viewport(&x, &y, &w, &h);
+
+	lua_pushnumber(lua_env, (lua_Number)x);
+	lua_pushnumber(lua_env, (lua_Number)y);
+	lua_pushnumber(lua_env, (lua_Number)w);
+	lua_pushnumber(lua_env, (lua_Number)h);
+
+	return 4;
 
 }
 

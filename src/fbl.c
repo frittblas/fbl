@@ -501,6 +501,20 @@ int fbl_set_viewport(int x, int y, int w, int h)
 
 }
 
+void fbl_get_viewport(int *x, int *y, int *w, int *h)
+{
+
+	SDL_Rect rect;
+
+	SDL_RenderGetViewport(fbl_engine.renderer, &rect);
+
+	*x = rect.x;
+	*y = rect.y;
+	*w = rect.w;
+	*h = rect.h;
+
+}
+
 /* Set a device independent resolution for rendering */
 
 int fbl_set_render_logical_size(int x, int y)

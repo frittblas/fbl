@@ -967,7 +967,7 @@ void Maintenance::getInput(Game& g) {
 	}
 
 	// Sequencer input
-	if (fbl_get_ui_elem_val(mSeq.arrowLeftId) || fbl_get_key_down(FBLK_LEFT) && mKeyDelayLeft[0] == 0) {
+	if (fbl_get_ui_elem_val(mSeq.arrowLeftId) || (fbl_get_key_down(FBLK_LEFT) && mKeyDelayLeft[0] == 0)) {
 		if (mSeq.checkDuration == 0) {
 
 			// find next mimic arrow
@@ -990,7 +990,7 @@ void Maintenance::getInput(Game& g) {
 		}
 
 	}
-	if (fbl_get_ui_elem_val(mSeq.arrowRightId) || fbl_get_key_down(FBLK_RIGHT) && mKeyDelayLeft[1] == 0) {
+	if (fbl_get_ui_elem_val(mSeq.arrowRightId) || (fbl_get_key_down(FBLK_RIGHT) && mKeyDelayLeft[1] == 0)) {
 		if (mSeq.checkDuration == 0) {
 
 			// find next mimic arrow

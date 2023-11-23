@@ -216,9 +216,23 @@ local iter = 1
 while true do
 	if iter == 1 then
 		if not g_wait_response then
-			disp_dw("Hello! I am the info-slime", "I will inform you about", "important things..", "Good stuff..", " ")
+			disp_dw("Hello! I am the info-slime", "I will inform you about..", "..things...", "Good stuff..", " ")
 		elseif getResponse() == OK then
-			iter = advance(Explore, 1) -- reset dialogue and go to Explore state
+			iter = advance(Stay, iter + 1) -- reset dialogue and go to Explore state
+		end
+	elseif iter == 2 then
+		if not g_wait_response then
+			disp_dw("I will also arrange ROBOT MAINTENANCE.", "It's a risk reward deal.", "Wanna try?", "Lets do it", "No way")
+		elseif getResponse() == NO then
+			iter = advance(Explore, 1)
+		elseif getResponse() == YES then
+			iter = advance(Maintenance, iter + 1) -- run maintenance and advance to next dialog
+		end
+	elseif iter == 3 then
+		if not g_wait_response then
+			disp_dw("I have nothing more to tell you.", "Go and find other, wiser info slimes", " ", "Ok", " ")
+		elseif getResponse() == OK then
+			iter = advance(Explore, 3) -- go to explore and stay at this option
 		end
 	end
 

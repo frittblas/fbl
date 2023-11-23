@@ -27,6 +27,10 @@ Efx::Efx() {
 	shakeDuration = 0;
 	nextTweenId = 0;
 
+	// get the original viewport so screenshake sets it correctly
+	int w, h;
+	fbl_get_viewport(&viewPortX, &viewPortY, &w, &h);
+
 	std::cout << "Initialized Efx subsystem." << std::endl;
 }
 
@@ -117,7 +121,7 @@ void Efx::tickCameraShake() {
 
 	if (shakeDuration > 1) {
 		x = y = rand() % shakeIntensity; // -shakeIntensity / 2;
-		fbl_set_viewport(x, y, Game::LogicalResW, Game::LogicalResH);
+		fbl_set_viewport(viewPortX + x, viewPortY + y, Game::LogicalResW, Game::LogicalResH);
 		shakeDuration--;
 
 		// gradually decrease intensity
@@ -126,7 +130,7 @@ void Efx::tickCameraShake() {
 
 	}
 	else if (shakeDuration == 1) {
-		fbl_set_viewport(0, 0, Game::LogicalResW, Game::LogicalResH);
+		fbl_set_viewport(viewPortX, viewPortY, Game::LogicalResW, Game::LogicalResH);
 		shakeDuration = 0;
 	}
 
@@ -134,7 +138,7 @@ void Efx::tickCameraShake() {
 
 void Efx::initExplosion() {
 	// create the particles
-	explosionId = fbl_create_emitter(200);	// create emitter with 200 particles, creating a mezmerizing nebulosa :)
+	explosionId = fbl_create_emitter(150);	// create emitter with 150 particles, creating a mezmerizing nebulosa :)
 	fbl_set_emitter_params(explosionId, FBL_EMITTER_FLOWER, 10, 10, 100, 1, 3, 0.3, 1.5);
 	fbl_set_emitter_particle_shape(explosionId, FBL_NO_PRIM, 448, 128, 64, 64);	// use particle image instead of prim
 	fbl_set_emitter_active(explosionId, false);
@@ -165,7 +169,7 @@ void Efx::tickExplosion() {
 void Efx::initCoinEfx() {
 
 	// create the particles
-	coinEfxId = fbl_create_emitter(100);	// create emitter with 100 particles
+	coinEfxId = fbl_create_emitter(50);	// create emitter with 50 particles
 	fbl_set_emitter_color(coinEfxId, 255, 224, 0, 255, true);
 	fbl_set_emitter_color(coinEfxId, 255, 253, 234, 0, false);
 	fbl_set_emitter_params(coinEfxId, FBL_EMITTER_FLOWER, 5, 5, 30, 1, 3, 0.3, 1.0);

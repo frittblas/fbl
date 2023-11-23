@@ -72,6 +72,8 @@ class Efx : public IObserver{
         uint16_t explosionId, explodeDuration;  // explosion things
         uint16_t coinEfxId, coinEfxDuration;  // coin things
 
+        int viewPortX, viewPortY;
+
         // add more of these
         float easeOut(float t);
         float elasticOut(float t);

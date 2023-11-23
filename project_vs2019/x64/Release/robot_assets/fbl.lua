@@ -214,6 +214,7 @@ int  fbl_get_screen_h(void);
 int  fbl_get_device_res(int* w, int* h);
 int  fbl_set_render_scale(float scale_x, float scale_y);
 int  fbl_set_viewport(int x, int y, int w, int h);
+void fbl_get_viewport(int *x, int *y, int *w, int *h);
 int  fbl_set_render_logical_size(int x, int y);
 void fbl_set_fps(int fps);
 int  fbl_get_fps(void);
