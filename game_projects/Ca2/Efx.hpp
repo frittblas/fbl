@@ -38,6 +38,16 @@ class Efx : public IObserver{
         void shakeCamera(int intensity, int duration);
         void tickCameraShake();
 
+        // explosion
+        void initExplosion();
+        void startExplosion(int x, int y);
+        void tickExplosion();
+
+        // coin effect
+        void initCoinEfx();
+        void startCoinEfx(int x, int y);
+        void tickCoinEfx();
+
         // black border transition, film style
         void setupFilmTransition(bool in);
         void tickFilmTransition();
@@ -58,6 +68,9 @@ class Efx : public IObserver{
         uint32_t nextTweenId;               // next free id
 
         uint16_t shakeIntensity, shakeDuration;  // camera shake stuff :)
+
+        uint16_t explosionId, explodeDuration;  // explosion things
+        uint16_t coinEfxId, coinEfxDuration;  // coin things
 
         // add more of these
         float easeOut(float t);

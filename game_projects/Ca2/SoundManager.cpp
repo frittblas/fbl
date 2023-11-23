@@ -42,6 +42,7 @@ void SoundManager::loadSfx() {
 	// load all the sound effects in the game and assign id's
 	
 	mSfxCoin = fbl_load_sound("sfx/coin.ogg");
+	fbl_set_sound_volume(mSfxDenied, 50); // max is 128
 	mSfxDenied = fbl_load_sound("sfx/denied.ogg");
 	fbl_set_sound_volume(mSfxDenied, 40); // max is 128
 	mSfxExplosion = fbl_load_sound("sfx/explosion1.ogg");

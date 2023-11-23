@@ -171,3 +171,9 @@ void Chars::removeAndStartFade(Game& g, Entity e, int x, int y) {
 	mFadeCounter = 254;
 
 }
+
+void Chars::resetFadeCounter() {
+
+	mFadeCounter = 255;
+
+}

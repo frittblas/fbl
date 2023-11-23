@@ -46,6 +46,7 @@
 #include "Maintenance.hpp"
 
 #include "../Chars.hpp"
+#include "../Efx.hpp"
 #include "../Robots.hpp"
 #include "../Addons.hpp"
 #include "../Location.hpp"
@@ -279,7 +280,7 @@ void GameState::titleToExplore(Game& g) {
 
 	std::cout << "player id(e): " << g.mChars->mBrodo << std::endl;
 
-	g.mChars->mFadeCounter = 255;
+	g.mChars->resetFadeCounter();
 
 	SoundManager::getInstance().stopMusic();
 	SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxRainStorm, SoundManager::Channel::Ambient, 1);
@@ -370,6 +371,9 @@ void GameState::setupRace(Game& g) {
 	auto& light = g.mEcs->GetComponent<Light>(g.mChars->mBrodo);
 	fbl_set_sprite_active(light.id, false);
 
+	// explosion particles
+	Efx::getInstance().initExplosion();
+	Efx::getInstance().initCoinEfx();
 
 	g.mWeather->setWeather(Weather::TimeOfDay::Evening, 0, 0, 0, false);
 

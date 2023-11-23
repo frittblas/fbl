@@ -14,8 +14,10 @@
 #include "../../../Ecs/Ecs.hpp"
 #include "../../../Ecs/Components.hpp"
 
+#include "../../../../Ca2/Efx.hpp"
 #include "../../../../Ca2/Game.hpp"
 #include "../../../../Ca2/Progress.hpp"
+#include "../../../../Ca2/SoundManager.hpp"
 #include "../../../../Ca2/GameState/Race/Race.hpp"
 #include "../../../../Ca2/GameState/Race/Maze.hpp"
 
@@ -78,10 +80,18 @@ void CaptureFlags::handleCoins(Entity e, Sprite& spr, PathLogic& plog) {
 		if (Maze::sCoin[i].id == -1) continue;
 		if (!fbl_get_sprite_collision(spr.id[0], Maze::sCoin[i].id)) continue;
 
+		int x = fbl_get_sprite_x(Maze::sCoin[i].id);
+		int y = fbl_get_sprite_y(Maze::sCoin[i].id);
+
 		fbl_set_sprite_active(Maze::sCoin[i].id, false);
 		Maze::sCoin[i].id = -1;
 		plog.coins++;
 		std::cout << "Player " << e << " has " << (int)plog.coins << std::endl;
+
+		// coin effect
+		Efx::getInstance().startCoinEfx(x, y);
+
+		SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxCoin, SoundManager::Channel::Ui, 0);
 
 	}
 

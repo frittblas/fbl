@@ -54,6 +54,7 @@ public:
     void removeNpc(Coordinator* mEcs);
     void removeEventSlime(Game& g);
     void removeAndStartFade(Game& g, Entity e, int x, int y);
+    void resetFadeCounter();
 
 
 };

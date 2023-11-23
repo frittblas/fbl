@@ -340,14 +340,18 @@ void Race::tick(Game& g) {
 	//g.mWeather->tick();
 
 	Efx::getInstance().tickCameraShake();
+	Efx::getInstance().tickExplosion();
+	Efx::getInstance().tickCoinEfx();
 
-
-	if (fbl_get_mouse_click(FBLMB_RIGHT)) Efx::getInstance().shakeCamera(20, 40);
+	if (fbl_get_mouse_click(FBLMB_RIGHT))
+		//Efx::getInstance().startExplosion(400, 200);
+		Efx::getInstance().startCoinEfx(400, 200);
 
 	if (fbl_get_key_down(FBLK_7)) sRaceState = First;
 	if (fbl_get_key_down(FBLK_8)) sRaceState = Second;
 	if (fbl_get_key_down(FBLK_9)) sRaceState = Third;
 	if (fbl_get_key_down(FBLK_0)) sRaceState = Fourth;
+
 
 	if(fbl_get_raw_frames_count() % 60 == 0)
 		std::cout << "Tick race!" << std::endl;

@@ -18,6 +18,7 @@
 
 #include "../../../GameState/Race/Maze.hpp"
 
+#include "../../../Efx.hpp"
 #include "../../../Game.hpp"
 #include "../../../Robots.hpp"
 #include "../../../Progress.hpp"
@@ -210,6 +211,7 @@ void LaserSystem::dealDamage(Game &g, Entity attacker, Entity target) {
 			auto& attackSta = g.mEcs->GetComponent<Stats>(attacker);
 			auto& targetSpr = g.mEcs->GetComponent<Sprite>(target);
 			auto& targetAim = g.mEcs->GetComponent<AutoAim>(target);
+			auto& targetPos = g.mEcs->GetComponent<Position>(target);
 			Laser* targetLas = nullptr;
 			if (g.mEcs->HasComponent<Laser>(target))
 				targetLas = &g.mEcs->GetComponent<Laser>(target);
@@ -224,6 +226,9 @@ void LaserSystem::dealDamage(Game &g, Entity attacker, Entity target) {
 			if (targetLas) targetLas->isFiring = false;
 			//Efx::getInstance().shakeCamera(20, 40);					// shake camera
 			fbl_set_emitter_active(attackLas.particleId, false);		// turn off emitter, making a cloud
+
+			// explosion
+			Efx::getInstance().startExplosion(targetPos.x, targetPos.y);
 
 			robotDied();
 

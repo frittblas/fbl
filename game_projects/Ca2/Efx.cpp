@@ -132,6 +132,68 @@ void Efx::tickCameraShake() {
 
 }
 
+void Efx::initExplosion() {
+	// create the particles
+	explosionId = fbl_create_emitter(200);	// create emitter with 200 particles, creating a mezmerizing nebulosa :)
+	fbl_set_emitter_params(explosionId, FBL_EMITTER_FLOWER, 10, 10, 100, 1, 3, 0.3, 1.5);
+	fbl_set_emitter_particle_shape(explosionId, FBL_NO_PRIM, 448, 128, 64, 64);	// use particle image instead of prim
+	fbl_set_emitter_active(explosionId, false);
+	explodeDuration = 50;
+}
+
+void Efx::startExplosion(int x, int y) {
+
+	fbl_set_emitter_xy(explosionId, x, y);
+	fbl_set_emitter_active(explosionId, true);
+	explodeDuration = 49;
+
+}
+
+void Efx::tickExplosion() {
+
+	if (explodeDuration < 50) {
+
+		explodeDuration--;
+		if (explodeDuration < 1) {
+			fbl_set_emitter_active(explosionId, false);
+			explodeDuration = 50;
+		}
+	}
+
+}
+
+void Efx::initCoinEfx() {
+
+	// create the particles
+	coinEfxId = fbl_create_emitter(100);	// create emitter with 100 particles
+	fbl_set_emitter_color(coinEfxId, 255, 224, 0, 255, true);
+	fbl_set_emitter_color(coinEfxId, 255, 253, 234, 0, false);
+	fbl_set_emitter_params(coinEfxId, FBL_EMITTER_FLOWER, 5, 5, 30, 1, 3, 0.3, 1.0);
+	fbl_set_emitter_active(coinEfxId, false);
+	coinEfxDuration = 30;
+
+}
+
+void Efx::startCoinEfx(int x, int y) {
+
+	fbl_set_emitter_xy(coinEfxId, x, y);
+	fbl_set_emitter_active(coinEfxId, true);
+	coinEfxDuration = 29;
+
+}
+
+void Efx::tickCoinEfx() {
+
+	if (coinEfxDuration < 30) {
+
+		coinEfxDuration--;
+		if (coinEfxDuration < 1) {
+			fbl_set_emitter_active(coinEfxId, false);
+			coinEfxDuration = 30;
+		}
+	}
+
+}
 
 void Efx::setupFilmTransition(bool in) {
 
