@@ -12,6 +12,7 @@
 
 #include "../../tools/ScenEdit/ScenEdit.hpp"
 #include "Ecs/Ecs.hpp"
+#include "Efx.hpp"
 #include "Game.hpp"
 #include "SysManager.hpp"
 #include "SoundManager.hpp"
@@ -100,6 +101,7 @@ bool Game::init() {
 	mWeather = new Weather();
 	mProgress = new Progress();
 
+	Efx::getInstance().initCameraShake();
 	SoundManager::getInstance().loadSfx();
 
 	std::cout << "Starting sysmanager setup." << std::endl;

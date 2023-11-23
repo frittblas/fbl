@@ -27,10 +27,6 @@ Efx::Efx() {
 	shakeDuration = 0;
 	nextTweenId = 0;
 
-	// get the original viewport so screenshake sets it correctly
-	int w, h;
-	fbl_get_viewport(&viewPortX, &viewPortY, &w, &h);
-
 	std::cout << "Initialized Efx subsystem." << std::endl;
 }
 
@@ -103,6 +99,13 @@ void Efx::tickTweens() {
 		}
 
 	}
+
+}
+void Efx::initCameraShake() {
+
+	// get the original viewport so screenshake sets it correctly
+	int w, h;
+	fbl_get_viewport(&viewPortX, &viewPortY, &w, &h);
 
 }
 

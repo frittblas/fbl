@@ -35,6 +35,7 @@ class Efx : public IObserver{
         void  tickTweens();
 
         // camera shake
+        void initCameraShake();
         void shakeCamera(int intensity, int duration);
         void tickCameraShake();
 
