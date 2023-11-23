@@ -63,7 +63,7 @@ void SoundManager::loadSfx() {
 	mSfxTick = fbl_load_sound("sfx/tick.ogg");
 	fbl_set_sound_volume(mSfxTick, 20); // max is 128
 	mSfxTurbo = fbl_load_sound("sfx/turbo.ogg");
-
+	
 	mSfxRainStorm = fbl_load_sound("sfx/rain.ogg");
 	mSfxSummer = fbl_load_sound("sfx/summer.ogg");
 	

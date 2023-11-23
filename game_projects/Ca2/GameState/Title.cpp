@@ -107,8 +107,8 @@ void Title::tick(Game& g) {
 	
 		showTitle();
 
-		SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxSummer, SoundManager::Channel::Ambient, 1);
 		SoundManager::getInstance().loadAndPlayMusic("music/title.ogg", 40, 0);
+		SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxSummer, SoundManager::Channel::Ambient, 1);
 
 		g.mWeather->setWeather(Weather::TimeOfDay::Day, 0, 14, 80, false);
 
