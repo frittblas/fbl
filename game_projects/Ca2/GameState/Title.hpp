@@ -20,9 +20,13 @@ public:
     Title();
     ~Title();
 
+    void hideTitle();
+    void showTitle();
+
     virtual void tick(Game& g) override;
 
 private:
+    int mIntroId, mSubIntroId;
     int mTitleId, mSubTitleId, mAuthorTextId, mWebsiteTextId;
     int mTweenIdTitle, mTweenIdSub;
 

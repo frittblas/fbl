@@ -19,6 +19,8 @@
 
 #include <iostream>
 
+extern int firstRun;
+
 UserInput::UserInput() {
 
 	access = 0;
@@ -68,8 +70,15 @@ void UserInput::tick(Game& g) {
 
 	// for android, temporary :)
 	if (fbl_get_mouse_click(FBLMB_LEFT) && access == 0 && g.mState->get() == GameState::StateType::Title) {
-		g.mState->change(g, GameState::StateType::Explore);
-		access = buttonDelay;
+		if (firstRun == 0) {
+			g.mState->change(g, GameState::StateType::Explore);
+			access = buttonDelay;
+		}
+		else if (firstRun == 2) {
+			firstRun = 1;
+			access = buttonDelay * 3;
+		}
+
 	}
 
 
@@ -128,7 +137,7 @@ void UserInput::tick(Game& g) {
 		access = buttonDelay;
 	}
 
-	// support for standard alt + enter for fullscreen
+	// standard alt + enter for fullscreen
 	if (fbl_get_key_down(FBLK_LALT) && fbl_get_key_down(FBLK_RETURN) && access == 0) {
 		if (isFullscreen) {
 			fbl_set_window_mode(0);	// windowed

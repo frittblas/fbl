@@ -27,7 +27,7 @@
 #include "GameState/GameState.hpp"
 
 
-// the only global object (file scope!), the map, with optional editor, prefixed with g
+// the only global object (file scope), the map, with optional editor, prefixed with g
 // this is assigned to the Game-class member variable mMap, so there is no real global state at all.
 // Don't use this. Use mMap instead.
 ScenEdit* gEditor;	// pointer to the map with optional editor, has to be called gEditor bc it's externed in GuiFuncs.cpp
@@ -83,14 +83,12 @@ bool Game::init() {
 	fbl_load_texture((char*)"spritesheet.png");	// load sprite texture
 	fbl_load_ui_texture((char*)"ui_1.png");			// load ui texture
 
-	// fbl_lua_init("Ca2Dialogue.lua", registerFuncsToLua);
 
 	// create instances of the Game-class sub systems
 	gEditor = new ScenEdit(false);	// create new instance of ScenEdit without editor GUI
 	mMap = gEditor;					// assign gEditor pointer to mMap, so we can avoid global state. Only use mMap after this.
 	mEcs = new Coordinator();
 	mSysManager = new SysManager();
-	//mSound = new SoundManager();
 	mState = new GameState();
 	mInput = new UserInput();
 	mChars = new Chars();
@@ -109,11 +107,6 @@ bool Game::init() {
 	mSysManager->setupObservers();
 	std::cout << "Done with sysmanager setup. " << std::endl;
 
-	// start the snow particle effect
-	//mWeather->setWeather(Weather::TimeOfDay::Day, 0, 6, 50, false);
-	// start nice clouds
-	mWeather->setWeather(Weather::TimeOfDay::Day, 0, 14, 80, false);
-
 	return true;
 
 }
@@ -127,7 +120,6 @@ void Game::unInit() {
 	delete mEcs;
 	delete mMap;
 	delete mSysManager;
-	//delete mSound;
 	delete mState;
 	delete mInput;
 	delete mChars;

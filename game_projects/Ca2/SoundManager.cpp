@@ -67,9 +67,6 @@ void SoundManager::loadSfx() {
 	mSfxRainStorm = fbl_load_sound("sfx/rain.ogg");
 	mSfxSummer = fbl_load_sound("sfx/summer.ogg");
 	
-	playSfx(mSfxSummer, Ambient, 1);
-	loadAndPlayMusic("music/title.ogg", 40, 0);
-
 }
 
 void SoundManager::playSfx(int id, int channel, int loops) {

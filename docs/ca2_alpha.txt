@@ -19,5 +19,5 @@ Bug:
 In maintenance mode: Sometimes it's game over even though you have another robot?
 I might be wrong
 
-Web: playing sound doesn't work unless you click on the screen, find solution.
-Android: PostRace aligns viewport to the left not center.
+Web: playing sound doesn't work unless you click on the screen, find solution. - on it
+Android: PostRace aligns viewport to the left not center. - FIXED (was viewport camerashake)
