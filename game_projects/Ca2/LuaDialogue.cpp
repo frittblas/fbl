@@ -46,6 +46,7 @@ int luaGetResponse(lua_State* lua_env);
 int luaGetCurrentDialogueId(lua_State* lua_env);
 
 int luaGiveFunds(lua_State* lua_env);
+int luaGiveRobot(lua_State* lua_env);
 int luaOpenChest(lua_State* lua_env);
 
 // register these C++ functions so they can be called from Lua.
@@ -62,6 +63,7 @@ void registerFuncsToLua()
 	lua_register(fbl_lua_env, "getCurrentDialogueId", luaGetCurrentDialogueId);
 
 	lua_register(fbl_lua_env, "giveFunds", luaGiveFunds);
+	lua_register(fbl_lua_env, "giveRobot", luaGiveRobot);
 	lua_register(fbl_lua_env, "openChest", luaOpenChest);
 
 }
@@ -268,13 +270,24 @@ int luaGetCurrentDialogueId(lua_State* lua_env) {
 
 }
 
-int luaGiveFunds(lua_State * lua_env) {
+int luaGiveFunds(lua_State* lua_env) {
 
 	int amount = rand() % 5 + 3;
 
 	gGame->mProgress->mFunds += amount;
 
 	lua_pushnumber(lua_env, amount);
+
+	return 1;
+
+}
+
+int luaGiveRobot(lua_State* lua_env) {
+
+	const char* name = "Hello, Lua!";
+	// get free robot from all arr
+
+	lua_pushstring(lua_env, name);
 
 	return 1;
 

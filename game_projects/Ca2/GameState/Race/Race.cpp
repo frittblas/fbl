@@ -130,10 +130,6 @@ void Race::assignRobots(Game& g) {
 
 		case 0:
 		case 1:
-			blockDensity = (rand() % 10) + 28;	// slightly denser maps in the beginning
-			mMaze->initMaze(g, blockDensity, mNumRacers, Race::GameMode::GM_CaptureFlags);	// start with CF
-			g.mWeather->setWeather(Weather::TimeOfDay::Late, 0, 0, 0, false);
-			break;
 		case 2:
 		case 3:
 		case 4:
