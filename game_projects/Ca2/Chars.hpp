@@ -22,13 +22,11 @@ class Chars {
 
 public:
 
-    // Could use normal enum here, so we can use the enum as array index directly.
-    // Now we have to use static_cast, see below
     enum NpcName {
-        StorySlime,
-        InfoSlime,
-        EventSlime,
-        NumChars
+        StorySlime = 10,
+        InfoSlime = 30,
+        EventSlime = 50,
+        ChestMan = 100
     };
 
     Entity mBrodo;  // the player!
@@ -52,9 +50,10 @@ public:
 
     void setupNpc(Game& g);
     void removeNpc(Coordinator* mEcs);
-    void removeEventSlime(Game& g);
+    void checkNPC(Game& g, int npc);
     void removeAndStartFade(Game& g, Entity e, int x, int y);
     void resetFadeCounter();
+    void openChestMan(Game& g, int x, int y);
 
 
 };

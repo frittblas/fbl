@@ -259,6 +259,32 @@ while true do
 end
 end)
 
+
+g_dialogue[90] = coroutine.create(function ()
+local iter = 1
+while true do
+	if iter == 1 then
+		if not g_wait_response then
+			local result = string.format("You found %.0f coins!", giveFunds())
+			openChest()
+			disp_dw(result, " ", " ", "Nice", " ")
+		elseif getResponse() == OK then
+			iter = advance(Explore, 2)
+		end
+	elseif iter == 2 then
+		if not g_wait_response then
+			disp_dw("It's empty.", " ", " ", "Ok", " ")
+		elseif getResponse() == OK then
+			iter = advance(Explore, 2) -- go to explore and stay at this option
+		end
+	end
+
+	coroutine.yield()
+	
+end
+end)
+
+
 function fbl_lua_start()
 
 	make_strict()	-- have to declare variables beforehand

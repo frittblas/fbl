@@ -327,7 +327,7 @@ void GameState::raceToExplore(Game& g) {
 	setAtmosphere(g);	// set music, ambience and weather based on progress
 
 	// delete the event-slime you talked to
-	g.mChars->removeEventSlime(g);
+	g.mChars->checkNPC(g, g.mChars->EventSlime);
 	// play silly sound
 	SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxSnap, SoundManager::Channel::Ui, 0);
 

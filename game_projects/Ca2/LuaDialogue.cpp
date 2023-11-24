@@ -14,6 +14,8 @@
 #include "../../src/fbl.hpp"
 #include "../../dependencies/common/lua-5.4.1/include/lua.hpp"
 #include "Game.hpp"
+#include "Chars.hpp"
+#include "Progress.hpp"
 #include "GameState/GameState.hpp"
 #include "LuaDialogue.hpp"
 
@@ -43,6 +45,9 @@ int luaDisplayDialog(lua_State* lua_env);
 int luaGetResponse(lua_State* lua_env);
 int luaGetCurrentDialogueId(lua_State* lua_env);
 
+int luaGiveFunds(lua_State* lua_env);
+int luaOpenChest(lua_State* lua_env);
+
 // register these C++ functions so they can be called from Lua.
 void registerFuncsToLua()
 {
@@ -55,6 +60,9 @@ void registerFuncsToLua()
 	lua_register(fbl_lua_env, "getResponse", luaGetResponse);
 
 	lua_register(fbl_lua_env, "getCurrentDialogueId", luaGetCurrentDialogueId);
+
+	lua_register(fbl_lua_env, "giveFunds", luaGiveFunds);
+	lua_register(fbl_lua_env, "openChest", luaOpenChest);
 
 }
 
@@ -259,3 +267,24 @@ int luaGetCurrentDialogueId(lua_State* lua_env) {
 	return 1;
 
 }
+
+int luaGiveFunds(lua_State * lua_env) {
+
+	int amount = rand() % 5 + 3;
+
+	gGame->mProgress->mFunds += amount;
+
+	lua_pushnumber(lua_env, amount);
+
+	return 1;
+
+}
+
+int luaOpenChest(lua_State* lua_env) {
+
+	gGame->mChars->checkNPC(*gGame, gGame->mChars->ChestMan);
+
+	return 0;
+
+}
+

@@ -98,10 +98,11 @@ void Chars::setupNpc(Game& g) {
 
 					switch (g.mMap->tile[index]->type) {
 
-						case 10:	// Npc with type 10 (-10) = 0 = slime
-						case 11:	// type 11 (-10) = 1 = also slime :)
-						case 30:
-						case 50:
+						case StorySlime:		// Npc with type 10 (-10) = 0 = slime
+						case StorySlime + 1:	// type 11 (-10) = 1 = also slime :)
+						case InfoSlime:
+						case EventSlime:
+						case ChestMan:
 
 							int id = g.mEcs->CreateEntity();
 							g.mChars->mNpc.push_back(id);
@@ -133,7 +134,7 @@ void Chars::removeNpc(Coordinator* mEcs) {
 
 }
 
-void Chars::removeEventSlime(Game& g) {
+void Chars::checkNPC(Game& g, int npc) {
 
 	for (Entity e : mNpc) {
 	
@@ -145,7 +146,14 @@ void Chars::removeEventSlime(Game& g) {
 			(pos.y == (player.y + Game::TileSize) && pos.x == player.x) ||
 			(pos.y == (player.y - Game::TileSize) && pos.x == player.x)) {
 
-			removeAndStartFade(g, e, (int)pos.x, (int)pos.y);
+			switch (npc) {
+				case EventSlime:
+					removeAndStartFade(g, e, (int)pos.x, (int)pos.y);
+				break;
+				case ChestMan:
+					openChestMan(g, (int)pos.x, (int)pos.y);
+					break;
+			}
 
 		}
 	
@@ -175,5 +183,15 @@ void Chars::removeAndStartFade(Game& g, Entity e, int x, int y) {
 void Chars::resetFadeCounter() {
 
 	mFadeCounter = 255;
+
+}
+
+void Chars::openChestMan(Game& g, int x, int y) {
+
+	// switch the sprite to open chest
+	int index = getIndexAtPos(x, y);
+	if (g.mMap->tile[index] != nullptr) {
+		fbl_set_sprite_image(g.mMap->tile[index]->id, 128, 480, 32, 32, 0);
+	}
 
 }
