@@ -299,10 +299,13 @@ void GameState::raceToExplore(Game& g) {
 
 	// remove the path and pathLogic components from the racing robots
 	for (int i = 0; i < g.mRobots->mNumRacers; i++) {
-		g.mEcs->RemoveComponent<Path>(g.mRobots->mRacingRobots[i]);
-		g.mEcs->RemoveComponent<PathLogic>(g.mRobots->mRacingRobots[i]);
+		if (g.mEcs->HasComponent<Path>(g.mRobots->mRacingRobots[i]))
+			g.mEcs->RemoveComponent<Path>(g.mRobots->mRacingRobots[i]);
+		if (g.mEcs->HasComponent<PathLogic>(g.mRobots->mRacingRobots[i]))
+			g.mEcs->RemoveComponent<PathLogic>(g.mRobots->mRacingRobots[i]);
 		if (i > 0) {	// only remove for non players
-			g.mEcs->RemoveComponent<BasicAI>(g.mRobots->mRacingRobots[i]);
+			if (g.mEcs->HasComponent<BasicAI>(g.mRobots->mRacingRobots[i]))
+				g.mEcs->RemoveComponent<BasicAI>(g.mRobots->mRacingRobots[i]);
 			// also remove any addons they might have (not Sprite, Stats, AutoAim, Light)
 			if(g.mEcs->HasComponent<Laser>(g.mRobots->mRacingRobots[i]))
 				g.mEcs->RemoveComponent<Laser>(g.mRobots->mRacingRobots[i]);
@@ -330,6 +333,7 @@ void GameState::raceToExplore(Game& g) {
 
 	// delete the event-slime you talked to
 	g.mChars->checkNPC(g, g.mChars->EventSlime);
+
 	// play silly sound
 	SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxSnap, SoundManager::Channel::Ui, 0);
 
@@ -381,7 +385,7 @@ void GameState::setupRace(Game& g) {
 	Efx::getInstance().initExplosion();
 	Efx::getInstance().initCoinEfx();
 
-	g.mWeather->setWeather(Weather::TimeOfDay::Evening, 0, 0, 0, false);
+	//g.mWeather->setWeather(Weather::TimeOfDay::Evening, 0, 0, 0, false);
 
 	SoundManager::getInstance().loadAndPlayMusic("music/dm.ogg", 80, 0);
 

@@ -130,26 +130,42 @@ void Race::assignRobots(Game& g) {
 
 		case 0:
 		case 1:
+			blockDensity = (rand() % 10) + 28;	// slightly denser maps in the beginning
+			mMaze->initMaze(g, blockDensity, mNumRacers, Race::GameMode::GM_CaptureFlags);	// start with CF
+			g.mWeather->setWeather(Weather::TimeOfDay::Late, 0, 0, 0, false);
+			break;
 		case 2:
 		case 3:
 		case 4:
 			blockDensity = (rand() % 10) + 25;	// slightly denser maps in the beginning
 			mMaze->initMaze(g, blockDensity, mNumRacers, Race::GameMode::GM_CaptureFlags);	// start with CF
+			g.mWeather->setWeather(Weather::TimeOfDay::Evening, 0, 0, 0, false);
 			break;
 		case 5:
 		case 6:
 			mMaze->initMaze(g, blockDensity - 5, mNumRacers, Race::GameMode::GM_DeathMatch); // less dense DM map
+			g.mWeather->setWeather(Weather::TimeOfDay::Evening, 0, 0, 0, false);
 			break;
 		case 7:
 		case 8:
 			blockDensity = (rand() % 10) + 25;	// denser maps again
 			mMaze->initMaze(g, blockDensity, mNumRacers, Race::GameMode::GM_CaptureFlags);	// CF
+			g.mWeather->setWeather(Weather::TimeOfDay::Late, 0, 0, 0, false);
 			break;
 		default:
-			if(rand() % 2 == 0)
+			int chance = rand() % 3;
+			if(chance < 2)
 				mMaze->initMaze(g, blockDensity, mNumRacers, Race::GameMode::GM_CaptureFlags);
 			else
 				mMaze->initMaze(g, blockDensity - 5, mNumRacers, Race::GameMode::GM_DeathMatch); // less dense DM map
+
+			chance = rand() % 10;
+			if(chance <= 5)
+				g.mWeather->setWeather(Weather::TimeOfDay::Evening, 0, 0, 0, false);
+			else if (chance > 5 && chance < 9)
+				g.mWeather->setWeather(Weather::TimeOfDay::Late, 0, 0, 0, false);
+			else if (chance == 9)
+				g.mWeather->setWeather(Weather::TimeOfDay::Night, 0, 0, 0, false);
 			break;
 
 	}
@@ -355,5 +371,6 @@ void Race::tick(Game& g) {
 
 	if(fbl_get_raw_frames_count() % 60 == 0)
 		std::cout << "Tick race!" << std::endl;
+
 
 }

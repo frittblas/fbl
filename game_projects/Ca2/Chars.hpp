@@ -32,6 +32,7 @@ public:
     struct NpcRestorer {
         int x, y;
         NpcName name;
+        Entity e;
     };
 
     Entity mBrodo;  // the player!
@@ -55,6 +56,7 @@ public:
 
     void setupNpc(Game& g);
     void removeNpc(Coordinator* mEcs);
+    void removeEntityFromNpcList(Entity e);
     void checkNPC(Game& g, int npc);
     void removeAndStartFade(Game& g, Entity e, int x, int y);
     void resetFadeCounter();

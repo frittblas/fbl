@@ -77,6 +77,7 @@ void PostRace::tick(Game& g) {
 				setNextRobotasFav(g);
 
 		}
+
 	}
 
 

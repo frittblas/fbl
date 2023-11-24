@@ -134,6 +134,11 @@ void Chars::removeNpc(Coordinator* mEcs) {
 
 }
 
+void Chars::removeEntityFromNpcList(Entity e) {
+	mNpc.erase(std::remove(mNpc.begin(), mNpc.end(), e), mNpc.end());
+	for (Entity e : mNpc) std::cout << e << " ";
+}
+
 void Chars::checkNPC(Game& g, int npc) {
 
 	for (Entity e : mNpc) {
@@ -157,8 +162,10 @@ void Chars::checkNPC(Game& g, int npc) {
 					break;
 			}
 
+			removeEntityFromNpcList(e);
+
 			// add the npc to the restore list
-			NpcRestorer tmpRest = { (int)pos.x, (int)pos.y, (NpcName)npc};
+			NpcRestorer tmpRest = { (int)pos.x, (int)pos.y, (NpcName)npc, e};
 			g.mChars->mRestoreList.push_back(tmpRest);
 
 		}
@@ -179,7 +186,8 @@ void Chars::removeAndStartFade(Game& g, Entity e, int x, int y) {
 	fbl_pathf_set_walkability(x / Game::TileSize, y / Game::TileSize, FBL_PATHF_WALKABLE);
 
 	// remove dialogue trigger
-	g.mEcs->RemoveComponent<DialogueTrigger>(e);
+	if (g.mEcs->HasComponent<DialogueTrigger>(e))
+		g.mEcs->RemoveComponent<DialogueTrigger>(e);
 
 	// start the fade by setting counter to one less
 	mFadeCounter = 254;
@@ -222,9 +230,11 @@ void Chars::restoreNpcs(Game& g) {
 			case InfoSlime:
 			case EventSlime:
 				removeUsedNpcTile(g, r.x, r.y, r.name);
+				removeEntityFromNpcList(r.e);
 				break;
 			case ChestMan:
 				openChestMan(g, r.x, r.y);
+				removeEntityFromNpcList(r.e);
 				break;
 
 		}
