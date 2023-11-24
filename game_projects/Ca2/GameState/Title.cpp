@@ -20,7 +20,7 @@
 #include "Title.hpp"
 
 
- int firstRun = 1;
+ int firstRun = 3;
 
 // Title-class implementation
 
@@ -86,8 +86,10 @@ void Title::tick(Game& g) {
 		fbl_pause_music();
 		hideTitle();
 
-		fbl_load_ttf_font("font/garamond.ttf", 40);
-		mIntroId = fbl_create_text(255, 215, 0, 255, (char*)"Kastanjen.net presents:");
+		fbl_set_clear_color(0, 0, 0, 255);
+
+		fbl_load_ttf_font("font/garamond.ttf", 30);
+		mIntroId = fbl_create_text(255, 215, 0, 255, (char*)"kastanjen.net presents:");
 		fbl_set_text_align(mIntroId, FBL_ALIGN_CENTER);
 		fbl_set_text_xy(mIntroId, Game::DeviceResW / 2, 200);
 
@@ -101,6 +103,8 @@ void Title::tick(Game& g) {
 	}
 
 	if (firstRun == 1) {
+
+		fbl_set_clear_color(11, 168, 230, 255);
 
 		fbl_set_text_active(mIntroId, false);
 		fbl_set_text_active(mSubIntroId, false);

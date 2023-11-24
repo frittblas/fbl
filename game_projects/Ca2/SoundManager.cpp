@@ -59,7 +59,7 @@ void SoundManager::loadSfx() {
 	mSfxQuit = fbl_load_sound("sfx/quit.ogg");
 	fbl_set_sound_volume(mSfxQuit, 60); // max is 128
 	mSfxShield = fbl_load_sound("sfx/shield.ogg");
-	fbl_set_sound_volume(mSfxQuit, 50); // max is 128
+	fbl_set_sound_volume(mSfxQuit, 30); // max is 128
 	mSfxSnap = fbl_load_sound("sfx/snap.ogg");
 	mSfxTick = fbl_load_sound("sfx/tick.ogg");
 	fbl_set_sound_volume(mSfxTick, 20); // max is 128
