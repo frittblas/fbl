@@ -29,6 +29,11 @@ public:
         ChestMan = 100
     };
 
+    struct NpcRestorer {
+        int x, y;
+        NpcName name;
+    };
+
     Entity mBrodo;  // the player!
 
     // the fadeout of the event slime
@@ -53,7 +58,13 @@ public:
     void checkNPC(Game& g, int npc);
     void removeAndStartFade(Game& g, Entity e, int x, int y);
     void resetFadeCounter();
+    void removeUsedNpcTile(Game& g, int x, int y, int npc);
     void openChestMan(Game& g, int x, int y);
+    void restoreNpcs(Game& g);
+    void clearRestoreList();
 
+private:
+
+    std::vector<NpcRestorer> mRestoreList;  // list of the npcs that have been "used up" (open chests, old EventSlimes etc.)
 
 };

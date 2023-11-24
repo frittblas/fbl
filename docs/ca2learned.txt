@@ -1,2 +1,12 @@
 Very good structure, some file too big (maze, robotCollection etc.)
-Better UI system! - Just use imGui :)
+Better UI system (more flexible)! - Just use imGui :)
+
+Design classes with more private members and initializer lists
+
+const reference parameters!
+
+learn templates completely.
+
+Use more range based loops.
+
+More files, folders, classes, functions. Break down problems even more.

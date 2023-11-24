@@ -242,6 +242,7 @@ void GameState::toTitle(Game& g) {
 	g.mLocation->unLoadLocation(g.mMap);
 	g.mChars->removePlayer(g.mEcs);	 // delete the player completely
 	g.mChars->removeNpc(g.mEcs);	 // also delete all npcs in the current scene
+	g.mChars->clearRestoreList();
 	g.mRobots->removeRobots(g.mEcs); // delete all the robots
 	g.mAddons->removeAddons(g.mEcs); // delete all addons
 	fbl_set_clear_color(11, 168, 230, 255);	// blue sky for the title
@@ -292,6 +293,7 @@ void GameState::raceToExplore(Game& g) {
 	destroyAllGfx();					// remove resources (ALL sprites, prims, text, ui and emitters)
 	g.mLocation->loadLocation(g.mMap);	// this will destroy all sprites, then load map
 	initLuaDialog();					// set up prims and text and ui for the dialog box.
+	g.mChars->restoreNpcs(g);
 	g.mSysManager->mSpriteSystem->Init(*g.mEcs);	// create sprites for all entities with a sprite component
 	g.mSysManager->mLightSystem->Init(*g.mEcs);		// create lights for all entities with a light component
 
@@ -338,6 +340,7 @@ void GameState::maintenanceToExplore(Game& g) {
 	destroyAllGfx();					// remove resources
 	g.mLocation->loadLocation(g.mMap);
 	initLuaDialog();
+	g.mChars->restoreNpcs(g);
 	g.mSysManager->mSpriteSystem->Init(*g.mEcs);	// create sprites for all entities with a sprite component
 	g.mSysManager->mLightSystem->Init(*g.mEcs);		// create lights for all entities with a light component
 

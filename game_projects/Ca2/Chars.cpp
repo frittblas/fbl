@@ -155,6 +155,10 @@ void Chars::checkNPC(Game& g, int npc) {
 					break;
 			}
 
+			// add the npc to the restore list
+			NpcRestorer tmpRest = { (int)pos.x, (int)pos.y, (NpcName)npc};
+			g.mChars->mRestoreList.push_back(tmpRest);
+
 		}
 	
 	}
@@ -186,6 +190,16 @@ void Chars::resetFadeCounter() {
 
 }
 
+void Chars::removeUsedNpcTile(Game& g, int x, int y, int npc) {
+
+	// deactivate sprite
+	int index = getIndexAtPos(x, y);
+	fbl_set_sprite_active(g.mMap->tile[index]->id, false);
+	// set tile to walkable
+	fbl_pathf_set_walkability(x / Game::TileSize, y / Game::TileSize, FBL_PATHF_WALKABLE);
+
+}
+
 void Chars::openChestMan(Game& g, int x, int y) {
 
 	// switch the sprite to open chest
@@ -193,5 +207,31 @@ void Chars::openChestMan(Game& g, int x, int y) {
 	if (g.mMap->tile[index] != nullptr) {
 		fbl_set_sprite_image(g.mMap->tile[index]->id, 128, 480, 32, 32, 0);
 	}
+
+}
+
+void Chars::restoreNpcs(Game& g) {
+
+	for (NpcRestorer r : mRestoreList) {
+
+		switch (r.name) {
+
+			case EventSlime:
+				removeUsedNpcTile(g, r.x, r.y, r.name);
+				break;
+			case ChestMan:
+				openChestMan(g, r.x, r.y);
+				break;
+
+		}
+
+		std::cout << "Npc restored." << std::endl;
+	}
+
+}
+
+void Chars::clearRestoreList() {
+
+	mRestoreList.clear();
 
 }

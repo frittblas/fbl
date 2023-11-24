@@ -120,7 +120,7 @@ void initLuaDialog() {
 	fbl_set_ui_elem_access(fDiaButtonNo, 60);
 
 	// the "Talk" text and button
-	fDiaTextTalk = fbl_create_text(255, 255, 255, 0, (char*)"Talk");
+	fDiaTextTalk = fbl_create_text(255, 255, 255, 0, (char*)"Interact");
 	fbl_set_text_align(fDiaTextTalk, FBL_ALIGN_LEFT);
 	fbl_set_text_xy(fDiaTextTalk, x, 32);
 
@@ -287,4 +287,3 @@ int luaOpenChest(lua_State* lua_env) {
 	return 0;
 
 }
-
