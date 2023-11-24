@@ -19,6 +19,7 @@ class Game;
 void initCollectionMenu();
 void showCollectionMenu();
 void hideCollectionMenu();
+std::string claimRandomRobot();
 
 class RobotCollection : public IState {
 

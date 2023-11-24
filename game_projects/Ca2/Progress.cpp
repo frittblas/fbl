@@ -11,7 +11,6 @@
 *
 */
 
-
 #include "Progress.hpp"
 
 // Progress-class implementation

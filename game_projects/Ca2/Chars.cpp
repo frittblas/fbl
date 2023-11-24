@@ -103,6 +103,7 @@ void Chars::setupNpc(Game& g) {
 						case InfoSlime:
 						case EventSlime:
 						case ChestMan:
+						case ChestMan + 1:
 
 							int id = g.mEcs->CreateEntity();
 							g.mChars->mNpc.push_back(id);

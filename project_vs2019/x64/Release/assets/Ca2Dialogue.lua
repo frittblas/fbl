@@ -284,6 +284,30 @@ while true do
 end
 end)
 
+g_dialogue[91] = coroutine.create(function ()
+local iter = 1
+while true do
+	if iter == 1 then
+		if not g_wait_response then
+			local result = string.format("It seems to be %s!", giveRobot())
+			openChest()
+			disp_dw("You found a robot!", result, " ", "That's great", " ")
+		elseif getResponse() == OK then
+			iter = advance(Explore, 2)
+		end
+	elseif iter == 2 then
+		if not g_wait_response then
+			disp_dw("It's empty.", " ", " ", "Ok", " ")
+		elseif getResponse() == OK then
+			iter = advance(Explore, 2) -- go to explore and stay at this option
+		end
+	end
+
+	coroutine.yield()
+	
+end
+end)
+
 
 function fbl_lua_start()
 

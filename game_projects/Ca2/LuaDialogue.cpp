@@ -17,6 +17,7 @@
 #include "Chars.hpp"
 #include "Progress.hpp"
 #include "GameState/GameState.hpp"
+#include "GameState/RobotCollection.hpp"
 #include "LuaDialogue.hpp"
 
 //  use the correct lua environment (from fbl)
@@ -24,7 +25,7 @@ extern "C" {
 	extern lua_State* fbl_lua_env;
 }
 
-// game instance (only externed here)
+// game instance (only externed here and robot collection)
 extern Game* gGame;
 
 // id's for the dialog-box (f for filescope)
@@ -284,10 +285,10 @@ int luaGiveFunds(lua_State* lua_env) {
 
 int luaGiveRobot(lua_State* lua_env) {
 
-	const char* name = "Hello, Lua!";
+	std::string name = claimRandomRobot();
 	// get free robot from all arr
 
-	lua_pushstring(lua_env, name);
+	lua_pushstring(lua_env, name.c_str());
 
 	return 1;
 

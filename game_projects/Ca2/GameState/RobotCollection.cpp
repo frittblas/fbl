@@ -25,6 +25,8 @@
 #include "GameState.hpp"
 #include "RobotCollection.hpp"
 
+extern Game* gGame; // only used by claim random robot (bottom)
+
 const uint16_t fNumSlots = 6;	// number of passive and active slots
 const uint16_t fNumLines = 17;	// lines for the grid to the left, 10x5 grid, 17 lines
 
@@ -856,5 +858,36 @@ void hideCollectionMenu() {
 
 	// funds
 	fbl_set_text_active(fFundsText, false);
+
+}
+
+std::string claimRandomRobot() {
+
+	std::vector<Entity> tmpList;
+
+	for (int i = 0; i < gGame->mRobots->NumRobots; i++) {
+		if (gGame->mRobots->mAllRobots[i] != gGame->mRobots->Unassigned) {
+
+			tmpList.push_back(gGame->mRobots->mAllRobots[i]);
+
+		}
+
+	}
+
+	// shuffle list
+	int size = tmpList.size();
+	for (int i = size - 1; i > 0; --i) {
+		int j = rand() % (i + 1);
+
+		std::swap(tmpList[i], tmpList[j]);
+	}
+
+	int index = gGame->mRobots->getNameIndexFromEntity(*gGame, tmpList[0], false);
+
+	gGame->mRobots->claimRobot(index);
+
+	auto& sta = gGame->mEcs->GetComponent<Stats>(tmpList[0]);
+
+	return sta.name;
 
 }

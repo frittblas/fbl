@@ -40,7 +40,7 @@ SoundManager& SoundManager::getInstance() {
 void SoundManager::loadSfx() {
 	
 	// load all the sound effects in the game and assign id's
-	
+	/*
 	mSfxCoin = fbl_load_sound("sfx/coin.ogg");
 	fbl_set_sound_volume(mSfxDenied, 50); // max is 128
 	mSfxDenied = fbl_load_sound("sfx/denied.ogg");
@@ -66,32 +66,32 @@ void SoundManager::loadSfx() {
 	
 	mSfxRainStorm = fbl_load_sound("sfx/rain.ogg");
 	mSfxSummer = fbl_load_sound("sfx/summer.ogg");
-	
+	*/
 }
 
 void SoundManager::playSfx(int id, int channel, int loops) {
 
-	fbl_play_sound(id, channel, loops);
+	//fbl_play_sound(id, channel, loops);
 
 }
 
 void SoundManager::loadAndPlayMusic(std::string filename, int volume, int loops) {
 
-	fbl_destroy_music();
-	fbl_load_music(filename.c_str());
-	fbl_play_music(volume, loops);	// max volume = 128
+	//fbl_destroy_music();
+	//fbl_load_music(filename.c_str());
+	//fbl_play_music(volume, loops);	// max volume = 128
 
 }
 
 void SoundManager::stopMusic() {
 
-	fbl_stop_music();
+	//fbl_stop_music();
 
 }
 
 void SoundManager::onRobotDeath() {
 
-	playSfx(mSfxExplosion, 1, 0);
+	//playSfx(mSfxExplosion, 1, 0);
 
 	//std::cout << "EXPLOSION SOUND!!!!!!!!" << std::endl;
 
@@ -99,6 +99,6 @@ void SoundManager::onRobotDeath() {
 
 void SoundManager::onFireLaser() {
 
-	playSfx(mSfxLaser1, 2, 0);
+	//playSfx(mSfxLaser1, 2, 0);
 
 }
