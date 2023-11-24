@@ -16,6 +16,7 @@
 #include "../../Ecs/Components.hpp"
 #include "../../Game.hpp"
 #include "../../Progress.hpp"
+#include "../../SoundManager.hpp"
 #include "../../SysManager.hpp"
 #include "../../Efx.hpp"
 
@@ -125,10 +126,16 @@ void Race::assignRobots(Game& g) {
 	int blockDensity = (rand() % 20) + 15;	// under 40 is ok under 35 is very fast (sparse mazes seem more fun)
 
 	std::cout << "Block density: " << blockDensity << std::endl;
+	//std::cout << "CompletedRaces: " << g.mProgress->mCompletedRaces << std::endl;
 
 	switch (g.mProgress->mCompletedRaces) {
 
 		case 0:
+			blockDensity = (rand() % 10) + 25;	// slightly denser maps in the beginning
+			mMaze->initMaze(g, blockDensity, mNumRacers, Race::GameMode::GM_CaptureFlags);	// start with CF
+			g.mWeather->setWeather(Weather::TimeOfDay::Late, 0, 0, 0, false);
+			SoundManager::getInstance().loadAndPlayMusic("music/cf1.ogg", 40, 1);
+			break;
 		case 1:
 		case 2:
 		case 3:
@@ -136,24 +143,34 @@ void Race::assignRobots(Game& g) {
 			blockDensity = (rand() % 10) + 25;	// slightly denser maps in the beginning
 			mMaze->initMaze(g, blockDensity, mNumRacers, Race::GameMode::GM_CaptureFlags);	// start with CF
 			g.mWeather->setWeather(Weather::TimeOfDay::Evening, 0, 0, 0, false);
+			SoundManager::getInstance().loadAndPlayMusic("music/cf2.ogg", 40, 0);
 			break;
 		case 5:
 		case 6:
 			mMaze->initMaze(g, blockDensity - 5, mNumRacers, Race::GameMode::GM_DeathMatch); // less dense DM map
 			g.mWeather->setWeather(Weather::TimeOfDay::Evening, 0, 0, 0, false);
+			SoundManager::getInstance().loadAndPlayMusic("music/dm.ogg", 80, 0);
 			break;
 		case 7:
 		case 8:
 			blockDensity = (rand() % 10) + 25;	// denser maps again
 			mMaze->initMaze(g, blockDensity, mNumRacers, Race::GameMode::GM_CaptureFlags);	// CF
 			g.mWeather->setWeather(Weather::TimeOfDay::Late, 0, 0, 0, false);
+			SoundManager::getInstance().loadAndPlayMusic("music/cf2.ogg", 40, 0);
 			break;
 		default:
 			int chance = rand() % 3;
-			if(chance < 2)
+			if (chance < 2) {
 				mMaze->initMaze(g, blockDensity, mNumRacers, Race::GameMode::GM_CaptureFlags);
-			else
+				if(rand() % 2 == 0)
+					SoundManager::getInstance().loadAndPlayMusic("music/cf1.ogg", 40, 0);
+				else
+					SoundManager::getInstance().loadAndPlayMusic("music/cf2.ogg", 40, 0);
+			}
+			else {
 				mMaze->initMaze(g, blockDensity - 5, mNumRacers, Race::GameMode::GM_DeathMatch); // less dense DM map
+				SoundManager::getInstance().loadAndPlayMusic("music/dm.ogg", 80, 0);
+			}
 
 			chance = rand() % 10;
 			if(chance <= 5)

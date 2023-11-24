@@ -239,6 +239,7 @@ void PostRace::buySelectedItem(Game& g) {
 	// has to afford
 	if(add.price >  g.mProgress->mFunds) {
 		updateContextHelp("You can't afford that!");
+		SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxDenied, SoundManager::Channel::Ui, 0);
 		return;
 	}
 
@@ -256,6 +257,8 @@ void PostRace::buySelectedItem(Game& g) {
 
 	// update gui
 	fbl_update_text(mFundsText, 255, 255, 255, 255, (char*)"Coins: %d", g.mProgress->mFunds);
+
+	SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxCoin, SoundManager::Channel::Ui, 1);
 
 	updateContextHelp("Thank you for your purchase!");
 

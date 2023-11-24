@@ -1,4 +1,4 @@
-Checklist to finish ca2 alpha in 5 days. 9 days in :)
+Checklist to finish ca2 alpha in 5 days. 14 days in :)
 
 1. Finish leveling system. - DONE!
 2. Finish functionality for current racing robot. - DONE!
@@ -7,17 +7,10 @@ Checklist to finish ca2 alpha in 5 days. 9 days in :)
 5. Add deathmatch. - DONE!
 6. Add maintenance mode. DONE!
 7. Finish music and sfx. - DONE!
-8. Finish the map with npc's and races (event-slime!).
+8. Finish the map with npc's, races and dialogue. - in progress!
 9. Release alpha for Robofobe to play and critique.
 
 Checklist for beta:
 1. Tweak gameplay balance.
-2. Fix bugs (Maintenance mode?, deathmatch?).
 
-
-Bug:
-In maintenance mode: Sometimes it's game over even though you have another robot?
-I might be wrong
-
-Web: playing sound doesn't work unless you click on the screen, find solution. - on it
-Android: PostRace aligns viewport to the left not center. - FIXED (was viewport camerashake)
+Bugs:

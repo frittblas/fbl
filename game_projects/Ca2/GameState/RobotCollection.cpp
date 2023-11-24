@@ -325,7 +325,7 @@ void RobotCollection::equipAddon(Game& g) {
 					updateContextHelp("Can't equip 2 addons of the same type!");
 					std::cout << "Can't equip 2 addons of the same type!" << std::endl;
 
-					SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxDenied, SoundManager::Channel::Ui, 1);
+					SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxDenied, SoundManager::Channel::Ui, 0);
 
 				}
 			}

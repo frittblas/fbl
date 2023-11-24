@@ -35,7 +35,7 @@ Progress::~Progress() {
 
 void Progress::resetProgress() {
 
-	mFunds = 7;
+	mFunds = 3;
 	mFavRobot = 0;
 	mCurrentLocation = 0;
 	mCompletedRaces = 0;

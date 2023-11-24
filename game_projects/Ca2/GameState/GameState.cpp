@@ -250,7 +250,7 @@ void GameState::toTitle(Game& g) {
 	fbl_lua_shutdown();				 // so the dialogues get reset
 
 	SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxSummer, SoundManager::Channel::Ambient, 1);
-	SoundManager::getInstance().loadAndPlayMusic("music/title.ogg", 40, 0);
+	SoundManager::getInstance().loadAndPlayMusic("music/title.ogg", 50, 0);
 
 }
 
@@ -387,7 +387,7 @@ void GameState::setupRace(Game& g) {
 
 	//g.mWeather->setWeather(Weather::TimeOfDay::Evening, 0, 0, 0, false);
 
-	SoundManager::getInstance().loadAndPlayMusic("music/dm.ogg", 80, 0);
+	//SoundManager::getInstance().loadAndPlayMusic("music/dm.ogg", 80, 0);
 
 	// play snap on ambient channel to stop the ambient sound.
 	SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxSnap, SoundManager::Channel::Ambient, 0);
@@ -444,7 +444,7 @@ void GameState::setAtmosphere(Game& g) {
 		case 8:
 		case 9:
 			g.mWeather->setWeather(Weather::TimeOfDay::Evening, 1, 0, 50, true);
-			SoundManager::getInstance().loadAndPlayMusic("music/overworld2.ogg", 100, 1);
+			SoundManager::getInstance().loadAndPlayMusic("music/overworld2.ogg", 80, 1);
 			break;
 		case 10:
 		case 11:
@@ -456,13 +456,19 @@ void GameState::setAtmosphere(Game& g) {
 		case 15:
 			g.mWeather->setWeather(Weather::TimeOfDay::Morning, 1, 0, 50, false);
 			SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxSummer, SoundManager::Channel::Ambient, 1);
-			SoundManager::getInstance().loadAndPlayMusic("music/overworld1.ogg", 100, 1);
+			SoundManager::getInstance().loadAndPlayMusic("music/overworld3.ogg", 65, 1);
 			break;
 
 		default:
 			g.mWeather->setWeather(Weather::TimeOfDay::Evening, 1, 0, 50, true);
 			SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxSummer, SoundManager::Channel::Ambient, 1);
-			SoundManager::getInstance().loadAndPlayMusic("music/overworld2.ogg", 100, 1);
+			int chance = rand() % 3;
+			if (chance == 0)
+				SoundManager::getInstance().loadAndPlayMusic("music/overworld1.ogg", 100, 1);
+			else if (chance == 1)
+				SoundManager::getInstance().loadAndPlayMusic("music/overworld2.ogg", 80, 1);
+			else if (chance == 2)
+				SoundManager::getInstance().loadAndPlayMusic("music/overworld3.ogg", 80, 1);
 			break;
 	
 	
