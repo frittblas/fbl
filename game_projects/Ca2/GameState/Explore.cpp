@@ -54,14 +54,14 @@ void Explore::processInput(Game& g) {
 
 }
 
-void Explore::slimeFade(Game& g) {
+void Explore::npcFade(Game& g) {
 
 	if (g.mChars->mFadeCounter < 255) {
-		fbl_set_sprite_alpha(g.mChars->mFadingEventSlimeId, g.mChars->mFadeCounter);
+		fbl_set_sprite_alpha(g.mChars->mFadingNpcId, g.mChars->mFadeCounter);
 		g.mChars->mFadeCounter -= 4;
 		if (g.mChars->mFadeCounter < 5) {
 			g.mChars->mFadeCounter = 255;
-			fbl_set_sprite_active(g.mChars->mFadingEventSlimeId, false);
+			fbl_set_sprite_active(g.mChars->mFadingNpcId, false);
 		}
 	}
 
@@ -80,7 +80,7 @@ void Explore::tick(Game& g) {
 
 	processInput(g);
 
-	slimeFade(g);
+	npcFade(g);
 
 	if(fbl_get_raw_frames_count() % 60 == 0)
 		std::cout << "Tick explore!" << std::endl;

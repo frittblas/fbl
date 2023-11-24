@@ -23,7 +23,7 @@ public:
     ~Explore();
 
     void processInput(Game& g);
-    void slimeFade(Game& g);
+    void npcFade(Game& g);
 
     virtual void tick(Game& g) override;
 

@@ -37,7 +37,7 @@ public:
     Entity mBrodo;  // the player!
 
     // the fadeout of the event slime
-    int mFadingEventSlimeId;
+    int mFadingNpcId;
     int mFadeCounter;
 
     // array of npc characters to talk to

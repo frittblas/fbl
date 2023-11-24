@@ -22,7 +22,7 @@
 
 Chars::Chars() {
 
-	mFadingEventSlimeId = 0;
+	mFadingNpcId = 0;
 	mFadeCounter = 255;
 
 	std::cout << "Initialized Chars subsystem." << std::endl;
@@ -147,6 +147,8 @@ void Chars::checkNPC(Game& g, int npc) {
 			(pos.y == (player.y - Game::TileSize) && pos.x == player.x)) {
 
 			switch (npc) {
+				case StorySlime:
+				case InfoSlime:
 				case EventSlime:
 					removeAndStartFade(g, e, (int)pos.x, (int)pos.y);
 				break;
@@ -170,7 +172,7 @@ void Chars::removeAndStartFade(Game& g, Entity e, int x, int y) {
 	// remove the sprite
 	int index = getIndexAtPos(x, y);
 	if (g.mMap->tile[index] != nullptr) {
-		mFadingEventSlimeId = g.mMap->tile[index]->id;
+		mFadingNpcId = g.mMap->tile[index]->id;
 	}
 
 	// set tile to walkable
@@ -216,6 +218,8 @@ void Chars::restoreNpcs(Game& g) {
 
 		switch (r.name) {
 
+			case StorySlime:
+			case InfoSlime:
 			case EventSlime:
 				removeUsedNpcTile(g, r.x, r.y, r.name);
 				break;

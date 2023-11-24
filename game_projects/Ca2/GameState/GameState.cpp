@@ -352,6 +352,9 @@ void GameState::maintenanceToExplore(Game& g) {
 
 	setAtmosphere(g);
 
+	// delete the info-slime you talked to
+	g.mChars->checkNPC(g, g.mChars->InfoSlime);
+
 }
 
 void GameState::setupRace(Game& g) {
