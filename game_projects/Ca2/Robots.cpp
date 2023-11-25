@@ -743,6 +743,8 @@ bool Robots::assignRobotXP(Game& g, int nameIndex) {
 	// already max level
 	if (sta.level == cMaxRobotLevel) {
 		std::cout << "Already max level! " << std::endl;
+		sta.xp = 0;
+		sta.nextLv = 0;
 		return false;
 	}
 

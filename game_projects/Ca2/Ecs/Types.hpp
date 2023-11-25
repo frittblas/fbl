@@ -7,7 +7,7 @@
 *	Some aliases and constants.
 *
 *	I got this from https://austinmorlan.com/posts/entity_component_system/
-*	Rearanged it a bit for Ca2.
+*	Rearranged it a bit for Ca2.
 *
 */
 
@@ -26,4 +26,4 @@ const ComponentType MAX_COMPONENTS = 32;
 using Signature = std::bitset<MAX_COMPONENTS>;
 
 using Entity = std::uint32_t;
-const Entity MAX_ENTITIES = 64;
+const Entity MAX_ENTITIES = 128;

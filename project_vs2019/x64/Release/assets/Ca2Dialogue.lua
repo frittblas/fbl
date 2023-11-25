@@ -128,21 +128,21 @@ local iter = 1
 while true do
 	if iter == 1 then
 		if not g_wait_response then
-			disp_dw("Greetings, and welcome to Ca2", "I'm the story-slime", "I will narrate this game!", "Ok..", " ")
+			disp_dw("Greetings!", "I'm the story-slime.. I will tell you", "a story you might enjoy..", "Ok..", " ")
 		elseif getResponse() == OK then
-			iter = advance(Explore, iter + 1) -- advance to next dialog and go to Explore state
+			iter = advance(Stay, iter + 1) -- advance to next dialog and stay
 		end
 	elseif iter == 2 then
 		if not g_wait_response then
-			disp_dw("If you answer no, you will be sent back", "to first dialog!", " ", "That's arosta..", "That's arostarous!")
+			disp_dw("I know all the juicy bits about this very land!", "Interested?", "Or no.", "Tell me more", "Please leave")
 		elseif getResponse() == NO then
-			iter = advance(Stay, 1)
+			iter = advance(Explore, 2)
 		elseif getResponse() == YES then
 			iter = advance(Stay, iter + 1) -- advance to next dialog and don't change state
 		end
 	elseif iter == 3 then
 		if not g_wait_response then
-			disp_dw("..", "What's your..", "..favourite colour?", "Green", "Blue")
+			disp_dw("But first you have to go through some hoops..", "To prove you level of commitment.", "Does it sound good?", "Yes.", "Absoluteny not!")
 		elseif getResponse() == YES then
 			iter = advance(Stay, iter + 1)
 		elseif getResponse() == NO then
@@ -150,15 +150,21 @@ while true do
 		end
 	elseif iter == 4 then
 		if not g_wait_response then
-			disp_dw("You chose Green!", " ", " ", "Ok great.", "Can I go?")
+			disp_dw("Splendid, the first couple of races", "aren't hard at all", "You don't even have to steer!", "Ok great!", "Can I go?")
 		elseif getResponse() == YES or getResponse() == NO then
-			iter = advance(Explore, 1)
+			iter = advance(Explore, 6)
 		end
-	else
+	elseif iter == 5 then
 		if not g_wait_response then
-			disp_dw("You chose Blue!", " ", " ", "Ok", "")
+			disp_dw("I can't believe ou answered no to that!", "Doesn't really matter though..", "YOU MUST STILL DO IT.", "Ok ok..", "")
 		elseif getResponse() == OK then
-			iter = advance(Explore, 1) -- reset dialogue and go to Explore state
+			iter = advance(Explore, 6)
+		end
+	elseif iter == 6 then
+		if not g_wait_response then
+			disp_dw("Please go ahead and race.", "I'm gonna have tea", "", "Yes sir.", "")
+		elseif getResponse() == OK then
+			iter = advance(Explore, 6) -- stay at this option and go to Explore state
 		end
 	end
 
@@ -232,7 +238,7 @@ while true do
 		if not g_wait_response then
 			disp_dw("I have nothing more to tell you.", "Go and find other, wiser info slimes", " ", "Ok", " ")
 		elseif getResponse() == OK then
-			iter = advance(Explore, 3) -- go to explore and stay at this option
+			iter = advance(Explore, 2) -- go to explore and stay at this option
 		end
 	end
 
