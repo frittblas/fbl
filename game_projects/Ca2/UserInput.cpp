@@ -37,7 +37,7 @@ UserInput::~UserInput() {
 
 void UserInput::tick(Game& g) {
 
-
+	/*
 	if (fbl_get_key_down(FBLK_1) && access == 0) {
 		g.mState->change(g, GameState::StateType::Title);
 		access = buttonDelay;
@@ -66,7 +66,7 @@ void UserInput::tick(Game& g) {
 		g.mState->change(g, GameState::StateType::Maintenance);
 		access = buttonDelay;
 	}
-
+	*/
 
 	// for android, temporary :)
 	if (fbl_get_mouse_click(FBLMB_LEFT) && access == 0 && g.mState->get() == GameState::StateType::Title) {
@@ -87,6 +87,9 @@ void UserInput::tick(Game& g) {
 			g.mState->change(g, GameState::StateType::Explore);
 			access = buttonDelay;
 			g.mChars->stopPlayerPathing(g);
+		}
+		if (g.mState->get() == GameState::StateType::Maintenance) {
+			// do nothing
 		}
 		else if (g.mState->get() == GameState::StateType::Explore) {
 			g.mState->change(g, GameState::StateType::RobotCollection);
@@ -110,7 +113,7 @@ void UserInput::tick(Game& g) {
 		fbl_set_window_mode(FBL_WINDOW_FULLSCREEN_DESKTOP);
 		isFullscreen = true;
 	}
-
+	/*
 	// test weather
 	if (fbl_get_key_down(FBLK_F1) && access == 0) {
 		g.mWeather->setWeather(Weather::TimeOfDay::Morning, 0, 0, 150, false);
@@ -136,6 +139,8 @@ void UserInput::tick(Game& g) {
 		g.mWeather->setWeather(Weather::TimeOfDay::Day, 0, 6, 50, false);
 		access = buttonDelay;
 	}
+
+	*/
 
 	// standard alt + enter for fullscreen
 	if (fbl_get_key_down(FBLK_LALT) && fbl_get_key_down(FBLK_RETURN) && access == 0) {

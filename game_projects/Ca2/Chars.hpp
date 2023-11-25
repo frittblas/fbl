@@ -26,7 +26,8 @@ public:
         StorySlime = 10,
         InfoSlime = 30,
         EventSlime = 50,
-        ChestMan = 100
+        ChestMan = 100,
+        Other = 120
     };
 
     struct NpcRestorer {

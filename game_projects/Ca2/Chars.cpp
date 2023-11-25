@@ -100,10 +100,26 @@ void Chars::setupNpc(Game& g) {
 
 						case StorySlime:		// Npc with type 10 (-10) = 0 = slime
 						case StorySlime + 1:	// type 11 (-10) = 1 = also slime :)
+						case StorySlime + 2:
+						case StorySlime + 3:
 						case InfoSlime:
+						case InfoSlime + 1:
+						case InfoSlime + 2:
+						case InfoSlime + 3:
+						case InfoSlime + 4:
+						case InfoSlime + 5:
+						case InfoSlime + 6:
 						case EventSlime:
+						case EventSlime + 1:
+						case EventSlime + 2:
+						case EventSlime + 3:
 						case ChestMan:
 						case ChestMan + 1:
+						case ChestMan + 2:
+						case ChestMan + 3:
+						case ChestMan + 4:
+						case Other:
+						case Other + 1:
 
 							int id = g.mEcs->CreateEntity();
 							g.mChars->mNpc.push_back(id);

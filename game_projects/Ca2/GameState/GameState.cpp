@@ -429,17 +429,17 @@ void GameState::setAtmosphere(Game& g) {
 		case 0:
 		case 1:
 		case 2:
-			g.mWeather->setWeather(Weather::TimeOfDay::Late, 1, 0, 50, true);
-			SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxRainStorm, SoundManager::Channel::Ambient, -1);
-			break;
 		case 3:
+			g.mWeather->setWeather(Weather::TimeOfDay::Late, 1, 0, 50, true);
+			SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxRainStorm, SoundManager::Channel::Ambient, 2);
+			break;
 		case 4:
 		case 5:
+		case 6:
 			g.mWeather->setWeather(Weather::TimeOfDay::Morning, 1, 0, 50, false);
 			SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxSummer, SoundManager::Channel::Ambient, 2);
 			SoundManager::getInstance().loadAndPlayMusic("music/overworld1.ogg", 100, 1);
 			break;
-		case 6:
 		case 7:
 		case 8:
 		case 9:

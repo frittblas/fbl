@@ -1062,12 +1062,13 @@ void Maintenance::tick(Game& g) {
 	Efx::getInstance().tickCameraShake();
 
 
+	/*
 	if (fbl_get_mouse_click(FBLMB_RIGHT)) Efx::getInstance().shakeCamera(20, 40);
 
 	if (fbl_get_key_down(FBLK_7)) Race::sRaceState = First;
 	if (fbl_get_key_down(FBLK_8)) Race::sRaceState = Second;
 	if (fbl_get_key_down(FBLK_9)) Race::sRaceState = Third;
-	if (fbl_get_key_down(FBLK_0)) Race::sRaceState = Fourth;
+	if (fbl_get_key_down(FBLK_0)) Race::sRaceState = Fourth; */
 
 	if(fbl_get_raw_frames_count() % 60 == 0)
 		std::cout << "Tick maintenance!" << std::endl;

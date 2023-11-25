@@ -87,7 +87,7 @@ int fbl_engine_init(int w, int h, int fps)
 
 	/* Initialize SDL_mixer */
 
-	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 4, 2048) < 0)
 	{
 		fprintf(FBL_ERROR_OUT, "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
 		// return 1;

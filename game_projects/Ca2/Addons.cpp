@@ -83,17 +83,17 @@ void Addons::setupAddons(Coordinator* mEcs) {
 			break;
 		case Magnet1:
 											 // type           name   uiId tx ty  lv rrty psv    eqp  price
-			mEcs->AddComponent(tmpAddon, Addon{ Magnet1, "Magnet Weak", 0, 0, 160, 1, 1, true, notSet, 5 });
+			mEcs->AddComponent(tmpAddon, Addon{ Magnet1, "Magnet Weak", 0, 0, 160, 1, 1, true, notSet, 3 });
 
 			break;
 		case Magnet2:
 											 // type      name   uiId tx ty	lv rrty psv     eqp  price
-			mEcs->AddComponent(tmpAddon, Addon{ Magnet2, "Magnet Strong", 0, 0, 160, 2, 2, true, notSet, 10 });
+			mEcs->AddComponent(tmpAddon, Addon{ Magnet2, "Magnet Strong", 0, 0, 160, 2, 2, true, notSet, 7 });
 
 			break;
 		case Magnet3:
 												// type    name			uiId tx ty	lv rrty psv  eqp  price
-			mEcs->AddComponent(tmpAddon, Addon{ Magnet3, "Magnet Super", 0, 0, 160, 3, 3, true, notSet, 18 });
+			mEcs->AddComponent(tmpAddon, Addon{ Magnet3, "Magnet Super", 0, 0, 160, 3, 3, true, notSet, 12 });
 
 			break;
 		case Turbo1:

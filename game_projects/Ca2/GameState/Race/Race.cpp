@@ -131,19 +131,19 @@ void Race::assignRobots(Game& g) {
 	switch (g.mProgress->mCompletedRaces) {
 
 		case 0:
-			blockDensity = (rand() % 10) + 25;	// slightly denser maps in the beginning
-			mMaze->initMaze(g, blockDensity, mNumRacers, Race::GameMode::GM_CaptureFlags);	// start with CF
-			g.mWeather->setWeather(Weather::TimeOfDay::Late, 0, 0, 0, false);
-			SoundManager::getInstance().loadAndPlayMusic("music/cf1.ogg", 40, 1);
-			break;
 		case 1:
 		case 2:
-		case 3:
-		case 4:
 			blockDensity = (rand() % 10) + 25;	// slightly denser maps in the beginning
 			mMaze->initMaze(g, blockDensity, mNumRacers, Race::GameMode::GM_CaptureFlags);	// start with CF
 			g.mWeather->setWeather(Weather::TimeOfDay::Evening, 0, 0, 0, false);
-			SoundManager::getInstance().loadAndPlayMusic("music/cf2.ogg", 40, 0);
+			SoundManager::getInstance().loadAndPlayMusic("music/cf2.ogg", 40, 1);
+			break;
+		case 3:
+		case 4:
+			blockDensity = (rand() % 10) + 20;	// slightly less dense maps after that
+			mMaze->initMaze(g, blockDensity, mNumRacers, Race::GameMode::GM_CaptureFlags);	// CF
+			g.mWeather->setWeather(Weather::TimeOfDay::Evening, 0, 0, 0, false);
+			SoundManager::getInstance().loadAndPlayMusic("music/cf1.ogg", 40, 0);
 			break;
 		case 5:
 		case 6:
@@ -372,14 +372,16 @@ void Race::tick(Game& g) {
 	Efx::getInstance().tickExplosion();
 	Efx::getInstance().tickCoinEfx();
 
+	/*
 	if (fbl_get_mouse_click(FBLMB_RIGHT))
 		//Efx::getInstance().startExplosion(400, 200);
 		Efx::getInstance().startCoinEfx(400, 200);
 
+
 	if (fbl_get_key_down(FBLK_7)) sRaceState = First;
 	if (fbl_get_key_down(FBLK_8)) sRaceState = Second;
 	if (fbl_get_key_down(FBLK_9)) sRaceState = Third;
-	if (fbl_get_key_down(FBLK_0)) sRaceState = Fourth;
+	if (fbl_get_key_down(FBLK_0)) sRaceState = Fourth; */
 
 
 	if(fbl_get_raw_frames_count() % 60 == 0)
