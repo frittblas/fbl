@@ -984,7 +984,7 @@ void Maintenance::getInput(Game& g) {
 			// activate the sprite
 			fbl_set_sprite_active(mSeq.mimicSeqId[i], true);
 
-			SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxShield, SoundManager::Channel::Ui, 0);
+			SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxSnap, SoundManager::Channel::Ui, 0);
 
 			mKeyDelayLeft[0] = cKeyDelay;
 			if(i == 4) mSeq.checkDuration = cCheckTimeLimit;
@@ -1009,7 +1009,7 @@ void Maintenance::getInput(Game& g) {
 			// activate the sprite
 			fbl_set_sprite_active(mSeq.mimicSeqId[i], true);
 
-			SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxShield, SoundManager::Channel::Ui, 0);
+			SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxSnap, SoundManager::Channel::Ui, 0);
 
 			mKeyDelayLeft[1] = cKeyDelay;
 			if (i == 4) mSeq.checkDuration = cCheckTimeLimit;

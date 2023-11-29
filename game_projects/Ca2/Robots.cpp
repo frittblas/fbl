@@ -59,7 +59,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 0, 96, 32, 32, false, 0, 0, 0, 0, 7 });	// robots are on layer 7
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
-				mEcs->AddComponent(tmpRobot, Stats{ "Charmy", 1, 0, 7, 22, 22, 8, false, 23, 23, 7, -1, -1, -1, -1, -1, -1 });
+				mEcs->AddComponent(tmpRobot, Stats{ "Charmy", 1, 0, 7, 22, 22, 9, false, 23, 23, 7, -1, -1, -1, -1, -1, -1 });
 												//  rid len dir ivalM ivalC hasTarg active
 				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, false });
 											  // id  tx  ty   w    h  scale
@@ -80,7 +80,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 												 // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 96, 96, 32, 32, true, 2, 12, 0, 0, 7 });
 												  // name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
-				mEcs->AddComponent(tmpRobot, Stats{ "Boingy", 1, 0, 7, 20, 20, 6, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
+				mEcs->AddComponent(tmpRobot, Stats{ "Boingy", 1, 0, 7, 20, 20, 7, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
 												//  rid len dir ivalM ivalC hasTarg active
 				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, false });
 												// id  tx  ty   w    h  scale
@@ -110,7 +110,7 @@ void Robots::setupRobots(Coordinator* mEcs) {
 												  // id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 				mEcs->AddComponent(tmpRobot, Sprite{ 0, 0, 0, 0, 1, 0, 128, 32, 32, true, 2, 12, 0, 0, 7 });
 												   // name   lv xp next mxHp hp speed diag mxNrg nrg weight slot[6] (-1 = notSet)
-				mEcs->AddComponent(tmpRobot, Stats{ "Floppy", 1, 0, 7, 20, 20, 9, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
+				mEcs->AddComponent(tmpRobot, Stats{ "Floppy", 1, 0, 7, 20, 20, 8, false, 20, 20, 7, -1, -1, -1, -1, -1, -1 });
 												//  rid len dir ivalM ivalC hasTarg active
 				mEcs->AddComponent(tmpRobot, AutoAim{ 0, 800, 0, 10, 0, false, false });
 												// id  tx  ty   w    h  scale

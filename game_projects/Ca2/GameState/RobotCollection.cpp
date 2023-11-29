@@ -888,6 +888,8 @@ std::string claimRandomRobot() {
 
 	auto& sta = gGame->mEcs->GetComponent<Stats>(tmpList[0]);
 
+	sta.hp = sta.maxHp;
+
 	return sta.name;
 
 }

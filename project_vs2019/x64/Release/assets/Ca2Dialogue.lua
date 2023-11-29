@@ -214,7 +214,7 @@ g_dialogue[1] = coroutine.create(function ()
 			end
 		else
 			if not g_wait_response then
-				disp_dw("I have nothing more to tell you at this time..", "But really, that horse is fantastic.", "Makes incredible stuff.", "Ok.", " ")
+				disp_dw("I have nothing more to tell you at this time..", "But really, that horse is fantastic.", "Makes incredible stuff. Great guy too.", "Ok.", " ")
 			elseif getResponse() == OK then
 				iter = advance(Explore, 6)
 			end
@@ -364,7 +364,7 @@ g_dialogue[22] = coroutine.create(function ()
 			end
 		elseif iter == 2 then
 			if not g_wait_response then
-				disp_dw("But seriously, it's maintenance time again.", "It's harder this time.", "Wanna try?", "Lets do i", "No thanks.")
+				disp_dw("But seriously, it's maintenance time again.", "It's harder this time.", "Wanna try?", "Lets do it", "No thanks.")
 			elseif getResponse() == NO then
 				iter = advance(Explore, 1)
 			elseif getResponse() == YES then
@@ -536,9 +536,9 @@ g_dialogue[90] = coroutine.create(function ()
 	while true do
 		if iter == 1 then
 			if not g_wait_response then
-				local result = string.format("You found %.0f coins!", giveFunds())
+				local result = string.format("It seems to be %s!", giveRobot())
 				openChest()
-				disp_dw(result, " ", " ", "Nice", " ")
+				disp_dw("You found a robot!", result, " ", "That's great", " ")
 			elseif getResponse() == OK then
 				iter = advance(Explore, 2)
 			end
@@ -560,9 +560,9 @@ g_dialogue[91] = coroutine.create(function ()
 	while true do
 		if iter == 1 then
 			if not g_wait_response then
-				local result = string.format("It seems to be %s!", giveRobot())
+				local result = string.format("You found %.0f coins!", giveFunds())
 				openChest()
-				disp_dw("You found a robot!", result, " ", "That's great", " ")
+				disp_dw(result, " ", " ", "Nice", " ")
 			elseif getResponse() == OK then
 				iter = advance(Explore, 2)
 			end
