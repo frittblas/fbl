@@ -2,8 +2,8 @@
 
 (frittblas lib)
 
-It's a cross platform 2D game engine written in C, with a tilemap editor in C++
-and Lua scripting. Comes with a complete game.
+It's a cross platform 2D game engine written in C, with a tilemap editor in C++.
+Comes with a complete game.
 
 It's built on top of SDL2 and makes use of the image, ttf and mixer addons.
 Physics are done with Chipmunk, and scripting with Lua.
@@ -124,6 +124,5 @@ The game runs well on all the platforms mentioned.
 
 https://www.charmingalarming.se/
 
-Dependencies: https://austinmorlan.com/posts/entity_component_system/
 
 /Hans Strömquist 2023
