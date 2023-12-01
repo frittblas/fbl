@@ -41,7 +41,7 @@ upcoming features (ver 1.1)
 /Hans
 
 
-##Some info:
+## Some info:
 
 More than 150 functions you can call (from C, C++ or Lua) to make 2d game programming
 easy and fun :|
@@ -80,7 +80,7 @@ the program quits.
 Check out main.lua and you will get it.
 
 
-##Random notes:
+## Random notes:
 
 The fbl_get_key_down() and fbl_get_mouse_click() keep returning true as long as the button is held.
 The fbl_get_key_up() and fbl_get_mouse_release() keep returning true until any another button is pressed.
@@ -115,7 +115,7 @@ A demo of the functionality: (cycle through demos with F1-F2): http://www.kastan
 Try clicking on stuff and use WASD and arrow keys to control the sprite and the camera in demo 1 :)
 
 
-##About the game Charming Alarming 2: Reasonable Robots:
+## About the game Charming Alarming 2: Reasonable Robots:
 
 I wrote a complete game using this engine making use of almost all the functionality as the ultimate test.
 The game runs well on all the platforms mentioned.
