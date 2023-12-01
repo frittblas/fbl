@@ -1,7 +1,7 @@
-﻿##fbl - fritt blas library AKA Hans Advance
+﻿### fbl - fritt blas lib AKA Hans Advance
 
 It's a cross platform 2D game engine written in C, with a tilemap editor in C++
-and Lua scripting.
+and Lua scripting. Comes with a complete game.
 
 It's built on top of SDL2 and makes use of the image, ttf and mixer addons.
 Physics are done with Chipmunk, and scripting with Lua.
