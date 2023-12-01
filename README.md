@@ -111,7 +111,7 @@ The emscripten output is then located in emsdk-master\upstream\emscripten\fbl\pr
 A demo of the functionality: (cycle through demos with F1-F2): http://www.kastanjen.net/fbl/output/fbl_test.html
 Try clicking on stuff and use WASD and arrow keys to control the sprite and the camera in demo 1 :)
 
-About the game Charming Alarming 2: Reasonable Robots:
+**About the game Charming Alarming 2: Reasonable Robots:**
 
 I wrote a complete game using this engine making use of almost all the functionality as the ultimate test.
 The game runs well on all the platforms mentioned.
