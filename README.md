@@ -11,7 +11,7 @@ Planned platforms: MacOSX (used to work but don't have a mac anymore), IOS (prob
 
 Started March 6th 2017.
 
-Features (current ver. 0.9.9):
+Features (current ver. 1.0):
 
 - Sprite engine
 - Primitives
@@ -33,7 +33,7 @@ Features (current ver. 0.9.9):
 - Fast, lightweight engine and simple API.
 
 
-upcoming features (ver 1.0)
+upcoming features (ver 1.1)
 
 - Networking (SDL_net)
 
@@ -42,7 +42,7 @@ upcoming features (ver 1.0)
 
 
 More than 150 functions you can call (from C, C++ or Lua) to make 2d game programming
-easy and insanely fun :|
+easy and fun :|
 
 Sprites, primitives, text objects, particle emitters
 and ui objects are stored internally in 5 separate
@@ -111,5 +111,13 @@ The emscripten output is then located in emsdk-master\upstream\emscripten\fbl\pr
 A demo of the functionality: (cycle through demos with F1-F2): http://www.kastanjen.net/fbl/output/fbl_test.html
 Try clicking on stuff and use WASD and arrow keys to control the sprite and the camera in demo 1 :)
 
-to be continued..
+About the game Charming Alarming 2: Reasonable Robots:
 
+I wrote a complete game using this engine making use of almost all the functionality as the ultimate test.
+The game runs well on all the platforms mentioned.
+
+https://www.charmingalarming.se/
+
+Dependencies: https://austinmorlan.com/posts/entity_component_system/
+
+/Hans Strömquist 2023

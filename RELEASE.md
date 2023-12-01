@@ -1,5 +1,16 @@
 Release history:
 
+Final version (for now) done!
+
+New in version 1.0 (2023-12-01):
+
+Many small fixes and refactoring, optimisations.
+Added a couple of convenient fbl functions.
+
+Completed the Ca2-game beta (game_projects).
+Added licence.
+
+
 New in version 0.9.9 (2022-08-27):
 
 Added 2D-lights, using lightmaps and blendmodes, check out the demos!

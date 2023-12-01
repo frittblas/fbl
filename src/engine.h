@@ -55,7 +55,7 @@
 
 /* fbl version */
 
-#define FBL_VERSION "0.9.9"
+#define FBL_VERSION "1.0"
 
 
 /* This is how many sprites that use direct reference (the first 2000-3000 or whatever sprites gets stored in an array)
