@@ -21,12 +21,13 @@
 
 // In order to connect PathLogicSystem, Laser, CaptureFlags, DeathMatch to Maze
 // I had to use these class statics
-Maze::aFlag Maze::sFlag[Maze::cMaxFlags];
+Maze::aFlag Maze::sFlag[10];
 Maze::aCoin Maze::sCoin[Maze::cMaxCoins];
 bool Maze::sPickDone;
 bool Maze::sStartingOut;
 bool Maze::sUpdatePaths;
 int  Maze::sGameMode;
+int  Maze::sNumFlags;
 CaptureFlags *Maze::sCF;
 DeathMatch	 *Maze::sDM;
 
@@ -38,6 +39,8 @@ Maze::Maze() {
 	sStartingOut = true;
 	sUpdatePaths = false;
 	sGameMode = 0;
+
+	sNumFlags = 6; 
 
 	sCF = new CaptureFlags();
 	sDM = new DeathMatch();
@@ -248,12 +251,14 @@ void Maze::pickStartPosition(Game& g) {
 }
 
 
-void Maze::initMaze(Game& g, int density, int numRacers, int gameMode) {
+void Maze::initMaze(Game& g, int density, int numRacers, int gameMode, int numFlags) {
 
 	int tries = 0; // number of brute force tries
 
 	sGameMode = gameMode;
 	mNumRacers = numRacers;
+
+	sNumFlags = numFlags;
 
 	fbl_set_sprite_align(FBL_SPRITE_ALIGN_CENTER);	// in the race, sprites are drawn from the center bc. of physics :)
 
@@ -408,7 +413,7 @@ void Maze::addItems() {
 
 	// add flags in the middle in cf game mode
 	if (sGameMode == Race::GM_CaptureFlags) {
-		for (int i = 0; i < cMaxFlags; i++) {
+		for (int i = 0; i < sNumFlags; i++) {
 			sFlag[i].id = fbl_create_sprite(265, 324, 17, 24, 0);
 			fbl_set_sprite_xy(sFlag[i].id, cTargetX + 16, cTargetY + 16);	// drawn from the center
 			fbl_set_sprite_layer(sFlag[i].id, 6);

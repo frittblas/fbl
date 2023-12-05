@@ -134,41 +134,41 @@ void Race::assignRobots(Game& g) {
 		case 1:
 		case 2:
 			blockDensity = (rand() % 10) + 25;	// slightly denser maps in the beginning
-			mMaze->initMaze(g, blockDensity, mNumRacers, Race::GameMode::GM_CaptureFlags);	// start with CF
+			mMaze->initMaze(g, blockDensity, mNumRacers, Race::GameMode::GM_CaptureFlags, 2);	// start with CF
 			g.mWeather->setWeather(Weather::TimeOfDay::Evening, 0, 0, 0, false);
 			SoundManager::getInstance().loadAndPlayMusic("music/cf2.ogg", 40, 1);
 			break;
 		case 3:
 		case 4:
 			blockDensity = (rand() % 10) + 20;	// slightly less dense maps after that
-			mMaze->initMaze(g, blockDensity, mNumRacers, Race::GameMode::GM_CaptureFlags);	// CF
+			mMaze->initMaze(g, blockDensity, mNumRacers, Race::GameMode::GM_CaptureFlags, 2);	// CF
 			g.mWeather->setWeather(Weather::TimeOfDay::Evening, 0, 0, 0, false);
 			SoundManager::getInstance().loadAndPlayMusic("music/cf1.ogg", 40, 0);
 			break;
 		case 5:
 		case 6:
-			mMaze->initMaze(g, blockDensity - 5, mNumRacers, Race::GameMode::GM_DeathMatch); // less dense DM map
+			mMaze->initMaze(g, blockDensity - 5, mNumRacers, Race::GameMode::GM_DeathMatch, 6); // less dense DM map
 			g.mWeather->setWeather(Weather::TimeOfDay::Evening, 0, 0, 0, false);
 			SoundManager::getInstance().loadAndPlayMusic("music/dm.ogg", 80, 0);
 			break;
 		case 7:
 		case 8:
 			blockDensity = (rand() % 10) + 25;	// denser maps again
-			mMaze->initMaze(g, blockDensity, mNumRacers, Race::GameMode::GM_CaptureFlags);	// CF
+			mMaze->initMaze(g, blockDensity, mNumRacers, Race::GameMode::GM_CaptureFlags, 6);	// CF
 			g.mWeather->setWeather(Weather::TimeOfDay::Late, 0, 0, 0, false);
 			SoundManager::getInstance().loadAndPlayMusic("music/cf2.ogg", 40, 0);
 			break;
 		default:
 			int chance = rand() % 3;
 			if (chance < 2) {
-				mMaze->initMaze(g, blockDensity, mNumRacers, Race::GameMode::GM_CaptureFlags);
+				mMaze->initMaze(g, blockDensity, mNumRacers, Race::GameMode::GM_CaptureFlags, 6);
 				if(rand() % 2 == 0)
 					SoundManager::getInstance().loadAndPlayMusic("music/cf1.ogg", 40, 0);
 				else
 					SoundManager::getInstance().loadAndPlayMusic("music/cf2.ogg", 40, 0);
 			}
 			else {
-				mMaze->initMaze(g, blockDensity - 5, mNumRacers, Race::GameMode::GM_DeathMatch); // less dense DM map
+				mMaze->initMaze(g, blockDensity - 5, mNumRacers, Race::GameMode::GM_DeathMatch, 6); // less dense DM map
 				SoundManager::getInstance().loadAndPlayMusic("music/dm.ogg", 80, 0);
 			}
 

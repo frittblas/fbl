@@ -39,7 +39,6 @@ public:
     static const int cTargetX = 15 * 32; //Game::TileSize;
     static const int cTargetY = 8 * 32;  //Game::TileSize;
 
-    static const int cMaxFlags   = 6;      // max number of flags in a level
     static const int cMaxTargets = 3;      // max number of targets (robots to eliminate) in a level
     static const int cMaxCoins   = 26;     // max number of coins in a level
 
@@ -63,7 +62,7 @@ public:
     void tick(Game& g);
     void setupPickStart();
     void pickStartPosition(Game& g);
-    void initMaze(Game& g, int density, int numRacers, int gameMode);
+    void initMaze(Game& g, int density, int numRacers, int gameMode, int numFlags);
     void stopPathing();
     void resetMaze();
     void randomizeMaze(int density);
@@ -78,7 +77,7 @@ public:
     bool mazeHasAllPaths();
     void assignPaths(Game& g);
 
-    static Maze::aFlag sFlag[Maze::cMaxFlags];     // the flag sprites, used in CaptureFlags and LaserSystem
+    static Maze::aFlag sFlag[10];                  // the flag sprites, used in CaptureFlags and LaserSystem
     static Maze::aCoin sCoin[Maze::cMaxCoins];	   // the coins, used in CaptureFlags, DeathMatch and Magnet
     //static uint32_t    sTarget[Maze::cMaxTargets]; // the targets (3 robots you can attack in DM)
 
@@ -86,6 +85,7 @@ public:
     static bool sStartingOut;	// used in PathLogicSystem, RobotCtrl. Takes wait 3 sec into consid. (before the race starts)
     static bool sUpdatePaths;	// used in Laser, PathLogicSystem and CaptureFlags (if true, make all robots update paths)
     static int  sGameMode;		// the currect game mode in use, like Race::CaptureFlags
+    static int  sNumFlags;      // number of flags in current race
 
     // all the game modes
     static CaptureFlags* sCF;

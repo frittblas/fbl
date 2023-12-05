@@ -464,7 +464,7 @@ g_dialogue[40] = coroutine.create(function ()
 	while true do
 		if iter == 1 then
 			if not g_wait_response then
-				disp_dw("I am the event-slime.", "I can arrange a race event.", "Do you want to race?", "Yes", "No")
+				disp_dw("At the start, pick the corner with the", "closest distance to the flag in the center!,", "Just click the corner you want. Be quick.", "Let's race", "I don't wanna")
 			elseif getResponse() == YES then
 				iter = advance(Race, 1)
 			elseif getResponse() == NO then
@@ -482,7 +482,7 @@ g_dialogue[41] = coroutine.create(function ()
 	while true do
 		if iter == 1 then
 			if not g_wait_response then
-				disp_dw("These beginning races are really easy.", "But I assure you, you will hate me soon enough.", "Wanna race? Just capture the flags.", "Yes", "No")
+				disp_dw("These beginning races are really easy.", "But I assure you, you will hate me soon enough.", "Wanna race? Just capture the flag first.", "Yes", "No")
 			elseif getResponse() == YES then
 				iter = advance(Race, 1)
 			elseif getResponse() == NO then

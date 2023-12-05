@@ -233,7 +233,7 @@ void LaserSystem::dealDamage(Game &g, Entity attacker, Entity target) {
 			robotDied();
 
 			// drop the flag when dead (doesn't do anything in other game modes)
-			for (int j = 0; j < Maze::cMaxFlags; j++) {
+			for (int j = 0; j < Maze::sNumFlags; j++) {
 				if (Maze::sFlag[j].state == target) {
 					Maze::sFlag[j].state = Maze::FlagState::Dropped;
 					Maze::sUpdatePaths = true;

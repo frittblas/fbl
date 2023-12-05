@@ -32,7 +32,7 @@ void CaptureFlags::handleFlags(Entity e, Position& pos, Sprite& spr, Path& path,
 		return;
 	}
 
-	for (int i = 0; i < Maze::cMaxFlags; i++) {
+	for (int i = 0; i < Maze::sNumFlags; i++) {
 
 		// handle flag colissions, skip if no colission
 		if (!fbl_get_sprite_collision(spr.id[0], Maze::sFlag[i].id)) continue;
@@ -65,7 +65,7 @@ void CaptureFlags::handleFlags(Entity e, Position& pos, Sprite& spr, Path& path,
 
 int CaptureFlags::hasFlag(Entity e) {
 
-	for (int i = 0; i < Maze::cMaxFlags; i++)
+	for (int i = 0; i < Maze::sNumFlags; i++)
 		if (Maze::sFlag[i].state == e) return i;
 
 	return -1;
@@ -145,7 +145,7 @@ void CaptureFlags::findClosestFlag(Position& pos, Path& path, PathLogic& plog) {
 
 	// first check the distance to all the dropped (if any) flags and pick the shortest path.
 
-	for (int i = 0; i < Maze::cMaxFlags; i++) {
+	for (int i = 0; i < Maze::sNumFlags; i++) {
 
 		// are any flags available?
 		if (Maze::sFlag[i].state == Maze::FlagState::Center || Maze::sFlag[i].state == Maze::FlagState::Dropped) {
@@ -191,7 +191,7 @@ void CaptureFlags::checkWinCondition(Game& g) {
 
 		// now check if all flags are returned to base
 		bool allTaken = true;
-		for (int i = 0; i < Maze::cMaxFlags; i++) {
+		for (int i = 0; i < Maze::sNumFlags; i++) {
 			if (Maze::sFlag[i].state != Maze::FlagState::Base) {
 				allTaken = false;
 				break;
