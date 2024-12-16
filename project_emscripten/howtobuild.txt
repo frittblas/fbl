@@ -13,4 +13,6 @@ Rename lua-5.4.1 dir to lua
 Create new dir called lib in lua dir
 run build-lua541.bat
 
-will update to lua543 soon.
+Update:
+instead of running the bat files directly, copy the contents from the corresponding file in "newscripts"
+to the console.
