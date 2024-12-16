@@ -1,0 +1,33 @@
+emcc -c cm/src/chipmunk.c -o cm/obj/chipmunk.o -O2 -DNDEBUG
+emcc -c cm/src/cpArbiter.c -o cm/obj/cpArbiter.o -O2 -DNDEBUG
+emcc -c cm/src/cpArray.c -o cm/obj/cpArray.o -O2 -DNDEBUG
+emcc -c cm/src/cpBBTree.c -o cm/obj/cpBBTree.o -O2 -DNDEBUG
+emcc -c cm/src/cpBody.c -o cm/obj/cpBody.o -O2 -DNDEBUG
+emcc -c cm/src/cpCollision.c -o cm/obj/cpCollision.o -O2 -DNDEBUG
+emcc -c cm/src/cpConstraint.c -o cm/obj/cpConstraint.o -O2 -DNDEBUG
+emcc -c cm/src/cpDampedRotarySpring.c -o cm/obj/cpDampedRotarySpring.o -O2 -DNDEBUG
+emcc -c cm/src/cpDampedSpring.c -o cm/obj/cpDampedSpring.o -O2 -DNDEBUG
+emcc -c cm/src/cpGearJoint.c -o cm/obj/cpGearJoint.o -O2 -DNDEBUG
+emcc -c cm/src/cpHashSet.c -o cm/obj/cpHashSet.o -O2 -DNDEBUG
+emcc -c cm/src/cpHastySpace.c -o cm/obj/cpHastySpace.o -O2 -DNDEBUG
+emcc -c cm/src/cpMarch.c -o cm/obj/cpMarch.o -O2 -DNDEBUG
+emcc -c cm/src/cpPinJoint.c -o cm/obj/cpPinJoint.o -O2 -DNDEBUG
+emcc -c cm/src/cpPivotJoint.c -o cm/obj/cpPivotJoint.o -O2 -DNDEBUG
+emcc -c cm/src/cpPolyLine.c -o cm/obj/cpPolyLine.o -O2 -DNDEBUG
+emcc -c cm/src/cpPolyShape.c -o cm/obj/cpPolyShape.o -O2 -DNDEBUG
+emcc -c cm/src/cpRatchetJoint.c -o cm/obj/cpRatchetJoint.o -O2 -DNDEBUG
+emcc -c cm/src/cpRobust.c -o cm/obj/cpRobust.o -O2 -DNDEBUG
+emcc -c cm/src/cpRotaryLimitJoint.c -o cm/obj/cpRotaryLimitJoint.o -O2 -DNDEBUG
+emcc -c cm/src/cpShape.c -o cm/obj/cpShape.o -O2 -DNDEBUG
+emcc -c cm/src/cpSimpleMotor.c -o cm/obj/cpSimpleMotor.o -O2 -DNDEBUG
+emcc -c cm/src/cpSlideJoint.c -o cm/obj/cpSlideJoint.o -O2 -DNDEBUG
+emcc -c cm/src/cpSpace.c -o cm/obj/cpSpace.o -O2 -DNDEBUG
+emcc -c cm/src/cpSpaceComponent.c -o cm/obj/cpSpaceComponent.o -O2 -DNDEBUG
+emcc -c cm/src/cpSpaceDebug.c -o cm/obj/cpSpaceDebug.o -O2 -DNDEBUG
+emcc -c cm/src/cpSpaceHash.c -o cm/obj/cpSpaceHash.o -O2 -DNDEBUG
+emcc -c cm/src/cpSpaceQuery.c -o cm/obj/cpSpaceQuery.o -O2 -DNDEBUG
+emcc -c cm/src/cpSpaceStep.c -o cm/obj/cpSpaceStep.o -O2 -DNDEBUG
+emcc -c cm/src/cpSpatialIndex.c -o cm/obj/cpSpatialIndex.o -O2 -DNDEBUG
+emcc -c cm/src/cpSweep1D.c -o cm/obj/cpSweep1D.o -O2 -DNDEBUG
+
+emar rc cm/lib/chipmunk.a cm/obj/*.o

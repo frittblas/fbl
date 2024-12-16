@@ -1,0 +1,34 @@
+emcc -c lua/src/lapi.c -o lua/obj/lapi.o -O2
+emcc -c lua/src/lauxlib.c -o lua/obj/lauxlib.o -O2
+emcc -c lua/src/lbaselib.c -o lua/obj/lbaselib.o -O2
+emcc -c lua/src/lcode.c -o lua/obj/lcode.o -O2
+emcc -c lua/src/lcorolib.c -o lua/obj/lcorolib.o -O2
+emcc -c lua/src/lctype.c -o lua/obj/lctype.o -O2
+emcc -c lua/src/ldblib.c -o lua/obj/ldblib.o -O2
+emcc -c lua/src/ldebug.c -o lua/obj/ldebug.o -O2
+emcc -c lua/src/ldo.c -o lua/obj/ldo.o -O2
+emcc -c lua/src/ldump.c -o lua/obj/ldump.o -O2
+emcc -c lua/src/lfunc.c -o lua/obj/lfunc.o -O2
+emcc -c lua/src/lgc.c -o lua/obj/lgc.o -O2
+emcc -c lua/src/linit.c -o lua/obj/linit.o -O2
+emcc -c lua/src/liolib.c -o lua/obj/liolib.o -O2
+emcc -c lua/src/llex.c -o lua/obj/llex.o -O2
+emcc -c lua/src/lmathlib.c -o lua/obj/lmathlib.o -O2
+emcc -c lua/src/lmem.c -o lua/obj/lmem.o -O2
+emcc -c lua/src/loadlib.c -o lua/obj/loadlib.o -O2
+emcc -c lua/src/lobject.c -o lua/obj/lobject.o -O2
+emcc -c lua/src/lopcodes.c -o lua/obj/lopcodes.o -O2
+emcc -c lua/src/loslib.c -o lua/obj/loslib.o -O2
+emcc -c lua/src/lparser.c -o lua/obj/lparser.o -O2
+emcc -c lua/src/lstate.c -o lua/obj/lstate.o -O2
+emcc -c lua/src/lstring.c -o lua/obj/lstring.o -O2
+emcc -c lua/src/lstrlib.c -o lua/obj/lstrlib.o -O2
+emcc -c lua/src/ltable.c -o lua/obj/ltable.o -O2
+emcc -c lua/src/ltablib.c -o lua/obj/ltablib.o -O2
+emcc -c lua/src/ltm.c -o lua/obj/ltm.o -O2
+emcc -c lua/src/lundump.c -o lua/obj/lundump.o -O2
+emcc -c lua/src/lutf8lib.c -o lua/obj/lutf8lib.o -O2
+emcc -c lua/src/lvm.c -o lua/obj/lvm.o -O2
+emcc -c lua/src/lzio.c -o lua/obj/lzio.o -O2
+
+emar rc lua/lib/liblua.a lua/obj/*.o
