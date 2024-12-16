@@ -21,7 +21,7 @@ void normal_loop_handler();
 bool should_continue_logic_loops();
 
 #ifdef __EMSCRIPTEN__
-int touch_callback(int event_type, const EmscriptenTouchEvent *touchEvent, void *userData);
+bool touch_callback(int event_type, const EmscriptenTouchEvent *touchEvent, void *userData);
 #endif
 
 FBL_ENGINE fbl_engine;
@@ -759,7 +759,7 @@ void fbl_engine_quit()
 /* touch callback function for touch devices that run in browser, thanks to App Game Kit for this (source on Github) */
 
 #ifdef __EMSCRIPTEN__
-int touch_callback(int event_type, const EmscriptenTouchEvent *touchEvent, void *userData)
+bool touch_callback(int event_type, const EmscriptenTouchEvent *touchEvent, void *userData)
 {
 
 	int i;
@@ -871,10 +871,10 @@ int touch_callback(int event_type, const EmscriptenTouchEvent *touchEvent, void 
 		}
 		break;
 	}
-	default: return 0;
+	default: return false;
 	}
 
-	return 1;
+	return true;
 }
 #endif
 

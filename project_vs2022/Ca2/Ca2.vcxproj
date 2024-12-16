@@ -1,0 +1,258 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{EC3C5D9D-2265-45A6-A14D-B18431A409B0}</ProjectGuid>
+    <RootNamespace>Ca2</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Ca2</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_net-2.2.0\include;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_mixer-2.0.4\include;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_ttf-2.0.15\include;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_image-2.0.5\include;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2-2.0.12\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)..\dependencies\vc2019\lua\lua-5.4.1;$(SolutionDir)..\dependencies\vc2019\chipmunk\chipmunk-7.0.3\Release;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2-2.0.12\lib\x86\;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_image-2.0.5\lib\x86\;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_ttf-2.0.15\lib\x86\;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_net-2.2.0\lib\x86;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_mixer-2.0.4\lib\x86\;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_mixer-2.0.4\include;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_ttf-2.0.15\include;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_image-2.0.5\include;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_net-2.2.0\include;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2-2.0.12\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_net-2.2.0\lib\x86;$(SolutionDir)..\dependencies\vc2019\lua\lua-5.4.1;$(SolutionDir)..\dependencies\vc2019\chipmunk\chipmunk-7.0.3\Release;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2-2.0.12\lib\x86\;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_image-2.0.5\lib\x86\;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_ttf-2.0.15\lib\x86\;$(SolutionDir)..\dependencies\vc2019\SDL\SDL2_mixer-2.0.4\lib\x86\;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(SolutionDir)..\dependencies\vc\SDL\SDL2_net-2.2.0\include;$(SolutionDir)..\dependencies\vc\SDL\SDL2-2.0.12\include;$(SolutionDir)..\dependencies\vc\SDL\SDL2_ttf-2.0.15\include;$(SolutionDir)..\dependencies\vc\SDL\SDL2_mixer-2.0.4\include;$(SolutionDir)..\dependencies\vc\SDL\SDL2_image-2.0.5\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)..\dependencies\vc\SDL\SDL2_net-2.2.0\lib\x64;$(SolutionDir)..\dependencies\vc\lua\lua-5.4.1\x64;$(SolutionDir)..\dependencies\vc\chipmunk\chipmunk-7.0.3\Release\x64;$(SolutionDir)..\dependencies\vc\SDL\SDL2-2.0.12\lib\x64;$(SolutionDir)..\dependencies\vc\SDL\SDL2_ttf-2.0.15\lib\x64;$(SolutionDir)..\dependencies\vc\SDL\SDL2_mixer-2.0.4\lib\x64;$(SolutionDir)..\dependencies\vc\SDL\SDL2_image-2.0.5\lib\x64;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;lua5.4.1.lib;chipmunk.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;lua5.4.1.lib;chipmunk.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+      <AdditionalOptions>/d2:-AllowCompatibleILVersions %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;SDL2_net.lib;lua5.4.1.lib;chipmunk.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+      <AdditionalOptions>/d2:-AllowCompatibleILVersions %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\game_projects\Ca2\Addons.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\Ca2.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\Chars.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\CameraSystem.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\DialogueTrigSystem.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\LightSystem.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\MouseCtrlSystem.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\PathSystem.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\Race\AutoAimSystem.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\Race\BasicAISystem.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\Race\DiagSystem.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\Race\HealSystem.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\Race\LaserSystem.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\Race\MagnetSystem.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\Race\PathLogicSystem.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\Race\RobotCtrlSystem.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\Race\ShieldSystem.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\Race\TurboSystem.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\SpriteSystem.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\Efx.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\Game.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\GameState\Dialogue.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\GameState\Explore.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\GameState\GameState.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\GameState\Maintenance.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\GameState\Race\GameModes\CaptureFlags.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\GameState\Race\GameModes\DeathMatch.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\GameState\Race\Maze.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\GameState\Race\PostRace.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\GameState\Race\Race.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\GameState\RobotCollection.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\GameState\Settings.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\GameState\Title.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\Location.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\LuaDialogue.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\Objects.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\Progress.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\Robots.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\SoundManager.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\SysManager.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\UserInput.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\Weather.cpp" />
+    <ClCompile Include="..\..\src\a_star\a_star.c" />
+    <ClCompile Include="..\..\src\dl_list\dllist.c" />
+    <ClCompile Include="..\..\src\fbl.c" />
+    <ClCompile Include="..\..\src\input.c" />
+    <ClCompile Include="..\..\src\lua.c" />
+    <ClCompile Include="..\..\src\network.c" />
+    <ClCompile Include="..\..\src\particles.c" />
+    <ClCompile Include="..\..\src\pathfind.c" />
+    <ClCompile Include="..\..\src\physics.c" />
+    <ClCompile Include="..\..\src\primitives.c" />
+    <ClCompile Include="..\..\src\sound.c" />
+    <ClCompile Include="..\..\src\sprite.c" />
+    <ClCompile Include="..\..\src\text.c" />
+    <ClCompile Include="..\..\src\thread.c" />
+    <ClCompile Include="..\..\src\ui.c" />
+    <ClCompile Include="..\..\tools\ScenEdit\Disk.cpp" />
+    <ClCompile Include="..\..\tools\ScenEdit\GuiFuncs.cpp" />
+    <ClCompile Include="..\..\tools\ScenEdit\ScenEdit.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\game_projects\Ca2\Addons.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\Chars.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Components.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Ecs.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\System.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\CameraSystem.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\DialogueTrigSystem.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\LightSystem.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\MouseCtrlSystem.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\PathSystem.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\Race\AutoAimSystem.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\Race\BasicAISystem.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\Race\DiagSystem.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\Race\HealSystem.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\Race\LaserSystem.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\Race\MagnetSystem.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\Race\PathLogicSystem.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\Race\RobotCtrlSystem.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\Race\ShieldSystem.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\Race\TurboSystem.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Systems\SpriteSystem.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\Ecs\Types.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\Efx.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\Game.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\GameState\Dialogue.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\GameState\Explore.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\GameState\GameState.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\GameState\IState.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\GameState\Maintenance.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\GameState\Race\GameModes\CaptureFlags.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\GameState\Race\GameModes\DeathMatch.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\GameState\Race\Maze.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\GameState\Race\PostRace.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\GameState\Race\Race.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\GameState\RobotCollection.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\GameState\Settings.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\GameState\Title.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\Location.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\LuaDialogue.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\Objects.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\IObserver.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\Progress.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\Robots.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\SoundManager.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\SysManager.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\UserInput.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\Weather.hpp" />
+    <ClInclude Include="..\..\src\engine.h" />
+    <ClInclude Include="..\..\src\fbl.h" />
+    <ClInclude Include="..\..\src\fbl.hpp" />
+    <ClInclude Include="..\..\tools\ScenEdit\Disk.hpp" />
+    <ClInclude Include="..\..\tools\ScenEdit\GuiFuncs.hpp" />
+    <ClInclude Include="..\..\tools\ScenEdit\ScenEdit.hpp" />
+    <ClInclude Include="..\..\tools\ScenEdit\TileData.hpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

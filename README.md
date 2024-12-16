@@ -35,11 +35,6 @@ Features (current ver. 1.0):
 - Fast, lightweight engine and simple API.
 
 
-upcoming features (ver 1.1)
-
-- Networking (SDL_net)
-
-
 /Hans
 
 
@@ -95,8 +90,8 @@ Use .png and .ogg and .ttf files for media.
 
 Includes dependencies and projects for Windows (Msvc), webassembly version (Emscripten) and Android (Android Studio, Gradle (see project_android)).
 
-The visual studio 2019 version works out of the box (vs2019 has x86 (release and debug) and x64-bit(release) versions),
-the Xcode version has been removed. Don't have a mac atm.
+The visual studio 2022 version works out of the box (vs2022 has x86 (release and debug) and x64-bit(release) versions),
+the Xcode version has been removed. I don't have a mac atm!
 RPI version works but you need to build all dependencies, which is not too hard. Start here:
 http://www.kastanjen.net/misc/rpi-SDL2.html
 Then check project_rpi for detailed insctuctions on how to build fbl for rpi.

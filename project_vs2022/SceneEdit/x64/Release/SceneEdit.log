@@ -1,0 +1,47 @@
+﻿  a_star.c
+  dllist.c
+  fbl.c
+  input.c
+  lua.c
+  network.c
+  particles.c
+  pathfind.c
+  physics.c
+  primitives.c
+C:\dev\git\fbl\src\particles.c(470,38): warning C4244: '=': conversion from 'double' to 'uint8_t', possible loss of data
+C:\dev\git\fbl\src\particles.c(477,38): warning C4244: '=': conversion from 'double' to 'uint8_t', possible loss of data
+C:\dev\git\fbl\src\particles.c(481,30): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\dev\git\fbl\src\particles.c(597,36): warning C4244: '=': conversion from 'float' to 'uint8_t', possible loss of data
+  sound.c
+  sprite.c
+  text.c
+  thread.c
+  ui.c
+  Disk.cpp
+  GuiFuncs.cpp
+C:\dev\git\fbl\tools\ScenEdit\GuiFuncs.cpp(114,21): warning C4267: 'initializing': conversion from 'size_t' to 'uint32_t', possible loss of data
+C:\dev\git\fbl\tools\ScenEdit\GuiFuncs.cpp(136,21): warning C4267: 'initializing': conversion from 'size_t' to 'uint32_t', possible loss of data
+  Main.cpp
+  ScenEdit.cpp
+     Creating library C:\dev\git\fbl\project_vs2022\x64\Release\ScenEdit.lib and object C:\dev\git\fbl\project_vs2022\x64\Release\ScenEdit.exp
+  Generating code
+  Previous IPDB not found, fall back to full compilation.
+  All 1127 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+chipmunk.lib(cpSpaceQuery.obj) : warning LNK4099: PDB '' was not found with 'chipmunk.lib(cpSpaceQuery.obj)' or at ''; linking object as if no debug info
+chipmunk.lib(cpSpace.obj) : warning LNK4099: PDB '' was not found with 'chipmunk.lib(cpSpace.obj)' or at ''; linking object as if no debug info
+chipmunk.lib(cpBody.obj) : warning LNK4099: PDB '' was not found with 'chipmunk.lib(cpBody.obj)' or at ''; linking object as if no debug info
+chipmunk.lib(cpSpaceStep.obj) : warning LNK4099: PDB '' was not found with 'chipmunk.lib(cpSpaceStep.obj)' or at ''; linking object as if no debug info
+chipmunk.lib(cpShape.obj) : warning LNK4099: PDB '' was not found with 'chipmunk.lib(cpShape.obj)' or at ''; linking object as if no debug info
+chipmunk.lib(chipmunk.obj) : warning LNK4099: PDB '' was not found with 'chipmunk.lib(chipmunk.obj)' or at ''; linking object as if no debug info
+chipmunk.lib(cpPolyShape.obj) : warning LNK4099: PDB '' was not found with 'chipmunk.lib(cpPolyShape.obj)' or at ''; linking object as if no debug info
+chipmunk.lib(cpHashSet.obj) : warning LNK4099: PDB '' was not found with 'chipmunk.lib(cpHashSet.obj)' or at ''; linking object as if no debug info
+chipmunk.lib(cpArbiter.obj) : warning LNK4099: PDB '' was not found with 'chipmunk.lib(cpArbiter.obj)' or at ''; linking object as if no debug info
+chipmunk.lib(cpArray.obj) : warning LNK4099: PDB '' was not found with 'chipmunk.lib(cpArray.obj)' or at ''; linking object as if no debug info
+chipmunk.lib(cpBBTree.obj) : warning LNK4099: PDB '' was not found with 'chipmunk.lib(cpBBTree.obj)' or at ''; linking object as if no debug info
+chipmunk.lib(cpSpaceComponent.obj) : warning LNK4099: PDB '' was not found with 'chipmunk.lib(cpSpaceComponent.obj)' or at ''; linking object as if no debug info
+chipmunk.lib(cpSpaceHash.obj) : warning LNK4099: PDB '' was not found with 'chipmunk.lib(cpSpaceHash.obj)' or at ''; linking object as if no debug info
+chipmunk.lib(cpSpatialIndex.obj) : warning LNK4099: PDB '' was not found with 'chipmunk.lib(cpSpatialIndex.obj)' or at ''; linking object as if no debug info
+chipmunk.lib(cpCollision.obj) : warning LNK4099: PDB '' was not found with 'chipmunk.lib(cpCollision.obj)' or at ''; linking object as if no debug info
+chipmunk.lib(cpRobust.obj) : warning LNK4099: PDB '' was not found with 'chipmunk.lib(cpRobust.obj)' or at ''; linking object as if no debug info
+  SceneEdit.vcxproj -> C:\dev\git\fbl\project_vs2022\x64\Release\ScenEdit.exe

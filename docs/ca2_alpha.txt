@@ -8,9 +8,4 @@ Checklist to finish ca2 alpha in 5 days. 14 days in :)
 6. Add maintenance mode. DONE!
 7. Finish music and sfx. - DONE!
 8. Finish the map with npc's, races and dialogue. - in progress!
-9. Release alpha for Robofobe to play and critique.
-
-Checklist for beta:
-1. Tweak gameplay balance.
-
-Bugs:
+9. Release alpha for Robofobe to play and critique. - in progress!

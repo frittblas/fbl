@@ -1,0 +1,34 @@
+Checklist for beta:
+1. Add a new (important) gameplay element: Dungeons!
+
+Dungeons can be entered on specific tiles.
+
+Once in it's completely dark?
+A maze has been generated (or create a bunch of puzzles)
+You control the character using cards!!! And dice.
+Dice controls mana. If you get more dice you can pick the higher value.
+Play all the cards you can in order and see it play out.
+Example:
+Torch, Move right, move up, Fireball right, move up.
+Push, Accelerate, Move right.
+
+After your turn there is an environment turn (escalators and stuff)
+Then enemy turn (they attack close or ranged, or heal etc.)
+
+Ideas for cards:
+Mana cost first.
+1: Torch - makes you see immediate surroundings.
+2: Mega torch - makes you see everything.
+1: Move - take a step (in any direction)
+1: Push - will allow character to push certain blocks
+0: Accelerate - make movement double (2 steps)
+1: Punch - hit adjacent enemy for 5(in any dir)
+1: Block - gain 5 block this turn.
+
+
+2. Tweak gameplay balance.
+3. Add "simulate" button to robot races so they go super fast.
+4. Update to visual studio 2022 (update folder names), latest SDL (2.30.10)
+5. Fix the new emscripten build (Lua?)
+
+Ca2 will become good!
