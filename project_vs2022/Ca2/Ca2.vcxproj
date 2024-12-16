@@ -81,6 +81,11 @@
     <IncludePath>$(SolutionDir)..\dependencies\vc\SDL\SDL2_net-2.2.0\include;$(SolutionDir)..\dependencies\vc\SDL\SDL2-2.0.12\include;$(SolutionDir)..\dependencies\vc\SDL\SDL2_ttf-2.0.15\include;$(SolutionDir)..\dependencies\vc\SDL\SDL2_mixer-2.0.4\include;$(SolutionDir)..\dependencies\vc\SDL\SDL2_image-2.0.5\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\dependencies\vc\SDL\SDL2_net-2.2.0\lib\x64;$(SolutionDir)..\dependencies\vc\lua\lua-5.4.1\x64;$(SolutionDir)..\dependencies\vc\chipmunk\chipmunk-7.0.3\Release\x64;$(SolutionDir)..\dependencies\vc\SDL\SDL2-2.0.12\lib\x64;$(SolutionDir)..\dependencies\vc\SDL\SDL2_ttf-2.0.15\lib\x64;$(SolutionDir)..\dependencies\vc\SDL\SDL2_mixer-2.0.4\lib\x64;$(SolutionDir)..\dependencies\vc\SDL\SDL2_image-2.0.5\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(SolutionDir)..\dependencies\vc\SDL\SDL2_net-2.2.0\include;$(SolutionDir)..\dependencies\vc\SDL\SDL2-2.0.12\include;$(SolutionDir)..\dependencies\vc\SDL\SDL2_ttf-2.0.15\include;$(SolutionDir)..\dependencies\vc\SDL\SDL2_mixer-2.0.4\include;$(SolutionDir)..\dependencies\vc\SDL\SDL2_image-2.0.5\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)..\dependencies\vc\SDL\SDL2_net-2.2.0\lib\x64;$(SolutionDir)..\dependencies\vc\lua\lua-5.4.1\x64;$(SolutionDir)..\dependencies\vc\chipmunk\chipmunk-7.0.3\Release\x64;$(SolutionDir)..\dependencies\vc\SDL\SDL2-2.0.12\lib\x64;$(SolutionDir)..\dependencies\vc\SDL\SDL2_ttf-2.0.15\lib\x64;$(SolutionDir)..\dependencies\vc\SDL\SDL2_mixer-2.0.4\lib\x64;$(SolutionDir)..\dependencies\vc\SDL\SDL2_image-2.0.5\lib\x64;$(LibraryPath)</LibraryPath>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>EnableAllWarnings</WarningLevel>
@@ -98,6 +103,9 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
+    <Link>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;SDL2_net.lib;lua5.4.1.lib;chipmunk.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -157,6 +165,7 @@
     <ClCompile Include="..\..\game_projects\Ca2\Efx.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\Game.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\GameState\Dialogue.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\GameState\Dungeon\Dungeon.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\GameState\Explore.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\GameState\GameState.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\GameState\Maintenance.cpp" />
@@ -222,6 +231,7 @@
     <ClInclude Include="..\..\game_projects\Ca2\Efx.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\Game.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\GameState\Dialogue.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\GameState\Dungeon\Dungeon.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\GameState\Explore.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\GameState\GameState.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\GameState\IState.hpp" />

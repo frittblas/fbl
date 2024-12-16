@@ -28,10 +28,11 @@ Settings = 2
 Tutorial = 3
 Race = 4
 Maintenance = 5
+Dungeon = 6
 --
-Explore = 6
-Dialogue = 7
-RobotCollection = 8
+Explore = 7
+Dialogue = 8
+RobotCollection = 9
 
 -- number of dialogues
 -- NUM_DIALOGUES = 2

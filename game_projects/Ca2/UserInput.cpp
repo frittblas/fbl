@@ -37,7 +37,7 @@ UserInput::~UserInput() {
 
 void UserInput::tick(Game& g) {
 
-	/*
+
 	if (fbl_get_key_down(FBLK_1) && access == 0) {
 		g.mState->change(g, GameState::StateType::Title);
 		access = buttonDelay;
@@ -62,11 +62,15 @@ void UserInput::tick(Game& g) {
 		g.mState->change(g, GameState::StateType::Race);
 		access = buttonDelay;
 	}
+	if (fbl_get_key_down(FBLK_7) && access == 0) {
+		g.mState->change(g, GameState::StateType::Dungeon);
+		access = buttonDelay;
+	}
 	if (fbl_get_key_down(FBLK_BACKSPACE) && access == 0) {
 		g.mState->change(g, GameState::StateType::Maintenance);
 		access = buttonDelay;
 	}
-	*/
+
 
 	// for android, temporary :)
 	if (fbl_get_mouse_click(FBLMB_LEFT) && access == 0 && g.mState->get() == GameState::StateType::Title) {

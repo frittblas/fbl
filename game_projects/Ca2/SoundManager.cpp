@@ -80,7 +80,7 @@ void SoundManager::loadAndPlayMusic(std::string filename, int volume, int loops)
 
 	fbl_destroy_music();
 	fbl_load_music(filename.c_str());
-	fbl_play_music(volume, loops);	// max volume = 128
+	//fbl_play_music(volume, loops);	// max volume = 128
 
 }
 

@@ -40,6 +40,7 @@
 #include "Explore.hpp"
 #include "Dialogue.hpp"
 #include "RobotCollection.hpp"
+#include "Dungeon/Dungeon.hpp"
 
 #include "Race/Race.hpp"
 
@@ -122,6 +123,9 @@ void GameState::change(Game& g, StateType newState) {
 			else if (mState == StateType::Race) {	// if coming from a race
 				raceToExplore(g);
 			}
+			else if (mState == StateType::Dungeon) {	// if coming from a dungeon
+				dungeonToExplore(g);
+			}
 			else if (mState == StateType::Maintenance) {	// if coming from maintenance
 				maintenanceToExplore(g);
 			}
@@ -172,6 +176,11 @@ void GameState::change(Game& g, StateType newState) {
 			g.mSysManager->mRobotCtrlSystem->Init(*g.mEcs);		// set up robot control access time.
 
 
+			break;
+
+		case StateType::Dungeon:
+			setupDungeon(g);
+			mCurrentStateInstance = new Dungeon();
 			break;
 
 		case StateType::Maintenance:
@@ -361,6 +370,31 @@ void GameState::maintenanceToExplore(Game& g) {
 
 }
 
+void GameState::dungeonToExplore(Game& g) {
+
+	destroyAllGfx();					// remove resources (ALL sprites, prims, text, ui and emitters)
+	g.mLocation->loadLocation(g.mMap);	// this will destroy all sprites, then load map
+	initLuaDialog();					// set up prims and text and ui for the dialog box.
+	g.mChars->restoreNpcs(g);
+	g.mSysManager->mSpriteSystem->Init(*g.mEcs);	// create sprites for all entities with a sprite component
+	g.mSysManager->mLightSystem->Init(*g.mEcs);		// create lights for all entities with a light component
+
+	// add path component back to the player
+	g.mEcs->AddComponent(g.mChars->mBrodo, Path{ 0, 0, 0, false, 2.0, FBL_PATHF_USE_DIAG, 1 });
+
+	initCollectionMenu();	// set up prims and text and ui for the collection-menu, sprite draw-order is important
+	g.mAddons->initAddons(g.mEcs); // create the addon ui elements (buttons)
+
+	setAtmosphere(g);	// set music, ambience and weather based on progress
+
+	// delete the event-slime you talked to
+	//g.mChars->checkNPC(g, g.mChars->EventSlime);
+
+	// play silly sound
+	SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxSnap, SoundManager::Channel::Ui, 0);
+
+}
+
 void GameState::setupRace(Game& g) {
 
 	destroyAllGfx();								// remove resources (ALL sprites, prims, text, ui and emitters)
@@ -386,6 +420,36 @@ void GameState::setupRace(Game& g) {
 	Efx::getInstance().initCoinEfx();
 
 	//g.mWeather->setWeather(Weather::TimeOfDay::Evening, 0, 0, 0, false);
+
+	//SoundManager::getInstance().loadAndPlayMusic("music/dm.ogg", 80, 0);
+
+	// play snap on ambient channel to stop the ambient sound.
+	SoundManager::getInstance().playSfx(SoundManager::getInstance().mSfxSnap, SoundManager::Channel::Ambient, 0);
+
+}
+
+void GameState::setupDungeon(Game& g) {
+
+	destroyAllGfx();								// remove resources (ALL sprites, prims, text, ui and emitters)
+	g.mLocation->unLoadLocation(g.mMap);			// this destroys ALL sprites
+	g.mSysManager->mSpriteSystem->Init(*g.mEcs);	// create sprites for all entities with a sprite component
+	g.mSysManager->mLightSystem->Init(*g.mEcs);		// create lights for all entities with a light component
+
+	g.mRobots->mapSpriteIdToEntity(g.mEcs);
+	g.mRobots->hideRobots(g.mEcs);
+
+	// temporarily remove path component from the player
+	g.mEcs->RemoveComponent<Path>(g.mChars->mBrodo);
+
+	// hide the player light
+	auto& light = g.mEcs->GetComponent<Light>(g.mChars->mBrodo);
+	fbl_set_sprite_active(light.id, false);
+
+	// explosion particles
+	Efx::getInstance().initExplosion();
+	Efx::getInstance().initCoinEfx();
+
+	g.mWeather->setWeather(Weather::TimeOfDay::Evening, 0, 0, 0, false);
 
 	//SoundManager::getInstance().loadAndPlayMusic("music/dm.ogg", 80, 0);
 

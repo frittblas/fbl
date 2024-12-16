@@ -28,6 +28,7 @@ public:
         Tutorial,
         Race,
         Maintenance,
+        Dungeon,
         // these share resources
         Explore,
         Dialogue,
@@ -44,8 +45,10 @@ public:
     void toTitle(Game& g);
     void titleToExplore(Game& g);
     void raceToExplore(Game& g);
+    void dungeonToExplore(Game& g);
     void maintenanceToExplore(Game& g);
     void setupRace(Game& g);
+    void setupDungeon(Game& g);
     void setupMaintenance(Game& g);
     void setAtmosphere(Game& g);
 

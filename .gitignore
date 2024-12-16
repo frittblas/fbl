@@ -1,29 +1,29 @@
-project_vs2019/.vs/
-project_vs2019/fbl_project/Debug
-project_vs2019/fbl_project/Release
-project_vs2019/fbl_project/x64
+project_vs2022/.vs/
+project_vs2022/fbl_project/Debug
+project_vs2022/fbl_project/Release
+project_vs2022/fbl_project/x64
 
-project_vs2019/Ca2/Debug
-project_vs2019/Ca2/Release
-project_vs2019/Ca2/x64
+project_vs2022/Ca2/Debug
+project_vs2022/Ca2/Release
+project_vs2022/Ca2/x64
 
-project_vs2019/robot_lua_game/Debug
-project_vs2019/robot_lua_game/Release
-project_vs2019/robot_lua_game/x64
+project_vs2022/robot_lua_game/Debug
+project_vs2022/robot_lua_game/Release
+project_vs2022/robot_lua_game/x64
 
-project_vs2019/SceneEdit/Debug
-project_vs2019/SceneEdit/Release
-project_vs2019/SceneEdit/x64
+project_vs2022/SceneEdit/Debug
+project_vs2022/SceneEdit/Release
+project_vs2022/SceneEdit/x64
 
-project_vs2019/Debug/
+project_vs2022/Debug/
 
-project_vs2019/x64/Release/*.exe
-project_vs2019/x64/Release/*.lib
-project_vs2019/x64/Release/*.pdb
-project_vs2019/x64/Release/*.exp
+project_vs2022/x64/Release/*.exe
+project_vs2022/x64/Release/*.lib
+project_vs2022/x64/Release/*.pdb
+project_vs2022/x64/Release/*.exp
 
-project_vs2019/Release/*.exe
-project_vs2019/Release/*.lib
-project_vs2019/Release/*.pdb
-project_vs2019/Release/*.exp
+project_vs2022/Release/*.exe
+project_vs2022/Release/*.lib
+project_vs2022/Release/*.pdb
+project_vs2022/Release/*.exp
 

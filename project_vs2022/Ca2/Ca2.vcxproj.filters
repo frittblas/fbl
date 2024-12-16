@@ -43,6 +43,9 @@
     <Filter Include="Source Files\GameState\Race\GameModes">
       <UniqueIdentifier>{ca0c6310-a149-4eb5-9e99-4224f4b01121}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\GameState\Dungeon">
+      <UniqueIdentifier>{b57baa47-f1bf-4ed7-a05e-302737435190}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\a_star\a_star.c">
@@ -225,6 +228,9 @@
     <ClCompile Include="..\..\game_projects\Ca2\GameState\Maintenance.cpp">
       <Filter>Source Files\GameState</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\game_projects\Ca2\GameState\Dungeon\Dungeon.cpp">
+      <Filter>Source Files\GameState\Dungeon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\fbl.h">
@@ -388,6 +394,9 @@
     </ClInclude>
     <ClInclude Include="..\..\game_projects\Ca2\GameState\Maintenance.hpp">
       <Filter>Source Files\GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\GameState\Dungeon\Dungeon.hpp">
+      <Filter>Source Files\GameState\Dungeon</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
