@@ -16,6 +16,7 @@ project_vs2022/SceneEdit/Release
 project_vs2022/SceneEdit/x64
 
 project_vs2022/Debug/
+project_vs2022/x64/Debug/
 
 project_vs2022/x64/Release/*.exe
 project_vs2022/x64/Release/*.lib
