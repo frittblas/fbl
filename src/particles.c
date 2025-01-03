@@ -688,6 +688,10 @@ int  render_particles(int tag, void* emit, void* dummy)
 					}
 
 				}
+
+				// Set blendmode back to what it was!
+				SDL_SetRenderDrawBlendMode(fbl_engine.renderer, SDL_BLENDMODE_BLEND);
+
 				break;
 
 			case FBL_NO_PRIM :

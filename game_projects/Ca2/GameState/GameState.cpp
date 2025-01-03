@@ -443,7 +443,7 @@ void GameState::setupDungeon(Game& g) {
 
 	// hide the player light
 	auto& light = g.mEcs->GetComponent<Light>(g.mChars->mBrodo);
-	fbl_set_sprite_active(light.id, false);
+	fbl_set_sprite_active(light.id, true);
 
 	// explosion particles
 	Efx::getInstance().initExplosion();
