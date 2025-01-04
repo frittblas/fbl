@@ -19,6 +19,7 @@ fbl/game_projects/Ca2/GameState/Maintenance.cpp ^
 fbl/game_projects/Ca2/GameState/RobotCollection.cpp ^
 fbl/game_projects/Ca2/GameState/Settings.cpp ^
 fbl/game_projects/Ca2/GameState/Title.cpp ^
+fbl/game_projects/Ca2/GameState/Dungeon/Dungeon.cpp ^
 fbl/game_projects/Ca2/GameState/Race/Race.cpp ^
 fbl/game_projects/Ca2/GameState/Race/Maze.cpp ^
 fbl/game_projects/Ca2/GameState/Race/PostRace.cpp ^
@@ -46,6 +47,6 @@ fbl/tools/scenEdit/GuiFuncs.cpp ^
 -O2 -s TOTAL_MEMORY=67108864 -s USE_SDL=2 -s USE_SDL_IMAGE=2 ^
 -s SDL2_IMAGE_FORMATS="[""png""]" -s USE_SDL_MIXER=2 -s USE_SDL_TTF=2 ^
 --preload-file fbl/project_emscripten/output/assets ^
--o fbl/project_emscripten/output/fbl_test.html fbl/dependencies/emscripten/lua/liblua.bc ^
-fbl/dependencies/emscripten/chipmunk-7.0.3/chipmunk.bc ^
-fbl/dependencies/emscripten/fbl.bc
+-o fbl/project_emscripten/output/fbl_test.html fbl/dependencies/emscripten/lua/liblua.a ^
+fbl/dependencies/emscripten/chipmunk-7.0.3/chipmunk.a ^
+fbl/dependencies/emscripten/fbl.a

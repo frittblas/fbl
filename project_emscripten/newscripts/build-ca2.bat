@@ -19,6 +19,7 @@ fbl/game_projects/Ca2/GameState/Maintenance.cpp ^
 fbl/game_projects/Ca2/GameState/RobotCollection.cpp ^
 fbl/game_projects/Ca2/GameState/Settings.cpp ^
 fbl/game_projects/Ca2/GameState/Title.cpp ^
+fbl/game_projects/Ca2/GameState/Dungeon/Dungeon.cpp ^
 fbl/game_projects/Ca2/GameState/Race/Race.cpp ^
 fbl/game_projects/Ca2/GameState/Race/Maze.cpp ^
 fbl/game_projects/Ca2/GameState/Race/PostRace.cpp ^

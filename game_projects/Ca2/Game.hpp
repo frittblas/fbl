@@ -25,6 +25,7 @@ class Robots;
 class Addons;
 class Location;
 class Objects;
+class Deck;
 class Weather;
 class Progress;
 
@@ -42,6 +43,7 @@ public:
     Addons* mAddons;        // all the addons in the game.
     Location* mLocation;    // Locations (levels) in the game, loading, transitions etc.
     Objects* mObjects;      // all the game objects (movable blocks, shops etc)
+	Deck* mDeck;            // all the game cards, piles and decks in the game.
     Weather* mWeather;      // Weather system (animated clouds and rain, day/night cycle)
     Progress* mProgress;    // general game progress
 

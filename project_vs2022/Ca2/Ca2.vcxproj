@@ -148,6 +148,7 @@
     <ClCompile Include="..\..\game_projects\Ca2\Addons.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\Ca2.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\Chars.cpp" />
+    <ClCompile Include="..\..\game_projects\Ca2\Deck.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\CameraSystem.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\DialogueTrigSystem.cpp" />
     <ClCompile Include="..\..\game_projects\Ca2\Ecs\Systems\LightSystem.cpp" />
@@ -210,6 +211,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\game_projects\Ca2\Addons.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\Chars.hpp" />
+    <ClInclude Include="..\..\game_projects\Ca2\Deck.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\Ecs\Components.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\Ecs\Ecs.hpp" />
     <ClInclude Include="..\..\game_projects\Ca2\Ecs\System.hpp" />

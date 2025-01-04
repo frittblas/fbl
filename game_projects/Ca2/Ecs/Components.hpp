@@ -246,3 +246,20 @@ struct RobotCtrl
     bool    justSwitched; // just clicked the ctrl ui button (switching between active and off, used in PathLogic)
 
 };
+
+/////////////////////////
+// Card components //////
+/////////////////////////
+
+struct Card
+{
+
+    std::string name;    // card name
+	uint8_t type;        // examples: Attack, skill, ongoing, junk etc.
+    uint8_t rarity;      // rarity of the card (common, rare, etc.)
+	uint8_t manaCost;    // how much mana does it cost to play the card
+	bool burn;           // does the card burn when played (one use)?
+	bool upgraded;       // Cards can be upgraded once
+	uint8_t price;       // how much to buy
+
+};

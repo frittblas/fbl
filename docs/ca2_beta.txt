@@ -10,7 +10,7 @@ Dice controls mana. If you get more dice you can pick the higher value.
 Play all the cards you can in order and see it play out.
 Example:
 Torch, Move right, move up, Fireball right, move up.
-Push, Accelerate, Move right.
+Swim, Push, Accelerate, Move right.
 
 After your turn there is an environment turn (escalators and stuff)
 Then enemy turn (they attack close or ranged, or heal etc.)

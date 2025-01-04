@@ -22,6 +22,7 @@
 #include "Addons.hpp"
 #include "Location.hpp"
 #include "Objects.hpp"
+#include "Deck.hpp"
 #include "Weather.hpp"
 #include "Progress.hpp"
 #include "GameState/GameState.hpp"
@@ -96,6 +97,7 @@ bool Game::init() {
 	mAddons = new Addons();
 	mLocation = new Location();
 	mObjects = new Objects();
+	mDeck = new Deck();
 	mWeather = new Weather();
 	mProgress = new Progress();
 
@@ -127,6 +129,7 @@ void Game::unInit() {
 	delete mAddons;
 	delete mLocation;
 	delete mObjects;
+	delete mDeck;
 	delete mWeather;
 	delete mProgress;
 

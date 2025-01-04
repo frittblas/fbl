@@ -231,6 +231,9 @@
     <ClCompile Include="..\..\game_projects\Ca2\GameState\Dungeon\Dungeon.cpp">
       <Filter>Source Files\GameState\Dungeon</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\game_projects\Ca2\Deck.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\fbl.h">
@@ -397,6 +400,9 @@
     </ClInclude>
     <ClInclude Include="..\..\game_projects\Ca2\GameState\Dungeon\Dungeon.hpp">
       <Filter>Source Files\GameState\Dungeon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game_projects\Ca2\Deck.hpp">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
