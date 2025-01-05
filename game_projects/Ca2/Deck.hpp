@@ -34,9 +34,8 @@ public:
 
     enum CardRarities {
         Common,
-        Uncommon,
         Rare,
-		NumCardRarities
+        Epic
     };
 
     enum CardNames {
@@ -63,6 +62,9 @@ public:
     ~Deck();
 
     void setupCards(Coordinator* mEcs);
-	void claimCard(int nameIndex);      // call this to "own" a copy of a card in mAllCards
+    void createStartingDeck(Coordinator* mEcs);
+	void claimCard(Coordinator* mEcs, int nameIndex);      // call this to "own" a copy of a card
+    Entity createCard(Coordinator* mEcs, int nameIndex);
+    void removeCards(Coordinator* mEcs);
 
 };

@@ -48,6 +48,7 @@
 
 #include "../Chars.hpp"
 #include "../Efx.hpp"
+#include "../Deck.hpp"
 #include "../Robots.hpp"
 #include "../Addons.hpp"
 #include "../Location.hpp"
@@ -254,6 +255,7 @@ void GameState::toTitle(Game& g) {
 	g.mChars->clearRestoreList();
 	g.mRobots->removeRobots(g.mEcs); // delete all the robots
 	g.mAddons->removeAddons(g.mEcs); // delete all addons
+	g.mDeck->removeCards(g.mEcs);	 // delete all cards
 	fbl_set_clear_color(11, 168, 230, 255);	// blue sky for the title
 	g.mWeather->setWeather(Weather::TimeOfDay::Day, 0, 14, 80, false);	// timeOfDay, rainLevel, snowLevel, numClouds, lightningOn
 	fbl_lua_shutdown();				 // so the dialogues get reset
@@ -275,6 +277,8 @@ void GameState::titleToExplore(Game& g) {
 
 	g.mRobots->setupRobots(g.mEcs); // create the robot entities and add the basic components
 	g.mAddons->setupAddons(g.mEcs); // create the addon entities
+
+	g.mDeck->setupCards(g.mEcs);	// set up the all cards and create starting deck
 
 	g.mSysManager->mSpriteSystem->Init(*g.mEcs);	// create sprites for all entities with a sprite component
 	g.mSysManager->mPathSystem->Init(*g.mEcs);		// assign a unique path id to the entities with a path component

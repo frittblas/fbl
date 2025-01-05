@@ -83,6 +83,9 @@ void SysManager::setupEcs(Coordinator *mEcs) {
 	mEcs->RegisterComponent<Diag>();
 	mEcs->RegisterComponent<Turbo>();
 
+	// card components
+	mEcs->RegisterComponent<Card>();
+
 	// register systems
 	mSpriteSystem = mEcs->RegisterSystem<SpriteSystem>();
 	mPathSystem = mEcs->RegisterSystem<PathSystem>();

@@ -17,12 +17,6 @@
 
 Progress::Progress() {
 
-	mFunds = 0;
-	mFavRobot = 0;	// always start with charmy as fav (Robots::Charmy == 0)
-	mCurrentLocation = 0;
-	mCompletedRaces = 0;
-	mCompletedMaint = 0;
-
 	std::cout << "Initialized Progress subsystem." << std::endl;
 
 }
@@ -35,10 +29,13 @@ Progress::~Progress() {
 
 void Progress::resetProgress() {
 
+	mMaxHp = 100;
+	mHp = mMaxHp;
 	mFunds = 3;
-	mFavRobot = 0;
+	mFavRobot = 0; // always start with charmy as fav (Robots::Charmy == 0)
 	mCurrentLocation = 0;
 	mCompletedRaces = 0;
 	mCompletedMaint = 0;
+	mCompletedDungeons = 0;
 
 }

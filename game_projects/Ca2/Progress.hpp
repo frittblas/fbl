@@ -21,11 +21,14 @@ public:
     Progress();
     ~Progress();
 
+	uint16_t mMaxHp;            // max hp for the player
+	uint16_t mHp;               // current hp for the player
     uint16_t mFunds;            // total amount of coins
     uint16_t mFavRobot;         // the selected robot in the menu (racing robot)
     uint8_t  mCurrentLocation;  // current location
     uint16_t mCompletedRaces;   // how many races have been completed in total
     uint16_t mCompletedMaint;   // how many maintenance runs have been completed in total
+	uint16_t mCompletedDungeons;// how many dungeons have been completed in total
 
     void resetProgress();       // reset funds and completed races etc.
 
