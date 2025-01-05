@@ -141,6 +141,7 @@ void GameState::change(Game& g, StateType newState) {
 
 			g.mRobots->hideRobots(g.mEcs);		 // don't show the robot-sprites in explore mode (or in beginning of race)
 			g.mAddons->hideAddons(g.mEcs);		 // don't show addons either (ui buttons)
+			g.mDeck->hideCards(g.mEcs);			 // don't show cards in explore mode
 			fbl_sort_sprites(FBL_SORT_BY_LAYER); // layers : Ground tiles 0, Player 1, Tunnel tiles(pl. goes under) 2, Clouds 3, Gray colMenu BG 4
 												 // layers contd. white robotBg 5, powerups 6, robots 7.
 			mCurrentStateInstance = new Explore();
@@ -255,6 +256,7 @@ void GameState::toTitle(Game& g) {
 	g.mChars->clearRestoreList();
 	g.mRobots->removeRobots(g.mEcs); // delete all the robots
 	g.mAddons->removeAddons(g.mEcs); // delete all addons
+	g.mDeck->clearPiles(g.mEcs);	 // clear all piles
 	g.mDeck->removeCards(g.mEcs);	 // delete all cards
 	fbl_set_clear_color(11, 168, 230, 255);	// blue sky for the title
 	g.mWeather->setWeather(Weather::TimeOfDay::Day, 0, 14, 80, false);	// timeOfDay, rainLevel, snowLevel, numClouds, lightningOn
@@ -380,6 +382,7 @@ void GameState::dungeonToExplore(Game& g) {
 	g.mLocation->loadLocation(g.mMap);	// this will destroy all sprites, then load map
 	initLuaDialog();					// set up prims and text and ui for the dialog box.
 	g.mChars->restoreNpcs(g);
+	g.mDeck->clearPiles(g.mEcs);		// clear all piles (draw, discard, burn) between dungeon rounds
 	g.mSysManager->mSpriteSystem->Init(*g.mEcs);	// create sprites for all entities with a sprite component
 	g.mSysManager->mLightSystem->Init(*g.mEcs);		// create lights for all entities with a light component
 
@@ -436,10 +439,10 @@ void GameState::setupDungeon(Game& g) {
 
 	destroyAllGfx();								// remove resources (ALL sprites, prims, text, ui and emitters)
 	g.mLocation->unLoadLocation(g.mMap);			// this destroys ALL sprites
+	g.mDeck->copyDeckToDrawpile(g.mEcs);			// copy the build deck to the draw pile
 	g.mSysManager->mSpriteSystem->Init(*g.mEcs);	// create sprites for all entities with a sprite component
 	g.mSysManager->mLightSystem->Init(*g.mEcs);		// create lights for all entities with a light component
 
-	g.mRobots->mapSpriteIdToEntity(g.mEcs);
 	g.mRobots->hideRobots(g.mEcs);
 
 	// temporarily remove path component from the player

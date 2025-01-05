@@ -28,7 +28,7 @@ Mana cost first.
 
 2. Tweak gameplay balance.
 3. Add "simulate" button to robot races so they go super fast.
-4. Update to visual studio 2022 (update folder names), latest SDL (2.30.10)
-5. Fix the new emscripten build (Lua?)
+4. Update to visual studio 2022 (update folder names) - DONE!
+5. Fix the new emscripten build (Lua?) - DONE!
 
 Ca2 will become good!

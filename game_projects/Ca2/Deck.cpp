@@ -132,4 +132,91 @@ void Deck::removeCards(Coordinator* mEcs) {
 		std::cout << "Card removed from BuildDeck-list." << std::endl;
 	}
 
+	mBuildDeck.clear();
+
+}
+
+void Deck::hideCards(Coordinator* mEcs) {
+
+	// Note: think about maybe hide different piles individually?
+
+	for (Entity e : mAllCards) {
+		if (e != Unassigned) {
+			auto& spr = mEcs->GetComponent<Sprite>(e);
+			fbl_set_sprite_active(spr.id[0], false);
+		}
+	}
+
+	for (Entity e : mBuildDeck) {
+		auto& spr = mEcs->GetComponent<Sprite>(e);
+		fbl_set_sprite_active(spr.id[0], false);
+	}
+
+}
+
+void Deck::copyDeckToDrawpile(Coordinator* mEcs) {
+
+	// loop through mBuildDeck and create a copy of each card in mDrawPile
+	for (Entity card : mBuildDeck) {
+		Entity newCard = createCard(mEcs, mEcs->GetComponent<Card>(card).nameIndex);
+		mDrawPile.push(newCard);
+	}
+
+	std::cout << "Copied " << mBuildDeck.size() << " cards to draw pile." << std::endl;
+}
+
+void Deck::drawCard(Coordinator* mEcs, int amount) {
+
+	// draw a card from the draw pile to the hand
+
+	for (int i = 0; i < amount; i++) {
+
+		if (mDrawPile.size() > 0) {
+
+			Entity e = mDrawPile.front();
+			mDrawPile.pop();
+			mCurrentHand.push_back(e);
+
+			// set the card to visible
+			auto& spr = mEcs->GetComponent<Sprite>(e);
+			fbl_set_sprite_active(spr.id[0], true);
+
+			auto& card = mEcs->GetComponent<Card>(e);
+
+			std::cout << "Card: " << card.name << "  drawn from draw pile to hand." << std::endl;
+
+		}
+		else {
+			std::cout << "No more cards in draw pile." << std::endl;
+		}
+
+	}
+
+}
+
+void Deck::clearPiles(Coordinator* mEcs) {
+
+	// Clear the draw pile (queue)
+	while (!mDrawPile.empty()) {
+		Entity tmpCard = mDrawPile.front();
+		mEcs->DestroyEntity(tmpCard);
+		mDrawPile.pop();
+		std::cout << "Card removed from draw pile." << std::endl;
+	}
+
+	// Clear the discard pile (stack)
+	while (!mDiscardPile.empty()) {
+		Entity tmpCard = mDiscardPile.top();
+		mEcs->DestroyEntity(tmpCard);
+		mDiscardPile.pop();
+		std::cout << "Card removed from discard pile." << std::endl;
+	}
+
+	// Clear the burn pile (stack)
+	while (!mBurnPile.empty()) {
+		Entity tmpCard = mBurnPile.top();
+		mEcs->DestroyEntity(tmpCard);
+		mBurnPile.pop();
+		std::cout << "Card removed from burn pile." << std::endl;
+	}
 }

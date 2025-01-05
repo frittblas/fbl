@@ -40,9 +40,6 @@ public:
 
     enum CardNames {
         Move,
-        Acc,
-        Torch,
-        Flame,
         Laser,
         Block,
         NumCards
@@ -66,5 +63,9 @@ public:
 	void claimCard(Coordinator* mEcs, int nameIndex);      // call this to "own" a copy of a card
     Entity createCard(Coordinator* mEcs, int nameIndex);
     void removeCards(Coordinator* mEcs);
+	void hideCards(Coordinator* mEcs);
+    void copyDeckToDrawpile(Coordinator* mEcs);
+    void drawCard(Coordinator* mEcs, int amount);
+    void clearPiles(Coordinator* mEcs);
 
 };
