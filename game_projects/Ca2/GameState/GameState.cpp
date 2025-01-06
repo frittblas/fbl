@@ -418,6 +418,8 @@ void GameState::setupRace(Game& g) {
 	g.mEcs->RemoveComponent<Path>(g.mChars->mBrodo);
 	g.mChars->hidePlayer(g.mEcs);
 
+	g.mDeck->hideCards(g.mEcs);
+
 	// hide the player light
 	auto& light = g.mEcs->GetComponent<Light>(g.mChars->mBrodo);
 	fbl_set_sprite_active(light.id, false);
@@ -439,11 +441,16 @@ void GameState::setupDungeon(Game& g) {
 
 	destroyAllGfx();								// remove resources (ALL sprites, prims, text, ui and emitters)
 	g.mLocation->unLoadLocation(g.mMap);			// this destroys ALL sprites
+
+	// deck stuff
 	g.mDeck->copyDeckToDrawpile(g.mEcs);			// copy the build deck to the draw pile
+	g.mDeck->prepPiles(g.mEcs);						// create piles w. card back place cards under draw pile
+
 	g.mSysManager->mSpriteSystem->Init(*g.mEcs);	// create sprites for all entities with a sprite component
 	g.mSysManager->mLightSystem->Init(*g.mEcs);		// create lights for all entities with a light component
 
 	g.mRobots->hideRobots(g.mEcs);
+	g.mDeck->hideCards(g.mEcs);
 
 	// temporarily remove path component from the player
 	g.mEcs->RemoveComponent<Path>(g.mChars->mBrodo);
@@ -476,6 +483,8 @@ void GameState::setupMaintenance(Game& g) {
 	// temporarily remove path component from the player
 	g.mEcs->RemoveComponent<Path>(g.mChars->mBrodo);
 	g.mChars->hidePlayer(g.mEcs);
+
+	g.mDeck->hideCards(g.mEcs);
 
 	g.mWeather->setWeather(Weather::TimeOfDay::Day, 0, 0, 0, false);
 

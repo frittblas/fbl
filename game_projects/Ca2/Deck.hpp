@@ -45,6 +45,14 @@ public:
         NumCards
     };
 
+    // position of the piles
+    const int cDrawPileX = 32;
+    const int cDrawPileY = 418;
+    const int cDiscardPileX = 864;
+	const int cDiscardPileY = 418;
+	const int cBurnPileX = 864;
+	const int cBurnPileY = 296;
+
 	const uint32_t Unassigned = 9999;   // used for empty slots in the collected card-arrays.
 
 	Entity mAllCards[NumCards];         // all the cards you can use in the game, as an array
@@ -54,6 +62,8 @@ public:
 	std::stack<Entity> mDiscardPile;    // the discard pile, as stack
     std::stack<Entity> mBurnPile;       // the burn pile, as stack
 	std::vector<Entity> mCurrentHand;   // the cards you're currently holding
+
+	float mCardTweenXId, mCardTweenYId; // used for tweening the cards
 
     Deck();
     ~Deck();
@@ -66,6 +76,11 @@ public:
 	void hideCards(Coordinator* mEcs);
     void copyDeckToDrawpile(Coordinator* mEcs);
     void drawCard(Coordinator* mEcs, int amount);
+    void prepPiles(Coordinator* mEcs);
     void clearPiles(Coordinator* mEcs);
+
+private:
+	uint16_t mDrawPileCardBackId;
+	uint16_t mDiscardPileCardBackId;
 
 };

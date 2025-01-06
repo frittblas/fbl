@@ -30,5 +30,9 @@ Mana cost first.
 3. Add "simulate" button to robot races so they go super fast.
 4. Update to visual studio 2022 (update folder names) - DONE!
 5. Fix the new emscripten build (Lua?) - DONE!
+6. Fix drawing cards on top of weather tint!! Easy peasy add a flag to sprite struct
+don't draw those before but after light map thing!
+7. Maybe make cards as ui-elements?
+8. Fix tweening movement for cards at all times!
 
-Ca2 will become good!
+Ca2 will become fun

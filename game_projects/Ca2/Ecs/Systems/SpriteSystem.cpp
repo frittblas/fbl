@@ -13,10 +13,14 @@
 
 #include "../../../../src/fbl.hpp"
 
+#include "../../Efx.hpp"
+
 #include "../Ecs.hpp"
 #include "../Components.hpp"
 
 #include "SpriteSystem.hpp"
+
+extern float mCardTweenXId, mCardTweenYId;
 
 void SpriteSystem::Init(Coordinator& ecs) {
 
@@ -27,7 +31,11 @@ void SpriteSystem::Init(Coordinator& ecs) {
 
 		// loop through all the sprites (max 4), create them and set the required parameters
 		for (int i = 0; i < spr.num; i++) {
-			spr.id[i] = fbl_create_sprite(i * (spr.w * spr.frames), spr.textureY, spr.w, spr.h, 0);	// create a sprite
+			if (spr.w == 64 && spr.h == 90) // card
+				spr.id[i] = fbl_create_sprite(spr.textureX, spr.textureY, spr.w, spr.h, 0);	// create card-sprite
+			else
+				spr.id[i] = fbl_create_sprite(i * (spr.w * spr.frames), spr.textureY, spr.w, spr.h, 0);	// create a sprite
+
 			fbl_set_sprite_xy(spr.id[i], pos.x, pos.y);	// set the coordinates
 			if (spr.animated)	// turn on animation if it's requested
 				fbl_set_sprite_animation(spr.id[i], true, spr.textureX + (i * (spr.w * spr.frames)), spr.textureY, spr.w, spr.h, spr.frames, spr.speed, true);
@@ -82,8 +90,14 @@ void SpriteSystem::Update(Coordinator& ecs) {
 			}
 			fbl_set_sprite_xy(spr.id[spr.dir], pos.x, pos.y);
 		}
-		else
-			fbl_set_sprite_xy(spr.id[0], pos.x + 16, pos.y + 16);	// robots get drawn from center in the race
+		else {
+			if (spr.w == 64 && spr.h == 90) { // card
+				//Efx::getInstance().getCurValue(mCardTweenXId);
+				fbl_set_sprite_xy(spr.id[0], pos.x + 4, pos.y + 4);	// cards are slightly offset and has tween
+			}
+			else
+				fbl_set_sprite_xy(spr.id[0], pos.x + 16, pos.y + 16);	// robots get drawn from center in the race
+		}
 
 	}
 

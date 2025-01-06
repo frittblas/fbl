@@ -12,6 +12,7 @@
 
 
 #include "../../../../src/fbl.hpp"
+#include "../../Ecs/Ecs.hpp"
 #include "../../Game.hpp"
 #include "../../SysManager.hpp"
 
@@ -19,8 +20,10 @@
 #include "../../Ecs/Systems/CameraSystem.hpp"
 #include "../../Ecs/Systems/LightSystem.hpp"
 
+#include "../../Efx.hpp"
 #include "../../Weather.hpp"
 #include "../../Chars.hpp"
+#include "../../Deck.hpp"
 #include "../GameState.hpp"
 #include "Dungeon.hpp"
 
@@ -41,6 +44,19 @@ Dungeon::~Dungeon() {
 
 void Dungeon::processInput(Game& g) {
 
+	static int access = 0;
+
+	if (fbl_get_key_down(FBLK_SPACE) && access == 0) {
+		g.mDeck->drawCard(g.mEcs, 1);
+		access = 30;
+	}
+	if (fbl_get_key_down(FBLK_H) && access == 0) {
+		g.mDeck->hideCards(g.mEcs);
+		access = 30;
+	}
+
+	access--;
+	if (access < 0) access = 0;
 
 }
 
@@ -51,6 +67,8 @@ void Dungeon::tick(Game& g) {
 	g.mSysManager->mLightSystem->Update(g);					// update the light system
 
 	//g.mWeather->tick();
+
+	Efx::getInstance().tickTweens();
 
 	processInput(g);
 
