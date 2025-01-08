@@ -219,7 +219,8 @@ enum FBL_UI_ELEM_TYPES
 	FBL_UI_CHECKBOX,
 	FBL_UI_CHECKBOX_INTERVAL,
 	FBL_UI_SLIDER,  /* not impl. yet */
-	FBL_UI_EDITBOX  /* not impl. yet */
+	FBL_UI_EDITBOX,  /* not impl. yet */
+	FBL_UI_DRAGGABLE
 
 };
 

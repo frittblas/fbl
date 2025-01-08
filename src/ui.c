@@ -124,6 +124,9 @@ int fbl_create_ui_elem(uint8_t type, int x, int y, int w, int h, int(*func)(int,
 
 	fbl_ui_elem->func = func;
 
+	/* set dragging to false */
+
+	fbl_ui_elem->dragging = false;
 
 	/* if it's the first ui element created start a new list, otherwise append */
 
@@ -767,6 +770,37 @@ int process_ui_elem(int tag, void *ui_elem, void *dummy)
 
                 break;
                 
+            case FBL_UI_DRAGGABLE :
+
+				if (ui->dragging)
+				{
+					ui->dest_rect.x = point.x;
+					ui->dest_rect.y = point.y;
+				}
+
+                /* check "mouse over" */
+
+				if (SDL_PointInRect(&point, &temp_rect))
+				{
+
+					if (fbl_get_mouse_click(FBLMB_LEFT))
+					{
+
+						ui->dragging = true;
+
+					}
+
+				}
+
+                if (fbl_get_mouse_release(FBLMB_LEFT))
+                {
+
+                    ui->dragging = false;
+
+                }
+
+
+				break;
                 
         }
     

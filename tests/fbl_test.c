@@ -354,6 +354,9 @@ void setup_demo_2(void)
 	music_button = fbl_create_ui_elem(FBL_UI_BUTTON_CLICK, 0, 32, 32, 32, /*pressed_button*/NULL); // if NULL instead of function pointer, check fbl_get_ui_elem_val()
 	fbl_set_ui_elem_xy(music_button, 200, 100);
 
+	/* create draggable ui element */
+	int temp_id = fbl_create_ui_elem(FBL_UI_DRAGGABLE, 0, 64, 64, 32, NULL);
+	fbl_set_ui_elem_xy(temp_id, 500, 200);
 
 	/* write something */
 

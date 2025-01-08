@@ -260,6 +260,8 @@ typedef struct
 
 	int(*func)(int, int);
 
+	bool dragging; /* if ui element is being dragged atm */
+
 }FBL_UI_ELEM;
 
 
