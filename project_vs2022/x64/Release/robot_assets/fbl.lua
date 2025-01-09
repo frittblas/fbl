@@ -171,6 +171,7 @@ FBL_WINDOW_FULLSCREEN_DESKTOP = 4097
 	FBL_UI_CHECKBOX_INTERVAL = 4
 	-- FBL_UI_SLIDER,  /* not impl. yet */
 	-- FBL_UI_EDITBOX  /* not impl. yet */
+	FBL_UI_DRAGGABLE		 = 7
 
 
 -- astar pathfinding

@@ -32,7 +32,8 @@ Mana cost first.
 5. Fix the new emscripten build (Lua?) - DONE!
 6. Fix drawing cards on top of weather tint!! Easy peasy add a flag to sprite struct
 don't draw those before but after light map thing!
-7. Maybe make cards as ui-elements?
+7. Maybe make cards as ui-elements? No, use ligt instead to light the cards!
+
 8. Fix tweening movement for cards at all times!
 
 Ca2 will become fun
