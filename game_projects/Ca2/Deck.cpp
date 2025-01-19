@@ -154,8 +154,10 @@ void Deck::copyDeckToDrawpile(Coordinator* mEcs) {
 	// loop through mBuildDeck and create a copy of each card in mDrawPile
 	for (Entity card : mBuildDeck) {
 		auto& crd = mEcs->GetComponent<Card>(card);
-		Entity newCard = createCard(mEcs, crd.nameIndex); 
+		Entity newCard = createCard(mEcs, crd.nameIndex);
 		mDrawPile.push(newCard);
+		// create a light component for the cards in the draw pile? Or for every card..
+		mEcs->AddComponent(newCard, Light{ 0, 384, 512, 64, 90, 1.0 });
 	}
 
 	std::cout << "Copied " << mBuildDeck.size() << " cards to draw pile." << std::endl;
@@ -181,7 +183,9 @@ void Deck::drawCard(Coordinator* mEcs, int amount) {
 			auto& card = mEcs->GetComponent<Card>(e);
 			auto& spr = mEcs->GetComponent<Sprite>(e);
 
-			std::cout << "Card: " << card.name << " drawn. Sprite texX: " << spr.textureX << std::endl;
+			fbl_set_sprite_layer(spr.id[0], mCurrentHand.size() + 10); // 10-20
+
+			std::cout << "Card: " << card.name << " drawn. Sprite layer: " << fbl_get_sprite_layer(spr.id[0]) << std::endl;
 
 		}
 		else {
@@ -189,6 +193,8 @@ void Deck::drawCard(Coordinator* mEcs, int amount) {
 		}
 
 	}
+
+	fbl_sort_sprites(FBL_SORT_BY_LAYER);
 
 }
 

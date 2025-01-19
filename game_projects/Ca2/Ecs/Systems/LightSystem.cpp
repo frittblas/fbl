@@ -53,6 +53,14 @@ void LightSystem::Update(Game& g) {
 			fbl_set_sprite_xy(light.id, pos.x - (light.w / 2) * light.scale + 16, pos.y - (light.h / 2) * light.scale + 16);	// set the coordinates
 		else if (g.mState->get() == GameState::StateType::Race)
 			fbl_set_sprite_xy(light.id, pos.x + 16, pos.y + 16);
+		else if (g.mState->get() == GameState::StateType::Dungeon) {
+			if(light.w == 64)
+				fbl_set_sprite_xy(light.id, pos.x + 4, pos.y + 4);
+			else if (light.w == 128)
+				fbl_set_sprite_xy(light.id, pos.x - (light.w / 2) * light.scale + 16, pos.y - (light.h / 2) * light.scale + 16);
+		}
+
+		// Fix this so it works with both cards and player etc.
 
 	}
 

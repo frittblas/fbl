@@ -37,3 +37,28 @@ don't draw those before but after light map thing!
 8. Fix tweening movement for cards at all times!
 
 Ca2 will become fun
+
+ang kort:
+
+alla kort har light component (underlättar när man ska visa de olika kort-arraysen + buildDeck etc), de flesta korten visas ändå inte.
+hideCards avaktiverar oxå light component. Alla på/av tar light into consid. nice behöver inte ändra nåt (glöm ui-grejen)
+
+Bra sidoeffekt är att draw + discard pile lyses upp när det finns kort där.
+
+Lägg till mouse pick drag-grej i deck klassen, fbl_mouse_x() etc point in rect.
+Ge alla kort varsin exf::tween, utöka max antal tweens till 20?
+Kort får nytt tween id när man drar kort, tween id:n i discard pilen borde nollas lr nåt?
+alla kort får 2 egna tween id (x,y) (i Card-komponenten).
+tweenvaluesen sätter position-komponenten varje frame.
+
+Fixa ett stabilt layer system (dragged cards har layer 20, cardbacks 21)
+kort i handen har alltid 10-19 i den ordningen.
+set layer i drawCard, sortera.
+
+Side note: Uppgraderade kort har helt nya kort-bilder = lättare. Har samma namn dock med upgrade = true och ny texX texY.
+
+
+korten varken scalas eller anglas! De e nice.
+
+De ligger omlott med ett lagom avstånd, om man hovrar över ett kort hamnar det 24px upp (tween) och på layer 20 tillfälligt med EN
+sort_sprites. När hovringen "lämnar" ett kort återställs layer till rätt enligt hand-size.
