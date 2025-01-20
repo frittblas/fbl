@@ -15,10 +15,12 @@
 
 class Game;
 class Coordinator;
+struct Light;
 
 class LightSystem : public System
 {
 public:
 	void Init(Coordinator& ecs);
 	void Update(Game& g);
+	bool isCard(Light& spr);
 };

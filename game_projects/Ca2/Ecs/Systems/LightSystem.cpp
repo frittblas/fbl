@@ -18,6 +18,7 @@
 #include "../Components.hpp"
 
 #include "../../Game.hpp"
+#include "../../Deck.hpp"
 #include "../../GameState/GameState.hpp"
 
 #include "LightSystem.hpp"
@@ -54,14 +55,19 @@ void LightSystem::Update(Game& g) {
 		else if (g.mState->get() == GameState::StateType::Race)
 			fbl_set_sprite_xy(light.id, pos.x + 16, pos.y + 16);
 		else if (g.mState->get() == GameState::StateType::Dungeon) {
-			if(light.w == 64)
+			if(isCard(light))
 				fbl_set_sprite_xy(light.id, pos.x + 4, pos.y + 4);
-			else if (light.w == 128)
+			else
 				fbl_set_sprite_xy(light.id, pos.x - (light.w / 2) * light.scale + 16, pos.y - (light.h / 2) * light.scale + 16);
 		}
 
-		// Fix this so it works with both cards and player etc.
-
 	}
 
+}
+
+bool LightSystem::isCard(Light& light) {
+	if (light.w == Deck::cCardWidth && light.h == Deck::cCardHeight) // card light dimensions
+		return true;
+	else
+		return false;
 }

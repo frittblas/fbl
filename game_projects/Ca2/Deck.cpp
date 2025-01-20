@@ -16,6 +16,8 @@
 #include "Game.hpp"
 #include "Deck.hpp"
 
+#include <random>
+
 // Objects-class implementation
 
 Deck::Deck() {
@@ -85,23 +87,23 @@ Entity Deck::createCard(Coordinator* mEcs, int nameIndex) {
 	case Move:
 										// id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 		mEcs->AddComponent(tmpCard, Sprite{ 0, 0, 0, 0, 1, 0, 512, 64, 90, false, 1, 0, 0, 0, 10 }); // cards are on layer 10-20
-										// name  nameid type  rarity mana burn  upgrd prc atk blk
-		mEcs->AddComponent(tmpCard, Card{ "Move", Move, Skill, Common, 1, false, false, 3, 0, 0 });
+										// name  nameid tweenxy type  rarity mana burn  upgrd prc atk blk
+		mEcs->AddComponent(tmpCard, Card{ "Move", Move, 0, 0, Skill, Common, 1, false, false, 3, 0, 0 });
 
 		break;
 
 	case Laser:
 										// id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 		mEcs->AddComponent(tmpCard, Sprite{ 0, 0, 0, 0, 1, 256, 512, 64, 90, false, 1, 0, 0, 0, 10 });
-										// name  nameid type  rarity mana burn  upgrd prc atk blk
-		mEcs->AddComponent(tmpCard, Card{ "Laser", Laser, Skill, Common, 1, false, false, 3, 5, 0 });
+										// name  nameid tweenxy type  rarity mana burn  upgrd prc atk blk
+		mEcs->AddComponent(tmpCard, Card{ "Laser", Laser, 0, 0, Skill, Common, 1, false, false, 3, 5, 0 });
 
 		break;
 	case Block:
 										// id id id id num tx ty   w   h   anim fr spd dir dirLast layer
 		mEcs->AddComponent(tmpCard, Sprite{ 0, 0, 0, 0, 1, 320, 512, 64, 90, false, 1, 0, 0, 0, 10 });
-										// name  nameid type  rarity mana burn  upgrd prc atk blk
-		mEcs->AddComponent(tmpCard, Card{ "Block", Block, Skill, Common, 1, false, false, 3, 0, 5 });
+										// name  nameid tweenxy type  rarity mana burn  upgrd prc atk blk
+		mEcs->AddComponent(tmpCard, Card{ "Block", Block, 0, 0, Skill, Common, 1, false, false, 3, 0, 5 });
 
 		break;
 
@@ -169,32 +171,96 @@ void Deck::drawCard(Coordinator* mEcs, int amount) {
 
 	for (int i = 0; i < amount; i++) {
 
-		if (mDrawPile.size() > 0) {
+		if (mDrawPile.empty()) shuffleDiscardToDrawpile(mEcs);
 
-			Entity e = mDrawPile.front();
-			mDrawPile.pop();
-			mCurrentHand.push_back(e);
+		Entity e = mDrawPile.front();
+		mDrawPile.pop();
+		mCurrentHand.push_back(e);
+
+		if (mCurrentHand.size() <= cMaxHandSize) {
 
 			// set the card to visible by changing pos
 			auto& pos = mEcs->GetComponent<Position>(e);
-			pos.x = cDrawPileX + 128 + (mCurrentHand.size() * 32);
+			pos.x = cDrawPileX + cHandXoffset + (mCurrentHand.size() * cCardWidth / 2);
 			pos.y = cDrawPileY;
 
 			auto& card = mEcs->GetComponent<Card>(e);
 			auto& spr = mEcs->GetComponent<Sprite>(e);
 
-			fbl_set_sprite_layer(spr.id[0], mCurrentHand.size() + 10); // 10-20
+			fbl_set_sprite_layer(spr.id[0], mCurrentHand.size() + cMaxHandSize); // cards on hand are on layers 10-20
 
 			std::cout << "Card: " << card.name << " drawn. Sprite layer: " << fbl_get_sprite_layer(spr.id[0]) << std::endl;
 
 		}
 		else {
-			std::cout << "No more cards in draw pile." << std::endl;
+			discardCard(mEcs, e);
+			std::cout << "Hand is full." << std::endl;
 		}
 
 	}
 
 	fbl_sort_sprites(FBL_SORT_BY_LAYER);
+
+}
+
+void Deck::discardCard(Coordinator* mEcs, Entity card) {
+
+	// discard a card from the hand to the discard pile
+
+	auto it = std::find(mCurrentHand.begin(), mCurrentHand.end(), card);
+
+	if (it != mCurrentHand.end()) {
+		std::cout << "Card " << card << " discarded at index " << std::distance(mCurrentHand.begin(), it) << std::endl;
+		// move this card to the discard pile
+		mDiscardPile.push(card);
+		mCurrentHand.erase(it);
+	}
+	else {
+		std::cout << "Card " << card << " not found." << std::endl;
+	}
+
+	// set the card to visible by changing pos
+	auto& pos = mEcs->GetComponent<Position>(card);
+	pos.x = cDiscardPileX;
+	pos.y = cDiscardPileY;
+
+	auto& crd = mEcs->GetComponent<Card>(card);
+	auto& spr = mEcs->GetComponent<Sprite>(card);
+
+	fbl_set_sprite_layer(spr.id[0], 10); // cards in discard pile are on layer 10
+
+	std::cout << "Discarded card: " << crd.name << " discarded. Sprite layer: " << fbl_get_sprite_layer(spr.id[0]) << std::endl;
+
+	fbl_sort_sprites(FBL_SORT_BY_LAYER);
+
+}
+
+void Deck::shuffleDiscardToDrawpile(Coordinator* mEcs) {
+
+	// shuffle discard pile into draw pile
+	std::vector<Entity> tempVector;
+	while (!mDiscardPile.empty()) {
+		Entity e = mDiscardPile.top();
+		mDiscardPile.pop();
+		tempVector.push_back(e);
+	}
+
+	// Shuffle the vector
+	std::random_device rd;
+	std::mt19937 g(rd());
+	std::shuffle(tempVector.begin(), tempVector.end(), g);
+
+	// Move shuffled cards to the draw pile
+	for (Entity e : tempVector) {
+
+		auto& pos = mEcs->GetComponent<Position>(e);
+		pos.x = cDrawPileX;
+		pos.y = cDrawPileY;
+
+		mDrawPile.push(e);
+	}
+
+	std::cout << "Shuffled discard pile into draw pile." << std::endl;
 
 }
 

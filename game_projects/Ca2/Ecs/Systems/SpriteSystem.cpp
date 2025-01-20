@@ -14,6 +14,7 @@
 #include "../../../../src/fbl.hpp"
 
 #include "../../Efx.hpp"
+#include "../../Deck.hpp"
 
 #include "../Ecs.hpp"
 #include "../Components.hpp"
@@ -31,7 +32,7 @@ void SpriteSystem::Init(Coordinator& ecs) {
 
 		// loop through all the sprites (max 4), create them and set the required parameters
 		for (int i = 0; i < spr.num; i++) {
-			if (spr.w == 64 && spr.h == 90) // card
+			if (isCard(spr))
 				spr.id[i] = fbl_create_sprite(spr.textureX, spr.textureY, spr.w, spr.h, 0);	// create card-sprite
 			else
 				spr.id[i] = fbl_create_sprite(i * (spr.w * spr.frames), spr.textureY, spr.w, spr.h, 0);	// create a sprite
@@ -91,7 +92,7 @@ void SpriteSystem::Update(Coordinator& ecs) {
 			fbl_set_sprite_xy(spr.id[spr.dir], pos.x, pos.y);
 		}
 		else {
-			if (spr.w == 64 && spr.h == 90) { // card
+			if (isCard(spr)) { // card
 				//Efx::getInstance().getCurValue(mCardTweenXId);
 				fbl_set_sprite_xy(spr.id[0], pos.x + 4, pos.y + 4);	// cards are slightly offset and has tween
 			}
@@ -101,4 +102,11 @@ void SpriteSystem::Update(Coordinator& ecs) {
 
 	}
 
+}
+
+bool SpriteSystem::isCard(Sprite& spr) {
+	if (spr.w == Deck::cCardWidth && spr.h == Deck::cCardHeight)	// card dimensions
+		return true;
+	else
+		return false;
 }

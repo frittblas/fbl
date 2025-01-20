@@ -14,10 +14,12 @@
 #include "../System.hpp"
 
 class Coordinator;
+struct Sprite;
 
 class SpriteSystem : public System
 {
 public:
 	void Init(Coordinator& ecs);
 	void Update(Coordinator& ecs);
+	bool isCard(Sprite& spr);
 };

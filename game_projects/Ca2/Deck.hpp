@@ -45,6 +45,10 @@ public:
         NumCards
     };
 
+    // card size
+	static const int cCardWidth = 64;
+	static const int cCardHeight = 90;
+
     // position of the piles
     const int cDrawPileX = 32;
     const int cDrawPileY = 418;
@@ -53,7 +57,11 @@ public:
 	const int cBurnPileX = 864;
 	const int cBurnPileY = 296;
 
+	const int cHandXoffset = 240;
+
 	const uint32_t Unassigned = 9999;   // used for empty slots in the collected card-arrays.
+
+	const int cMaxHandSize = 5;         // the maximum amount of cards you can hold in your hand
 
 	Entity mAllCards[NumCards];         // all the cards you can use in the game, as an array
     Entity mCollectedCards[NumCards];   // all the cards you have collected, as an array
@@ -76,6 +84,8 @@ public:
 	void hideCards(Coordinator* mEcs);
     void copyDeckToDrawpile(Coordinator* mEcs);
     void drawCard(Coordinator* mEcs, int amount);
+    void discardCard(Coordinator* mEcs, Entity card);
+    void shuffleDiscardToDrawpile(Coordinator* mEcs);
     void prepPiles(Coordinator* mEcs);
     void clearPiles(Coordinator* mEcs);
 
