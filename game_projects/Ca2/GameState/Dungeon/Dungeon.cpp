@@ -28,6 +28,8 @@
 #include "Dungeon.hpp"
 
 
+static int gFlag = false;
+
 // Dungeon-class implementation
 
 Dungeon::Dungeon() {
@@ -49,6 +51,7 @@ void Dungeon::processInput(Game& g) {
 	if (fbl_get_key_down(FBLK_SPACE) && access == 0) {
 		g.mDeck->drawCard(g.mEcs, 1);
 		access = 30;
+		gFlag = true;
 	}
 	if (fbl_get_key_down(FBLK_H) && access == 0) {
 		g.mDeck->hideCards(g.mEcs);
@@ -68,7 +71,10 @@ void Dungeon::tick(Game& g) {
 
 	//g.mWeather->tick();
 
-	Efx::getInstance().tickTweens();
+	if (gFlag) {
+		g.mDeck->tickCardTweens(g.mEcs);
+		Efx::getInstance().tickTweens();
+	}
 
 	processInput(g);
 

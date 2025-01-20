@@ -14,6 +14,7 @@
 #include "Ecs/Ecs.hpp"
 #include "Ecs/Components.hpp"
 #include "Game.hpp"
+#include "Efx.hpp"
 #include "Deck.hpp"
 
 #include <random>
@@ -181,11 +182,14 @@ void Deck::drawCard(Coordinator* mEcs, int amount) {
 
 			// set the card to visible by changing pos
 			auto& pos = mEcs->GetComponent<Position>(e);
-			pos.x = cDrawPileX + cHandXoffset + (mCurrentHand.size() * cCardWidth / 2);
-			pos.y = cDrawPileY;
-
 			auto& card = mEcs->GetComponent<Card>(e);
 			auto& spr = mEcs->GetComponent<Sprite>(e);
+
+			//pos.x = cDrawPileX + cHandXoffset + (mCurrentHand.size() * cCardWidth / 2);
+			//pos.y = cDrawPileY;
+
+			card.tweenXid = Efx::getInstance().setupTween(cDrawPileX, cDrawPileX + cHandXoffset + (mCurrentHand.size() * cCardWidth / 2), 1000, Efx::getInstance().EaseOut);
+			card.tweenYid = Efx::getInstance().setupTween(cDrawPileY, cDrawPileY, 1000, Efx::getInstance().EaseOut);
 
 			fbl_set_sprite_layer(spr.id[0], mCurrentHand.size() + cMaxHandSize); // cards on hand are on layers 10-20
 
@@ -221,11 +225,14 @@ void Deck::discardCard(Coordinator* mEcs, Entity card) {
 
 	// set the card to visible by changing pos
 	auto& pos = mEcs->GetComponent<Position>(card);
+	auto& crd = mEcs->GetComponent<Card>(card);
+	auto& spr = mEcs->GetComponent<Sprite>(card);
+
 	pos.x = cDiscardPileX;
 	pos.y = cDiscardPileY;
 
-	auto& crd = mEcs->GetComponent<Card>(card);
-	auto& spr = mEcs->GetComponent<Sprite>(card);
+	//crd.tweenXid = Efx::getInstance().setupTween(cDrawPileX, cDiscardPileX, 1000, Efx::getInstance().EaseOut);
+	//crd.tweenYid = Efx::getInstance().setupTween(cDrawPileY, cDiscardPileY, 1000, Efx::getInstance().EaseOut);
 
 	fbl_set_sprite_layer(spr.id[0], 10); // cards in discard pile are on layer 10
 
@@ -252,15 +259,35 @@ void Deck::shuffleDiscardToDrawpile(Coordinator* mEcs) {
 
 	// Move shuffled cards to the draw pile
 	for (Entity e : tempVector) {
-
 		auto& pos = mEcs->GetComponent<Position>(e);
 		pos.x = cDrawPileX;
 		pos.y = cDrawPileY;
-
 		mDrawPile.push(e);
 	}
 
+	fbl_sort_sprites(FBL_SORT_BY_LAYER);
+
 	std::cout << "Shuffled discard pile into draw pile." << std::endl;
+
+}
+
+void Deck::tickCardTweens(Coordinator* mEcs) {
+
+	// update the card positions using tweens
+
+	for (Entity e : mCurrentHand) {
+
+		auto& pos = mEcs->GetComponent<Position>(e);
+		auto& card = mEcs->GetComponent<Card>(e);
+
+		if (card.tweenXid != -1) {
+			pos.x = Efx::getInstance().getCurValue(card.tweenXid);
+		}
+		if (card.tweenYid != -1) {
+			pos.y = Efx::getInstance().getCurValue(card.tweenYid);
+		}
+
+	}
 
 }
 

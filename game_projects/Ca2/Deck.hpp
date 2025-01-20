@@ -86,6 +86,7 @@ public:
     void drawCard(Coordinator* mEcs, int amount);
     void discardCard(Coordinator* mEcs, Entity card);
     void shuffleDiscardToDrawpile(Coordinator* mEcs);
+	void tickCardTweens(Coordinator* mEcs);
     void prepPiles(Coordinator* mEcs);
     void clearPiles(Coordinator* mEcs);
 
