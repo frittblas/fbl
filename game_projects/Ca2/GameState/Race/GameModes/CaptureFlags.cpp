@@ -23,6 +23,8 @@
 
 #include "CaptureFlags.hpp"
 
+#include <algorithm>
+
 void CaptureFlags::handleFlags(Entity e, Position& pos, Sprite& spr, Path& path, PathLogic& plog) {
 
 	// if the current robot has a flag, let the flag follow the robot, otherwise check for flag collisions

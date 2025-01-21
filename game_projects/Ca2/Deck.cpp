@@ -186,7 +186,7 @@ void Deck::drawCard(Coordinator* mEcs, int amount) {
 			auto& spr = mEcs->GetComponent<Sprite>(e);
 
 			//pos.x = cDrawPileX + cHandXoffset + (mCurrentHand.size() * cCardWidth / 2);
-			//pos.y = cDrawPileY;
+			pos.y = cDrawPileY;
 
 			card.tweenXid = Efx::getInstance().setupTween(cDrawPileX, cDrawPileX + cHandXoffset + (mCurrentHand.size() * cCardWidth / 2), 1000, Efx::getInstance().EaseOut);
 			card.tweenYid = Efx::getInstance().setupTween(cDrawPileY, cDrawPileY, 1000, Efx::getInstance().EaseOut);
@@ -283,8 +283,8 @@ void Deck::tickCardTweens(Coordinator* mEcs) {
 		if (card.tweenXid != -1) {
 			pos.x = Efx::getInstance().getCurValue(card.tweenXid);
 		}
-		if (card.tweenYid != -1) {
-			pos.y = Efx::getInstance().getCurValue(card.tweenYid);
+		if (card.tweenYid == -1) {
+			pos.y = cDrawPileY;
 		}
 
 	}
