@@ -256,8 +256,8 @@ struct Card
 
     std::string name;    // card name
     uint16_t nameIndex;  // the enum name id of the card
-	uint16_t tweenXid;   // X tween id for the card
-    uint16_t tweenYid;   // Y tween id for the card
+	int16_t tweenXid;    // X tween id for the card
+    int16_t tweenYid;    // Y tween id for the card
 	uint8_t type;        // examples: Attack, skill, ongoing, junk etc.
     uint8_t rarity;      // rarity of the card (common, rare, etc.)
 	uint8_t manaCost;    // how much mana does it cost to play the card

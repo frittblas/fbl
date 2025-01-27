@@ -107,6 +107,6 @@ void SpriteSystem::Update(Coordinator& ecs) {
 bool SpriteSystem::isCard(Sprite& spr) {
 	if (spr.w == Deck::cCardWidth && spr.h == Deck::cCardHeight)	// card dimensions
 		return true;
-	else
-		return false;
+
+	return false;
 }

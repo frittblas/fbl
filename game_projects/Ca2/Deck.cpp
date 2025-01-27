@@ -161,6 +161,11 @@ void Deck::copyDeckToDrawpile(Coordinator* mEcs) {
 		mDrawPile.push(newCard);
 		// create a light component for the cards in the draw pile? Or for every card..
 		mEcs->AddComponent(newCard, Light{ 0, 384, 512, 64, 90, 1.0 });
+
+		// set position
+		auto& pos = mEcs->GetComponent<Position>(card);
+		pos.x = cDrawPileX;
+		pos.y = cDrawPileY;
 	}
 
 	std::cout << "Copied " << mBuildDeck.size() << " cards to draw pile." << std::endl;
@@ -185,11 +190,11 @@ void Deck::drawCard(Coordinator* mEcs, int amount) {
 			auto& card = mEcs->GetComponent<Card>(e);
 			auto& spr = mEcs->GetComponent<Sprite>(e);
 
-			//pos.x = cDrawPileX + cHandXoffset + (mCurrentHand.size() * cCardWidth / 2);
-			pos.y = cDrawPileY;
+			//pos.x = cDrawPileX; // + cHandXoffset + (mCurrentHand.size() * cCardWidth / 2);
+			//pos.y = cDrawPileY;
 
 			card.tweenXid = Efx::getInstance().setupTween(cDrawPileX, cDrawPileX + cHandXoffset + (mCurrentHand.size() * cCardWidth / 2), 1000, Efx::getInstance().EaseOut);
-			card.tweenYid = Efx::getInstance().setupTween(cDrawPileY, cDrawPileY, 1000, Efx::getInstance().EaseOut);
+			card.tweenYid = -1; //Efx::getInstance().setupTween(cDrawPileY, cDrawPileY, 1000, Efx::getInstance().EaseOut);
 
 			fbl_set_sprite_layer(spr.id[0], mCurrentHand.size() + cMaxHandSize); // cards on hand are on layers 10-20
 
@@ -283,8 +288,8 @@ void Deck::tickCardTweens(Coordinator* mEcs) {
 		if (card.tweenXid != -1) {
 			pos.x = Efx::getInstance().getCurValue(card.tweenXid);
 		}
-		if (card.tweenYid == -1) {
-			pos.y = cDrawPileY;
+		if (card.tweenYid != -1) {
+			pos.y = Efx::getInstance().getCurValue(card.tweenYid);
 		}
 
 	}
